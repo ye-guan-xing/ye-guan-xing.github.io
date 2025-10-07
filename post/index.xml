@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on Acye&#39;s bog</title>
+        <link>https://ye-guan-xing.github.io/post/</link>
+        <description>Recent content in Posts on Acye&#39;s bog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>acye</copyright>
+        <lastBuildDate>Tue, 07 Oct 2025 15:14:47 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Web开发认识</title>
+        <link>https://ye-guan-xing.github.io/p/web%E5%BC%80%E5%8F%91%E8%AE%A4%E8%AF%86/</link>
+        <pubDate>Tue, 07 Oct 2025 15:14:47 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/web%E5%BC%80%E5%8F%91%E8%AE%A4%E8%AF%86/</guid>
+        <description>&lt;h1 id=&#34;小白入门&#34;&gt;小白入门
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;HTML,CSS,JS&lt;/li&gt;
+&lt;li&gt;结构，元素，脚本&lt;/li&gt;
+&lt;li&gt;前后端分离&lt;/li&gt;
+&lt;li&gt;前端是视图，需要数据去后端&lt;/li&gt;
+&lt;li&gt;后端是数据，只返回数据（大部分是JSON）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;前端框架： Vue,React&lt;/p&gt;
+&lt;p&gt;后端框架：Speingboat,Express&lt;/p&gt;
+&lt;h2 id=&#34;用户和服务器交互是api接口传输json数据&#34;&gt;用户和服务器交互是API接口传输JSON数据
+&lt;/h2&gt;&lt;p&gt;http 流程：&lt;/p&gt;
+&lt;p&gt;1：用户向后端发送窗口（request）&lt;/p&gt;
+&lt;p&gt;2:后端处理数据（计算，数据库交互，其他的一些逻辑&lt;/p&gt;
+&lt;p&gt;3.后端返回一个（response）&lt;/p&gt;
+&lt;p&gt;API：应用编程接口&lt;/p&gt;
+&lt;h2 id=&#34;apl分为两大类get和post&#34;&gt;APL分为两大类：GET和POST
+&lt;/h2&gt;&lt;h3 id=&#34;get请求&#34;&gt;GET请求
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://cn.bing.com/search?q=hanjinxin&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://cn.bing.com/search?q=hanjinxin&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;post-更多&#34;&gt;POST （更多）
+&lt;/h3&gt;&lt;p&gt;需借助工具，js&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
