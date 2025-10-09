@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Categories">
 <meta property='og:description' content="欢迎来到我的博客QWQ">
 <meta property='og:url' content='https://ye-guan-xing.github.io/categories/'>
-<meta property='og:site_name' content='Acye&#39;s bog'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2025-10-07T20:56:58&#43;08:00 '/>
+<meta property='og:site_name' content='acye&#39;s bog'>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2019-05-28T00:00:00&#43;00:00 '/>
 <meta name="twitter:title" content="Categories">
 <meta name="twitter:description" content="欢迎来到我的博客QWQ"><link rel="alternate" type="application/rss&#43;xml" href="https://ye-guan-xing.github.io/categories/index.xml">
     </head>
@@ -67,7 +67,7 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Acye&#39;s bog</a></h1>
+            <h1 class="site-name"><a href="/">acye&#39;s bog</a></h1>
             <h2 class="site-description">欢迎来到我的博客QWQ</h2>
         </div>
     </header><ol class="menu-social">
@@ -282,14 +282,6 @@
         
         
         <div class="widget-archive--list">
-            <div class="archives-year">
-                    <a href="/archives/#2025">
-                        
-                            <span class="year">2025</span>
-                            <span class="count">2</span>
-                        
-                    </a> 
-                </div>
             
         </div>
     </section>
@@ -369,8 +361,11 @@
     </section>
     
     <section class="powerby">
+        
+        
+
         使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.31.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+        
     </section>
 </footer>
 
@@ -392,6 +387,49 @@
 
         document.head.appendChild(customFont);
     }());
+</script>
+
+
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            initWidget({
+                waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+            });
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
 </script>
 
     </body>
