@@ -37,26 +37,26 @@
 &lt;/ul&gt;
 &lt;h2 id=&#34;运维&#34;&gt;运维
 &lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/2301_81967508/article/details/145519681&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/unbuntu_luo/article/details/143461384&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;运维学习路线&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;简介：运维是保障系统稳定运行的“守护者”。学习这条路线，你会掌握Linux系统操作、服务器管理、自动化运维工具等知识，成长为能保障系统“7×24小时”稳定运行的运维工程师。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;软件测试&#34;&gt;软件测试
 &lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/cbwem/article/details/109771331&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/2301_81967508/article/details/145519681&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;软件测试学习路线&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;简介：软件测试是保证软件质量的“质检环节”。跟随路线学习，你将掌握测试理论、自动化测试工具、性能测试等技能，成为能“找茬”并保障软件质量的测试工程师。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;移动开发&#34;&gt;移动开发
 &lt;/h2&gt;&lt;h3 id=&#34;安卓开发&#34;&gt;安卓开发
 &lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_39132095/article/details/145584964&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/cbwem/article/details/109771331&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;安卓开发路线&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;简介：安卓开发专注于安卓手机应用的开发。学习后你可以掌握安卓开发框架、UI设计、性能优化等知识，打造各类安卓应用（如社交APP、工具类APP）。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;鸿蒙开发&#34;&gt;鸿蒙开发
 &lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/python1222_/article/details/142254898&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_39132095/article/details/145584964&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;鸿蒙开发路线&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;简介：鸿蒙是面向全场景的分布式操作系统，学习鸿蒙开发可以让你掌握其开发框架和生态，开发跨手机、平板、智能手表等设备的应用。&lt;/li&gt;
 &lt;/ul&gt;
@@ -64,18 +64,19 @@
 &lt;/h2&gt;&lt;h3 id=&#34;自然语言处理nlp&#34;&gt;自然语言处理（NLP）
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/python1222_/article/details/142254898&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;自然语言处理NLP&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_42910179/article/details/150697225&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;自然语言处理NLP&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;简介：NLP让计算机“理解人类语言”。学习后你可以掌握分词、语义分析、情感识别等技术，开发聊天机器人、智能问答、机器翻译等应用。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;计算机视觉cv工程师&#34;&gt;计算机视觉（CV）工程师
 &lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/OpenCVtuxiang/article/details/147987772&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_42910179/article/details/150697225&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;计算机视觉cv工程师&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;简介：CV让计算机“看见并理解世界”。你将学习图像处理、目标检测、图像识别等技术，应用于自动驾驶、人脸识别、工业质检等领域。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;机器学习&#34;&gt;机器学习
 &lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/OpenCVtuxiang/article/details/147987772&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;机器学习&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;简介：机器学习是人工智能的核心，通过算法让计算机从数据中“学习规律”。你将学习决策树、支持向量机等各类机器学习算法，并用它们解决分类、回归、聚类等实际问题。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;深度学习&#34;&gt;深度学习
