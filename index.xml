@@ -139,37 +139,9 @@
 </description>
         </item>
         <item>
-        <title>归档</title>
-        <link>https://ye-guan-xing.github.io/archives/</link>
-        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
-        
-        <guid>https://ye-guan-xing.github.io/archives/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>我</title>
-        <link>https://ye-guan-xing.github.io/%E6%88%91/</link>
-        <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
-        
-        <guid>https://ye-guan-xing.github.io/%E6%88%91/</guid>
-        <description>&lt;p&gt;你好，我是acye，一名专注于Web开发的全栈工程师。&lt;/p&gt;
-&lt;p&gt;从前端交互到后端架构，我擅长打通Web开发的全流程：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;前端：熟练使用HTML5、CSS3、JavaScript（ES6+），以及React、Vue等框架构建响应式、高性能的用户界面；&lt;/li&gt;
-&lt;li&gt;后端：精通Node.js等技术栈，设计并实现稳定的服务端逻辑与API；&lt;/li&gt;
-&lt;li&gt;数据库：熟悉MySQL、MongoDB等数据存储方案，擅长数据建模与优化；&lt;/li&gt;
-&lt;li&gt;工程化：掌握Docker、CI/CD流程，热衷通过自动化工具提升开发效率。
-我始终相信“用户体验至上”，习惯从产品视角思考技术实现，既关注代码的优雅性，也重视系统的稳定性与可扩展性。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;除了工作，我喜欢在技术社区分享经验，也常参与开源项目贡献。如果你有技术交流或合作需求，欢迎随时联系我,我的邮箱是2024352805@qq.com，
-&lt;a class=&#34;link&#34; href=&#34;https://github.com/ye-guan-xing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Github&lt;/a&gt;&lt;/p&gt;
-</description>
-        </item>
-        <item>
         <title>全域生活服务平台开发流程详解</title>
         <link>https://ye-guan-xing.github.io/p/%E5%85%A8%E5%9F%9F%E7%94%9F%E6%B4%BB%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        <pubDate>Mon, 20 Oct 2025 16:36:00 +0800</pubDate>
         
         <guid>https://ye-guan-xing.github.io/p/%E5%85%A8%E5%9F%9F%E7%94%9F%E6%B4%BB%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/</guid>
         <description>&lt;h1 id=&#34;全域生活服务平台---从零开始完整开发指南&#34;&gt;全域生活服务平台 - 从零开始完整开发指南
@@ -5076,6 +5048,34 @@
 &lt;li&gt;&lt;strong&gt;部署上线&lt;/strong&gt;：购买云服务器部署项目&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;持续学习&lt;/strong&gt;：学习TypeScript、Docker等进阶技术&lt;/li&gt;
 &lt;/ol&gt;
+</description>
+        </item>
+        <item>
+        <title>归档</title>
+        <link>https://ye-guan-xing.github.io/archives/</link>
+        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/archives/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>我</title>
+        <link>https://ye-guan-xing.github.io/%E6%88%91/</link>
+        <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/%E6%88%91/</guid>
+        <description>&lt;p&gt;你好，我是acye，一名专注于Web开发的全栈工程师。&lt;/p&gt;
+&lt;p&gt;从前端交互到后端架构，我擅长打通Web开发的全流程：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;前端：熟练使用HTML5、CSS3、JavaScript（ES6+），以及React、Vue等框架构建响应式、高性能的用户界面；&lt;/li&gt;
+&lt;li&gt;后端：精通Node.js等技术栈，设计并实现稳定的服务端逻辑与API；&lt;/li&gt;
+&lt;li&gt;数据库：熟悉MySQL、MongoDB等数据存储方案，擅长数据建模与优化；&lt;/li&gt;
+&lt;li&gt;工程化：掌握Docker、CI/CD流程，热衷通过自动化工具提升开发效率。
+我始终相信“用户体验至上”，习惯从产品视角思考技术实现，既关注代码的优雅性，也重视系统的稳定性与可扩展性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;除了工作，我喜欢在技术社区分享经验，也常参与开源项目贡献。如果你有技术交流或合作需求，欢迎随时联系我,我的邮箱是2024352805@qq.com，
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/ye-guan-xing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Github&lt;/a&gt;&lt;/p&gt;
 </description>
         </item>
         <item>
