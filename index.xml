@@ -8,9 +8,168 @@
         <language>zh-cn</language>
         <copyright>acye</copyright>
         <lastBuildDate>Mon, 20 Oct 2025 16:36:32 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>大一的学习路径（软件篇）</title>
+        <link>https://ye-guan-xing.github.io/p/%E5%A4%A7%E4%B8%80%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E8%BD%AF%E4%BB%B6%E7%AF%87/</link>
+        <pubDate>Mon, 20 Oct 2025 16:36:32 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/%E5%A4%A7%E4%B8%80%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E8%BD%AF%E4%BB%B6%E7%AF%87/</guid>
+        <description>&lt;h1 id=&#34;大一新生it学习路线指南&#34;&gt;大一新生IT学习路线指南
+&lt;/h1&gt;&lt;p&gt;亲爱的大一新生，刚踏入大学，面对丰富多彩的IT领域或许会有些迷茫，这里学长给一些路径建议：&lt;/p&gt;
+&lt;h2 id=&#34;算法竞赛&#34;&gt;算法竞赛
+&lt;/h2&gt;&lt;p&gt;-算法竞赛1970年代起步，1990-2000年代兴盛，21世纪后趋稳定,其中ACM-ICPC为计算机竞赛含金量之最，获奖者多能获得计算机大厂offer。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/2301_79199219/article/details/139033431&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;算法竞赛&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;PS(如果有天赋，有恒心，有毅力，在经过测验后(或Codeforces1200分以上)，可以找我们参加明年的HBCPC).&lt;/li&gt;
+&lt;li&gt;白名单竞赛推荐
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;竞赛名称&lt;/th&gt;
+          &lt;th&gt;官网链接&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ACM-ICPC国际大学生程序设计竞赛&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://icpc.global/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://icpc.global/&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;中国大学生程序设计竞赛（CCPC）&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://ccpc.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://ccpc.io/&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;中国高校计算机大赛（天梯赛）&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.c4best.cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.c4best.cn/&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;蓝桥杯全国软件和信息技术专业人才大赛&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;http://dasai.lanqiao.cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://dasai.lanqiao.cn/&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;百度之星程序设计大赛&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://star.baidu.com/#/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://star.baidu.com/#/&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;码蹄杯全国职业院校程序设计大赛&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://matiji.net/matibei&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://matiji.net/matibei&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;睿抗机器人开发者大赛(RAICOM)&lt;/td&gt;
+          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.robocom.com.cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.robocom.com.cn/&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;人工智能方向&#34;&gt;人工智能方向
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;在50-60年代兴起，人们一直在努力，于2012引爆深度学习，在之后，CharGPT和Deepseek、GPT3等模型，被用于各种领域，如图像识别、语音识别、文本生成、代码生成、翻译等，到现在已成为最热门的方向，其就业岗位，薪资高、门槛高&amp;ndash;多在研究生为主&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;机器学习&#34;&gt;机器学习
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/OpenCVtuxiang/article/details/147987772&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;机器学习&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;简介：机器学习是人工智能的核心，通过算法让计算机从数据中“学习规律”。你将学习决策树、支持向量机等各类机器学习算法，并用它们解决分类、回归、聚类等实际问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;深度学习&#34;&gt;深度学习
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_36816848/article/details/122286610&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;深度学习&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;简介：深度学习是机器学习的“进阶版”，通过神经网络模拟人脑学习。你将学习CNN（卷积神经网络）、RNN（循环神经网络）等网络结构，应用于图像识别、语音识别、自然语言处理等复杂场景。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;自然语言处理nlp&#34;&gt;自然语言处理（NLP）
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/python1222_/article/details/142254898&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;自然语言处理NLP&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;简介：NLP让计算机“理解人类语言”。学习后你可以掌握分词、语义分析、情感识别等技术，开发聊天机器人、智能问答、机器翻译等应用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;计算机视觉cv工程师&#34;&gt;计算机视觉（CV）工程师
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_42910179/article/details/150697225&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;计算机视觉cv工程师&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;简介：CV让计算机“看见并理解世界”。你将学习图像处理、目标检测、图像识别等技术，应用于自动驾驶、人脸识别、工业质检等领域。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;前端开发&#34;&gt;前端开发
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;路线图链接：&lt;a class=&#34;link&#34; href=&#34;https://objtube.github.io/front-end-roadmap/#/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;前端开发的路线图&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;简介：前端开发聚焦于网页的“视觉与交互”，从精美界面到灵动交互效果都由前端工程师打造。就业市场上，前端开发起步于2000年后（HTML/CSS普及、早期JavaScript简单应用落地），2015年后随React/Vue/Angular等框架爆发进入鼎盛期（企业对复杂交互、单页应用需求激增），2020年后需求趋于稳定（框架生态成熟，侧重工程化、跨端适配与性能优化）。跟着这份路线图，你可以系统学习HTML、CSS、JavaScript及各类前端框架，成长为能设计并实现炫酷网页的前端开发者。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;java后端开发&#34;&gt;Java后端开发
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://ye-guan-xing.github.io/images/post1/1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;java后端学习路线&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;简介：Java后端开发是支撑企业业务逻辑的“核心骨架”，负责搭建服务器、处理数据交互与业务逻辑实现。就业市场上，Java后端起步于2000年左右（Java EE推出，企业级应用逐步采用），2010-2020年随微服务兴起、Spring生态成熟进入鼎盛期（成为各行业后端开发标配，需求爆发式增长），2020年后进入稳定期（需求保持高位稳定，侧重高并发、云原生适配与系统安全性）。学习这条路线，你会掌握Java核心语法、框架应用与服务器部署等知识，成长为能搭建稳定、高效企业后端系统的开发工程师。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;数据分析&#34;&gt;数据分析
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_73454087/article/details/145336833&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;数据分析学习路线&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;简介：数据分析是从海量数据中挖掘价值的“金矿挖掘术”。就业市场上，数据分析岗位起步于2010年左右（数据量激增，企业需专职人员提炼数据价值），2018-2023年随大数据技术成熟进入鼎盛期（各行业重视数据驱动，需求爆发），2023年后进入稳定期（需求平稳，侧重业务理解、数据建模与可视化深度）。通过这条路线，你将掌握Python、SQL等数据处理工具，以及数据分析方法和可视化技术，成为能从数据中发现规律、辅助业务决策的分析师。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;移动开发&#34;&gt;移动开发
+&lt;/h2&gt;&lt;h3 id=&#34;安卓开发&#34;&gt;安卓开发
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/cbwem/article/details/109771331&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;安卓开发路线&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;简介：安卓开发专注于安卓手机应用的开发。就业市场上，安卓开发起步于2008年（安卓系统发布后，早期手机APP开发需求出现），2012-2018年随智能手机普及进入鼎盛期（社交、工具、电商类APP爆发，岗位需求旺盛），2018年后进入稳定期（需求趋于平稳，侧重跨端适配、性能优化与鸿蒙生态兼容）。学习后你可以掌握安卓开发框架、UI设计、性能优化等知识，打造各类安卓应用（如社交APP、工具类APP）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;鸿蒙开发&#34;&gt;鸿蒙开发
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_39132095/article/details/145584964&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;鸿蒙开发路线&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;简介：鸿蒙是面向全场景的分布式操作系统，学习鸿蒙开发可以让你掌握其开发框架和生态，开发跨手机、平板、智能手表等设备的应用。就业市场上，鸿蒙开发起步于2020年（鸿蒙OS 2.0发布，生态逐步搭建），当前处于快速发展期（企业加速布局鸿蒙应用，需求逐步增长，尚未进入鼎盛），未来随生态完善（设备覆盖扩大、开发工具成熟）将进入稳定期，具备鸿蒙开发能力的人才在物联网、智能设备领域竞争力突出。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>归档</title>
+        <link>https://ye-guan-xing.github.io/archives/</link>
+        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/archives/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>我</title>
+        <link>https://ye-guan-xing.github.io/%E6%88%91/</link>
+        <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/%E6%88%91/</guid>
+        <description>&lt;p&gt;你好，我是acye，一名专注于Web开发的全栈工程师。&lt;/p&gt;
+&lt;p&gt;从前端交互到后端架构，我擅长打通Web开发的全流程：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;前端：熟练使用HTML5、CSS3、JavaScript（ES6+），以及React、Vue等框架构建响应式、高性能的用户界面；&lt;/li&gt;
+&lt;li&gt;后端：精通Node.js等技术栈，设计并实现稳定的服务端逻辑与API；&lt;/li&gt;
+&lt;li&gt;数据库：熟悉MySQL、MongoDB等数据存储方案，擅长数据建模与优化；&lt;/li&gt;
+&lt;li&gt;工程化：掌握Docker、CI/CD流程，热衷通过自动化工具提升开发效率。
+我始终相信“用户体验至上”，习惯从产品视角思考技术实现，既关注代码的优雅性，也重视系统的稳定性与可扩展性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;除了工作，我喜欢在技术社区分享经验，也常参与开源项目贡献。如果你有技术交流或合作需求，欢迎随时联系我,我的邮箱是2024352805@qq.com，
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/ye-guan-xing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Github&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>全域生活服务平台开发流程详解</title>
         <link>https://ye-guan-xing.github.io/p/%E5%85%A8%E5%9F%9F%E7%94%9F%E6%B4%BB%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/</link>
-        <pubDate>Mon, 20 Oct 2025 16:36:32 +0800</pubDate>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>https://ye-guan-xing.github.io/p/%E5%85%A8%E5%9F%9F%E7%94%9F%E6%B4%BB%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/</guid>
         <description>&lt;h1 id=&#34;全域生活服务平台---从零开始完整开发指南&#34;&gt;全域生活服务平台 - 从零开始完整开发指南
@@ -4920,154 +5079,6 @@
 </description>
         </item>
         <item>
-        <title>大一的学习路径（软件篇）</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%A4%A7%E4%B8%80%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E8%BD%AF%E4%BB%B6%E7%AF%87/</link>
-        <pubDate>Sat, 18 Oct 2025 23:02:45 +0800</pubDate>
-        
-        <guid>https://ye-guan-xing.github.io/p/%E5%A4%A7%E4%B8%80%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E8%BD%AF%E4%BB%B6%E7%AF%87/</guid>
-        <description>&lt;h1 id=&#34;大一新生it学习路线指南&#34;&gt;大一新生IT学习路线指南
-&lt;/h1&gt;&lt;p&gt;亲爱的大一新生，刚踏入大学，面对丰富多彩的IT领域或许会有些迷茫，这里学长给一些路径建议：&lt;/p&gt;
-&lt;h2 id=&#34;算法竞赛&#34;&gt;算法竞赛
-&lt;/h2&gt;&lt;p&gt;-算法竞赛1970年代起步，1990-2000年代兴盛，21世纪后趋稳定,其中ACM-ICPC为计算机竞赛含金量之最，获奖者多能获得计算机大厂offer。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/2301_79199219/article/details/139033431&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;算法竞赛&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;PS(如果有天赋，有恒心，有毅力，在经过测验后(或Codeforces1200分以上)，可以找我们参加明年的HBCPC).&lt;/li&gt;
-&lt;li&gt;白名单竞赛推荐
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;竞赛名称&lt;/th&gt;
-          &lt;th&gt;官网链接&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;ACM-ICPC国际大学生程序设计竞赛&lt;/td&gt;
-          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://icpc.global/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://icpc.global/&lt;/a&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;中国大学生程序设计竞赛（CCPC）&lt;/td&gt;
-          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://ccpc.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://ccpc.io/&lt;/a&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;中国高校计算机大赛（天梯赛）&lt;/td&gt;
-          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.c4best.cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;http://www.c4best.cn/&lt;/a&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;蓝桥杯全国软件和信息技术专业人才大赛&lt;/td&gt;
-          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;http://dasai.lanqiao.cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;http://dasai.lanqiao.cn/&lt;/a&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;百度之星程序设计大赛&lt;/td&gt;
-          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://star.baidu.com/#/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://star.baidu.com/#/&lt;/a&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;码蹄杯全国职业院校程序设计大赛&lt;/td&gt;
-          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://matiji.net/matibei&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://matiji.net/matibei&lt;/a&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;睿抗机器人开发者大赛(RAICOM)&lt;/td&gt;
-          &lt;td&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.robocom.com.cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;https://www.robocom.com.cn/&lt;/a&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;人工智能方向&#34;&gt;人工智能方向
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;在50-60年代兴起，人们一直在努力，于2012引爆深度学习，在之后，CharGPT和Deepseek、GPT3等模型，被用于各种领域，如图像识别、语音识别、文本生成、代码生成、翻译等，到现在已成为最热门的方向，其就业岗位，薪资高、门槛高&amp;ndash;多在研究生为主&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;机器学习&#34;&gt;机器学习
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/OpenCVtuxiang/article/details/147987772&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;机器学习&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;简介：机器学习是人工智能的核心，通过算法让计算机从数据中“学习规律”。你将学习决策树、支持向量机等各类机器学习算法，并用它们解决分类、回归、聚类等实际问题。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;深度学习&#34;&gt;深度学习
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_36816848/article/details/122286610&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;深度学习&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;简介：深度学习是机器学习的“进阶版”，通过神经网络模拟人脑学习。你将学习CNN（卷积神经网络）、RNN（循环神经网络）等网络结构，应用于图像识别、语音识别、自然语言处理等复杂场景。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;自然语言处理nlp&#34;&gt;自然语言处理（NLP）
-&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/python1222_/article/details/142254898&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;自然语言处理NLP&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;简介：NLP让计算机“理解人类语言”。学习后你可以掌握分词、语义分析、情感识别等技术，开发聊天机器人、智能问答、机器翻译等应用。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&#34;计算机视觉cv工程师&#34;&gt;计算机视觉（CV）工程师
-&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_42910179/article/details/150697225&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;计算机视觉cv工程师&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;简介：CV让计算机“看见并理解世界”。你将学习图像处理、目标检测、图像识别等技术，应用于自动驾驶、人脸识别、工业质检等领域。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;前端开发&#34;&gt;前端开发
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;路线图链接：&lt;a class=&#34;link&#34; href=&#34;https://objtube.github.io/front-end-roadmap/#/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;前端开发的路线图&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;简介：前端开发聚焦于网页的“视觉与交互”，从精美界面到灵动交互效果都由前端工程师打造。就业市场上，前端开发起步于2000年后（HTML/CSS普及、早期JavaScript简单应用落地），2015年后随React/Vue/Angular等框架爆发进入鼎盛期（企业对复杂交互、单页应用需求激增），2020年后需求趋于稳定（框架生态成熟，侧重工程化、跨端适配与性能优化）。跟着这份路线图，你可以系统学习HTML、CSS、JavaScript及各类前端框架，成长为能设计并实现炫酷网页的前端开发者。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;java后端开发&#34;&gt;Java后端开发
-&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://ye-guan-xing.github.io/images/post1/1.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;java后端学习路线&#34;
-	
-	
-&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;简介：Java后端开发是支撑企业业务逻辑的“核心骨架”，负责搭建服务器、处理数据交互与业务逻辑实现。就业市场上，Java后端起步于2000年左右（Java EE推出，企业级应用逐步采用），2010-2020年随微服务兴起、Spring生态成熟进入鼎盛期（成为各行业后端开发标配，需求爆发式增长），2020年后进入稳定期（需求保持高位稳定，侧重高并发、云原生适配与系统安全性）。学习这条路线，你会掌握Java核心语法、框架应用与服务器部署等知识，成长为能搭建稳定、高效企业后端系统的开发工程师。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;数据分析&#34;&gt;数据分析
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_73454087/article/details/145336833&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;数据分析学习路线&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;简介：数据分析是从海量数据中挖掘价值的“金矿挖掘术”。就业市场上，数据分析岗位起步于2010年左右（数据量激增，企业需专职人员提炼数据价值），2018-2023年随大数据技术成熟进入鼎盛期（各行业重视数据驱动，需求爆发），2023年后进入稳定期（需求平稳，侧重业务理解、数据建模与可视化深度）。通过这条路线，你将掌握Python、SQL等数据处理工具，以及数据分析方法和可视化技术，成为能从数据中发现规律、辅助业务决策的分析师。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;移动开发&#34;&gt;移动开发
-&lt;/h2&gt;&lt;h3 id=&#34;安卓开发&#34;&gt;安卓开发
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/cbwem/article/details/109771331&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;安卓开发路线&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;简介：安卓开发专注于安卓手机应用的开发。就业市场上，安卓开发起步于2008年（安卓系统发布后，早期手机APP开发需求出现），2012-2018年随智能手机普及进入鼎盛期（社交、工具、电商类APP爆发，岗位需求旺盛），2018年后进入稳定期（需求趋于平稳，侧重跨端适配、性能优化与鸿蒙生态兼容）。学习后你可以掌握安卓开发框架、UI设计、性能优化等知识，打造各类安卓应用（如社交APP、工具类APP）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;鸿蒙开发&#34;&gt;鸿蒙开发
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;学习路线链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_39132095/article/details/145584964&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;鸿蒙开发路线&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;简介：鸿蒙是面向全场景的分布式操作系统，学习鸿蒙开发可以让你掌握其开发框架和生态，开发跨手机、平板、智能手表等设备的应用。就业市场上，鸿蒙开发起步于2020年（鸿蒙OS 2.0发布，生态逐步搭建），当前处于快速发展期（企业加速布局鸿蒙应用，需求逐步增长，尚未进入鼎盛），未来随生态完善（设备覆盖扩大、开发工具成熟）将进入稳定期，具备鸿蒙开发能力的人才在物联网、智能设备领域竞争力突出。&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        </item>
-        <item>
-        <title>归档</title>
-        <link>https://ye-guan-xing.github.io/archives/</link>
-        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
-        
-        <guid>https://ye-guan-xing.github.io/archives/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>关于</title>
-        <link>https://ye-guan-xing.github.io/%E5%85%B3%E4%BA%8E/</link>
-        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-        
-        <guid>https://ye-guan-xing.github.io/%E5%85%B3%E4%BA%8E/</guid>
-        <description>&lt;p&gt;This is a test page for i18n support.&lt;/p&gt;
-</description>
-        </item>
-        <item>
         <title>搜索</title>
         <link>https://ye-guan-xing.github.io/search/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -5081,34 +5092,7 @@
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>https://ye-guan-xing.github.io/%E5%8F%8B%E9%93%BE/</guid>
-        <description>&lt;p&gt;To use this feature, add &lt;code&gt;links&lt;/code&gt; section to frontmatter.&lt;/p&gt;
-&lt;p&gt;This page&amp;rsquo;s frontmatter:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;links&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;GitHub&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;GitHub is the world&amp;#39;s largest software development platform.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;website&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;https://github.com&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;- &lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;TypeScript&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;description&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;website&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;https://www.typescriptlang.org&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;ts-logo-128.jpg&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;&lt;code&gt;image&lt;/code&gt; field accepts both local and external images.&lt;/p&gt;
-</description>
+        <description></description>
         </item>
         
     </channel>
