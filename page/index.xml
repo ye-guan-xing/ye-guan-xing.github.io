@@ -8,32 +8,32 @@
         <language>zh-cn</language>
         <copyright>acye</copyright>
         <lastBuildDate>Mon, 20 Oct 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/page/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>归档</title>
-        <link>https://ye-guan-xing.github.io/archives/</link>
-        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
-        
-        <guid>https://ye-guan-xing.github.io/archives/</guid>
-        <description></description>
-        </item>
-        <item>
         <title>我</title>
         <link>https://ye-guan-xing.github.io/%E6%88%91/</link>
-        <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+        <pubDate>Mon, 20 Oct 2025 00:00:00 +0000</pubDate>
         
         <guid>https://ye-guan-xing.github.io/%E6%88%91/</guid>
-        <description>&lt;p&gt;你好，我是acye，一名专注于Web开发的全栈工程师。&lt;/p&gt;
-&lt;p&gt;从前端交互到后端架构，我擅长打通Web开发的全流程：&lt;/p&gt;
+        <description>&lt;p&gt;你好，我是 acye，一名专注于 Web 开发的全栈工程师。&lt;/p&gt;
+&lt;p&gt;从前端交互到后端架构，我擅长打通 Web 开发的全流程：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;前端：熟练使用HTML5、CSS3、JavaScript（ES6+），以及React、Vue等框架构建响应式、高性能的用户界面；&lt;/li&gt;
-&lt;li&gt;后端：精通Node.js等技术栈，设计并实现稳定的服务端逻辑与API；&lt;/li&gt;
-&lt;li&gt;数据库：熟悉MySQL、MongoDB等数据存储方案，擅长数据建模与优化；&lt;/li&gt;
-&lt;li&gt;工程化：掌握Docker、CI/CD流程，热衷通过自动化工具提升开发效率。
+&lt;li&gt;前端：熟练使用 HTML5、CSS3、JavaScript（ES6+），以及 React、Vue 等框架构建响应式、高性能的用户界面；&lt;/li&gt;
+&lt;li&gt;后端：精通 Node.js 等技术栈，设计并实现稳定的服务端逻辑与 API；&lt;/li&gt;
+&lt;li&gt;数据库：熟悉 MySQL、MongoDB 等数据存储方案，擅长数据建模与优化；&lt;/li&gt;
+&lt;li&gt;工程化：掌握 Docker、CI/CD 流程，热衷通过自动化工具提升开发效率。
 我始终相信“用户体验至上”，习惯从产品视角思考技术实现，既关注代码的优雅性，也重视系统的稳定性与可扩展性。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;除了工作，我喜欢在技术社区分享经验，也常参与开源项目贡献。如果你有技术交流或合作需求，欢迎随时联系我,我的邮箱是2024352805@qq.com，
 &lt;a class=&#34;link&#34; href=&#34;https://github.com/ye-guan-xing&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Github&lt;/a&gt;&lt;/p&gt;
 </description>
+        </item>
+        <item>
+        <title>归档</title>
+        <link>https://ye-guan-xing.github.io/archives/</link>
+        <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/archives/</guid>
+        <description></description>
         </item>
         <item>
         <title>搜索</title>
