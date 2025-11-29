@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>前端开发 on acye&#39;s blog</title>
+        <link>https://ye-guan-xing.github.io/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/</link>
+        <description>Recent content in 前端开发 on acye&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>acye</copyright>
+        <lastBuildDate>Sun, 23 Nov 2025 17:36:00 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>校园OJ开发</title>
+        <link>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/</link>
+        <pubDate>Sun, 23 Nov 2025 17:36:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/</guid>
+        <description>&lt;h2 id=&#34;为什么要写这-oj-平台项目架构图&#34;&gt;为什么要写这 OJ 平台+项目架构图？
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;在完成全域生活服务平台后，相信大家对整个前后端开发开发流程应该都有简单一定了解了，下面我将分享
+OJ 平台的搭建和细节处理。&lt;/li&gt;
+&lt;li&gt;这次我将专注于前端的开发的分享，后端开发将有我的好友 shuimo 来搭建，如果有机会我会让他来分享开发经验。&lt;/li&gt;
+&lt;li&gt;项目架构图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;61
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;62
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;63
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;64
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;65
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;66
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;67
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;68
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;69
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;70
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript3&#34; data-lang=&#34;gdscript3&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;api&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;                     &lt;span class=&#34;c1&#34;&gt;# 接口调用模块&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;problem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;           &lt;span class=&#34;c1&#34;&gt;# 题目相关接口&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;submission&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;# 提交相关接口&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;              &lt;span class=&#34;c1&#34;&gt;# 用户相关接口&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;admin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;             &lt;span class=&#34;c1&#34;&gt;# 【新增】管理员专属接口（如题目/用户管理）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;assets&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;                  &lt;span class=&#34;c1&#34;&gt;# 静态资源&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;images&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;              &lt;span class=&#34;c1&#34;&gt;# 图片资源&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;styles&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;              &lt;span class=&#34;c1&#34;&gt;# 全局样式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;common&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;scss&lt;/span&gt;      &lt;span class=&#34;c1&#34;&gt;# 通用样式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;variables&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;scss&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# 样式变量&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;admin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;scss&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;# 【新增】管理员页面专属样式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;components&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;              &lt;span class=&#34;c1&#34;&gt;# 可复用组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;common&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;              &lt;span class=&#34;c1&#34;&gt;# 通用组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AppNavbar&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;# 导航栏&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AppFooter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;# 页脚&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Pagination&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;      &lt;span class=&#34;c1&#34;&gt;# 【新增】分页组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SearchInput&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;     &lt;span class=&#34;c1&#34;&gt;# 【新增】搜索输入框&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;problem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;             &lt;span class=&#34;c1&#34;&gt;# 题目相关组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ProblemDetail&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# 题目详情展示&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ProblemItem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;      &lt;span class=&#34;c1&#34;&gt;# 题目列表项&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ProblemTags&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;      &lt;span class=&#34;c1&#34;&gt;# 题目标签&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ProblemForm&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;      &lt;span class=&#34;c1&#34;&gt;# 【新增】题目编辑/创建表单&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;submission&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;# 提交相关组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;CodeEditor&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;# 代码编辑器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SubmissionItem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# 提交记录项&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SubmissionList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;# 提交记录列表&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;admin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;               &lt;span class=&#34;c1&#34;&gt;# 【新增】管理员专属组件目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserItem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;# 【新增】用户列表项（管理员页）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;StatusFilter&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# 【新增】状态筛选组件（管理员页）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;layouts&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;                 &lt;span class=&#34;c1&#34;&gt;# 布局组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MainLayout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;# 主布局（Navbar+内容区+Footer）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AdminLayout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;      &lt;span class=&#34;c1&#34;&gt;# 【新增】管理员布局（含侧边管理菜单）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;                  &lt;span class=&#34;c1&#34;&gt;# 路由管理&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;             &lt;span class=&#34;c1&#34;&gt;# 路由配置入口&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;routes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;            &lt;span class=&#34;c1&#34;&gt;# 公共路由规则&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;adminRoutes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;# 【新增】管理员专属路由规则&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;store&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;                   &lt;span class=&#34;c1&#34;&gt;# 状态管理 (Vuex 4)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;             &lt;span class=&#34;c1&#34;&gt;# Vuex实例&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getters&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;           &lt;span class=&#34;c1&#34;&gt;# 全局getters&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;modules&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;             &lt;span class=&#34;c1&#34;&gt;# 模块&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;# 用户状态&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;problem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;# 题目状态&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;submission&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# 提交状态&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;admin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;         &lt;span class=&#34;c1&#34;&gt;# 【新增】管理员状态（如管理列表筛选条件）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;utils&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;                   &lt;span class=&#34;c1&#34;&gt;# 工具函数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;request&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;           &lt;span class=&#34;c1&#34;&gt;# axios封装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;auth&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;              &lt;span class=&#34;c1&#34;&gt;# 权限处理&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;format&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;            &lt;span class=&#34;c1&#34;&gt;# 格式化工具&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;constant&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;# 常量定义&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;views&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;                   &lt;span class=&#34;c1&#34;&gt;# 页面级组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AppHome&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;             &lt;span class=&#34;c1&#34;&gt;# 主页&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;NotFound&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;            &lt;span class=&#34;c1&#34;&gt;# 404页面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;login&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;               &lt;span class=&#34;c1&#34;&gt;# 登录相关页面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AppLogin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;# 登录页（核心）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;problem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;             &lt;span class=&#34;c1&#34;&gt;# 题目相关页面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ProblemList&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;# 题目列表页&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ProblemDetailView&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# 题目详情页&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;submission&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;# 提交相关页面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SubmissionHistory&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# 提交历史页&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;                &lt;span class=&#34;c1&#34;&gt;# 用户相关页面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserProfile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;# 用户个人资料页&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserSetting&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;# 【新增】用户设置页（密码/信息修改）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;admin&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;               &lt;span class=&#34;c1&#34;&gt;# 管理员专属页面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ProblemManagement&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;# 题目管理页&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ProblemEdit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;# 题目编辑/创建页&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;│&lt;/span&gt;       &lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UserManagement&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;       &lt;span class=&#34;c1&#34;&gt;# 【新增】用户管理页（管理员专属）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;├──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;App&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vue&lt;/span&gt;                  &lt;span class=&#34;c1&#34;&gt;# 根组件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;└──&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;js&lt;/span&gt;                  &lt;span class=&#34;c1&#34;&gt;# 入口文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;技术栈和环境&#34;&gt;技术栈和环境
+&lt;/h2&gt;&lt;h3 id=&#34;核心技术栈&#34;&gt;核心技术栈
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Vue 3&lt;/strong&gt;：核心前端框架（用于构建用户界面）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Vue Router 4&lt;/strong&gt;：路由管理（控制页面跳转）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Vuex 4&lt;/strong&gt;：状态管理（存储全局共享数据，如用户信息、题目列表）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;axios&lt;/strong&gt;：网络请求库（调用后端 API 接口）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SCSS/Sass&lt;/strong&gt;：CSS 预处理器（编写更简洁、可维护的样式）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;JavaScript&lt;/strong&gt;：核心编程语言（ES6+ 语法）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;HTML5/CSS3&lt;/strong&gt;：页面结构与基础样式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;开发环境&#34;&gt;开发环境
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Node.js&lt;/strong&gt;：运行环境（需安装，推荐 v14+）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;npm/yarn&lt;/strong&gt;：包管理工具（安装项目依赖）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;VS Code&lt;/strong&gt;：推荐编辑器（搭配 Vue 插件如 Vetur/Volar 提升开发效率）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;浏览器&lt;/strong&gt;：Chrome/Firefox（用于调试）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;构建工具&lt;/strong&gt;：Vite 或 Vue CLI（用于项目构建、开发服务器启动）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;文件作用按目录逐个分析&#34;&gt;文件作用（按目录逐个分析）
+&lt;/h2&gt;&lt;p&gt;先明确核心逻辑：&lt;strong&gt;用户操作 → 路由跳转 → 页面（views）渲染 → 组件（components）拼接 → api 调用数据 → store 存储状态 → 视图更新&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;api接口调用模块前端--后端的通信员&#34;&gt;&lt;code&gt;api/&lt;/code&gt;：接口调用模块（前端 → 后端的“通信员”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;每个文件对应一类功能的后端接口，比如 &lt;code&gt;problem.js&lt;/code&gt; 里写“获取题目列表”“获取题目详情”的请求，&lt;code&gt;submission.js&lt;/code&gt; 里写“提交代码”“获取提交记录”的请求&lt;/li&gt;
+&lt;li&gt;作用：统一管理所有后端接口，避免在组件里零散写请求，方便维护（比如后端接口地址变了，只改这里）&lt;/li&gt;
+&lt;li&gt;依赖：用 &lt;code&gt;axios&lt;/code&gt; 发请求，会调用 &lt;code&gt;utils/request.js&lt;/code&gt; 封装好的请求工具&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;assets静态资源项目的素材库&#34;&gt;&lt;code&gt;assets/&lt;/code&gt;：静态资源（项目的“素材库”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;images/&lt;/code&gt;：放图片（比如 logo、图标、背景图）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;styles/&lt;/code&gt;：放全局样式
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;common.scss&lt;/code&gt;：通用样式（比如按钮、字体、边距的统一样式）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;variables.scss&lt;/code&gt;：样式变量（比如主题色 &lt;code&gt;$primary-color: #42b983&lt;/code&gt;，方便全局修改）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;admin.scss&lt;/code&gt;：管理员页面专属样式（和普通页面样式隔离）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;作用：存储项目中不会动态变化的资源，比如图片、固定样式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;components可复用组件项目的积木&#34;&gt;&lt;code&gt;components/&lt;/code&gt;：可复用组件（项目的“积木”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;按功能拆分目录，比如 &lt;code&gt;common/&lt;/code&gt; 是所有页面都能用的通用组件，&lt;code&gt;problem/&lt;/code&gt; 是题目相关的专属组件&lt;/li&gt;
+&lt;li&gt;例子：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;common/AppNavbar.vue&lt;/code&gt;：顶部导航栏（每个页面都显示，包含 logo、登录按钮、用户头像）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;problem/ProblemItem.vue&lt;/code&gt;：题目列表里的“每一行”（重复出现，所以做成组件）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;submission/CodeEditor.vue&lt;/code&gt;：写代码的编辑器（题目详情页要用，单独做成组件）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;作用：把重复出现的界面部分做成组件，避免重复代码，比如导航栏不用在每个页面都写一遍&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;layouts布局组件项目的页面框架&#34;&gt;&lt;code&gt;layouts/&lt;/code&gt;：布局组件（项目的“页面框架”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;MainLayout.vue&lt;/code&gt;：普通用户的布局（包含 导航栏 + 中间内容区 + 页脚）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;AdminLayout.vue&lt;/code&gt;：管理员的布局（包含 侧边管理菜单 + 顶部栏 + 中间内容区）&lt;/li&gt;
+&lt;li&gt;作用：统一页面的整体结构，比如普通用户访问任何页面，都有相同的导航栏和页脚，不用每个页面都写&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;router路由管理项目的导航地图&#34;&gt;&lt;code&gt;router/&lt;/code&gt;：路由管理（项目的“导航地图”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;index.js&lt;/code&gt;：路由入口（把所有路由规则组装起来，告诉 Vue 怎么跳转）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;routes.js&lt;/code&gt;：普通用户的路由（比如“主页”“题目列表”“登录页”）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;adminRoutes.js&lt;/code&gt;：管理员专属路由（比如“题目管理”“用户管理”，普通用户进不去）&lt;/li&gt;
+&lt;li&gt;核心逻辑：用户点击“题目列表”，路由匹配到 &lt;code&gt;/problems&lt;/code&gt;，然后显示 &lt;code&gt;views/problem/ProblemList.vue&lt;/code&gt; 页面&lt;/li&gt;
+&lt;li&gt;依赖：会用 &lt;code&gt;utils/auth.js&lt;/code&gt; 判断用户是否登录、是否是管理员，控制权限（比如没登录不能进题目详情页）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;store状态管理项目的全局数据仓库&#34;&gt;&lt;code&gt;store/&lt;/code&gt;：状态管理（项目的“全局数据仓库”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;所有组件都能访问这里的数据，比如“当前登录的用户信息”“题目列表数据”“提交记录”&lt;/li&gt;
+&lt;li&gt;结构：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;index.js&lt;/code&gt;：Vuex 实例（把所有模块组装起来）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;getters.js&lt;/code&gt;：全局获取状态的方法（比如 &lt;code&gt;getUserInfo()&lt;/code&gt; 直接拿到用户信息，不用写复杂路径）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;modules/&lt;/code&gt;：按功能拆分模块（避免数据混乱），比如 &lt;code&gt;user.js&lt;/code&gt; 存用户相关状态，&lt;code&gt;problem.js&lt;/code&gt; 存题目相关状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;例子：用户登录成功后，把用户信息（用户名、头像、角色）存到 &lt;code&gt;store/modules/user.js&lt;/code&gt; 里，然后所有页面都能通过 &lt;code&gt;store.getters.getUserInfo&lt;/code&gt; 获取到这个信息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;utils工具函数项目的小工具库&#34;&gt;&lt;code&gt;utils/&lt;/code&gt;：工具函数（项目的“小工具库”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;request.js&lt;/code&gt;：封装 axios（比如统一加请求头、处理错误提示、添加加载动画）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;auth.js&lt;/code&gt;：权限处理（判断用户是否登录、是否是管理员，控制路由跳转）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;format.js&lt;/code&gt;：格式化工具（比如把时间戳改成“2025-11-24 17:44”，把提交结果“AC”改成“通过”）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;constant.js&lt;/code&gt;：常量定义（比如接口地址前缀 &lt;code&gt;BASE_URL: &#39;http://localhost:8080/api&#39;&lt;/code&gt;，题目难度 &lt;code&gt;DIFFICULTY: { EASY: 1, MEDIUM: 2, HARD: 3 }&lt;/code&gt;）&lt;/li&gt;
+&lt;li&gt;作用：封装常用的工具方法，避免重复代码，比如格式化时间不用在每个组件里都写一遍&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;views页面级组件项目的具体页面&#34;&gt;&lt;code&gt;views/&lt;/code&gt;：页面级组件（项目的“具体页面”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;每个文件是一个完整的页面，比如 &lt;code&gt;AppHome.vue&lt;/code&gt; 是主页，&lt;code&gt;ProblemList.vue&lt;/code&gt; 是题目列表页&lt;/li&gt;
+&lt;li&gt;特点：页面里会引用 &lt;code&gt;components/&lt;/code&gt; 里的组件，比如 &lt;code&gt;ProblemList.vue&lt;/code&gt; 里会用 &lt;code&gt;ProblemItem&lt;/code&gt;（题目项）、&lt;code&gt;Pagination&lt;/code&gt;（分页）、&lt;code&gt;SearchInput&lt;/code&gt;（搜索框）拼出整个页面&lt;/li&gt;
+&lt;li&gt;核心逻辑：页面加载时，调用 &lt;code&gt;api/&lt;/code&gt; 里的接口获取数据，把数据存到 &lt;code&gt;store/&lt;/code&gt; 里，然后渲染组件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;appvue根组件项目的根容器&#34;&gt;&lt;code&gt;App.vue&lt;/code&gt;：根组件（项目的“根容器”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;所有页面都是通过这个组件渲染的，里面主要包含 &lt;code&gt;router-view&lt;/code&gt;（路由视图，显示当前跳转的页面）&lt;/li&gt;
+&lt;li&gt;简单说：App.vue 是“容器”，路由跳转到哪个页面，&lt;code&gt;router-view&lt;/code&gt; 就显示哪个页面&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;mainjs入口文件项目的启动开关&#34;&gt;&lt;code&gt;main.js&lt;/code&gt;：入口文件（项目的“启动开关”）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;初始化 Vue 实例，把 &lt;code&gt;router&lt;/code&gt;（路由）、&lt;code&gt;store&lt;/code&gt;（状态管理）挂载到 Vue 上，然后挂载 &lt;code&gt;App.vue&lt;/code&gt; 根组件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码大概长这样：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;createApp&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;vue&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;App&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;./App.vue&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;./router&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;store&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;./store&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;./assets/styles/common.scss&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 引入全局样式
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;createApp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;App&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;use&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 使用路由
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;use&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;store&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 使用状态管理
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;mount&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;#app&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 把 App 组件挂载到页面的 #app 元素上
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;作用：启动项目时，先执行这个文件，把所有东西组装起来，然后显示页面&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;我们来给核心业务流程解析加上具体的组件和文件名称，这样能让你更清晰地看到整个项目的运行脉络。&lt;/p&gt;
+&lt;h2 id=&#34;核心业务流程解析含组件文件名称&#34;&gt;核心业务流程解析（含组件/文件名称）
+&lt;/h2&gt;&lt;h3 id=&#34;场景-1用户登录&#34;&gt;场景 1：用户登录
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;用户访问项目&lt;/strong&gt;：用户在浏览器输入网址，&lt;code&gt;main.js&lt;/code&gt; 启动应用，&lt;code&gt;router/index.js&lt;/code&gt; 中的路由守卫判断用户未登录，自动跳转到登录页 &lt;code&gt;views/login/AppLogin.vue&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;用户输入并提交&lt;/strong&gt;：用户在 &lt;code&gt;AppLogin.vue&lt;/code&gt; 的登录表单中输入用户名和密码，点击“登录”按钮。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;调用登录接口&lt;/strong&gt;：&lt;code&gt;AppLogin.vue&lt;/code&gt; 的脚本部分调用 &lt;code&gt;api/user.js&lt;/code&gt; 中的 &lt;code&gt;login&lt;/code&gt; 函数。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;发送请求与拦截&lt;/strong&gt;：&lt;code&gt;api/user.js&lt;/code&gt; 内部使用 &lt;code&gt;utils/request.js&lt;/code&gt; 封装的 axios 实例发送 POST 请求。&lt;code&gt;request.js&lt;/code&gt; 的&lt;strong&gt;请求拦截器&lt;/strong&gt;此时还没有 Token 可以添加。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;后端验证并返回 Token&lt;/strong&gt;：后端服务器验证账号密码正确后，返回包含 Token 的 JSON 数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;存储 Token 和用户信息&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;AppLogin.vue&lt;/code&gt; 在收到成功响应后，将 Token 存入 &lt;code&gt;localStorage&lt;/code&gt; 和 &lt;code&gt;store/modules/user.js&lt;/code&gt; 的 &lt;code&gt;state.token&lt;/code&gt; 中。&lt;/li&gt;
+&lt;li&gt;紧接着，调用 &lt;code&gt;store/modules/user.js&lt;/code&gt; 的 &lt;code&gt;GetUserInfo&lt;/code&gt; action。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GetUserInfo&lt;/code&gt; action 调用 &lt;code&gt;api/user.js&lt;/code&gt; 的 &lt;code&gt;getUserInfo&lt;/code&gt; 函数，&lt;code&gt;request.js&lt;/code&gt; 的&lt;strong&gt;请求拦截器&lt;/strong&gt;自动从 &lt;code&gt;localStorage&lt;/code&gt; 中读取 Token 并添加到请求头 &lt;code&gt;Authorization&lt;/code&gt; 中。&lt;/li&gt;
+&lt;li&gt;后端验证 Token 有效，返回用户信息。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GetUserInfo&lt;/code&gt; action 将用户信息存入 &lt;code&gt;store/modules/user.js&lt;/code&gt; 的 &lt;code&gt;state.userInfo&lt;/code&gt; 中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;跳转页面&lt;/strong&gt;：登录成功后，&lt;code&gt;AppLogin.vue&lt;/code&gt; 中的代码通过 &lt;code&gt;router.push()&lt;/code&gt; 跳转到用户最初想访问的页面（或主页 &lt;code&gt;views/AppHome.vue&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;更新导航栏&lt;/strong&gt;：&lt;code&gt;components/common/AppNavbar.vue&lt;/code&gt; 组件通过 &lt;code&gt;store.getters&lt;/code&gt; 监听 &lt;code&gt;userInfo&lt;/code&gt; 的变化，一旦有值，就会显示用户名和头像，隐藏“登录”按钮。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;场景-2用户查看题目列表&#34;&gt;场景 2：用户查看题目列表
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;用户点击导航&lt;/strong&gt;：用户点击 &lt;code&gt;components/common/AppNavbar.vue&lt;/code&gt; 中的“题目列表”链接。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;路由守卫验证&lt;/strong&gt;：&lt;code&gt;router/index.js&lt;/code&gt; 的路由守卫检查到 &lt;code&gt;/problems&lt;/code&gt; 路由需要登录（&lt;code&gt;meta.requireAuth: true&lt;/code&gt;），且 &lt;code&gt;localStorage&lt;/code&gt; 中有 Token，允许跳转。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;渲染页面&lt;/strong&gt;：路由跳转到 &lt;code&gt;views/problem/ProblemList.vue&lt;/code&gt; 页面。该页面使用 &lt;code&gt;layouts/MainLayout.vue&lt;/code&gt; 布局。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;获取并渲染题目数据&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ProblemList.vue&lt;/code&gt; 在 &lt;code&gt;onMounted&lt;/code&gt; 钩子中，调用 &lt;code&gt;store/modules/problem.js&lt;/code&gt; 的 &lt;code&gt;GetProblemList&lt;/code&gt; action。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GetProblemList&lt;/code&gt; action 调用 &lt;code&gt;api/problem.js&lt;/code&gt; 的 &lt;code&gt;getProblemList&lt;/code&gt; 函数，携带分页和筛选参数。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;request.js&lt;/code&gt; 的请求拦截器自动添加 Token 到请求头。&lt;/li&gt;
+&lt;li&gt;后端返回题目列表数据。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GetProblemList&lt;/code&gt; action 将数据存入 &lt;code&gt;store/modules/problem.js&lt;/code&gt; 的 &lt;code&gt;state.problemList&lt;/code&gt; 和 &lt;code&gt;state.totalCount&lt;/code&gt; 中。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ProblemList.vue&lt;/code&gt; 从 &lt;code&gt;store&lt;/code&gt; 中读取 &lt;code&gt;problemList&lt;/code&gt;，并使用 &lt;code&gt;v-for&lt;/code&gt; 循环，通过 &lt;code&gt;components/problem/ProblemItem.vue&lt;/code&gt; 组件来渲染每一道题目的信息。同时，使用 &lt;code&gt;components/common/Pagination.vue&lt;/code&gt; 组件来展示和处理分页逻辑。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;用户点击题目&lt;/strong&gt;：用户点击某个 &lt;code&gt;ProblemItem.vue&lt;/code&gt; 组件。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;跳转到题目详情页&lt;/strong&gt;：&lt;code&gt;ProblemItem.vue&lt;/code&gt; 中的链接触发路由跳转，导航到 &lt;code&gt;views/problem/ProblemDetailView.vue&lt;/code&gt; 页面，并携带题目 ID 参数。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;渲染题目详情&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ProblemDetailView.vue&lt;/code&gt; 在 &lt;code&gt;onMounted&lt;/code&gt; 钩子中，根据 URL 中的 ID，调用 &lt;code&gt;store/modules/problem.js&lt;/code&gt; 的 &lt;code&gt;GetProblemDetail&lt;/code&gt; action。&lt;/li&gt;
+&lt;li&gt;该 action 调用 &lt;code&gt;api/problem.js&lt;/code&gt; 的 &lt;code&gt;getProblemDetail&lt;/code&gt; 函数获取具体题目信息。&lt;/li&gt;
+&lt;li&gt;数据返回后，&lt;code&gt;ProblemDetailView.vue&lt;/code&gt; 渲染 &lt;code&gt;components/problem/ProblemDetail.vue&lt;/code&gt;（展示题干、输入输出等）和 &lt;code&gt;components/submission/CodeEditor.vue&lt;/code&gt;（供用户编写代码）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;场景-3用户提交代码&#34;&gt;场景 3：用户提交代码
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;用户编写并提交代码&lt;/strong&gt;：用户在 &lt;code&gt;components/submission/CodeEditor.vue&lt;/code&gt; 中编写代码，选择编程语言后，点击“提交”按钮。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;调用提交接口&lt;/strong&gt;：&lt;code&gt;CodeEditor.vue&lt;/code&gt; 组件的提交事件触发 &lt;code&gt;store/modules/submission.js&lt;/code&gt; 的 &lt;code&gt;SubmitCode&lt;/code&gt; action，并传入题目 ID、代码和语言。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;发送提交请求&lt;/strong&gt;：&lt;code&gt;SubmitCode&lt;/code&gt; action 调用 &lt;code&gt;api/submission.js&lt;/code&gt; 的 &lt;code&gt;submitCode&lt;/code&gt; 函数。&lt;code&gt;request.js&lt;/code&gt; 自动添加 Token。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;处理提交结果&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;后端返回提交成功的响应（可能包含一个 submissionId）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SubmitCode&lt;/code&gt; action 可以将新的提交记录添加到 &lt;code&gt;store/modules/submission.js&lt;/code&gt; 的 &lt;code&gt;state.submissionList&lt;/code&gt; 中。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CodeEditor.vue&lt;/code&gt; 收到成功回调后，可能会显示提示信息，并清空编辑器或跳转到提交历史。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查看提交历史&lt;/strong&gt;：用户点击导航栏的“提交历史”或页面内的相关链接，路由跳转到 &lt;code&gt;views/submission/SubmissionHistory.vue&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;渲染提交记录&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;SubmissionHistory.vue&lt;/code&gt; 在 &lt;code&gt;onMounted&lt;/code&gt; 时调用 &lt;code&gt;store/modules/submission.js&lt;/code&gt; 的 &lt;code&gt;GetSubmissionHistory&lt;/code&gt; action。&lt;/li&gt;
+&lt;li&gt;该 action 调用 &lt;code&gt;api/submission.js&lt;/code&gt; 的 &lt;code&gt;getSubmissionHistory&lt;/code&gt; 函数获取该用户的所有提交记录。&lt;/li&gt;
+&lt;li&gt;数据返回后，&lt;code&gt;SubmissionHistory.vue&lt;/code&gt; 使用 &lt;code&gt;v-for&lt;/code&gt; 和 &lt;code&gt;components/submission/SubmissionItem.vue&lt;/code&gt; 组件来渲染每一条提交记录的状态（通过/失败、用时、内存等）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;通过这种方式，你可以清晰地看到一个用户操作是如何从一个组件流转到另一个组件，如何与 Vuex 和 API 交互，最终完成整个业务逻辑的。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结
+&lt;/h2&gt;&lt;p&gt;这个项目的设计哲学可以归纳为以下几点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;模块化和分离关注点 (Separation of Concerns)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;清晰地将 UI (视图)、业务逻辑 (Vuex)、API 交互 (api/) 和路由 (router/) 分开。&lt;/li&gt;
+&lt;li&gt;每个文件和目录都有其明确的、单一的职责。这使得代码更易于理解、维护和测试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;组件化 (Component-Based)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;UI 被拆分为一个个独立的、可复用的组件。&lt;/li&gt;
+&lt;li&gt;这极大地提高了代码的复用性，减少了冗余，并使得构建复杂界面变得更加简单和高效。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;数据驱动 (Data-Driven)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;应用的状态 (State) 是核心。UI 的变化是对状态变化的响应。&lt;/li&gt;
+&lt;li&gt;通过 Vuex 集中管理状态，使得数据流向清晰（单向数据流），易于追踪和调试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;可扩展性和可维护性&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;目录结构清晰，易于导航。&lt;/li&gt;
+&lt;li&gt;新增功能（如管理员模块）时，可以在不破坏现有结构的情况下，在对应的目录（如 &lt;code&gt;views/admin&lt;/code&gt;, &lt;code&gt;components/admin&lt;/code&gt;）下进行开发。&lt;/li&gt;
+&lt;li&gt;统一的请求封装 (&lt;code&gt;utils/request.js&lt;/code&gt;) 和工具函数 (&lt;code&gt;utils/&lt;/code&gt;) 使得未来的修改（如更换 API 地址、统一错误处理）变得非常方便。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;关注点分离&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;前端只负责展示和用户交互，后端负责业务逻辑和数据存储。&lt;/li&gt;
+&lt;li&gt;这种前后端分离的模式使得前后端团队可以独立开发、测试和部署，提高了开发效率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
