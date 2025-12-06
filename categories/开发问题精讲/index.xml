@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Nginx on acye&#39;s blog</title>
-        <link>https://ye-guan-xing.github.io/tags/nginx/</link>
-        <description>Recent content in Nginx on acye&#39;s blog</description>
+        <title>开发问题精讲 on acye&#39;s blog</title>
+        <link>https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/</link>
+        <description>Recent content in 开发问题精讲 on acye&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>acye</copyright>
-        <lastBuildDate>Sat, 29 Nov 2025 22:36:00 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/tags/nginx/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 29 Nov 2025 22:36:00 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>跨域问题讲解</title>
         <link>https://ye-guan-xing.github.io/p/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E8%AE%B2%E8%A7%A3/</link>
         <pubDate>Sat, 29 Nov 2025 22:36:00 +0800</pubDate>

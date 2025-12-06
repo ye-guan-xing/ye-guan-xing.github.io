@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 一、前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
+<title>校园OJ项目的详细开发(登录界面)</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="校园OJ项目的详细开发(登录界面)">
+<meta property='og:description' content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 一、前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='前端开发' /><meta property='article:published_time' content='2025-12-05T18:36:00&#43;08:00'/><meta property='article:modified_time' content='2025-12-05T18:36:00&#43;08:00'/>
+<meta name="twitter:title" content="校园OJ项目的详细开发(登录界面)">
+<meta name="twitter:description" content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 一、前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_7b91b9b0026c5360.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一前言登录系统的三件套">一、前言：登录系统的“三件套”</a></li>
+    <li><a href="#二核心模块详解">二、核心模块详解</a>
+      <ol>
+        <li><a href="#1-token-管理系统---authjs你的电子门禁卡">1. Token 管理系统 - <code>auth.js</code>（你的电子门禁卡）</a></li>
+        <li><a href="#2-通信专员---requestjs你的专属信使">2. 通信专员 - <code>request.js</code>（你的专属信使）</a></li>
+        <li><a href="#3-用户服务接口---userjs能办的四件事">3. 用户服务接口 - <code>user.js</code>（能办的四件事）</a></li>
+        <li><a href="#4-用户管理中心---userjs-storemodules楼长的登记簿">4. 用户管理中心 - <code>user.js (store/modules)</code>（楼长的登记簿）</a></li>
+        <li><a href="#5-快捷访问门---gettersjs快速查询通道">5. 快捷访问门 - <code>getters.js</code>（快速查询通道）</a></li>
+        <li><a href="#6-vuex-总仓库---indexjs所有登记簿的集合">6. Vuex 总仓库 - <code>index.js</code>（所有登记簿的集合）</a></li>
+        <li><a href="#7-登录页面---apploginvue前台接待处">7. 登录页面 - <code>AppLogin.vue</code>（前台接待处）</a></li>
+      </ol>
+    </li>
+    <li><a href="#三完整登录流程故事版">三、完整登录流程（故事版）</a>
+      <ol>
+        <li><a href="#第一幕来到登录页面">第一幕：来到登录页面</a></li>
+        <li><a href="#第二幕填写信息">第二幕：填写信息</a></li>
+        <li><a href="#第三幕点击登录按钮">第三幕：点击登录按钮</a></li>
+        <li><a href="#第四幕信使出发">第四幕：信使出发</a></li>
+        <li><a href="#第五幕服务器验证">第五幕：服务器验证</a></li>
+        <li><a href="#第六幕信使归来">第六幕：信使归来</a></li>
+        <li><a href="#第七幕楼长登记">第七幕：楼长登记</a></li>
+        <li><a href="#第八幕获取完整信息">第八幕：获取完整信息</a></li>
+        <li><a href="#第九幕页面跳转">第九幕：页面跳转</a></li>
+        <li><a href="#第十幕后续访问">第十幕：后续访问</a></li>
+      </ol>
+    </li>
+    <li><a href="#四关键概念精讲">四、关键概念精讲</a>
+      <ol>
+        <li><a href="#1-什么是-token">1. 什么是 Token？</a></li>
+        <li><a href="#2-localstorage-vs-sessionstorage">2. localStorage vs sessionStorage</a></li>
+        <li><a href="#3-promise-异步处理">3. Promise 异步处理</a></li>
+        <li><a href="#4-vuex-数据流">4. Vuex 数据流</a></li>
+      </ol>
+    </li>
+    <li><a href="#五常见问题解答">五、常见问题解答</a>
+      <ol>
+        <li><a href="#q1为什么登录后页面刷新又变未登录了">Q1：为什么登录后页面刷新，又变未登录了？</a></li>
+        <li><a href="#q2如何实现记住我功能">Q2：如何实现&quot;记住我&quot;功能？</a></li>
+        <li><a href="#q3多个标签页同时登录怎么办">Q3：多个标签页同时登录怎么办？</a></li>
+        <li><a href="#q4如何防止-xss-攻击盗取-token">Q4：如何防止 XSS 攻击盗取 token？</a></li>
+      </ol>
+    </li>
+    <li><a href="#六登录系统架构总结">六、登录系统架构总结</a></li>
+    <li><a href="#七给新手的黄金法则">七、给新手的黄金法则</a>
+      <ol>
+        <li><a href="#法则-1先理解流程再写代码">法则 1：先理解流程，再写代码</a></li>
+        <li><a href="#法则-2分层思考各司其职">法则 2：分层思考，各司其职</a></li>
+        <li><a href="#法则-3错误处理要全面">法则 3：错误处理要全面</a></li>
+        <li><a href="#法则-4用户体验要友好">法则 4：用户体验要友好</a></li>
+      </ol>
+    </li>
+    <li><a href="#八下一步学习方向">八、下一步学习方向</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/" >
+                校园OJ开发
+            </a>
+        
+            <a href="/categories/web%E5%BC%80%E5%8F%91/" style="background-color: ZgotmplZ; color: #ffffff;">
+                web开发
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/">校园OJ项目的详细开发(登录界面)</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-12-05 18:36 &#43;0800</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 12 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="手把手教你理解校园-oj-登录系统从输入密码到进入首页">手把手教你理解校园 OJ 登录系统：从输入密码到进入首页
+</h1><h2 id="一前言登录系统的三件套">一、前言：登录系统的“三件套”
+</h2><p>想象一下你要进宿舍楼：</p>
+<ol>
+<li><strong>门禁卡</strong>（token） - 证明你是楼里的学生</li>
+<li><strong>保安</strong>（路由守卫） - 检查你有没有门禁卡</li>
+<li><strong>楼长</strong>（Vuex） - 登记你的入住信息</li>
+</ol>
+<p>我们的登录系统就是这样的三级验证机制！</p>
+<h2 id="二核心模块详解">二、核心模块详解
+</h2><h3 id="1-token-管理系统---authjs你的电子门禁卡">1. Token 管理系统 - <code>auth.js</code>（你的电子门禁卡）
+</h3><p>这个文件专门管理你的“门禁卡”（token）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 就像宿舍楼的门禁系统
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">TOKEN_KEY</span> <span class="o">=</span> <span class="s2">&#34;oj_user_token&#34;</span><span class="p">;</span> <span class="c1">// 门禁卡的编号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 进门时刷卡（获取token）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">getToken</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 办新卡（设置token）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">setToken</span><span class="p">(</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">,</span> <span class="nx">token</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 卡丢了/毕业了（移除token）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">removeToken</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">localStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 检查有没有卡（是否已登录）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">isAuthenticated</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="o">!!</span><span class="nx">getToken</span><span class="p">();</span> <span class="c1">// !!就是把任何值变成true/false的魔法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>比喻理解</strong>：</p>
+<ul>
+<li><code>localStorage</code> = 你的钱包，专门放重要卡片</li>
+<li><code>TOKEN_KEY</code> = 卡包里的特定卡槽，只放门禁卡</li>
+<li>每次进出，保安只看这个卡槽有没有卡</li>
+</ul>
+<h3 id="2-通信专员---requestjs你的专属信使">2. 通信专员 - <code>request.js</code>（你的专属信使）
+</h3><p>这个文件负责和<strong>后端服务器</strong>对话，就像你有个专属信使：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">axios</span> <span class="nx">from</span> <span class="s2">&#34;axios&#34;</span><span class="p">;</span> <span class="c1">// 信使工具包
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getToken</span><span class="p">,</span> <span class="nx">removeToken</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;./auth&#34;</span><span class="p">;</span> <span class="c1">// 带上/退回门禁卡
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ElMessage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;element-plus&#34;</span><span class="p">;</span> <span class="c1">// 消息提示喇叭
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 招募一个专属信使
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">baseURL</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_BASE_API</span> <span class="o">||</span> <span class="s2">&#34;/api&#34;</span><span class="p">,</span> <span class="c1">// 服务器地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">timeout</span><span class="o">:</span> <span class="mi">10000</span><span class="p">,</span> <span class="c1">// 10秒没回复就算超时
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 【出发前的准备】请求拦截器 - 信使出发前做的事
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">request</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">use</span><span class="p">((</span><span class="nx">config</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">getToken</span><span class="p">();</span> <span class="c1">// 从钱包拿出门禁卡
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">config</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s2">&#34;Authorization&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="sb">`Bearer </span><span class="si">${</span><span class="nx">token</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span> <span class="c1">// 把卡挂在脖子上
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">config</span><span class="p">;</span> <span class="c1">// 可以出发了！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 【回来后的处理】响应拦截器 - 信使回来后做的事
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">request</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span> <span class="c1">// 打开信封
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 如果信上说&#34;一切正常&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span> <span class="c1">// 把真正的内容给你
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 信上说&#34;有问题&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="s2">&#34;请求失败&#34;</span><span class="p">);</span> <span class="c1">// 用喇叭广播问题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="s2">&#34;请求失败&#34;</span><span class="p">);</span> <span class="c1">// 抛出问题
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 信使自己出问题了（网络错误）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="p">{</span> <span class="nx">status</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">error</span><span class="p">.</span><span class="nx">response</span> <span class="o">||</span> <span class="p">{};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">switch</span> <span class="p">(</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">case</span> <span class="mi">401</span><span class="o">:</span> <span class="c1">// 门禁卡过期
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;登录已过期，请重新登录&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">removeToken</span><span class="p">();</span> <span class="c1">// 扔掉过期卡
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span> <span class="o">!==</span> <span class="s2">&#34;/login&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="s2">&#34;/login&#34;</span><span class="p">;</span> <span class="c1">// 赶回登录处重新办卡
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">case</span> <span class="mi">403</span><span class="o">:</span> <span class="c1">// 权限不足
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;没有权限访问&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">default</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;网络错误&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">throw</span> <span class="nx">error</span><span class="p">;</span> <span class="c1">// 把问题继续上报
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>信使工作流程图</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">你要发信 → 信使出发前（拦截器）→ 检查带没带门禁卡 → 出发送信
+</span></span><span class="line"><span class="cl">         ↓
+</span></span><span class="line"><span class="cl">服务器回信 → 信使回来后（拦截器）→ 检查信的内容 → 正常就给你，异常就广播
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-用户服务接口---userjs能办的四件事">3. 用户服务接口 - <code>user.js</code>（能办的四件事）
+</h3><p>这个文件定义了你能让信使办的<strong>四件事</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">request</span> <span class="nx">from</span> <span class="s2">&#34;@/utils/request&#34;</span><span class="p">;</span> <span class="c1">// 调用刚才的信使
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 1. 办门禁卡（登录）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">login</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/user/login&#34;</span><span class="p">,</span> <span class="c1">// 去&#34;办卡处&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;post&#34;</span><span class="p">,</span> <span class="c1">// 用&#34;申请&#34;的方式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">data</span><span class="p">,</span> <span class="c1">// 带上身份证明（账号密码）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 2. 注册新身份（注册）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">register</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/user/register&#34;</span><span class="p">,</span> <span class="c1">// 去&#34;登记处&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;post&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 3. 更新个人信息（修改资料）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">updateUserInfo</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/user/info&#34;</span><span class="p">,</span> <span class="c1">// 去&#34;资料修改处&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;put&#34;</span><span class="p">,</span> <span class="c1">// 用&#34;修改&#34;的方式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">data</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 4. 注销门禁卡（退出登录）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">logout</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/user/logout&#34;</span><span class="p">,</span> <span class="c1">// 去&#34;注销处&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;post&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 5. 查看个人档案（获取用户信息）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">getUserInfo</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="sb">`/user/stats`</span><span class="p">,</span> <span class="c1">// 去&#34;档案室&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;get&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>通俗理解</strong>：</p>
+<ul>
+<li>每个<code>export function</code>就像一张<strong>办事指南</strong></li>
+<li><code>request()</code>就是<strong>让信使按指南办事</strong></li>
+<li>返回值是一个<strong>Promise</strong>（承诺书），承诺会给你结果</li>
+</ul>
+<h3 id="4-用户管理中心---userjs-storemodules楼长的登记簿">4. 用户管理中心 - <code>user.js (store/modules)</code>（楼长的登记簿）
+</h3><p>这里是 Vuex 的<strong>用户模块</strong>，负责管理所有用户相关的全局状态：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 【状态仓库】楼长手里的登记簿
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">token</span><span class="o">:</span> <span class="nx">getToken</span><span class="p">(),</span> <span class="c1">// 当前有效的门禁卡
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">userInfo</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="c1">// 住户的详细信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 【修改规则】楼长能做的修改操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">mutations</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">SET_TOKEN</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">token</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="p">.</span><span class="nx">token</span> <span class="o">=</span> <span class="nx">token</span><span class="p">;</span> <span class="c1">// 登记新卡
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">SET_USER_INFO</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">userInfo</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="p">.</span><span class="nx">userInfo</span> <span class="o">=</span> <span class="nx">userInfo</span><span class="p">;</span> <span class="c1">// 登记住户信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">CLEAR_USER</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="p">.</span><span class="nx">token</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="p">;</span> <span class="c1">// 注销卡片
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">state</span><span class="p">.</span><span class="nx">userInfo</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">// 清除住户信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">removeToken</span><span class="p">();</span> <span class="c1">// 从钱包里也扔掉
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 【办事流程】楼长处理事务的流程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">actions</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 办理入住（登录）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">login</span><span class="p">({</span> <span class="nx">commit</span> <span class="p">},</span> <span class="nx">userInfo</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 情况1：模拟模式（开发时用）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="nx">useMock</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">用户名密码正确</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_TOKEN&#34;</span><span class="p">,</span> <span class="s2">&#34;临时卡&#34;</span><span class="p">);</span> <span class="c1">// 发临时卡
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_USER_INFO&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">角色</span><span class="o">:</span> <span class="s2">&#34;管理员&#34;</span> <span class="p">});</span> <span class="c1">// 登记信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nx">resolve</span><span class="p">();</span> <span class="c1">// 办好了！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">reject</span><span class="p">(</span><span class="s2">&#34;密码错了&#34;</span><span class="p">);</span> <span class="c1">// 办不了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// 情况2：真实模式（实际上线用）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">apiLogin</span><span class="p">(</span><span class="nx">userInfo</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">响应</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="nx">响应</span><span class="p">.</span><span class="nx">成功</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_TOKEN&#34;</span><span class="p">,</span> <span class="nx">响应</span><span class="p">.</span><span class="nx">token</span><span class="p">);</span> <span class="c1">// 发正式卡
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_USER_INFO&#34;</span><span class="p">,</span> <span class="nx">响应</span><span class="p">.</span><span class="nx">用户信息</span><span class="p">);</span> <span class="c1">// 登记信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">resolve</span><span class="p">();</span> <span class="c1">// 办好了！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 查看住户档案（获取用户信息）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">getInfo</span><span class="p">({</span> <span class="nx">commit</span><span class="p">,</span> <span class="nx">state</span> <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">state</span><span class="p">.</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">reject</span><span class="p">(</span><span class="s2">&#34;你没卡啊！&#34;</span><span class="p">);</span> <span class="c1">// 没卡看什么档案
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">// ...获取信息的逻辑
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// 办理退宿（退出登录）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">logout</span><span class="p">({</span> <span class="nx">commit</span> <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 1. 通知服务器我要走了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">apiLogout</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 2. 本地也清理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;CLEAR_USER&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">resolve</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Vuex 核心概念</strong>（必须理解！）：</p>
+<ul>
+<li><code>state</code> = 当前的状态（现在有什么）</li>
+<li><code>mutations</code> = 能做什么修改（只能通过这里改！）</li>
+<li><code>actions</code> = 做事的流程（可以包含异步操作）</li>
+</ul>
+<p><strong>修改状态的标准流程</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">你要改数据 → 调用action → action调用mutation → mutation修改state
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-快捷访问门---gettersjs快速查询通道">5. 快捷访问门 - <code>getters.js</code>（快速查询通道）
+</h3><p>这个文件提供<strong>快速查询</strong>状态的方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">getters</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">token</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">token</span><span class="p">,</span> <span class="c1">// &#34;给我当前的门禁卡&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">userInfo</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">,</span> <span class="c1">// &#34;给我住户信息&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">isLogin</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="o">!!</span><span class="nx">state</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">token</span><span class="p">,</span> <span class="c1">// &#34;告诉我有没有卡&#34;（!!转布尔值）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>为什么需要 getters</strong>？</p>
+<ul>
+<li>就像图书馆的<strong>查询机</strong>，不用自己去书库翻</li>
+<li>统一的查询接口，避免拼写错误</li>
+<li>可以计算衍生数据（如<code>isLogin</code>）</li>
+</ul>
+<h3 id="6-vuex-总仓库---indexjs所有登记簿的集合">6. Vuex 总仓库 - <code>index.js</code>（所有登记簿的集合）
+</h3><p>这里是 Vuex 的<strong>入口文件</strong>，整合所有模块：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">createStore</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vuex&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">getters</span> <span class="nx">from</span> <span class="s2">&#34;./getters&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">user</span> <span class="nx">from</span> <span class="s2">&#34;./modules/user&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="nx">createStore</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">modules</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">user</span><span class="p">,</span> <span class="c1">// 用户登记簿
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// problem,  题目登记簿（可以后续添加）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// submission, 提交记录登记簿
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">getters</span><span class="p">,</span> <span class="c1">// 快速查询通道
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>模块化设计的好处</strong>：</p>
+<ul>
+<li>用户数据放<code>user</code>模块</li>
+<li>题目数据放<code>problem</code>模块</li>
+<li>提交记录放<code>submission</code>模块</li>
+<li>互不干扰，清晰明了</li>
+</ul>
+<h3 id="7-登录页面---apploginvue前台接待处">7. 登录页面 - <code>AppLogin.vue</code>（前台接待处）
+</h3><p>这是用户看到的<strong>登录界面</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-vue" data-lang="vue"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;login-container&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;login-card&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="c">&lt;!--</span> <span class="nx">标题区域</span> <span class="o">--&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;login-header&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span><span class="nx">OJ平台登录</span><span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c">&lt;!--</span> <span class="nx">表单区域</span> <span class="o">--&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">el-form</span> <span class="nt">@submit.prevent</span><span class="s">=&#34;handleLogin&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">el-form-item</span> <span class="na">prop</span><span class="o">=</span><span class="s">&#34;username&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">&lt;</span><span class="nt">el-input</span> <span class="nt">v-model</span><span class="o">=</span><span class="s">&#34;formData.username&#34; placeholder=&#34;用户名&#34;</span><span class="p"> /&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">el-form-item</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">el-form-item</span> <span class="na">prop</span><span class="o">=</span><span class="s">&#34;password&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">&lt;</span><span class="nt">el-input</span> <span class="nt">v-model</span><span class="o">=</span><span class="s">&#34;formData.password&#34; type=&#34;password&#34;</span><span class="p"> /&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">el-form-item</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">el-form-item</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">&lt;</span><span class="nt">el-button</span> <span class="nt">@click</span><span class="s">=&#34;handleLogin&#34;</span><span class="p">&gt;</span><span class="na">登录</span><span class="err">&lt;/</span><span class="na">el</span><span class="nt">-button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">el-form-item</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">el-form</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">setup</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ref</span><span class="p">,</span> <span class="nx">reactive</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vue&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">useRouter</span><span class="p">,</span> <span class="nx">useRoute</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vue-router&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">useStore</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vuex&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ElMessage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;element-plus&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 获取工具
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">useRouter</span><span class="p">();</span> <span class="c1">// 导航员（负责跳转页面）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">useRoute</span><span class="p">();</span> <span class="c1">// 当前路线信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">useStore</span><span class="p">();</span> <span class="c1">// 楼长（Vuex）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 表单数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">formData</span> <span class="o">=</span> <span class="nx">reactive</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">username</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">password</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 登录函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">handleLogin</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 1. 找楼长办卡（调用Vuex的login）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">await</span> <span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s2">&#34;user/login&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">username</span><span class="o">:</span> <span class="nx">formData</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">password</span><span class="o">:</span> <span class="nx">formData</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 办卡后登记详细信息（调用getInfo）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">userInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s2">&#34;user/getInfo&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 3. 欢迎入住！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="sb">`欢迎回来，</span><span class="si">${</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">username</span><span class="si">}</span><span class="sb">！`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 4. 导航员带你去想去的地方
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">redirect</span> <span class="o">=</span> <span class="nx">route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">redirect</span> <span class="o">||</span> <span class="s2">&#34;/home&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">redirect</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 出错了，喇叭广播
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>页面组件关键点</strong>：</p>
+<ul>
+<li><code>useRouter()</code> - 获取导航员，用于页面跳转</li>
+<li><code>useStore()</code> - 获取楼长，用于状态管理</li>
+<li><code>store.dispatch()</code> - 让楼长办事（异步操作）</li>
+<li><code>router.push()</code> - 让导航员带路</li>
+</ul>
+<h2 id="三完整登录流程故事版">三、完整登录流程（故事版）
+</h2><p>让我们跟着&quot;小明&quot;走一遍完整流程：</p>
+<h3 id="第一幕来到登录页面">第一幕：来到登录页面
+</h3><p>小明打开浏览器，输入 OJ 平台网址，看到登录页面（<code>AppLogin.vue</code>）。</p>
+<h3 id="第二幕填写信息">第二幕：填写信息
+</h3><p>小明输入：</p>
+<ul>
+<li>用户名：<code>xiaoming</code></li>
+<li>密码：<code>123456</code></li>
+</ul>
+<h3 id="第三幕点击登录按钮">第三幕：点击登录按钮
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 发生的事：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">页面调用</span> <span class="nx">handleLogin</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">找楼长</span><span class="err">（</span><span class="nx">store</span><span class="err">）：</span><span class="s2">&#34;帮我办卡！&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">楼长查看登记簿</span><span class="err">（</span><span class="nx">state</span><span class="err">），</span><span class="nx">发现没卡</span>
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">楼长派信使</span><span class="err">（</span><span class="nx">request</span><span class="err">）</span><span class="nx">去服务器办卡</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="第四幕信使出发">第四幕：信使出发
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// request.js 的工作：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">信使出发前检查</span><span class="err">：</span><span class="s2">&#34;带门禁卡了吗？&#34;</span> <span class="err">→</span> <span class="nx">没带</span><span class="err">（</span><span class="nx">第一次登录</span><span class="err">）</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">出发去服务器</span><span class="err">（</span><span class="nx">baseURL</span> <span class="o">+</span> <span class="s2">&#34;/user/login&#34;</span><span class="err">）</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">带上小明的账号密码</span><span class="err">（</span><span class="nx">data</span><span class="err">）</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="第五幕服务器验证">第五幕：服务器验证
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 服务器的工作：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">检查账号密码</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">正确</span><span class="err">：</span><span class="nx">生成一张门禁卡</span><span class="err">（</span><span class="nx">token</span><span class="err">）</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">返回</span><span class="err">：</span><span class="p">{</span> <span class="nx">code</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="p">{</span> <span class="nx">token</span><span class="o">:</span> <span class="s2">&#34;abc123&#34;</span><span class="p">,</span> <span class="nx">userInfo</span><span class="o">:</span> <span class="p">{...}</span> <span class="p">}</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">错误</span><span class="err">：</span><span class="nx">返回</span> <span class="p">{</span> <span class="nx">code</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="s2">&#34;密码错误&#34;</span> <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="第六幕信使归来">第六幕：信使归来
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// request.js 的响应拦截器：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">打开信封看code</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">code</span><span class="o">=</span><span class="mi">1</span><span class="err">：</span><span class="nx">把data给页面</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">code</span><span class="o">=</span><span class="mi">0</span><span class="err">：</span><span class="nx">用喇叭广播</span><span class="s2">&#34;密码错误&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="第七幕楼长登记">第七幕：楼长登记
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// user.js (store) 的login action：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">收到信使带回的token</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">调用SET_TOKEN登记到簿子</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">调用setToken存到钱包</span><span class="err">（</span><span class="nx">localStorage</span><span class="err">）</span>
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">调用SET_USER_INFO登记用户信息</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="第八幕获取完整信息">第八幕：获取完整信息
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 登录后自动调用getInfo：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">楼长</span><span class="err">：</span><span class="s2">&#34;刚办了卡，现在去档案室拿详细资料&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">派信使去</span><span class="o">/</span><span class="nx">user</span><span class="o">/</span><span class="nx">stats</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">拿回完整档案</span><span class="err">（</span><span class="nx">roles</span><span class="err">、</span><span class="nx">permissions等</span><span class="err">）</span>
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">登记到簿子</span><span class="err">（</span><span class="nx">SET_USER_INFO</span><span class="err">）</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="第九幕页面跳转">第九幕：页面跳转
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// AppLogin.vue 的最后：
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">喇叭广播</span><span class="err">：</span><span class="s2">&#34;欢迎回来，小明！&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">导航员查看</span><span class="err">：</span><span class="s2">&#34;小明原来想去哪？&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">发现route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">redirect是</span><span class="s2">&#34;/problems&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">带小明去题目列表页</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="第十幕后续访问">第十幕：后续访问
+</h3><p>小明第二天再访问：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="mf">1.</span> <span class="nx">进大门</span><span class="err">（</span><span class="nx">打开网站</span><span class="err">）</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">保安</span><span class="err">（</span><span class="nx">路由守卫</span><span class="err">）</span><span class="nx">拦截</span><span class="err">：</span><span class="s2">&#34;请出示门禁卡！&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">小明从钱包拿出卡</span><span class="err">（</span><span class="nx">getToken</span><span class="p">()</span><span class="err">）</span>
+</span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">保安验证有效</span><span class="err">，</span><span class="nx">放行到首页</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="四关键概念精讲">四、关键概念精讲
+</h2><h3 id="1-什么是-token">1. 什么是 Token？
+</h3><p><strong>比喻</strong>：Token 就像酒店的房卡。</p>
+<ul>
+<li>办入住时（登录）给你一张</li>
+<li>每次进房间（访问页面）要刷卡</li>
+<li>退房时（退出登录）收回</li>
+<li>过期了要重新办（token 过期）</li>
+</ul>
+<h3 id="2-localstorage-vs-sessionstorage">2. localStorage vs sessionStorage
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">localStorage（长期钱包）：
+</span></span><span class="line"><span class="cl">- 关浏览器还在
+</span></span><span class="line"><span class="cl">- 适合存token这种重要东西
+</span></span><span class="line"><span class="cl">- 容量大（5MB）
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sessionStorage（临时口袋）：
+</span></span><span class="line"><span class="cl">- 关浏览器就丢
+</span></span><span class="line"><span class="cl">- 适合临时数据
+</span></span><span class="line"><span class="cl">- 同标签页共享
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-promise-异步处理">3. Promise 异步处理
+</h3><p><strong>比喻</strong>：叫外卖的过程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 点外卖（发起请求）
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">外卖</span> <span class="o">=</span> <span class="nx">点餐</span><span class="p">(</span><span class="s2">&#34;鱼香肉丝&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// then：外卖到了做什么
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">外卖</span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">餐</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">吃</span><span class="p">(</span><span class="nx">餐</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// catch：外卖出问题了
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">外卖</span><span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">错误</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">打电话投诉</span><span class="p">(</span><span class="nx">错误</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// async/await：优雅的等外卖
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">async</span> <span class="kd">function</span> <span class="nx">吃饭</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">餐</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">点餐</span><span class="p">(</span><span class="s2">&#34;鱼香肉丝&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">吃</span><span class="p">(</span><span class="nx">餐</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">错误</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">打电话投诉</span><span class="p">(</span><span class="nx">错误</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-vuex-数据流">4. Vuex 数据流
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">单向数据流（必须遵守！）：
+</span></span><span class="line"><span class="cl">组件 → dispatch Action → commit Mutation → 修改 State → 更新组件
+</span></span><span class="line"><span class="cl">      （做什么事）       （怎么改）        （改哪里）    （看到变化）
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="五常见问题解答">五、常见问题解答
+</h2><h3 id="q1为什么登录后页面刷新又变未登录了">Q1：为什么登录后页面刷新，又变未登录了？
+</h3><p><strong>可能原因</strong>：</p>
+<ol>
+<li>token 没存进 localStorage（检查<code>setToken</code>）</li>
+<li>刷新后 Vuex 的 state 重置了，但 token 还在 localStorage</li>
+<li>需要在<code>main.js</code>或<code>App.vue</code>初始化时从 localStorage 读 token</li>
+</ol>
+<h3 id="q2如何实现记住我功能">Q2：如何实现&quot;记住我&quot;功能？
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// auth.js 增加
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">setToken</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span> <span class="nx">remember</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">remember</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">,</span> <span class="nx">token</span><span class="p">);</span> <span class="c1">// 长期存储
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">,</span> <span class="nx">token</span><span class="p">);</span> <span class="c1">// 会话存储
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 登录时
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">await</span> <span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s2">&#34;user/login&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">username</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">password</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">remember</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// 传这个参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="q3多个标签页同时登录怎么办">Q3：多个标签页同时登录怎么办？
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 监听storage变化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;storage&#34;</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="nx">TOKEN_KEY</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// token变了，同步更新Vuex
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;user/SET_TOKEN&#34;</span><span class="p">,</span> <span class="nx">event</span><span class="p">.</span><span class="nx">newValue</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="q4如何防止-xss-攻击盗取-token">Q4：如何防止 XSS 攻击盗取 token？
+</h3><p><strong>安全措施</strong>：</p>
+<ol>
+<li>token 设置合理过期时间</li>
+<li>使用 HttpOnly Cookie（后端设置）</li>
+<li>重要操作需要二次验证</li>
+<li>定期更换 token</li>
+</ol>
+<h2 id="六登录系统架构总结">六、登录系统架构总结
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">【三层架构】
+</span></span><span class="line"><span class="cl">1. 展示层（View） - AppLogin.vue
+</span></span><span class="line"><span class="cl">   ↓ 用户交互
+</span></span><span class="line"><span class="cl">2. 逻辑层（ViewModel） - Vuex (user模块)
+</span></span><span class="line"><span class="cl">   ↓ 状态管理
+</span></span><span class="line"><span class="cl">3. 服务层（Service） - request.js + user.js(api)
+</span></span><span class="line"><span class="cl">   ↓ 网络通信
+</span></span><span class="line"><span class="cl">4. 持久层（Persistence） - localStorage + auth.js
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">【五大模块】
+</span></span><span class="line"><span class="cl">1. 认证模块（auth.js）- 管卡
+</span></span><span class="line"><span class="cl">2. 通信模块（request.js）- 管信使
+</span></span><span class="line"><span class="cl">3. 接口模块（user.js api）- 管能办什么事
+</span></span><span class="line"><span class="cl">4. 状态模块（user.js store）- 管登记簿
+</span></span><span class="line"><span class="cl">5. 界面模块（AppLogin.vue）- 管用户看到什么
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="七给新手的黄金法则">七、给新手的黄金法则
+</h2><h3 id="法则-1先理解流程再写代码">法则 1：先理解流程，再写代码
+</h3><p>画个流程图，搞清楚&quot;点击登录&quot;到&quot;进入首页&quot;中间发生了什么。</p>
+<h3 id="法则-2分层思考各司其职">法则 2：分层思考，各司其职
+</h3><ul>
+<li>auth.js：只关心 token 存哪、怎么取</li>
+<li>request.js：只关心怎么发请求、怎么处理响应</li>
+<li>store：只关心数据怎么存、怎么改</li>
+<li>组件：只关心用户怎么交互、数据怎么展示</li>
+</ul>
+<h3 id="法则-3错误处理要全面">法则 3：错误处理要全面
+</h3><p>每个可能出错的地方都要有应对方案：</p>
+<ul>
+<li>网络错误</li>
+<li>服务器错误</li>
+<li>用户输入错误</li>
+<li>token 过期错误</li>
+</ul>
+<h3 id="法则-4用户体验要友好">法则 4：用户体验要友好
+</h3><ul>
+<li>登录中显示 loading</li>
+<li>错误提示要明确</li>
+<li>成功后有反馈</li>
+<li>记住用户上次操作</li>
+</ul>
+<h2 id="八下一步学习方向">八、下一步学习方向
+</h2><p>掌握了登录系统后，你可以继续学习：</p>
+<ol>
+<li><strong>权限管理</strong>：不同角色看到不同菜单</li>
+<li><strong>路由守卫</strong>：更精细的访问控制</li>
+<li><strong>第三方登录</strong>：微信、QQ 快速登录</li>
+<li><strong>双因素认证</strong>：密码+手机验证码</li>
+<li><strong>单点登录</strong>：一个账号通行所有系统</li>
+</ol>
+<p>记住，登录系统是 Web 应用的<strong>大门</strong>，大门设计得好不好，直接影响用户体验和系统安全。现在你不仅知道怎么用，还知道为什么这样设计，这就是成为高级开发者的第一步！</p>
+<p>加油，你已经掌握了现代前端登录系统的核心原理！🚀</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/">前端开发</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E9%80%BB%E8%BE%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">校园OJ开发之布局逻辑</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">校园OJ项目的整体结构</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8Badmin%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%BC%80%E5%8F%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">校园OJ开发之admin页面的开发</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E8%AE%B2%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">跨域问题讲解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%85%A8%E5%9F%9F%E7%94%9F%E6%B4%BB%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">全域生活服务平台开发流程详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <script>
+
+function isLocalhost() {
+  const ip = window.location.hostname;
+  return ip === 'localhost' || ip === '127.0.0.1' || /^192\.168\.\d+\.\d+$/.test(ip);
+}
+
+if (!isLocalhost()) {
+  
+  const script = document.createElement('script');
+  script.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+  script.async = true;
+  document.head.appendChild(script);
+}
+</script>
+
+
+<div style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center;">
+  <span id="busuanzi_container_site_uv">本站访客：<span id="busuanzi_value_site_uv"></span> 人</span> · 
+  <span id="busuanzi_container_site_pv">总访问量：<span id="busuanzi_value_site_pv"></span> 次</span>
+</div>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+</style>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>
