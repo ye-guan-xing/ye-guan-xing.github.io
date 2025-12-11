@@ -354,7 +354,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 7 分钟
+                    阅读时长: 8 分钟
                 </time>
             </div>
         
@@ -440,70 +440,82 @@
 </span><span class="lnt">60
 </span><span class="lnt">61
 </span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">src</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">api</span><span class="o">/</span>                     <span class="c1"># 接口请求封装目录（与后端交互）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">admin</span><span class="o">.</span><span class="n">js</span>             <span class="c1"># 管理员相关接口（登录、权限、题目管理等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">problem</span><span class="o">.</span><span class="n">js</span>           <span class="c1"># 题目相关接口（列表、详情、增改等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">submission</span><span class="o">.</span><span class="n">js</span>        <span class="c1"># 提交记录相关接口（提交代码、历史、结果等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">└──</span> <span class="n">users</span><span class="o">.</span><span class="n">js</span>             <span class="c1"># 用户相关接口（注册、登录、信息等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">assets</span><span class="o">/</span>                  <span class="c1"># 静态资源目录（样式、图片等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">css</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">login</span><span class="o">.</span><span class="n">css</span>        <span class="c1"># 登录页面专属样式文件</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">images</span><span class="o">/</span>              <span class="c1"># 图片资源存放目录</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">└──</span> <span class="n">styles</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>       <span class="err">├──</span> <span class="n">common</span><span class="o">.</span><span class="n">scss</span>      <span class="c1"># 全局通用样式</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>       <span class="err">└──</span> <span class="n">variables</span><span class="o">.</span><span class="n">scss</span>   <span class="c1"># 样式变量（颜色、尺寸等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">components</span><span class="o">/</span>              <span class="c1"># 公共组件目录（可复用）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">admin</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">ProblemForm</span><span class="o">.</span><span class="n">vue</span>  <span class="c1"># 管理员端题目表单组件（新增/编辑题目）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">ProblemManagement</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 管理员端题目管理组件（列表、操作）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">common</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">AppFooter</span><span class="o">.</span><span class="n">vue</span>    <span class="c1"># 全局页脚组件</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">AppNavbar</span><span class="o">.</span><span class="n">vue</span>    <span class="c1"># 全局导航栏组件</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">problem</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">ProblemDetail</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 题目详情展示组件</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">ProblemItem</span><span class="o">.</span><span class="n">vue</span>  <span class="c1"># 题目列表项组件（单个题目展示）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">ProblemTags</span><span class="o">.</span><span class="n">vue</span>  <span class="c1"># 题目标签组件（展示/选择标签）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">└──</span> <span class="n">submission</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>       <span class="err">├──</span> <span class="n">CodeEditor</span><span class="o">.</span><span class="n">vue</span>   <span class="c1"># 代码编辑器组件（提交代码用）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>       <span class="err">├──</span> <span class="n">SubmissionItem</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 提交记录项组件（单个提交展示）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>       <span class="err">└──</span> <span class="n">SubmissionList</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 提交记录列表组件</span>
-</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">layouts</span><span class="o">/</span>                 <span class="c1"># 布局组件目录</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">└──</span> <span class="n">MainLayout</span><span class="o">.</span><span class="n">vue</span>       <span class="c1"># 主布局组件（包含导航、页脚，包裹页面内容）</span>
-</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">router</span><span class="o">/</span>                  <span class="c1"># 路由配置目录</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">index</span><span class="o">.</span><span class="n">js</span>             <span class="c1"># 路由入口（创建路由实例、挂载等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">└──</span> <span class="n">routes</span><span class="o">.</span><span class="n">js</span>            <span class="c1"># 路由规则定义（页面路由映射）</span>
-</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">store</span><span class="o">/</span>                   <span class="c1"># Vuex状态管理目录</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">modules</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">problem</span><span class="o">.</span><span class="n">js</span>       <span class="c1"># 题目相关状态管理（数据、操作）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">submission</span><span class="o">.</span><span class="n">js</span>    <span class="c1"># 提交相关状态管理（数据、操作）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">user</span><span class="o">.</span><span class="n">js</span>          <span class="c1"># 用户相关状态管理（登录态、信息等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">getters</span><span class="o">.</span><span class="n">js</span>           <span class="c1"># Vuex全局计算属性（公共状态获取）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">└──</span> <span class="n">index</span><span class="o">.</span><span class="n">js</span>             <span class="c1"># Vuex入口（创建store实例、注册模块等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">utils</span><span class="o">/</span>                   <span class="c1"># 工具函数目录（通用功能）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">auth</span><span class="o">.</span><span class="n">js</span>              <span class="c1"># 权限认证工具（token存储、验证等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">constant</span><span class="o">.</span><span class="n">js</span>          <span class="c1"># 常量定义（接口地址、状态码等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">format</span><span class="o">.</span><span class="n">js</span>            <span class="c1"># 数据格式化工具（时间、字符串等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">mockData</span><span class="o">.</span><span class="n">js</span>          <span class="c1"># 模拟数据（开发测试用）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">└──</span> <span class="n">request</span><span class="o">.</span><span class="n">js</span>           <span class="c1"># 请求封装（axios拦截、配置等）</span>
-</span></span><span class="line"><span class="cl"><span class="err">├──</span> <span class="n">views</span><span class="o">/</span>                   <span class="c1"># 页面视图目录（路由对应页面）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">admin</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">ProblemEdit</span><span class="o">.</span><span class="n">vue</span>  <span class="c1"># 管理员端题目编辑页面</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">ProblemManagement</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 管理员端题目管理页面</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">login</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">AppLogin</span><span class="o">.</span><span class="n">vue</span>     <span class="c1"># 登录页面</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">problem</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">ProblemDetailView</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 题目详情页面（基于ProblemDetail组件）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">ProblemList</span><span class="o">.</span><span class="n">vue</span>  <span class="c1"># 题目列表页面</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">submission</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">SubmissionHistory</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 提交历史页面</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">user</span><span class="o">/</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">AppHome</span><span class="o">.</span><span class="n">vue</span>      <span class="c1"># 用户首页</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">├──</span> <span class="n">NotFound</span><span class="o">.</span><span class="n">vue</span>         <span class="c1"># 404页面（路由匹配失败展示）</span>
-</span></span><span class="line"><span class="cl"><span class="err">│</span>   <span class="err">└──</span> <span class="n">App</span><span class="o">.</span><span class="n">vue</span>              <span class="c1"># 根组件（应用入口页面容器）</span>
-</span></span><span class="line"><span class="cl"><span class="err">└──</span> <span class="n">main</span><span class="o">.</span><span class="n">js</span>                  <span class="c1"># 项目入口文件（创建Vue实例、挂载等）</span>
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">src</span>
+</span></span><span class="line"><span class="cl"><span class="err">├─</span> <span class="n">api</span>                  <span class="c1"># 接口请求层：封装所有后端接口调用</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">admin</span><span class="o">.</span><span class="n">js</span>          <span class="c1"># 管理员相关接口（题目管理、权限操作等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">problem</span><span class="o">.</span><span class="n">js</span>        <span class="c1"># 题目相关接口（题目列表、详情、提交判题等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">submission</span><span class="o">.</span><span class="n">js</span>     <span class="c1"># 提交记录相关接口（提交列表、判题结果查询等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">└─</span> <span class="n">user</span><span class="o">.</span><span class="n">js</span>           <span class="c1"># 用户相关接口（登录、注册、个人信息、设置等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">├─</span> <span class="n">assets</span>               <span class="c1"># 静态资源层：存放样式、图片等静态文件</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">css</span>               <span class="c1"># 通用CSS文件（未拆分到styles的基础样式）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">images</span>            <span class="c1"># 项目图片资源（图标、背景图等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">└─</span> <span class="n">styles</span>            <span class="c1"># 核心样式文件</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>     <span class="err">├─</span> <span class="n">Applogin</span><span class="o">.</span><span class="n">css</span>   <span class="c1"># 登录/注册页面专属样式</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>     <span class="err">├─</span> <span class="n">AppNavbar</span><span class="o">.</span><span class="n">css</span>  <span class="c1"># 导航栏组件专属样式</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>     <span class="err">├─</span> <span class="n">common</span><span class="o">.</span><span class="n">css</span>     <span class="c1"># 全局通用样式（重置样式、公共类名等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>     <span class="err">└─</span> <span class="n">variables</span><span class="o">.</span><span class="n">scss</span> <span class="c1"># SCSS全局变量（颜色、字体、间距等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">├─</span> <span class="n">components</span>           <span class="c1"># 通用组件层：可复用的Vue组件（按业务拆分）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">admin</span>             <span class="c1"># 管理员专属组件</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">ProblemForm</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 题目新增/编辑表单组件</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="n">ProblemManagement</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 题目列表管理组件（查询、删除、编辑）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">common</span>            <span class="c1"># 全局通用组件</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">AppFooter</span><span class="o">.</span><span class="n">vue</span>  <span class="c1"># 页面底部版权/导航组件</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="n">AppNavbar</span><span class="o">.</span><span class="n">vue</span>  <span class="c1"># 页面顶部导航栏（含登录态、菜单切换）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">problem</span>           <span class="c1"># 题目相关组件</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">ProblemDetail</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 题目详情展示组件（题干、输入输出示例等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">ProblemItem</span><span class="o">.</span><span class="n">vue</span>   <span class="c1"># 题目列表项组件（单个题目卡片）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="n">ProblemTags</span><span class="o">.</span><span class="n">vue</span>   <span class="c1"># 题目标签组件（难度、题型等标签展示）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">└─</span> <span class="n">submission</span>        <span class="c1"># 提交记录相关组件</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>     <span class="err">├─</span> <span class="n">CodeEditor</span><span class="o">.</span><span class="n">vue</span>    <span class="c1"># 代码编辑组件（支持语法高亮、代码提交）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>     <span class="err">├─</span> <span class="n">JudgeResult</span><span class="o">.</span><span class="n">vue</span>   <span class="c1"># 判题结果展示组件（AC/WA/RE等状态+详情）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>     <span class="err">├─</span> <span class="n">SubmissionItem</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 提交记录列表项组件（单个提交记录展示）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>     <span class="err">└─</span> <span class="n">SubmissionList</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 提交记录列表组件（查询、筛选提交记录）</span>
+</span></span><span class="line"><span class="cl"><span class="err">├─</span> <span class="n">layouts</span>              <span class="c1"># 布局组件层：页面整体布局容器</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">└─</span> <span class="n">MainLayout</span><span class="o">.</span><span class="n">vue</span>    <span class="c1"># 主布局组件（包含Navbar+Footer+内容区域）</span>
+</span></span><span class="line"><span class="cl"><span class="err">├─</span> <span class="n">router</span>               <span class="c1"># 路由配置层：前端路由管理</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">index</span><span class="o">.</span><span class="n">js</span>          <span class="c1"># 路由入口（创建路由实例、挂载路由守卫等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">└─</span> <span class="n">routes</span><span class="o">.</span><span class="n">js</span>         <span class="c1"># 路由规则定义（所有页面的路由路径、组件映射）</span>
+</span></span><span class="line"><span class="cl"><span class="err">├─</span> <span class="n">store</span>                <span class="c1"># 状态管理层：Vuex全局状态管理（按模块拆分）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">modules</span>           <span class="c1"># Vuex模块拆分</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">problem</span><span class="o">.</span><span class="n">js</span>     <span class="c1"># 题目相关状态（题目列表、当前题目详情等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">submission</span><span class="o">.</span><span class="n">js</span>  <span class="c1"># 提交相关状态（提交记录、判题结果等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="n">user</span><span class="o">.</span><span class="n">js</span>        <span class="c1"># 用户相关状态（登录态、用户信息、权限等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">getters</span><span class="o">.</span><span class="n">js</span>        <span class="c1"># Vuex全局getters（统一获取各模块状态）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">└─</span> <span class="n">index</span><span class="o">.</span><span class="n">js</span>          <span class="c1"># Vuex入口（创建store实例、注册模块等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">├─</span> <span class="n">utils</span>                <span class="c1"># 工具函数层：通用工具方法封装</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">auth</span><span class="o">.</span><span class="n">js</span>           <span class="c1"># 权限相关工具（JWT存储/解析、登录态校验等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">constant</span><span class="o">.</span><span class="n">js</span>       <span class="c1"># 全局常量（接口地址、状态码、枚举值等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">debounce</span><span class="o">.</span><span class="n">js</span>       <span class="c1"># 防抖函数（防止重复点击、频繁请求）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">format</span><span class="o">.</span><span class="n">js</span>         <span class="c1"># 格式化工具（时间、判题状态、文件大小等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">mockData</span><span class="o">.</span><span class="n">js</span>       <span class="c1"># 模拟数据（开发阶段替代后端接口）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">└─</span> <span class="n">request</span><span class="o">.</span><span class="n">js</span>        <span class="c1"># 请求封装（Axios拦截器、请求/响应统一处理）</span>
+</span></span><span class="line"><span class="cl"><span class="err">├─</span> <span class="n">views</span>                <span class="c1"># 页面视图层：对应路由的页面级组件</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">admin</span>             <span class="c1"># 管理员页面</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">ProblemEdit</span><span class="o">.</span><span class="n">vue</span>   <span class="c1"># 题目编辑页面（复用ProblemForm组件）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="n">ProblemManagement</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 题目管理页面（复用ProblemManagement组件）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">login</span>             <span class="c1"># 登录/注册页面</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">AppLogin</span><span class="o">.</span><span class="n">vue</span>   <span class="c1"># 登录页面（账号密码登录、验证码等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="n">AppRegister</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 注册页面（用户信息填写、校验等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">problem</span>           <span class="c1"># 题目相关页面</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">ProblemDetailView</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 题目详情页面（基于MainLayout+ProblemDetail）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="n">ProblemListView</span><span class="o">.</span><span class="n">vue</span>   <span class="c1"># 题目列表页面（基于MainLayout+ProblemItem）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">submission</span>        <span class="c1"># 提交记录页面</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="n">SubmissionHistory</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 提交历史页面（基于MainLayout+SubmissionList）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">user</span>              <span class="c1"># 用户中心页面</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">├─</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 个人资料页面（展示/编辑用户信息）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">│</span>  <span class="err">└─</span> <span class="n">UserSetting</span><span class="o">.</span><span class="n">vue</span> <span class="c1"># 用户设置页面（密码修改、偏好设置等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">├─</span> <span class="n">AppHome</span><span class="o">.</span><span class="n">vue</span>       <span class="c1"># 项目首页（展示平台介绍、热门题目等）</span>
+</span></span><span class="line"><span class="cl"><span class="err">│</span>  <span class="err">└─</span> <span class="n">NotFound</span><span class="o">.</span><span class="n">vue</span>      <span class="c1"># 404页面（路由匹配失败时展示）</span>
+</span></span><span class="line"><span class="cl"><span class="err">├─</span> <span class="n">App</span><span class="o">.</span><span class="n">vue</span>              <span class="c1"># 根组件（挂载路由出口、全局样式引入）</span>
+</span></span><span class="line"><span class="cl"><span class="err">└─</span> <span class="n">main</span><span class="o">.</span><span class="n">js</span>              <span class="c1"># 项目入口文件（创建Vue实例、挂载路由/store等）</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>这个架构清晰地将项目分为 10 个核心模块，每个模块都有明确的职责边界，确保了代码的可维护性和可扩展性。</p>
