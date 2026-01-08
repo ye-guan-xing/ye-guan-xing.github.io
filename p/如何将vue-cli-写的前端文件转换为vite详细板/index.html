@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
+<html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="从 Vue CLI 迁移到 Vite 的完整指南 📋 迁移概览 将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。\n🗺️ 迁移路线图 步骤 1：备份原有项目 1 2 # 在开始前一定要备份 cp -r my-project my-project-backup 步骤 2：删除旧配置文件 1 2 3 4 # 删除 Vue CLI 相关配置文件 rm vue.config.js rm babel.config.js # 如果存在 rm .eslintrc.js # 如果使用单独的配置文件 步骤 3：清理项目依赖 1 2 3 # 删除 node_modules 和锁文件 rm -rf node_modules rm package-lock.json # 或 rm yarn.lock 📝 详细步骤说明 1. 修改 package.json 主要变化：\n">
 <title>如何将vue cli 写的前端文件转换为vite（详细板）</title>
@@ -56,7 +56,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu_7b91b9b0026c5360.png" width="300"
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -317,7 +317,7 @@
                 web开发
             </a>
         
-            <a href="/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/" >
+            <a href="/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/" style="background-color: ZgotmplZ; color: #ffffff;">
                 开发问题精讲
             </a>
         
@@ -452,25 +452,25 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;module&#34;</span><span class="p">,</span> <span class="c1">// 新增：声明为 ES 模块
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nt">&#34;scripts&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nt">&#34;scripts&#34;</span><span class="p">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// Vue CLI 脚本 → Vite 脚本
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;serve&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service serve&#34;</span><span class="p">,</span> <span class="c1">// 删除
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;build&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service build&#34;</span><span class="p">,</span> <span class="c1">// 删除
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;dev&#34;</span><span class="p">:</span> <span class="s2">&#34;vite&#34;</span><span class="p">,</span> <span class="c1">// 新增
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;build&#34;</span><span class="p">:</span> <span class="s2">&#34;vite build&#34;</span><span class="p">,</span> <span class="c1">// 修改
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;preview&#34;</span><span class="p">:</span> <span class="s2">&#34;vite preview&#34;</span> <span class="c1">// 新增
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nt">&#34;serve&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service serve&#34;</span><span class="p">,</span> <span class="c1">// 删除
+</span></span></span><span class="line"><span class="cl">    <span class="nt">&#34;build&#34;</span><span class="p">:</span> <span class="s2">&#34;vue-cli-service build&#34;</span><span class="p">,</span> <span class="c1">// 删除
+</span></span></span><span class="line"><span class="cl">    <span class="nt">&#34;dev&#34;</span><span class="p">:</span> <span class="s2">&#34;vite&#34;</span><span class="p">,</span> <span class="c1">// 新增
+</span></span></span><span class="line"><span class="cl">    <span class="nt">&#34;build&#34;</span><span class="p">:</span> <span class="s2">&#34;vite build&#34;</span><span class="p">,</span> <span class="c1">// 修改
+</span></span></span><span class="line"><span class="cl">    <span class="nt">&#34;preview&#34;</span><span class="p">:</span> <span class="s2">&#34;vite preview&#34;</span> <span class="c1">// 新增
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;dependencies&#34;</span><span class="p">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 移除 Vue CLI 特定的依赖
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// 保持应用层依赖不变
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// 保持应用层依赖不变
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;devDependencies&#34;</span><span class="p">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 完全替换开发依赖
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;@vue/cli-*&#34;</span><span class="p">:</span> <span class="s2">&#34;~5.0.0&#34;</span><span class="p">,</span> <span class="c1">// 删除所有
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;@vitejs/plugin-vue&#34;</span><span class="p">:</span> <span class="s2">&#34;^5.0.5&#34;</span><span class="p">,</span> <span class="c1">// 新增
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;vite&#34;</span><span class="p">:</span> <span class="s2">&#34;^5.4.8&#34;</span><span class="p">,</span> <span class="c1">// 新增
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nt">&#34;sass-embedded&#34;</span><span class="p">:</span> <span class="s2">&#34;^1.83.0&#34;</span> <span class="c1">// 推荐使用 sass-embedded
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nt">&#34;@vue/cli-*&#34;</span><span class="p">:</span> <span class="s2">&#34;~5.0.0&#34;</span><span class="p">,</span> <span class="c1">// 删除所有
+</span></span></span><span class="line"><span class="cl">    <span class="nt">&#34;@vitejs/plugin-vue&#34;</span><span class="p">:</span> <span class="s2">&#34;^5.0.5&#34;</span><span class="p">,</span> <span class="c1">// 新增
+</span></span></span><span class="line"><span class="cl">    <span class="nt">&#34;vite&#34;</span><span class="p">:</span> <span class="s2">&#34;^5.4.8&#34;</span><span class="p">,</span> <span class="c1">// 新增
+</span></span></span><span class="line"><span class="cl">    <span class="nt">&#34;sass-embedded&#34;</span><span class="p">:</span> <span class="s2">&#34;^1.83.0&#34;</span> <span class="c1">// 推荐使用 sass-embedded
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -512,7 +512,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// vue.config.js (旧)
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">proxy</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="s2">&#34;/api&#34;</span><span class="o">:</span> <span class="p">{</span>
@@ -524,7 +524,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// vite.config.js (新)
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">defineConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vite&#34;</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">defineConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vite&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="nx">defineConfig</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">server</span><span class="o">:</span> <span class="p">{</span>
@@ -557,11 +557,11 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// .env.development
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">VUE_APP_BASE_API</span><span class="o">=</span><span class="err">/api</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">VUE_APP_BASE_API</span><span class="o">=</span><span class="err">/api</span>
 </span></span><span class="line"><span class="cl"><span class="nx">VUE_APP_PROXY_TARGET</span><span class="o">=</span><span class="nx">http</span><span class="o">:</span><span class="c1">//10.245.30.86:8080
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 代码中使用
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_BASE_API</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_BASE_API</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Vite 方式：</strong></p>
@@ -576,11 +576,11 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// .env.development
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">VITE_BASE_API</span><span class="o">=</span><span class="err">/api</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">VITE_BASE_API</span><span class="o">=</span><span class="err">/api</span>
 </span></span><span class="line"><span class="cl"><span class="nx">VITE_PROXY_TARGET</span><span class="o">=</span><span class="nx">http</span><span class="o">:</span><span class="c1">//10.245.30.86:8080
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 代码中使用
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VITE_BASE_API</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">import</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VITE_BASE_API</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>或者保留 Vue 前缀：</strong></p>
@@ -593,9 +593,9 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// vite.config.js 中配置
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">envPrefix</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;VUE_APP_&#34;</span><span class="p">,</span> <span class="s2">&#34;VITE_&#34;</span><span class="p">],</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">envPrefix</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;VUE_APP_&#34;</span><span class="p">,</span> <span class="s2">&#34;VITE_&#34;</span><span class="p">],</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// 这样可以使用两种前缀
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">import</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_BASE_API</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">  <span class="kr">import</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_BASE_API</span><span class="p">;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="4-请求配置文件修改"><strong>4. 请求配置文件修改</strong>
@@ -616,13 +616,13 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 原来的 Vue CLI 方式
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">baseURL</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_BASE_API</span> <span class="o">||</span> <span class="s2">&#34;/api&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">timeout</span><span class="o">:</span> <span class="mi">10000</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 修改为 Vite 方式
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">baseURL</span><span class="o">:</span> <span class="kr">import</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_BASE_API</span> <span class="o">||</span> <span class="s2">&#34;/api&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">timeout</span><span class="o">:</span> <span class="mi">10000</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl"><span class="p">});</span>
@@ -721,7 +721,7 @@
 </span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">img</span> <span class="o">:</span><span class="nx">src</span><span class="o">=</span><span class="s2">&#34;logo&#34;</span> <span class="o">/&gt;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 或
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;@/assets/logo.png&#34;</span> <span class="o">/&gt;</span>
+</span></span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;@/assets/logo.png&#34;</span> <span class="o">/&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Vite：</strong></p>
@@ -739,14 +739,14 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 方式1：使用相对或绝对路径
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;/src/assets/logo.png&#34;</span> <span class="o">/&gt;</span>
+</span></span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;/src/assets/logo.png&#34;</span> <span class="o">/&gt;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 方式2：使用 import
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">logoUrl</span> <span class="nx">from</span> <span class="s1">&#39;@/assets/logo.png&#39;</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">logoUrl</span> <span class="nx">from</span> <span class="s1">&#39;@/assets/logo.png&#39;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">img</span> <span class="o">:</span><span class="nx">src</span><span class="o">=</span><span class="s2">&#34;logoUrl&#34;</span> <span class="o">/&gt;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 方式3：使用 public 目录（不经过构建）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;/logo.png&#34;</span> <span class="o">/&gt;</span>  <span class="c1">// 放在 public/logo.png
+</span></span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;/logo.png&#34;</span> <span class="o">/&gt;</span>  <span class="c1">// 放在 public/logo.png
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="7-路径别名配置"><strong>7. 路径别名配置</strong>
@@ -773,7 +773,7 @@
 </span></span><span class="line"><span class="cl">    <span class="nx">alias</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="s2">&#34;@&#34;</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&#34;./src&#34;</span><span class="p">),</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 可以添加更多别名
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="s2">&#34;@components&#34;</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&#34;./src/components&#34;</span><span class="p">),</span>
+</span></span></span><span class="line"><span class="cl">      <span class="s2">&#34;@components&#34;</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s2">&#34;./src/components&#34;</span><span class="p">),</span>
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">});</span>
@@ -791,10 +791,10 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 错误：require is not defined
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;module&#34;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;module&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 解决：改为 ES6 导入
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">module</span> <span class="nx">from</span> <span class="s2">&#34;module&#34;</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">module</span> <span class="nx">from</span> <span class="s2">&#34;module&#34;</span><span class="p">;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="问题-2process-变量报错"><strong>问题 2：process 变量报错</strong>
@@ -810,11 +810,11 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 错误：process is not defined
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="s2">&#34;development&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_ENV</span> <span class="o">===</span> <span class="s2">&#34;development&#34;</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 解决：使用 import.meta.env
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="kr">import</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MODE</span> <span class="o">===</span> <span class="s2">&#34;development&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="kr">import</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MODE</span> <span class="o">===</span> <span class="s2">&#34;development&#34;</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -834,7 +834,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// vite.config.js 中正确配置
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="k">default</span> <span class="nx">defineConfig</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="nx">defineConfig</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">css</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">preprocessorOptions</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">scss</span><span class="o">:</span> <span class="p">{</span>
@@ -911,7 +911,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># migrate-to-vite.sh</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"># migrate-to-vite.sh</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;🚀 开始迁移 Vue CLI 到 Vite...&#34;</span>
 </span></span><span class="line"><span class="cl">

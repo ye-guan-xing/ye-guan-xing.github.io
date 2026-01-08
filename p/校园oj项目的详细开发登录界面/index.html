@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
+<html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 一、前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
 <title>校园OJ项目的详细开发(登录界面)</title>
@@ -56,7 +56,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu_7b91b9b0026c5360.png" width="300"
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -335,7 +335,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/" >
+            <a href="/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/" style="background-color: ZgotmplZ; color: #ffffff;">
                 校园OJ开发
             </a>
         
@@ -439,27 +439,27 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 就像宿舍楼的门禁系统
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">TOKEN_KEY</span> <span class="o">=</span> <span class="s2">&#34;oj_user_token&#34;</span><span class="p">;</span> <span class="c1">// 门禁卡的编号
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">TOKEN_KEY</span> <span class="o">=</span> <span class="s2">&#34;oj_user_token&#34;</span><span class="p">;</span> <span class="c1">// 门禁卡的编号
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 进门时刷卡（获取token）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">getToken</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">getToken</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 办新卡（设置token）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">setToken</span><span class="p">(</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">setToken</span><span class="p">(</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">,</span> <span class="nx">token</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 卡丢了/毕业了（移除token）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">removeToken</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">removeToken</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">localStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 检查有没有卡（是否已登录）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">isAuthenticated</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">isAuthenticated</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="o">!!</span><span class="nx">getToken</span><span class="p">();</span> <span class="c1">// !!就是把任何值变成true/false的魔法
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>比喻理解</strong>：</p>
@@ -529,58 +529,58 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">axios</span> <span class="nx">from</span> <span class="s2">&#34;axios&#34;</span><span class="p">;</span> <span class="c1">// 信使工具包
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getToken</span><span class="p">,</span> <span class="nx">removeToken</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;./auth&#34;</span><span class="p">;</span> <span class="c1">// 带上/退回门禁卡
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ElMessage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;element-plus&#34;</span><span class="p">;</span> <span class="c1">// 消息提示喇叭
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">getToken</span><span class="p">,</span> <span class="nx">removeToken</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;./auth&#34;</span><span class="p">;</span> <span class="c1">// 带上/退回门禁卡
+</span></span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ElMessage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;element-plus&#34;</span><span class="p">;</span> <span class="c1">// 消息提示喇叭
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 招募一个专属信使
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">baseURL</span><span class="o">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_BASE_API</span> <span class="o">||</span> <span class="s2">&#34;/api&#34;</span><span class="p">,</span> <span class="c1">// 服务器地址
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">timeout</span><span class="o">:</span> <span class="mi">10000</span><span class="p">,</span> <span class="c1">// 10秒没回复就算超时
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">timeout</span><span class="o">:</span> <span class="mi">10000</span><span class="p">,</span> <span class="c1">// 10秒没回复就算超时
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 【出发前的准备】请求拦截器 - 信使出发前做的事
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">request</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">use</span><span class="p">((</span><span class="nx">config</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">request</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">use</span><span class="p">((</span><span class="nx">config</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">getToken</span><span class="p">();</span> <span class="c1">// 从钱包拿出门禁卡
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">config</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s2">&#34;Authorization&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="sb">`Bearer </span><span class="si">${</span><span class="nx">token</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span> <span class="c1">// 把卡挂在脖子上
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">config</span><span class="p">;</span> <span class="c1">// 可以出发了！
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 【回来后的处理】响应拦截器 - 信使回来后做的事
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">request</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">request</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span> <span class="c1">// 打开信封
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 如果信上说&#34;一切正常&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span> <span class="c1">// 把真正的内容给你
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span> <span class="c1">// 把真正的内容给你
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 信上说&#34;有问题&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="s2">&#34;请求失败&#34;</span><span class="p">);</span> <span class="c1">// 用喇叭广播问题
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="s2">&#34;请求失败&#34;</span><span class="p">);</span> <span class="c1">// 抛出问题
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">      <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="s2">&#34;请求失败&#34;</span><span class="p">);</span> <span class="c1">// 用喇叭广播问题
+</span></span></span><span class="line"><span class="cl">      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="s2">&#34;请求失败&#34;</span><span class="p">);</span> <span class="c1">// 抛出问题
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 信使自己出问题了（网络错误）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="p">{</span> <span class="nx">status</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">error</span><span class="p">.</span><span class="nx">response</span> <span class="o">||</span> <span class="p">{};</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">{</span> <span class="nx">status</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">error</span><span class="p">.</span><span class="nx">response</span> <span class="o">||</span> <span class="p">{};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">switch</span> <span class="p">(</span><span class="nx">status</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">case</span> <span class="mi">401</span><span class="o">:</span> <span class="c1">// 门禁卡过期
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;登录已过期，请重新登录&#34;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;登录已过期，请重新登录&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">removeToken</span><span class="p">();</span> <span class="c1">// 扔掉过期卡
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span> <span class="o">!==</span> <span class="s2">&#34;/login&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span> <span class="o">!==</span> <span class="s2">&#34;/login&#34;</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">          <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="s2">&#34;/login&#34;</span><span class="p">;</span> <span class="c1">// 赶回登录处重新办卡
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">      <span class="k">case</span> <span class="mi">403</span><span class="o">:</span> <span class="c1">// 权限不足
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;没有权限访问&#34;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;没有权限访问&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">      <span class="k">default</span><span class="o">:</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;网络错误&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">throw</span> <span class="nx">error</span><span class="p">;</span> <span class="c1">// 把问题继续上报
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -648,47 +648,47 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">request</span> <span class="nx">from</span> <span class="s2">&#34;@/utils/request&#34;</span><span class="p">;</span> <span class="c1">// 调用刚才的信使
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 1. 办门禁卡（登录）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">login</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">login</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/user/login&#34;</span><span class="p">,</span> <span class="c1">// 去&#34;办卡处&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;post&#34;</span><span class="p">,</span> <span class="c1">// 用&#34;申请&#34;的方式
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">data</span><span class="p">,</span> <span class="c1">// 带上身份证明（账号密码）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">});</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;post&#34;</span><span class="p">,</span> <span class="c1">// 用&#34;申请&#34;的方式
+</span></span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">,</span> <span class="c1">// 带上身份证明（账号密码）
+</span></span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 2. 注册新身份（注册）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">register</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">register</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/user/register&#34;</span><span class="p">,</span> <span class="c1">// 去&#34;登记处&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;post&#34;</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;post&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 3. 更新个人信息（修改资料）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">updateUserInfo</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">updateUserInfo</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/user/info&#34;</span><span class="p">,</span> <span class="c1">// 去&#34;资料修改处&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;put&#34;</span><span class="p">,</span> <span class="c1">// 用&#34;修改&#34;的方式
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">data</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;put&#34;</span><span class="p">,</span> <span class="c1">// 用&#34;修改&#34;的方式
+</span></span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 4. 注销门禁卡（退出登录）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">logout</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">logout</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/user/logout&#34;</span><span class="p">,</span> <span class="c1">// 去&#34;注销处&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;post&#34;</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;post&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 5. 查看个人档案（获取用户信息）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">getUserInfo</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">getUserInfo</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">request</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="sb">`/user/stats`</span><span class="p">,</span> <span class="c1">// 去&#34;档案室&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;get&#34;</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">method</span><span class="o">:</span> <span class="s2">&#34;get&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
@@ -780,74 +780,74 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 【状态仓库】楼长手里的登记簿
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">token</span><span class="o">:</span> <span class="nx">getToken</span><span class="p">(),</span> <span class="c1">// 当前有效的门禁卡
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">userInfo</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="c1">// 住户的详细信息
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">userInfo</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="c1">// 住户的详细信息
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 【修改规则】楼长能做的修改操作
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">mutations</span> <span class="o">=</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">mutations</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">SET_TOKEN</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">token</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="p">.</span><span class="nx">token</span> <span class="o">=</span> <span class="nx">token</span><span class="p">;</span> <span class="c1">// 登记新卡
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">SET_USER_INFO</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">userInfo</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="p">.</span><span class="nx">userInfo</span> <span class="o">=</span> <span class="nx">userInfo</span><span class="p">;</span> <span class="c1">// 登记住户信息
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">CLEAR_USER</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="p">.</span><span class="nx">token</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="p">;</span> <span class="c1">// 注销卡片
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">state</span><span class="p">.</span><span class="nx">userInfo</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">// 清除住户信息
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">removeToken</span><span class="p">();</span> <span class="c1">// 从钱包里也扔掉
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="p">.</span><span class="nx">userInfo</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">// 清除住户信息
+</span></span></span><span class="line"><span class="cl">    <span class="nx">removeToken</span><span class="p">();</span> <span class="c1">// 从钱包里也扔掉
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 【办事流程】楼长处理事务的流程
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">actions</span> <span class="o">=</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">actions</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// 办理入住（登录）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">login</span><span class="p">({</span> <span class="nx">commit</span> <span class="p">},</span> <span class="nx">userInfo</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">login</span><span class="p">({</span> <span class="nx">commit</span> <span class="p">},</span> <span class="nx">userInfo</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 情况1：模拟模式（开发时用）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="nx">useMock</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">useMock</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">用户名密码正确</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">          <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_TOKEN&#34;</span><span class="p">,</span> <span class="s2">&#34;临时卡&#34;</span><span class="p">);</span> <span class="c1">// 发临时卡
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_USER_INFO&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">角色</span><span class="o">:</span> <span class="s2">&#34;管理员&#34;</span> <span class="p">});</span> <span class="c1">// 登记信息
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nx">resolve</span><span class="p">();</span> <span class="c1">// 办好了！
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">          <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_USER_INFO&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">角色</span><span class="o">:</span> <span class="s2">&#34;管理员&#34;</span> <span class="p">});</span> <span class="c1">// 登记信息
+</span></span></span><span class="line"><span class="cl">          <span class="nx">resolve</span><span class="p">();</span> <span class="c1">// 办好了！
+</span></span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">          <span class="nx">reject</span><span class="p">(</span><span class="s2">&#34;密码错了&#34;</span><span class="p">);</span> <span class="c1">// 办不了
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">      <span class="c1">// 情况2：真实模式（实际上线用）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">else</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">else</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">apiLogin</span><span class="p">(</span><span class="nx">userInfo</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">响应</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="nx">响应</span><span class="p">.</span><span class="nx">成功</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_TOKEN&#34;</span><span class="p">,</span> <span class="nx">响应</span><span class="p">.</span><span class="nx">token</span><span class="p">);</span> <span class="c1">// 发正式卡
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_USER_INFO&#34;</span><span class="p">,</span> <span class="nx">响应</span><span class="p">.</span><span class="nx">用户信息</span><span class="p">);</span> <span class="c1">// 登记信息
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nx">resolve</span><span class="p">();</span> <span class="c1">// 办好了！
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">            <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;SET_USER_INFO&#34;</span><span class="p">,</span> <span class="nx">响应</span><span class="p">.</span><span class="nx">用户信息</span><span class="p">);</span> <span class="c1">// 登记信息
+</span></span></span><span class="line"><span class="cl">            <span class="nx">resolve</span><span class="p">();</span> <span class="c1">// 办好了！
+</span></span></span><span class="line"><span class="cl">          <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">});</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 查看住户档案（获取用户信息）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">getInfo</span><span class="p">({</span> <span class="nx">commit</span><span class="p">,</span> <span class="nx">state</span> <span class="p">})</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">getInfo</span><span class="p">({</span> <span class="nx">commit</span><span class="p">,</span> <span class="nx">state</span> <span class="p">})</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">state</span><span class="p">.</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">reject</span><span class="p">(</span><span class="s2">&#34;你没卡啊！&#34;</span><span class="p">);</span> <span class="c1">// 没卡看什么档案
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">      <span class="c1">// ...获取信息的逻辑
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">});</span>
+</span></span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 办理退宿（退出登录）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">logout</span><span class="p">({</span> <span class="nx">commit</span> <span class="p">})</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">logout</span><span class="p">({</span> <span class="nx">commit</span> <span class="p">})</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 1. 通知服务器我要走了
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">apiLogout</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="nx">apiLogout</span><span class="p">().</span><span class="nx">then</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 2. 本地也清理
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;CLEAR_USER&#34;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;CLEAR_USER&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">resolve</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">      <span class="p">});</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
@@ -883,9 +883,9 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">getters</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">token</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">token</span><span class="p">,</span> <span class="c1">// &#34;给我当前的门禁卡&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">userInfo</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">,</span> <span class="c1">// &#34;给我住户信息&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">isLogin</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="o">!!</span><span class="nx">state</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">token</span><span class="p">,</span> <span class="c1">// &#34;告诉我有没有卡&#34;（!!转布尔值）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">userInfo</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">state</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">userInfo</span><span class="p">,</span> <span class="c1">// &#34;给我住户信息&#34;
+</span></span></span><span class="line"><span class="cl">  <span class="nx">isLogin</span><span class="o">:</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="o">!!</span><span class="nx">state</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">token</span><span class="p">,</span> <span class="c1">// &#34;告诉我有没有卡&#34;（!!转布尔值）
+</span></span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>为什么需要 getters</strong>？</p>
@@ -919,11 +919,11 @@
 </span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="nx">createStore</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">modules</span><span class="o">:</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">user</span><span class="p">,</span> <span class="c1">// 用户登记簿
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// problem,  题目登记簿（可以后续添加）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// submission, 提交记录登记簿
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// problem,  题目登记簿（可以后续添加）
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// submission, 提交记录登记簿
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">getters</span><span class="p">,</span> <span class="c1">// 快速查询通道
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>模块化设计的好处</strong>：</p>
@@ -1039,37 +1039,37 @@
 </span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ElMessage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;element-plus&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 获取工具
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">useRouter</span><span class="p">();</span> <span class="c1">// 导航员（负责跳转页面）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">useRoute</span><span class="p">();</span> <span class="c1">// 当前路线信息
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">useStore</span><span class="p">();</span> <span class="c1">// 楼长（Vuex）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">useRouter</span><span class="p">();</span> <span class="c1">// 导航员（负责跳转页面）
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">useRoute</span><span class="p">();</span> <span class="c1">// 当前路线信息
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">useStore</span><span class="p">();</span> <span class="c1">// 楼长（Vuex）
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 表单数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">formData</span> <span class="o">=</span> <span class="nx">reactive</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">formData</span> <span class="o">=</span> <span class="nx">reactive</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">username</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">password</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 登录函数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">handleLogin</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">handleLogin</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 1. 找楼长办卡（调用Vuex的login）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">await</span> <span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s2">&#34;user/login&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">await</span> <span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s2">&#34;user/login&#34;</span><span class="p">,</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">username</span><span class="o">:</span> <span class="nx">formData</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">password</span><span class="o">:</span> <span class="nx">formData</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 2. 办卡后登记详细信息（调用getInfo）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">userInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s2">&#34;user/getInfo&#34;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">userInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s2">&#34;user/getInfo&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 3. 欢迎入住！
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="sb">`欢迎回来，</span><span class="si">${</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">username</span><span class="si">}</span><span class="sb">！`</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="sb">`欢迎回来，</span><span class="si">${</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">username</span><span class="si">}</span><span class="sb">！`</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 4. 导航员带你去想去的地方
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">redirect</span> <span class="o">=</span> <span class="nx">route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">redirect</span> <span class="o">||</span> <span class="s2">&#34;/home&#34;</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">redirect</span> <span class="o">=</span> <span class="nx">route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">redirect</span> <span class="o">||</span> <span class="s2">&#34;/home&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">redirect</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 出错了，喇叭广播
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
@@ -1103,7 +1103,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 发生的事：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">页面调用</span> <span class="nx">handleLogin</span><span class="p">()</span>
+</span></span></span><span class="line"><span class="cl"><span class="mf">1.</span> <span class="nx">页面调用</span> <span class="nx">handleLogin</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">找楼长</span><span class="err">（</span><span class="nx">store</span><span class="err">）：</span><span class="s2">&#34;帮我办卡！&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">楼长查看登记簿</span><span class="err">（</span><span class="nx">state</span><span class="err">），</span><span class="nx">发现没卡</span>
 </span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">楼长派信使</span><span class="err">（</span><span class="nx">request</span><span class="err">）</span><span class="nx">去服务器办卡</span>
@@ -1119,7 +1119,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// request.js 的工作：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">信使出发前检查</span><span class="err">：</span><span class="s2">&#34;带门禁卡了吗？&#34;</span> <span class="err">→</span> <span class="nx">没带</span><span class="err">（</span><span class="nx">第一次登录</span><span class="err">）</span>
+</span></span></span><span class="line"><span class="cl"><span class="mf">1.</span> <span class="nx">信使出发前检查</span><span class="err">：</span><span class="s2">&#34;带门禁卡了吗？&#34;</span> <span class="err">→</span> <span class="nx">没带</span><span class="err">（</span><span class="nx">第一次登录</span><span class="err">）</span>
 </span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">出发去服务器</span><span class="err">（</span><span class="nx">baseURL</span> <span class="o">+</span> <span class="s2">&#34;/user/login&#34;</span><span class="err">）</span>
 </span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">带上小明的账号密码</span><span class="err">（</span><span class="nx">data</span><span class="err">）</span>
 </span></span></code></pre></td></tr></table>
@@ -1135,7 +1135,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 服务器的工作：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">检查账号密码</span>
+</span></span></span><span class="line"><span class="cl"><span class="mf">1.</span> <span class="nx">检查账号密码</span>
 </span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">正确</span><span class="err">：</span><span class="nx">生成一张门禁卡</span><span class="err">（</span><span class="nx">token</span><span class="err">）</span>
 </span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">返回</span><span class="err">：</span><span class="p">{</span> <span class="nx">code</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="p">{</span> <span class="nx">token</span><span class="o">:</span> <span class="s2">&#34;abc123&#34;</span><span class="p">,</span> <span class="nx">userInfo</span><span class="o">:</span> <span class="p">{...}</span> <span class="p">}</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">错误</span><span class="err">：</span><span class="nx">返回</span> <span class="p">{</span> <span class="nx">code</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="s2">&#34;密码错误&#34;</span> <span class="p">}</span>
@@ -1151,7 +1151,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// request.js 的响应拦截器：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">打开信封看code</span>
+</span></span></span><span class="line"><span class="cl"><span class="mf">1.</span> <span class="nx">打开信封看code</span>
 </span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">code</span><span class="o">=</span><span class="mi">1</span><span class="err">：</span><span class="nx">把data给页面</span>
 </span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">code</span><span class="o">=</span><span class="mi">0</span><span class="err">：</span><span class="nx">用喇叭广播</span><span class="s2">&#34;密码错误&#34;</span>
 </span></span></code></pre></td></tr></table>
@@ -1167,7 +1167,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// user.js (store) 的login action：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">收到信使带回的token</span>
+</span></span></span><span class="line"><span class="cl"><span class="mf">1.</span> <span class="nx">收到信使带回的token</span>
 </span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">调用SET_TOKEN登记到簿子</span>
 </span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">调用setToken存到钱包</span><span class="err">（</span><span class="nx">localStorage</span><span class="err">）</span>
 </span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">调用SET_USER_INFO登记用户信息</span>
@@ -1184,7 +1184,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 登录后自动调用getInfo：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">楼长</span><span class="err">：</span><span class="s2">&#34;刚办了卡，现在去档案室拿详细资料&#34;</span>
+</span></span></span><span class="line"><span class="cl"><span class="mf">1.</span> <span class="nx">楼长</span><span class="err">：</span><span class="s2">&#34;刚办了卡，现在去档案室拿详细资料&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">派信使去</span><span class="o">/</span><span class="nx">user</span><span class="o">/</span><span class="nx">stats</span>
 </span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">拿回完整档案</span><span class="err">（</span><span class="nx">roles</span><span class="err">、</span><span class="nx">permissions等</span><span class="err">）</span>
 </span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">登记到簿子</span><span class="err">（</span><span class="nx">SET_USER_INFO</span><span class="err">）</span>
@@ -1201,7 +1201,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// AppLogin.vue 的最后：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mf">1.</span> <span class="nx">喇叭广播</span><span class="err">：</span><span class="s2">&#34;欢迎回来，小明！&#34;</span>
+</span></span></span><span class="line"><span class="cl"><span class="mf">1.</span> <span class="nx">喇叭广播</span><span class="err">：</span><span class="s2">&#34;欢迎回来，小明！&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="mf">2.</span> <span class="nx">导航员查看</span><span class="err">：</span><span class="s2">&#34;小明原来想去哪？&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="mf">3.</span> <span class="nx">发现route</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">redirect是</span><span class="s2">&#34;/problems&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">带小明去题目列表页</span>
@@ -1286,20 +1286,20 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 点外卖（发起请求）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">外卖</span> <span class="o">=</span> <span class="nx">点餐</span><span class="p">(</span><span class="s2">&#34;鱼香肉丝&#34;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">外卖</span> <span class="o">=</span> <span class="nx">点餐</span><span class="p">(</span><span class="s2">&#34;鱼香肉丝&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// then：外卖到了做什么
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">外卖</span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">餐</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">外卖</span><span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">餐</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">吃</span><span class="p">(</span><span class="nx">餐</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// catch：外卖出问题了
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">外卖</span><span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">错误</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">外卖</span><span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">错误</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">打电话投诉</span><span class="p">(</span><span class="nx">错误</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// async/await：优雅的等外卖
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">async</span> <span class="kd">function</span> <span class="nx">吃饭</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">吃饭</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">餐</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">点餐</span><span class="p">(</span><span class="s2">&#34;鱼香肉丝&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">吃</span><span class="p">(</span><span class="nx">餐</span><span class="p">);</span>
@@ -1351,20 +1351,20 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// auth.js 增加
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">setToken</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span> <span class="nx">remember</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">setToken</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span> <span class="nx">remember</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">remember</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">,</span> <span class="nx">token</span><span class="p">);</span> <span class="c1">// 长期存储
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="nx">TOKEN_KEY</span><span class="p">,</span> <span class="nx">token</span><span class="p">);</span> <span class="c1">// 会话存储
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 登录时
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">await</span> <span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s2">&#34;user/login&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">await</span> <span class="nx">store</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">(</span><span class="s2">&#34;user/login&#34;</span><span class="p">,</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">username</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">password</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">remember</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="c1">// 传这个参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="q3多个标签页同时登录怎么办">Q3：多个标签页同时登录怎么办？
@@ -1380,10 +1380,10 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 监听storage变化
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;storage&#34;</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;storage&#34;</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="nx">TOKEN_KEY</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// token变了，同步更新Vuex
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;user/SET_TOKEN&#34;</span><span class="p">,</span> <span class="nx">event</span><span class="p">.</span><span class="nx">newValue</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">store</span><span class="p">.</span><span class="nx">commit</span><span class="p">(</span><span class="s2">&#34;user/SET_TOKEN&#34;</span><span class="p">,</span> <span class="nx">event</span><span class="p">.</span><span class="nx">newValue</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span></code></pre></td></tr></table>

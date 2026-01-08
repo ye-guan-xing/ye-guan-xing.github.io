@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
+<html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="全域生活服务平台 - 从零开始完整开发指南 🎯 项目概述 我们将构建一个完整的全域生活服务平台，包含：\nWeb 管理后台：管理员管理商家、服务、订单 微信小程序：用户浏览服务、下单 后端 API：Node.js + Express + MySQL 数据库：MySQL，使用 DataGrip 管理 🛠️ 阶段一：项目准备与环境搭建 第 1 步：安装必要软件 1.1 安装 Node.js（后端运行环境） 访问：Node.js 下载 LTS 版本（长期支持版） 双击安装，全部点&quot;下一步&quot; 验证安装：按 Win + R，输入 cmd 回车，输入： 1 node -v 显示版本号如 v18.x.x 即成功！\n">
 <title>全域生活服务平台开发流程详解</title>
@@ -56,7 +56,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu_7b91b9b0026c5360.png" width="300"
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -557,8 +557,8 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">life_service</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">DEFAULT</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">DEFAULT</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">DEFAULT</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="33-创建数据表">3.3 创建数据表
@@ -602,17 +602,17 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 1. 商家表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">merchants</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">merchants</span><span class="w"> </span><span class="p">(</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;商家ID&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;商家名称&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">address</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;地址&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">phone</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;联系方式&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">status</span><span class="w"> </span><span class="n">TINYINT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;状态：0-审核中，1-已通过&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">create_time</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建时间&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;商家表&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">)</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;商家表&#39;</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 2. 服务表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">services</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 2. 服务表
+</span></span></span><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">services</span><span class="w"> </span><span class="p">(</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;服务ID&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">merchant_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;关联商家ID&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;服务名称&#39;</span><span class="p">,</span><span class="w">
@@ -623,10 +623,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">status</span><span class="w"> </span><span class="n">TINYINT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;状态：0-下架，1-上架&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">create_time</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建时间&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">merchant_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">merchants</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;服务表&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">)</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;服务表&#39;</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 3. 订单表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 3. 订单表
+</span></span></span><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="p">(</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;订单ID&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">service_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;关联服务ID&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">user_name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户姓名&#39;</span><span class="p">,</span><span class="w">
@@ -634,7 +634,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">create_time</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;下单时间&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">status</span><span class="w"> </span><span class="n">TINYINT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;状态：0-待支付，1-已完成&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">service_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">services</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;订单表&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">)</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;订单表&#39;</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="34-插入测试数据">3.4 插入测试数据
@@ -655,17 +655,17 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 插入测试商家
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">merchants</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="n">phone</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="s1">&#39;阳光家政&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;北京市朝阳区建国路100号&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;13800138000&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="s1">&#39;快速维修&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;上海市浦东新区张江路200号&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;13900139000&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="s1">&#39;保洁专家&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;广州市天河区体育西路300号&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;13700137000&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">merchants</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="n">phone</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;阳光家政&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;北京市朝阳区建国路100号&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;13800138000&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;快速维修&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;上海市浦东新区张江路200号&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;13900139000&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;保洁专家&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;广州市天河区体育西路300号&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;13700137000&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 插入测试服务
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">services</span><span class="w"> </span><span class="p">(</span><span class="n">merchant_id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="n">category</span><span class="p">,</span><span class="w"> </span><span class="n">stock</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;日常保洁&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;家政&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;深度清洁&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;家政&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;空调维修&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;维修&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;办公室保洁&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;保洁&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 插入测试服务
+</span></span></span><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">services</span><span class="w"> </span><span class="p">(</span><span class="n">merchant_id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="n">category</span><span class="p">,</span><span class="w"> </span><span class="n">stock</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;日常保洁&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;家政&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;深度清洁&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;家政&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;空调维修&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;维修&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;办公室保洁&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;保洁&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
@@ -788,11 +788,11 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 引入我们创建的连接池
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">pool</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;./index.js&#34;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">pool</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;./index.js&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// 执行一条简单的 SQL：查询 MySQL 数据库的版本（不需要创建表，通用测试）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">pool</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s2">&#34;SELECT VERSION() AS version&#34;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">pool</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s2">&#34;SELECT VERSION() AS version&#34;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// 回调函数：SQL 执行完成后会触发这个函数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;数据库操作失败：&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
@@ -835,21 +835,21 @@
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">cors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;cors&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl"><span class="c1">//中间件
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl"><span class="c1">//路由（比作一个餐厅的话，像是服务员）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">merchantRouder</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;./routes/merchant&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">customerRouder</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;./routes/service&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">orderRouder</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;./routes/order&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="c1">//使用路由
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&#34;/api/merchant&#34;</span><span class="p">,</span> <span class="nx">merchantRouder</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&#34;/api/service&#34;</span><span class="p">,</span> <span class="nx">customerRouder</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&#34;/api/order&#34;</span><span class="p">,</span> <span class="nx">orderRouder</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="c1">//启动
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8080</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;服务器启动成功！&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;http://localhost:8080&#34;</span><span class="p">);</span>
@@ -941,17 +941,17 @@
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">pool</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;../db&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//获取商家列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">getMerchantList</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">getMerchantList</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">//执行
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">pool</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="sb">`SELECT * FROM merchants`</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">pool</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="sb">`SELECT * FROM merchants`</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">code</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">message</span><span class="o">:</span> <span class="s2">&#34;获取成功&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">data</span><span class="o">:</span> <span class="nx">result</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">//报错
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">code</span><span class="o">:</span> <span class="mi">500</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">message</span><span class="o">:</span> <span class="s2">&#34;获取失败&#34;</span><span class="p">,</span>
@@ -961,9 +961,9 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//新增
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">addMerchant</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">addMerchant</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">//获取数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="p">{</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">address</span><span class="p">,</span> <span class="nx">phone</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">address</span><span class="p">,</span> <span class="nx">phone</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">pool</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">      <span class="sb">`INSERT INTO merchants (name,address,phone) VALUES(?,?,?)`</span><span class="p">,</span>
@@ -975,7 +975,7 @@
 </span></span><span class="line"><span class="cl">      <span class="nx">data</span><span class="o">:</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">result</span><span class="p">.</span><span class="nx">insertId</span> <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">//报错
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">code</span><span class="o">:</span> <span class="mi">500</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">message</span><span class="o">:</span> <span class="s2">&#34;添加失败&#34;</span><span class="p">,</span>
@@ -986,7 +986,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 审核商家（更新状态）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">approveMerchant</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">approveMerchant</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">id</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">pool</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span>
@@ -1039,18 +1039,18 @@
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">express</span><span class="p">.</span><span class="nx">Router</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//引入控制器
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">merchantCtrl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;../controllers/merchantCtrl&#34;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">merchantCtrl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;../controllers/merchantCtrl&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//发送到/add，用什么文件的什么方法处理
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&#34;/add&#34;</span><span class="p">,</span> <span class="nx">merchantCtrl</span><span class="p">.</span><span class="nx">addMerchant</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&#34;/add&#34;</span><span class="p">,</span> <span class="nx">merchantCtrl</span><span class="p">.</span><span class="nx">addMerchant</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;/list&#34;</span><span class="p">,</span> <span class="nx">merchantCtrl</span><span class="p">.</span><span class="nx">getMerchantList</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 审核商家
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s2">&#34;/approve/:id&#34;</span><span class="p">,</span> <span class="nx">merchantCtrl</span><span class="p">.</span><span class="nx">approveMerchant</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s2">&#34;/approve/:id&#34;</span><span class="p">,</span> <span class="nx">merchantCtrl</span><span class="p">.</span><span class="nx">approveMerchant</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//导出让add.js使用
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">router</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">router</span><span class="p">;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="35-服务控制器-controllersservicectrljs">3.5 服务控制器 (controllers/serviceCtrl.js)
@@ -1158,7 +1158,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 既满足了前端展示 “服务所属商家” 的业务需求
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 即使右表（merchants）中没有匹配的记录
 </span></span></span><span class="line"><span class="cl"><span class="c1">// （比如商家被删除，但服务记录未清理），左表（services）的记录依然会被返回（此时商家名称为 NULL）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">getServices</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">getServices</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">category</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">sql</span> <span class="o">=</span> <span class="sb">`
 </span></span></span><span class="line"><span class="cl"><span class="sb">    SELECT s.*,m.name AS merchant_name
@@ -1168,8 +1168,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="sb">    `</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">[];</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// 根据前端传递的分类参数（category）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// 动态为 SQL 查询添加 “服务分类” 筛选条件，实现 “按分类筛选服务列表” 的功能，同时兼顾灵活性和安全性。
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="nx">category</span> <span class="o">&amp;&amp;</span> <span class="nx">category</span> <span class="o">!==</span> <span class="s2">&#34;all&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// 动态为 SQL 查询添加 “服务分类” 筛选条件，实现 “按分类筛选服务列表” 的功能，同时兼顾灵活性和安全性。
+</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">category</span> <span class="o">&amp;&amp;</span> <span class="nx">category</span> <span class="o">!==</span> <span class="s2">&#34;all&#34;</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">sql</span> <span class="o">+=</span> <span class="sb">` AND s.category=?`</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">params</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">category</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
@@ -1190,7 +1190,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//新增
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">addService</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">addService</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">merchant_id</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">price</span><span class="p">,</span> <span class="nx">category</span><span class="p">,</span> <span class="nx">image_url</span><span class="p">,</span> <span class="nx">stock</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">pool</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span>
@@ -1212,7 +1212,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 服务上架（更新状态为“上架”）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">publishService</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">publishService</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">id</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">pool</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span>
@@ -1230,7 +1230,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 服务下架（更新状态为“下架”）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">unpublishService</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">unpublishService</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">id</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">pool</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span>
@@ -1274,13 +1274,13 @@
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">serviceCtrl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;../controllers/serviceCtrl&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 获取服务列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;/list&#34;</span><span class="p">,</span> <span class="nx">serviceCtrl</span><span class="p">.</span><span class="nx">getServices</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;/list&#34;</span><span class="p">,</span> <span class="nx">serviceCtrl</span><span class="p">.</span><span class="nx">getServices</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 新增服务
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&#34;/add&#34;</span><span class="p">,</span> <span class="nx">serviceCtrl</span><span class="p">.</span><span class="nx">addService</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&#34;/add&#34;</span><span class="p">,</span> <span class="nx">serviceCtrl</span><span class="p">.</span><span class="nx">addService</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 服务上架
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s2">&#34;/publish/:id&#34;</span><span class="p">,</span> <span class="nx">serviceCtrl</span><span class="p">.</span><span class="nx">publishService</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s2">&#34;/publish/:id&#34;</span><span class="p">,</span> <span class="nx">serviceCtrl</span><span class="p">.</span><span class="nx">publishService</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s2">&#34;/unpublish/:id&#34;</span><span class="p">,</span> <span class="nx">serviceCtrl</span><span class="p">.</span><span class="nx">unpublishService</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
@@ -1363,7 +1363,7 @@
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">pool</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;../db&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//创建定单
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">createOrder</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">createOrder</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">service_id</span><span class="p">,</span> <span class="nx">user_name</span><span class="p">,</span> <span class="nx">user_phone</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">result</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">pool</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span>
@@ -1391,11 +1391,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 第一次添加条件时需要写 WHERE o.status = ?，第二次添加才写 AND ...，代码里就要判断 “是不是第一个条件”，很麻烦。
 </span></span></span><span class="line"><span class="cl"><span class="c1">// 有了 1=1 后，不管后面加多少条件，直接用 AND ... 拼接就行
 </span></span></span><span class="line"><span class="cl"><span class="c1">// （比如 WHERE 1=1 AND o.status=? AND o.user_id=?），简化了动态条件的拼接逻辑。
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//stayus 0:待处理 1:处理中 2:完成
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//获取定单列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">exports</span><span class="p">.</span><span class="nx">getOrders</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">exports</span><span class="p">.</span><span class="nx">getOrders</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">status</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">sql</span> <span class="o">=</span> <span class="sb">`SELECT o.*,
@@ -1412,7 +1412,7 @@
 </span></span><span class="line"><span class="cl">      <span class="nx">params</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">status</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">//加一个空格
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">sql</span> <span class="o">+=</span> <span class="sb">` ORDER BY o.create_time DESC`</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">sql</span> <span class="o">+=</span> <span class="sb">` ORDER BY o.create_time DESC`</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">row</span><span class="p">]</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">pool</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="nx">sql</span><span class="p">,</span> <span class="nx">params</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
@@ -1451,10 +1451,10 @@
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">orderCtrl</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;../controllers/orderCtrl&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 创建订单
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&#34;/create&#34;</span><span class="p">,</span> <span class="nx">orderCtrl</span><span class="p">.</span><span class="nx">createOrder</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&#34;/create&#34;</span><span class="p">,</span> <span class="nx">orderCtrl</span><span class="p">.</span><span class="nx">createOrder</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 获取订单列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;/list&#34;</span><span class="p">,</span> <span class="nx">orderCtrl</span><span class="p">.</span><span class="nx">getOrders</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;/list&#34;</span><span class="p">,</span> <span class="nx">orderCtrl</span><span class="p">.</span><span class="nx">getOrders</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">router</span><span class="p">;</span>
 </span></span></code></pre></td></tr></table>
@@ -1628,48 +1628,48 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 1. 导入创建路由的工具
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">createRouter</span><span class="p">,</span> <span class="nx">createWebHistory</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;vue-router&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">// createRouter：用来创建路由实例（相当于“接待员”本身）
 </span></span></span><span class="line"><span class="cl"><span class="c1">// createWebHistory：路由模式（用无#号的URL，比如 http://localhost:8080/service，更美观）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 2. 导入需要跳转的页面组件（“房间”本身）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">Merchant</span> <span class="nx">from</span> <span class="s2">&#34;../views/Merchant/index.vue&#34;</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Merchant</span> <span class="nx">from</span> <span class="s2">&#34;../views/Merchant/index.vue&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Service</span> <span class="nx">from</span> <span class="s2">&#34;../views/Service/index.vue&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Order</span> <span class="nx">from</span> <span class="s2">&#34;../views/Order/index.vue&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 3. 定义“地址→页面”的对应规则（“房间号→房间”的对照表）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">[</span>
 </span></span><span class="line"><span class="cl">  <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s2">&#34;/&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">redirect</span><span class="o">:</span> <span class="s2">&#34;/merchant&#34;</span><span class="p">,</span> <span class="c1">// 核心：访问 &#34;/&#34; 时自动跳转到 &#34;/merchant&#34;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s2">&#34;/merchant&#34;</span><span class="p">,</span> <span class="c1">// 地址：网站根路径（http://localhost:8080/）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">component</span><span class="o">:</span> <span class="nx">Merchant</span><span class="p">,</span> <span class="c1">// 对应页面：商家管理页
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;商家管理&#34;</span><span class="p">,</span> <span class="c1">// 给这个路由起个名字（方便后续引用，可选）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">component</span><span class="o">:</span> <span class="nx">Merchant</span><span class="p">,</span> <span class="c1">// 对应页面：商家管理页
+</span></span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;商家管理&#34;</span><span class="p">,</span> <span class="c1">// 给这个路由起个名字（方便后续引用，可选）
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s2">&#34;/service&#34;</span><span class="p">,</span> <span class="c1">// 地址：/service（http://localhost:8080/service）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;服务管理&#34;</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;服务管理&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">component</span><span class="o">:</span> <span class="nx">Service</span><span class="p">,</span> <span class="c1">// 对应页面：服务管理页
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">path</span><span class="o">:</span> <span class="s2">&#34;/order&#34;</span><span class="p">,</span> <span class="c1">// 地址：/order（http://localhost:8080/order）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;订单管理&#34;</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;订单管理&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">component</span><span class="o">:</span> <span class="nx">Order</span><span class="p">,</span> <span class="c1">// 对应页面：订单管理页
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">];</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 4. 创建路由实例（初始化“接待员”，告诉他规则和工作模式）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">createRouter</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">createRouter</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">history</span><span class="o">:</span> <span class="nx">createWebHistory</span><span class="p">(),</span> <span class="c1">// 用无#号的URL模式
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">routes</span><span class="p">,</span> <span class="c1">// 刚才定义的“地址→页面”规则
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">routes</span><span class="p">,</span> <span class="c1">// 刚才定义的“地址→页面”规则
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 5. 导出路由实例，让整个项目能用（把“接待员”安排到酒店工作）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="k">default</span> <span class="nx">router</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="nx">router</span><span class="p">;</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="第-4-步封装-api-请求">第 4 步：封装 API 请求
@@ -1710,7 +1710,7 @@
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;/api/merchant/list&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// 审核商家
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">approveMerchant</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">approveMerchant</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="sb">`/api/merchant/approve/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
@@ -1794,13 +1794,13 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">const</span> <span class="nx">orderAPI</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// 获取订单列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">getOrders</span><span class="o">:</span> <span class="p">(</span><span class="nx">status</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">getOrders</span><span class="o">:</span> <span class="p">(</span><span class="nx">status</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">status</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="o">?</span> <span class="p">{</span> <span class="nx">status</span> <span class="p">}</span> <span class="o">:</span> <span class="p">{};</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;/order/list&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">params</span> <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 创建订单
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">createOrder</span><span class="o">:</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">createOrder</span><span class="o">:</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&#34;/order/add&#34;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
@@ -2191,25 +2191,25 @@
 </span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;form-group&#34;</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">v-model</span><span class="o">=</span><span class="s">&#34;newMerchant.name&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;商家名称&#34;</span>
+</span></span></span><span class="line"><span class="cl">          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;商家名称&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="na">class</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">:disabled</span><span class="o">=</span><span class="s">&#34;isSubmitting&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">/&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">v-model</span><span class="o">=</span><span class="s">&#34;newMerchant.address&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;商家地址&#34;</span>
+</span></span></span><span class="line"><span class="cl">          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;商家地址&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="na">class</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">:disabled</span><span class="o">=</span><span class="s">&#34;isSubmitting&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">/&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">v-model</span><span class="o">=</span><span class="s">&#34;newMerchant.phone&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;联系电话&#34;</span>
+</span></span></span><span class="line"><span class="cl">          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;联系电话&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="na">class</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">:disabled</span><span class="o">=</span><span class="s">&#34;isSubmitting&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">/&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">button</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">@click</span><span class="s">=&#34;addMerchant&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>          <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-primary&#34;</span>
+</span></span></span><span class="line"><span class="cl">          <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-primary&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">:disabled</span><span class="o">=</span><span class="s">&#34;isSubmitting&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">          <span class="p">{{</span> <span class="nx">isSubmitting</span> <span class="o">?</span> <span class="s2">&#34;提交中...&#34;</span> <span class="o">:</span> <span class="s2">&#34;添加商家&#34;</span> <span class="p">}}</span>
@@ -2264,8 +2264,8 @@
 </span></span><span class="line"><span class="cl">              <span class="p">&lt;</span><span class="nt">button</span>
 </span></span><span class="line"><span class="cl">                <span class="na">class</span><span class="o">=</span><span class="s">&#34;approve-btn&#34;</span>
 </span></span><span class="line"><span class="cl">                <span class="nt">@click</span><span class="s">=&#34;handleApprove(merchant.id)&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>                <span class="nt">v-if</span><span class="o">=</span><span class="s">&#34;merchant.status === 0 &amp;&amp; !isLoading&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>                <span class="nt">:disabled</span><span class="o">=</span><span class="s">&#34;isApproving[merchant.id]&#34;</span>
+</span></span></span><span class="line"><span class="cl">                <span class="nt">v-if</span><span class="o">=</span><span class="s">&#34;merchant.status === 0 &amp;&amp; !isLoading&#34;</span><span class="p">
+</span></span></span><span class="line"><span class="cl">                <span class="nt">:disabled</span><span class="o">=</span><span class="s">&#34;isApproving[merchant.id]&#34;</span>
 </span></span><span class="line"><span class="cl">              <span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">                <span class="p">{{</span> <span class="nx">isApproving</span><span class="p">[</span><span class="nx">merchant</span><span class="p">.</span><span class="nx">id</span><span class="p">]</span> <span class="o">?</span> <span class="s2">&#34;审核中...&#34;</span> <span class="o">:</span> <span class="s2">&#34;审核通过&#34;</span> <span class="p">}}</span>
 </span></span><span class="line"><span class="cl">              <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
@@ -2289,38 +2289,38 @@
 </span></span><span class="line"><span class="cl">  <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;MerchantView&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">setup</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 商家列表数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">merchants</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">([]);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">merchants</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">([]);</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 新增商家表单数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">newMerchant</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">newMerchant</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">address</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">phone</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 加载状态（列表加载中）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">isLoading</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">isLoading</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 提交状态（新增商家时）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">isSubmitting</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">isSubmitting</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 审核状态（针对每个商家的单独加载状态，避免重复点击）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">isApproving</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">({});</span> <span class="c1">// 结构：{ 1: true, 2: false, ... }
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">isApproving</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">({});</span> <span class="c1">// 结构：{ 1: true, 2: false, ... }
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 获取商家列表（封装为独立方法，便于复用）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">getMerchants</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">getMerchants</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">isLoading</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">// 显示加载状态
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">merchantAPI</span><span class="p">.</span><span class="nx">getMerchantList</span><span class="p">();</span>
+</span></span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">merchantAPI</span><span class="p">.</span><span class="nx">getMerchantList</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">merchants</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span> <span class="o">||</span> <span class="p">[];</span> <span class="c1">// 兼容空数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;获取商家列表失败：&#34;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="s2">&#34;网络错误&#34;</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;商家列表加载失败：&#34;</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">isLoading</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">// 无论成功失败，关闭加载状态
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 新增商家
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">addMerchant</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">addMerchant</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 表单验证
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">newMerchant</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">trim</span><span class="p">())</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">newMerchant</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">trim</span><span class="p">())</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;请输入商家名称！&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
@@ -2333,62 +2333,62 @@
 </span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 简单手机号格式验证（11位数字）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="sr">/^\d{11}$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">newMerchant</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">phone</span><span class="p">))</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="sr">/^\d{11}$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">newMerchant</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">phone</span><span class="p">))</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;请输入有效的11位手机号！&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">      <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">isSubmitting</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">// 防止重复提交
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">await</span> <span class="nx">merchantAPI</span><span class="p">.</span><span class="nx">addMerchant</span><span class="p">(</span><span class="nx">newMerchant</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">await</span> <span class="nx">merchantAPI</span><span class="p">.</span><span class="nx">addMerchant</span><span class="p">(</span><span class="nx">newMerchant</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;商家添加成功！&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 清空表单
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">newMerchant</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="nx">address</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="nx">phone</span><span class="o">:</span> <span class="s2">&#34;&#34;</span> <span class="p">};</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">newMerchant</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="nx">address</span><span class="o">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="nx">phone</span><span class="o">:</span> <span class="s2">&#34;&#34;</span> <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 刷新列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">getMerchants</span><span class="p">();</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">getMerchants</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;添加商家失败：&#34;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="s2">&#34;服务器错误&#34;</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;新增商家失败：&#34;</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">isSubmitting</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">// 恢复提交状态
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 审核商家（核心补充）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">handleApprove</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">handleApprove</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 确认操作（避免误点）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">confirm</span><span class="p">(</span><span class="s2">&#34;确定要通过该商家的审核吗？&#34;</span><span class="p">))</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">confirm</span><span class="p">(</span><span class="s2">&#34;确定要通过该商家的审核吗？&#34;</span><span class="p">))</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">      <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 标记当前商家正在审核中
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">isApproving</span><span class="p">.</span><span class="nx">value</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">isApproving</span><span class="p">.</span><span class="nx">value</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="nx">await</span> <span class="nx">merchantAPI</span><span class="p">.</span><span class="nx">approveMerchant</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;商家审核通过！&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// 刷新列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">getMerchants</span><span class="p">();</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">getMerchants</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;审核失败：&#34;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="s2">&#34;服务器错误&#34;</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="sb">`审核商家</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">失败：`</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 清除审核状态
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">isApproving</span><span class="p">.</span><span class="nx">value</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">isApproving</span><span class="p">.</span><span class="nx">value</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 格式化时间（兼容空值）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">formatTime</span> <span class="o">=</span> <span class="p">(</span><span class="nx">timeString</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">formatTime</span> <span class="o">=</span> <span class="p">(</span><span class="nx">timeString</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">timeString</span><span class="p">)</span> <span class="k">return</span> <span class="s2">&#34;-&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">timeString</span><span class="p">).</span><span class="nx">toLocaleString</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 页面加载时初始化数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">onMounted</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">onMounted</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">getMerchants</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">
@@ -2400,7 +2400,7 @@
 </span></span><span class="line"><span class="cl">      <span class="nx">isApproving</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">addMerchant</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">handleApprove</span><span class="p">,</span> <span class="c1">// 导出审核方法（关键补充）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">formatTime</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">      <span class="nx">formatTime</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
@@ -3053,7 +3053,7 @@
 </span></span><span class="line"><span class="cl">          <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span><span class="nx">选择商家</span><span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">          <span class="p">&lt;</span><span class="nt">option</span>
 </span></span><span class="line"><span class="cl">            <span class="nt">v-for</span><span class="o">=</span><span class="s">&#34;merchant in merchants&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>            <span class="nt">:key</span><span class="o">=</span><span class="s">&#34;merchant.id&#34;</span>
+</span></span></span><span class="line"><span class="cl">            <span class="nt">:key</span><span class="o">=</span><span class="s">&#34;merchant.id&#34;</span>
 </span></span><span class="line"><span class="cl">            <span class="nt">:value</span><span class="o">=</span><span class="s">&#34;merchant.id&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{{</span> <span class="nx">merchant</span><span class="p">.</span><span class="nx">name</span> <span class="p">}}</span>
@@ -3061,7 +3061,7 @@
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">select</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">v-model</span><span class="o">=</span><span class="s">&#34;newService.price&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>          <span class="na">type</span><span class="o">=</span><span class="s">&#34;number&#34;</span>
+</span></span></span><span class="line"><span class="cl">          <span class="na">type</span><span class="o">=</span><span class="s">&#34;number&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;价格&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="na">class</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">/&gt;</span>
@@ -3073,13 +3073,13 @@
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">select</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">v-model</span><span class="o">=</span><span class="s">&#34;newService.stock&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>          <span class="na">type</span><span class="o">=</span><span class="s">&#34;number&#34;</span>
+</span></span></span><span class="line"><span class="cl">          <span class="na">type</span><span class="o">=</span><span class="s">&#34;number&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;库存&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="na">class</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">/&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span>
 </span></span><span class="line"><span class="cl">          <span class="nt">v-model</span><span class="o">=</span><span class="s">&#34;newService.image_url&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;图片URL&#34;</span>
+</span></span></span><span class="line"><span class="cl">          <span class="na">placeholder</span><span class="o">=</span><span class="s">&#34;图片URL&#34;</span>
 </span></span><span class="line"><span class="cl">          <span class="na">class</span><span class="o">=</span><span class="s">&#34;input&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">/&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">button</span> <span class="nt">@click</span><span class="s">=&#34;addService&#34;</span><span class="p"> </span><span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-primary&#34;</span><span class="p">&gt;</span><span class="nx">添加服务</span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
@@ -3120,17 +3120,17 @@
 </span></span><span class="line"><span class="cl">              <span class="c">&lt;!--</span> <span class="nx">上架按钮</span><span class="err">（</span><span class="nx">下架状态时显示</span><span class="err">）</span> <span class="o">--&gt;</span>
 </span></span><span class="line"><span class="cl">              <span class="p">&lt;</span><span class="nt">button</span>
 </span></span><span class="line"><span class="cl">                <span class="nt">v-if</span><span class="o">=</span><span class="s">&#34;service.status === 0&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>                <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-publish&#34;</span>
+</span></span></span><span class="line"><span class="cl">                <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-publish&#34;</span>
 </span></span><span class="line"><span class="cl">                <span class="nt">@click</span><span class="s">=&#34;handlePublish(service.id)&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>              <span class="p">&gt;</span>
+</span></span></span><span class="line"><span class="cl">              <span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">                <span class="nx">上架</span>
 </span></span><span class="line"><span class="cl">              <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">              <span class="c">&lt;!--</span> <span class="nx">下架按钮</span><span class="err">（</span><span class="nx">上架状态时显示</span><span class="err">）</span> <span class="o">--&gt;</span>
 </span></span><span class="line"><span class="cl">              <span class="p">&lt;</span><span class="nt">button</span>
 </span></span><span class="line"><span class="cl">                <span class="nt">v-else</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>                <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-unpublish&#34;</span>
+</span></span></span><span class="line"><span class="cl">                <span class="na">class</span><span class="o">=</span><span class="s">&#34;btn btn-unpublish&#34;</span>
 </span></span><span class="line"><span class="cl">                <span class="nt">@click</span><span class="s">=&#34;handleUnpublish(service.id)&#34;</span><span class="p">
-</span></span></span><span class="line"><span class="cl"><span class="p"></span>              <span class="p">&gt;</span>
+</span></span></span><span class="line"><span class="cl">              <span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">                <span class="nx">下架</span>
 </span></span><span class="line"><span class="cl">              <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">            <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
@@ -3161,7 +3161,7 @@
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 获取服务列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">getServices</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">getServices</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">serviceAPI</span><span class="p">.</span><span class="nx">getServices</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">services</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
@@ -3172,7 +3172,7 @@
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 获取商家列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">getMerchants</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">getMerchants</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">merchantAPI</span><span class="p">.</span><span class="nx">getMerchantList</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">merchants</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
@@ -3183,7 +3183,7 @@
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 新增服务
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">addService</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">addService</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span>
 </span></span><span class="line"><span class="cl">        <span class="o">!</span><span class="nx">newService</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">name</span> <span class="o">||</span>
 </span></span><span class="line"><span class="cl">        <span class="o">!</span><span class="nx">newService</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">merchant_id</span> <span class="o">||</span>
@@ -3212,24 +3212,24 @@
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 上架服务（状态更新为1）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">handlePublish</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">handlePublish</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">await</span> <span class="nx">serviceAPI</span><span class="p">.</span><span class="nx">publishService</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;服务上架成功！&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">getServices</span><span class="p">();</span> <span class="c1">// 刷新列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;上架失败！&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 下架服务（状态更新为0）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">handleUnpublish</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">handleUnpublish</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">await</span> <span class="nx">serviceAPI</span><span class="p">.</span><span class="nx">unpublishService</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;服务下架成功！&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">getServices</span><span class="p">();</span> <span class="c1">// 刷新列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;下架失败！&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
@@ -3246,8 +3246,8 @@
 </span></span><span class="line"><span class="cl">      <span class="nx">newService</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">addService</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">handlePublish</span><span class="p">,</span> <span class="c1">// 导出上架方法
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">handleUnpublish</span><span class="p">,</span> <span class="c1">// 导出下架方法
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">};</span>
+</span></span></span><span class="line"><span class="cl">      <span class="nx">handleUnpublish</span><span class="p">,</span> <span class="c1">// 导出下架方法
+</span></span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
@@ -3602,7 +3602,7 @@
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">filterStatus</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 获取订单列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">getOrders</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">status</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">getOrders</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">status</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">orderAPI</span><span class="p">.</span><span class="nx">getOrders</span><span class="p">(</span><span class="nx">status</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">orders</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
@@ -3613,17 +3613,17 @@
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 格式化时间
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">formatTime</span> <span class="o">=</span> <span class="p">(</span><span class="nx">timeString</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">formatTime</span> <span class="o">=</span> <span class="p">(</span><span class="nx">timeString</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">timeString</span><span class="p">).</span><span class="nx">toLocaleString</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 监听筛选条件变化
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">watch</span><span class="p">(</span><span class="nx">filterStatus</span><span class="p">,</span> <span class="p">(</span><span class="nx">newStatus</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">watch</span><span class="p">(</span><span class="nx">filterStatus</span><span class="p">,</span> <span class="p">(</span><span class="nx">newStatus</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">getOrders</span><span class="p">(</span><span class="nx">newStatus</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 页面加载时获取数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">onMounted</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">onMounted</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">getOrders</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">
@@ -3920,11 +3920,11 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 获取推荐服务
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">async</span> <span class="nx">getServices</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="kr">async</span> <span class="nx">getServices</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">services</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">request</span><span class="p">(</span><span class="s2">&#34;/service/list&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 只取前4个作为推荐
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">this</span><span class="p">.</span><span class="nx">setData</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">setData</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">services</span><span class="o">:</span> <span class="nx">services</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
 </span></span><span class="line"><span class="cl">      <span class="p">});</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
@@ -3936,7 +3936,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 跳转到服务列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">toServiceList</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">toServiceList</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">wx</span><span class="p">.</span><span class="nx">navigateTo</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="sb">`/pages/serviceList/serviceList?type=</span><span class="si">${</span><span class="nx">type</span><span class="si">}</span><span class="sb">`</span><span class="p">,</span>
@@ -3944,7 +3944,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 跳转到订单列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">toOrderList</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">toOrderList</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">wx</span><span class="p">.</span><span class="nx">navigateTo</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/pages/orderList/orderList&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
@@ -4523,7 +4523,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 获取服务列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">async</span> <span class="nx">getServices</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="kr">async</span> <span class="nx">getServices</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">{</span> <span class="nx">activeCategory</span><span class="p">,</span> <span class="nx">searchKeyword</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
@@ -4531,7 +4531,7 @@
 </span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">services</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">request</span><span class="p">(</span><span class="s2">&#34;/service/list&#34;</span><span class="p">,</span> <span class="s2">&#34;GET&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">category</span> <span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">      <span class="c1">// 前端搜索过滤
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="nx">searchKeyword</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">searchKeyword</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">services</span> <span class="o">=</span> <span class="nx">services</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">          <span class="p">(</span><span class="nx">service</span><span class="p">)</span> <span class="p">=&gt;</span>
 </span></span><span class="line"><span class="cl">            <span class="nx">service</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">searchKeyword</span><span class="p">)</span> <span class="o">||</span>
@@ -4549,7 +4549,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 切换分类
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">switchCategory</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">switchCategory</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">category</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">category</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">setData</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">activeCategory</span><span class="o">:</span> <span class="nx">category</span><span class="p">,</span>
@@ -4559,17 +4559,17 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 搜索输入
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">onSearchInput</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">onSearchInput</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">setData</span><span class="p">({</span> <span class="nx">searchKeyword</span><span class="o">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">detail</span><span class="p">.</span><span class="nx">value</span> <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 执行搜索
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">onSearch</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">onSearch</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">getServices</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 跳转到下单页面（修改后）
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">toOrderCreate</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">toOrderCreate</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">service</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">wx</span><span class="p">.</span><span class="nx">navigateTo</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="sb">`/pages/orderCreate/orderCreate?service=</span><span class="si">${</span><span class="nb">encodeURIComponent</span><span class="p">(</span>
@@ -5098,20 +5098,20 @@
 </span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="p">.</span><span class="nx">setData</span><span class="p">({</span> <span class="nx">service</span> <span class="p">});</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 3. 捕获解析错误，避免页面崩溃并提示用户
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;服务信息解析失败：&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;服务信息解析失败：&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">wx</span><span class="p">.</span><span class="nx">showToast</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">          <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;服务信息错误&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">          <span class="nx">icon</span><span class="o">:</span> <span class="s2">&#34;none&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">          <span class="nx">duration</span><span class="o">:</span> <span class="mi">2000</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="p">});</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 解析失败时返回上一页
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">          <span class="nx">wx</span><span class="p">.</span><span class="nx">navigateBack</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">        <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 没有传递 service 参数时的提示
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">wx</span><span class="p">.</span><span class="nx">showToast</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl">      <span class="nx">wx</span><span class="p">.</span><span class="nx">showToast</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;未获取到服务信息&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">icon</span><span class="o">:</span> <span class="s2">&#34;none&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">duration</span><span class="o">:</span> <span class="mi">2000</span><span class="p">,</span>
@@ -5123,21 +5123,21 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 输入用户姓名
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">onNameInput</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">onNameInput</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">setData</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="s2">&#34;userInfo.name&#34;</span><span class="o">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">detail</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 输入用户电话
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">onPhoneInput</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">onPhoneInput</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">setData</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">      <span class="s2">&#34;userInfo.phone&#34;</span><span class="o">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">detail</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 提交订单
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">async</span> <span class="nx">submitOrder</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="kr">async</span> <span class="nx">submitOrder</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">{</span> <span class="nx">service</span><span class="p">,</span> <span class="nx">userInfo</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">trim</span><span class="p">())</span> <span class="p">{</span>
@@ -5157,7 +5157,7 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 简单的手机号验证
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kr">const</span> <span class="nx">phoneRegex</span> <span class="o">=</span> <span class="sr">/^1[3-9]\d{9}$/</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">phoneRegex</span> <span class="o">=</span> <span class="sr">/^1[3-9]\d{9}$/</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">phoneRegex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">userInfo</span><span class="p">.</span><span class="nx">phone</span><span class="p">))</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">wx</span><span class="p">.</span><span class="nx">showToast</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">title</span><span class="o">:</span> <span class="s2">&#34;请输入正确的手机号&#34;</span><span class="p">,</span>
@@ -5186,7 +5186,7 @@
 </span></span><span class="line"><span class="cl">      <span class="p">});</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">      <span class="c1">// 跳转到订单列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">wx</span><span class="p">.</span><span class="nx">navigateTo</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">          <span class="nx">url</span><span class="o">:</span> <span class="s2">&#34;/pages/orderList/orderList&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="p">});</span>
@@ -5603,7 +5603,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 获取订单列表
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">async</span> <span class="nx">getOrders</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="kr">async</span> <span class="nx">getOrders</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">orders</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">request</span><span class="p">(</span><span class="s2">&#34;/order/list&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">setData</span><span class="p">({</span> <span class="nx">orders</span> <span class="p">});</span>
@@ -5616,7 +5616,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 格式化时间
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">formatTime</span><span class="p">(</span><span class="nx">timeString</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">formatTime</span><span class="p">(</span><span class="nx">timeString</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">timeString</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sb">`</span><span class="si">${</span><span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">()</span><span class="si">}</span><span class="sb">-</span><span class="si">${</span><span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">toString</span><span class="p">()</span>
@@ -6086,13 +6086,13 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl"><span class="gh"># 全域生活服务平台
-</span></span></span><span class="line"><span class="cl"><span class="gh"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">## 项目介绍
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">一个完整的生活服务平台，包含 Web 管理后台和微信小程序。
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">## 技术栈
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">-</span> 后端：Node.js + Express + MySQL
 </span></span><span class="line"><span class="cl"><span class="k">-</span> 前端：Vue 3 + Vue Router
 </span></span><span class="line"><span class="cl"><span class="k">-</span> 小程序：微信小程序原生开发
@@ -6100,22 +6100,22 @@
 </span></span><span class="line"><span class="cl"><span class="k">-</span> 工具：DataGrip
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">## 启动步骤
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">### 后端
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">1.</span> cd server
 </span></span><span class="line"><span class="cl"><span class="k">2.</span> npm install
 </span></span><span class="line"><span class="cl"><span class="k">3.</span> 修改 db/index.js 中的数据库密码
 </span></span><span class="line"><span class="cl"><span class="k">4.</span> npm run dev
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">### Web 管理后台
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">1.</span> cd web-admin
 </span></span><span class="line"><span class="cl"><span class="k">2.</span> npm install
 </span></span><span class="line"><span class="cl"><span class="k">3.</span> npm run serve
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gu">### 小程序
-</span></span></span><span class="line"><span class="cl"><span class="gu"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">1.</span> 微信开发者工具中打开 mini-user 文件夹
 </span></span><span class="line"><span class="cl"><span class="k">2.</span> 点击预览
 </span></span></code></pre></td></tr></table>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
+<html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="由于没有后端，我来为你添加前端模拟数据和模拟 API，并解释为什么不需要处理 token。\n1. 创建模拟数据存储 首先在 src/utils/ 下创建模拟数据管理工具：\nsrc/utils/mockData.js 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 // 模拟数据存储 class MockStorage { constructor() { this.storageKey = &#34;oj_mock_data&#34;; this.initData(); } initData() { if (!localStorage.getItem(this.storageKey)) { const initialData = { problems: [ { id: 1, title: &#34;两数之和&#34;, label: &#34;数组,哈希表,简单&#34;, testPointNum: 3, description: &#34;给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那两个整数，并返回它们的数组下标。\\n\\n你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。&#34;, testPointList: [ { input: &#34;3\\n2 7 11 15\\n9&#34;, output: &#34;0 1&#34;, isSample: 1 }, { input: &#34;2\\n3 2 4\\n6&#34;, output: &#34;1 2&#34;, isSample: 0 }, { input: &#34;2\\n3 3\\n6&#34;, output: &#34;0 1&#34;, isSample: 0 }, ], createTime: &#34;2024-01-15 10:00:00&#34;, }, { id: 2, title: &#34;验证回文串&#34;, label: &#34;字符串,双指针,简单&#34;, testPointNum: 6, description: &#34;给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。\\n\\n说明：本题中，我们将空字符串定义为有效的回文串。&#34;, testPointList: [ { input: &#39;&#34;A man, a plan, a canal: Panama&#34;&#39;, output: &#34;true&#34;, isSample: 1, }, { input: &#39;&#34;race a car&#34;&#39;, output: &#34;false&#34;, isSample: 1 }, { input: &#39;&#34;&#34;&#39;, output: &#34;true&#34;, isSample: 0 }, ], createTime: &#34;2024-01-16 14:30:00&#34;, }, ], nextProblemId: 3, }; this.saveData(initialData); } } getData() { return JSON.parse(localStorage.getItem(this.storageKey)) || {}; } saveData(data) { localStorage.setItem(this.storageKey, JSON.stringify(data)); } // 获取所有题目 getProblems() { return this.getData().problems || []; } // 添加题目 addProblem(problem) { const data = this.getData(); const newProblem = { ...problem, id: data.nextProblemId++, createTime: new Date().toLocaleString(&#34;zh-CN&#34;), }; data.problems.push(newProblem); this.saveData(data); return newProblem; } // 更新题目 updateProblem(updatedProblem) { const data = this.getData(); const index = data.problems.findIndex((p) =&gt; p.id === updatedProblem.id); if (index !== -1) { data.problems[index] = { ...data.problems[index], ...updatedProblem, // 保留创建时间 createTime: data.problems[index].createTime, }; this.saveData(data); return data.problems[index]; } return null; } // 删除题目 deleteProblem(id) { const data = this.getData(); data.problems = data.problems.filter((p) =&gt; p.id !== id); this.saveData(data); return true; } // 分页查询 getProblemsByPage(pageNum = 1, size = 10) { const problems = this.getProblems(); const start = (pageNum - 1) * size; const end = start + size; const pageData = problems.slice(start, end); return { records: pageData, total: problems.length, pageNum, size, }; } // 根据ID查询 getProblemById(id) { const problems = this.getProblems(); return problems.find((p) =&gt; p.id === Number(id)); } } // 创建单例实例 export const mockStorage = new MockStorage(); 2. 修改 API 文件支持模拟数据 src/api/admin.js (更新版本) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 import request from &#34;@/utils/request&#34;; import { mockStorage } from &#34;@/utils/mockData&#34;; // 是否使用模拟数据 const USE_MOCK = true; // 模拟延迟 const mockDelay = (ms = 500) =&gt; new Promise((resolve) =&gt; setTimeout(resolve, ms)); // 题目管理接口 export const problemAdminAPI = { // 添加题目 addProblem: async (data) =&gt; { if (USE_MOCK) { await mockDelay(); const result = mockStorage.addProblem(data); return { data: result, code: 200, message: &#34;添加成功&#34; }; } return request({ url: &#34;/testQuestion/addTestQuestion&#34;, method: &#34;POST&#34;, data, }); }, // 删除题目 deleteProblem: async (id) =&gt; { if (USE_MOCK) { await mockDelay(); const success = mockStorage.deleteProblem(id); return { data: null, code: success ? 200 : 400, message: success ? &#34;删除成功&#34; : &#34;删除失败&#34;, }; } return request({ url: &#34;/testQuestion/deleteTestQuestionById&#34;, method: &#34;DELETE&#34;, data: { id }, }); }, // 更新题目 updateProblem: async (data) =&gt; { if (USE_MOCK) { await mockDelay(); const result = mockStorage.updateProblem(data); if (result) { return { data: result, code: 200, message: &#34;更新成功&#34; }; } else { return { data: null, code: 400, message: &#34;题目不存在&#34; }; } } return request({ url: &#34;/testQuestion/updateTestQuestion&#34;, method: &#34;POST&#34;, data, }); }, // 题目分页查询 getProblemsByPage: async (params) =&gt; { if (USE_MOCK) { await mockDelay(300); const { pageNum = 1, size = 10, keyword } = params; let problems = mockStorage.getProblems(); // 模拟搜索功能 if (keyword) { problems = problems.filter( (p) =&gt; p.title.toLowerCase().includes(keyword.toLowerCase()) || p.label.toLowerCase().includes(keyword.toLowerCase()) ); } const start = (pageNum - 1) * size; const end = start + size; const pageData = problems.slice(start, end); return { data: { records: pageData, total: problems.length, pageNum, size, }, code: 200, message: &#34;查询成功&#34;, }; } return request({ url: &#34;/testQuestion/getTestQuestionByPage&#34;, method: &#34;GET&#34;, params, }); }, // 根据ID查询题目 getProblemById: async (id) =&gt; { if (USE_MOCK) { await mockDelay(); const problem = mockStorage.getProblemById(id); if (problem) { return { data: problem, code: 200, message: &#34;查询成功&#34; }; } else { return { data: null, code: 404, message: &#34;题目不存在&#34; }; } } return request({ url: &#34;/testQuestion/getTestQuestionById&#34;, method: &#34;GET&#34;, params: { id }, }); }, }; 3. 更新组件处理模拟数据响应 src/components/admin/ProblemManagement.vue (关键部分更新) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 // 在 fetchProblems 方法中更新数据处理： const fetchProblems = async () =&gt; { loading.value = true; try { const params = { pageNum: pagination.value.pageNum, size: pagination.value.size, }; if (searchKeyword.value) { params.keyword = searchKeyword.value; } const response = await problemAdminAPI.getProblemsByPage(params); // 处理模拟数据和真实数据的响应格式差异 if (USE_MOCK) { problemList.value = response.data.records || []; pagination.value.total = response.data.total || 0; } else { problemList.value = response.data?.records || []; pagination.value.total = response.data?.total || 0; } } catch (error) { ElMessage.error(&#34;获取题目列表失败&#34;); console.error(&#34;获取题目列表失败:&#34;, error); } finally { loading.value = false; } }; // 在 handleDelete 方法中： const handleDelete = async (id) =&gt; { try { await ElMessageBox.confirm(&#34;确定要删除这个题目吗？&#34;, &#34;警告&#34;, { type: &#34;warning&#34;, confirmButtonText: &#34;确定&#34;, cancelButtonText: &#34;取消&#34;, }); const response = await problemAdminAPI.deleteProblem(id); // 检查响应是否成功 if (response.code === 200) { ElMessage.success(&#34;删除成功&#34;); fetchProblems(); } else { ElMessage.error(response.message || &#34;删除失败&#34;); } } catch (error) { if (error !== &#34;cancel&#34;) { ElMessage.error(&#34;删除失败&#34;); console.error(&#34;删除失败:&#34;, error); } } }; src/components/admin/ProblemForm.vue (关键部分更新) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 // 在 handleSubmit 方法中更新： const handleSubmit = async () =&gt; { try { await formRef.value.validate(); submitting.value = true; // 更新测试点数量 form.testPointNum = form.testPointList.length; const response = isEdit.value ? await problemAdminAPI.updateProblem(form) : await problemAdminAPI.addProblem(form); // 检查响应是否成功 if (response.code === 200) { ElMessage.success(isEdit.value ? &#34;更新成功&#34; : &#34;创建成功&#34;); router.push(&#34;/admin/problem&#34;); } else { ElMessage.error( response.message || (isEdit.value ? &#34;更新失败&#34; : &#34;创建失败&#34;) ); } } catch (error) { if (error instanceof Error) { ElMessage.error(isEdit.value ? &#34;更新失败&#34; : &#34;创建失败&#34;); console.error(&#34;提交失败:&#34;, error); } // 如果是验证失败，不显示错误消息 } finally { submitting.value = false; } }; // 在 fetchProblemDetail 方法中更新： const fetchProblemDetail = async (id) =&gt; { try { const response = await problemAdminAPI.getProblemById(id); if (response.code === 200 &amp;&amp; response.data) { Object.assign(form, response.data); } else { ElMessage.error(response.message || &#34;获取题目详情失败&#34;); } } catch (error) { ElMessage.error(&#34;获取题目详情失败&#34;); console.error(&#34;获取题目详情失败:&#34;, error); } }; 4. 为什么不需要处理 Token 原因分析： 模拟环境特性：\n">
 <title>校园OJ开发之admin页面的开发</title>
@@ -56,7 +56,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu_7b91b9b0026c5360.png" width="300"
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -306,7 +306,7 @@
     
     <header class="article-category">
         
-            <a href="/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/" >
+            <a href="/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/" style="background-color: ZgotmplZ; color: #ffffff;">
                 校园OJ开发
             </a>
         
@@ -505,7 +505,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 模拟数据存储
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">class</span> <span class="nx">MockStorage</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">class</span> <span class="nx">MockStorage</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">storageKey</span> <span class="o">=</span> <span class="s2">&#34;oj_mock_data&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">initData</span><span class="p">();</span>
@@ -563,12 +563,12 @@
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 获取所有题目
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">getProblems</span><span class="p">()</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">getProblems</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getData</span><span class="p">().</span><span class="nx">problems</span> <span class="o">||</span> <span class="p">[];</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 添加题目
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">addProblem</span><span class="p">(</span><span class="nx">problem</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">addProblem</span><span class="p">(</span><span class="nx">problem</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getData</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">newProblem</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="p">...</span><span class="nx">problem</span><span class="p">,</span>
@@ -581,7 +581,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 更新题目
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">updateProblem</span><span class="p">(</span><span class="nx">updatedProblem</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">updateProblem</span><span class="p">(</span><span class="nx">updatedProblem</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getData</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">problems</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">((</span><span class="nx">p</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">updatedProblem</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
@@ -589,7 +589,7 @@
 </span></span><span class="line"><span class="cl">        <span class="p">...</span><span class="nx">data</span><span class="p">.</span><span class="nx">problems</span><span class="p">[</span><span class="nx">index</span><span class="p">],</span>
 </span></span><span class="line"><span class="cl">        <span class="p">...</span><span class="nx">updatedProblem</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// 保留创建时间
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nx">createTime</span><span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">problems</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">createTime</span><span class="p">,</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nx">createTime</span><span class="o">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">problems</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">createTime</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="p">};</span>
 </span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">saveData</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="nx">data</span><span class="p">.</span><span class="nx">problems</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
@@ -598,7 +598,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 删除题目
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">deleteProblem</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">deleteProblem</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getData</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="p">.</span><span class="nx">problems</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">problems</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">p</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">id</span> <span class="o">!==</span> <span class="nx">id</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">saveData</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
@@ -606,7 +606,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 分页查询
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">getProblemsByPage</span><span class="p">(</span><span class="nx">pageNum</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">getProblemsByPage</span><span class="p">(</span><span class="nx">pageNum</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">problems</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getProblems</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">start</span> <span class="o">=</span> <span class="p">(</span><span class="nx">pageNum</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">size</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">start</span> <span class="o">+</span> <span class="nx">size</span><span class="p">;</span>
@@ -621,14 +621,14 @@
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 根据ID查询
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">getProblemById</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">getProblemById</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">problems</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getProblems</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">problems</span><span class="p">.</span><span class="nx">find</span><span class="p">((</span><span class="nx">p</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">id</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 创建单例实例
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kr">const</span> <span class="nx">mockStorage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MockStorage</span><span class="p">();</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">const</span> <span class="nx">mockStorage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MockStorage</span><span class="p">();</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="2-修改-api-文件支持模拟数据">2. 修改 API 文件支持模拟数据
@@ -765,16 +765,16 @@
 </span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">mockStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&#34;@/utils/mockData&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 是否使用模拟数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">USE_MOCK</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">USE_MOCK</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 模拟延迟
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">mockDelay</span> <span class="o">=</span> <span class="p">(</span><span class="nx">ms</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span> <span class="p">=&gt;</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">mockDelay</span> <span class="o">=</span> <span class="p">(</span><span class="nx">ms</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span> <span class="p">=&gt;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">ms</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 题目管理接口
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">export</span> <span class="kr">const</span> <span class="nx">problemAdminAPI</span> <span class="o">=</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">const</span> <span class="nx">problemAdminAPI</span> <span class="o">=</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// 添加题目
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">addProblem</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">addProblem</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">USE_MOCK</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">await</span> <span class="nx">mockDelay</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">mockStorage</span><span class="p">.</span><span class="nx">addProblem</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
@@ -789,7 +789,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 删除题目
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">deleteProblem</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">deleteProblem</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">USE_MOCK</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">await</span> <span class="nx">mockDelay</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">success</span> <span class="o">=</span> <span class="nx">mockStorage</span><span class="p">.</span><span class="nx">deleteProblem</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
@@ -808,7 +808,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 更新题目
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">updateProblem</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">updateProblem</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">USE_MOCK</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">await</span> <span class="nx">mockDelay</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">mockStorage</span><span class="p">.</span><span class="nx">updateProblem</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
@@ -827,7 +827,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 题目分页查询
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">getProblemsByPage</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">getProblemsByPage</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">params</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">USE_MOCK</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">await</span> <span class="nx">mockDelay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="p">{</span> <span class="nx">pageNum</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">keyword</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">params</span><span class="p">;</span>
@@ -835,7 +835,7 @@
 </span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">problems</span> <span class="o">=</span> <span class="nx">mockStorage</span><span class="p">.</span><span class="nx">getProblems</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">      <span class="c1">// 模拟搜索功能
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="k">if</span> <span class="p">(</span><span class="nx">keyword</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">keyword</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">problems</span> <span class="o">=</span> <span class="nx">problems</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">          <span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">=&gt;</span>
 </span></span><span class="line"><span class="cl">            <span class="nx">p</span><span class="p">.</span><span class="nx">title</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="nx">keyword</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">())</span> <span class="o">||</span>
@@ -867,7 +867,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">},</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// 根据ID查询题目
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nx">getProblemById</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="nx">getProblemById</span><span class="o">:</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">USE_MOCK</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">await</span> <span class="nx">mockDelay</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">problem</span> <span class="o">=</span> <span class="nx">mockStorage</span><span class="p">.</span><span class="nx">getProblemById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
@@ -950,7 +950,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 在 fetchProblems 方法中更新数据处理：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">fetchProblems</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">fetchProblems</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">loading</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
@@ -965,7 +965,7 @@
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">problemAdminAPI</span><span class="p">.</span><span class="nx">getProblemsByPage</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 处理模拟数据和真实数据的响应格式差异
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">USE_MOCK</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">USE_MOCK</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">problemList</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">records</span> <span class="o">||</span> <span class="p">[];</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">pagination</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">total</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">total</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -981,7 +981,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 在 handleDelete 方法中：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">handleDelete</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">handleDelete</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">await</span> <span class="nx">ElMessageBox</span><span class="p">.</span><span class="nx">confirm</span><span class="p">(</span><span class="s2">&#34;确定要删除这个题目吗？&#34;</span><span class="p">,</span> <span class="s2">&#34;警告&#34;</span><span class="p">,</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">type</span><span class="o">:</span> <span class="s2">&#34;warning&#34;</span><span class="p">,</span>
@@ -992,7 +992,7 @@
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">problemAdminAPI</span><span class="p">.</span><span class="nx">deleteProblem</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 检查响应是否成功
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="s2">&#34;删除成功&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">fetchProblems</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -1061,21 +1061,21 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 在 handleSubmit 方法中更新：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">handleSubmit</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">handleSubmit</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">await</span> <span class="nx">formRef</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">validate</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nx">submitting</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 更新测试点数量
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">form</span><span class="p">.</span><span class="nx">testPointNum</span> <span class="o">=</span> <span class="nx">form</span><span class="p">.</span><span class="nx">testPointList</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">form</span><span class="p">.</span><span class="nx">testPointNum</span> <span class="o">=</span> <span class="nx">form</span><span class="p">.</span><span class="nx">testPointList</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">isEdit</span><span class="p">.</span><span class="nx">value</span>
 </span></span><span class="line"><span class="cl">      <span class="o">?</span> <span class="kr">await</span> <span class="nx">problemAdminAPI</span><span class="p">.</span><span class="nx">updateProblem</span><span class="p">(</span><span class="nx">form</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">      <span class="o">:</span> <span class="kr">await</span> <span class="nx">problemAdminAPI</span><span class="p">.</span><span class="nx">addProblem</span><span class="p">(</span><span class="nx">form</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// 检查响应是否成功
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">ElMessage</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="nx">isEdit</span><span class="p">.</span><span class="nx">value</span> <span class="o">?</span> <span class="s2">&#34;更新成功&#34;</span> <span class="o">:</span> <span class="s2">&#34;创建成功&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">router</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">&#34;/admin/problem&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -1089,13 +1089,13 @@
 </span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&#34;提交失败:&#34;</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 如果是验证失败，不显示错误消息
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">submitting</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 在 fetchProblemDetail 方法中更新：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">fetchProblemDetail</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">fetchProblemDetail</span> <span class="o">=</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">problemAdminAPI</span><span class="p">.</span><span class="nx">getProblemById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
@@ -1167,10 +1167,10 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// 在 src/utils/request.js 中已经有类似的代码：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">store</span> <span class="nx">from</span> <span class="s2">&#34;@/store&#34;</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">store</span> <span class="nx">from</span> <span class="s2">&#34;@/store&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 请求拦截器 - 添加 token
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">service</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">service</span><span class="p">.</span><span class="nx">interceptors</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nx">config</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">store</span><span class="p">.</span><span class="nx">getters</span><span class="p">.</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">config</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s2">&#34;Authorization&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="sb">`Bearer </span><span class="si">${</span><span class="nx">store</span><span class="p">.</span><span class="nx">getters</span><span class="p">.</span><span class="nx">token</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>

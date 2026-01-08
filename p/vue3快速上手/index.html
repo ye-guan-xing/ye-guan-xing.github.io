@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
+<html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Vue3快速上手 1.Vue3简介 2020年9月18日，Vue.js发布3.0版本，代号：One Piece（海贼王） 耗时2年多、2600+次提交、30+个RFC、600+次PR、99位贡献者 github上的tags地址：https://github.com/vuejs/vue-next/releases/tag/v3.0.0 2.Vue3带来了什么 1.性能的提升 打包大小减少41%\n">
 <title>vue3快速上手</title>
@@ -56,7 +56,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu_7b91b9b0026c5360.png" width="300"
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -664,15 +664,15 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">new</span> <span class="nb">Proxy</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">	<span class="c1">// 拦截读取属性值
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">get</span> <span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">prop</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">get</span> <span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">prop</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    	<span class="k">return</span> <span class="nx">Reflect</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">prop</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 拦截设置属性值或添加新属性
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">set</span> <span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">prop</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">set</span> <span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">prop</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    	<span class="k">return</span> <span class="nx">Reflect</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">prop</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">},</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// 拦截删除属性
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nx">deleteProperty</span> <span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">prop</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="nx">deleteProperty</span> <span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">prop</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    	<span class="k">return</span> <span class="nx">Reflect</span><span class="p">.</span><span class="nx">deleteProperty</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">prop</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
@@ -767,11 +767,11 @@
 </span></span><span class="line"><span class="cl"><span class="nx">setup</span><span class="p">(){</span>
 </span></span><span class="line"><span class="cl">    <span class="p">...</span>
 </span></span><span class="line"><span class="cl">	<span class="c1">//计算属性——简写
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">let</span> <span class="nx">fullName</span> <span class="o">=</span> <span class="nx">computed</span><span class="p">(()=&gt;{</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">fullName</span> <span class="o">=</span> <span class="nx">computed</span><span class="p">(()=&gt;{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">person</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nx">person</span><span class="p">.</span><span class="nx">lastName</span>
 </span></span><span class="line"><span class="cl">    <span class="p">})</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">//计算属性——完整
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kd">let</span> <span class="nx">fullName</span> <span class="o">=</span> <span class="nx">computed</span><span class="p">({</span>
+</span></span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">fullName</span> <span class="o">=</span> <span class="nx">computed</span><span class="p">({</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">get</span><span class="p">(){</span>
 </span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nx">person</span><span class="p">.</span><span class="nx">firstName</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nx">person</span><span class="p">.</span><span class="nx">lastName</span>
 </span></span><span class="line"><span class="cl">        <span class="p">},</span>
@@ -834,12 +834,12 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">//情况一：监视ref定义的响应式数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">watch</span><span class="p">(</span><span class="nx">sum</span><span class="p">,(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">watch</span><span class="p">(</span><span class="nx">sum</span><span class="p">,(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;sum变化了&#39;</span><span class="p">,</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">},{</span><span class="nx">immediate</span><span class="o">:</span><span class="kc">true</span><span class="p">})</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//情况二：监视多个ref定义的响应式数据
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">watch</span><span class="p">([</span><span class="nx">sum</span><span class="p">,</span><span class="nx">msg</span><span class="p">],(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">watch</span><span class="p">([</span><span class="nx">sum</span><span class="p">,</span><span class="nx">msg</span><span class="p">],(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;sum或msg变化了&#39;</span><span class="p">,</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">})</span> 
 </span></span><span class="line"><span class="cl">
@@ -850,19 +850,19 @@
 </span></span><span class="line"><span class="cl"><span class="nx">watch</span><span class="p">(</span><span class="nx">person</span><span class="p">,(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;person变化了&#39;</span><span class="p">,</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">},{</span><span class="nx">immediate</span><span class="o">:</span><span class="kc">true</span><span class="p">,</span><span class="nx">deep</span><span class="o">:</span><span class="kc">false</span><span class="p">})</span> <span class="c1">//此处的deep配置不再奏效
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//情况四：监视reactive定义的响应式数据中的某个属性
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">watch</span><span class="p">(()=&gt;</span><span class="nx">person</span><span class="p">.</span><span class="nx">job</span><span class="p">,(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">watch</span><span class="p">(()=&gt;</span><span class="nx">person</span><span class="p">.</span><span class="nx">job</span><span class="p">,(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;person的job变化了&#39;</span><span class="p">,</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">},{</span><span class="nx">immediate</span><span class="o">:</span><span class="kc">true</span><span class="p">,</span><span class="nx">deep</span><span class="o">:</span><span class="kc">true</span><span class="p">})</span> 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//情况五：监视reactive定义的响应式数据中的某些属性
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">watch</span><span class="p">([()=&gt;</span><span class="nx">person</span><span class="p">.</span><span class="nx">job</span><span class="p">,()=&gt;</span><span class="nx">person</span><span class="p">.</span><span class="nx">name</span><span class="p">],(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">watch</span><span class="p">([()=&gt;</span><span class="nx">person</span><span class="p">.</span><span class="nx">job</span><span class="p">,()=&gt;</span><span class="nx">person</span><span class="p">.</span><span class="nx">name</span><span class="p">],(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
 </span></span><span class="line"><span class="cl">	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;person的job变化了&#39;</span><span class="p">,</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">},{</span><span class="nx">immediate</span><span class="o">:</span><span class="kc">true</span><span class="p">,</span><span class="nx">deep</span><span class="o">:</span><span class="kc">true</span><span class="p">})</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//特殊情况
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">watch</span><span class="p">(()=&gt;</span><span class="nx">person</span><span class="p">.</span><span class="nx">job</span><span class="p">,(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">watch</span><span class="p">(()=&gt;</span><span class="nx">person</span><span class="p">.</span><span class="nx">job</span><span class="p">,(</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)=&gt;{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;person的job变化了&#39;</span><span class="p">,</span><span class="nx">newValue</span><span class="p">,</span><span class="nx">oldValue</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">},{</span><span class="nx">deep</span><span class="o">:</span><span class="kc">true</span><span class="p">})</span> <span class="c1">//此处由于监视的是reactive素定义的对象中的某个属性，所以deep配置有效
 </span></span></span></code></pre></td></tr></table>
@@ -894,7 +894,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">//watchEffect所指定的回调中用到的数据只要发生变化，则直接重新执行回调。
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">watchEffect</span><span class="p">(()=&gt;{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">watchEffect</span><span class="p">(()=&gt;{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">x1</span> <span class="o">=</span> <span class="nx">sum</span><span class="p">.</span><span class="nx">value</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">x2</span> <span class="o">=</span> <span class="nx">person</span><span class="p">.</span><span class="nx">age</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;watchEffect配置的回调执行了&#39;</span><span class="p">)</span>
@@ -1056,28 +1056,28 @@
 </span></span><span class="line"><span class="cl">		<span class="nx">name</span><span class="o">:</span><span class="s1">&#39;Demo&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">		<span class="nx">setup</span><span class="p">(){</span>
 </span></span><span class="line"><span class="cl">			<span class="c1">// let keyword = ref(&#39;hello&#39;) //使用Vue准备好的内置ref
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="c1">//自定义一个myRef
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="kd">function</span> <span class="nx">myRef</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span><span class="nx">delay</span><span class="p">){</span>
+</span></span></span><span class="line"><span class="cl">			<span class="c1">//自定义一个myRef
+</span></span></span><span class="line"><span class="cl">			<span class="kd">function</span> <span class="nx">myRef</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span><span class="nx">delay</span><span class="p">){</span>
 </span></span><span class="line"><span class="cl">				<span class="kd">let</span> <span class="nx">timer</span>
 </span></span><span class="line"><span class="cl">				<span class="c1">//通过customRef去实现自定义
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>				<span class="k">return</span> <span class="nx">customRef</span><span class="p">((</span><span class="nx">track</span><span class="p">,</span><span class="nx">trigger</span><span class="p">)=&gt;{</span>
+</span></span></span><span class="line"><span class="cl">				<span class="k">return</span> <span class="nx">customRef</span><span class="p">((</span><span class="nx">track</span><span class="p">,</span><span class="nx">trigger</span><span class="p">)=&gt;{</span>
 </span></span><span class="line"><span class="cl">					<span class="k">return</span><span class="p">{</span>
 </span></span><span class="line"><span class="cl">						<span class="nx">get</span><span class="p">(){</span>
 </span></span><span class="line"><span class="cl">							<span class="nx">track</span><span class="p">()</span> <span class="c1">//告诉Vue这个value值是需要被“追踪”的
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>							<span class="k">return</span> <span class="nx">value</span>
+</span></span></span><span class="line"><span class="cl">							<span class="k">return</span> <span class="nx">value</span>
 </span></span><span class="line"><span class="cl">						<span class="p">},</span>
 </span></span><span class="line"><span class="cl">						<span class="nx">set</span><span class="p">(</span><span class="nx">newValue</span><span class="p">){</span>
 </span></span><span class="line"><span class="cl">							<span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timer</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">							<span class="nx">timer</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(()=&gt;{</span>
 </span></span><span class="line"><span class="cl">								<span class="nx">value</span> <span class="o">=</span> <span class="nx">newValue</span>
 </span></span><span class="line"><span class="cl">								<span class="nx">trigger</span><span class="p">()</span> <span class="c1">//告诉Vue去更新界面
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>							<span class="p">},</span><span class="nx">delay</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl">							<span class="p">},</span><span class="nx">delay</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">						<span class="p">}</span>
 </span></span><span class="line"><span class="cl">					<span class="p">}</span>
 </span></span><span class="line"><span class="cl">				<span class="p">})</span>
 </span></span><span class="line"><span class="cl">			<span class="p">}</span>
 </span></span><span class="line"><span class="cl">			<span class="kd">let</span> <span class="nx">keyword</span> <span class="o">=</span> <span class="nx">myRef</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span> <span class="c1">//使用程序员自定义的ref
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="k">return</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">				<span class="nx">keyword</span>
 </span></span><span class="line"><span class="cl">			<span class="p">}</span>
 </span></span><span class="line"><span class="cl">		<span class="p">}</span>
@@ -1287,7 +1287,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">//注册全局组件
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">Vue</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="s1">&#39;MyButton&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="s1">&#39;MyButton&#39;</span><span class="p">,</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">({</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">count</span><span class="o">:</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}),</span>
@@ -1295,7 +1295,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">//注册全局指令
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">Vue</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="s1">&#39;focus&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">directive</span><span class="p">(</span><span class="s1">&#39;focus&#39;</span><span class="p">,</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">inserted</span><span class="o">:</span> <span class="nx">el</span> <span class="p">=&gt;</span> <span class="nx">el</span><span class="p">.</span><span class="nx">focus</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>

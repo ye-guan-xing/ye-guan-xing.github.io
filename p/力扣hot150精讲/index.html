@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
+<html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="说明 我这里写个是为了做一下整理 我觉得有趣，如果开发累了，可以换一换脑子 注：题目可直抵题目，所以不写题目内容 题目讲解 两数之和 哈哈哈,虽然这是讲 hot150,但是这道题还是 要说说的 暴力法 暴力法就是遍历所有数，然后两两相加，如果和等于目标值，则返回结果，否则返回-1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 class Solution { public: vector&lt;int&gt; twoSum(std::vector&lt;int&gt;&amp; nums, int target) { int n = nums.size(); for (int i = 0; i &lt; n; i++) { for (int j = i + 1; j &lt; n; j++) { if (nums[i] + nums[j] == target) { return {i, j}; } } } return {}; } }; 哈希表 哈希表就是将数组中的数作为键，索引作为值，然后遍历数组，将每个数作为键，索引作为值，如果哈希表中存在目标值，则返回结果，否则返回-1 时间复杂度：O(n) 为什么可以优化时间呢？ 因为哈希表的查找时间杂度是 O(1)，而数组的查找时间复杂度是 O(n)，所以哈希表可以提高查找效率。\n">
 <title>力扣hot150(精讲)</title>
@@ -56,7 +56,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu_7b91b9b0026c5360.png" width="300"
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -513,7 +513,7 @@
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="c1">//从0开始计数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -554,7 +554,7 @@
 </span></span><span class="line"><span class="cl">                <span class="n">j</span><span class="o">++</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">//相同则跳过
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">j</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
@@ -772,7 +772,7 @@
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">        <span class="n">mp</span><span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//这两步写完，才算完成。
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">remove</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
