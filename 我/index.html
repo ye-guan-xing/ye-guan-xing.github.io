@@ -387,21 +387,43 @@
     
 
     <script>
-  
   function isLocalhost() {
     const ip = window.location.hostname;
-    return ip === "localhost";
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
   }
 
-  if (!isLocalhost()) {
-    
+  function loadBusuanzi() {
+    if (isLocalhost()) {
+      setTimeout(() => {
+        document.getElementById("busuanzi_value_site_uv").textContent =
+          "本地预览不计";
+        document.getElementById("busuanzi_value_site_pv").textContent =
+          "本地预览不计";
+      }, 100);
+      return;
+    }
+
     const script = document.createElement("script");
-    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.src =
+      "https://cdn.bootcdn.net/ajax/libs/busuanzi/2.3/busuanzi.pure.mini.js";
     script.async = true;
+
+    script.onerror = function () {
+      document.getElementById("busuanzi_value_site_uv").textContent =
+        "统计加载失败";
+      document.getElementById("busuanzi_value_site_pv").textContent =
+        "统计加载失败";
+    };
+
     document.head.appendChild(script);
   }
-</script>
 
+  loadBusuanzi();
+</script>
 
 <div
   style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
