@@ -567,109 +567,38 @@
             
     </nav>
 
-<div
-  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
->
-  <span id="busuanzi_container_site_uv"
-    >本站访客：<span id="busuanzi_value_site_uv">加载中...</span> 人</span
-  >
-  ·
-  <span id="busuanzi_container_site_pv"
-    >总访问量：<span id="busuanzi_value_site_pv">加载中...</span> 次</span
-  >
-</div>
-
 <script>
+  
   function isLocalhost() {
     const ip = window.location.hostname;
     return (
       ip === "localhost" ||
       ip === "127.0.0.1" ||
-      /^192\.168\.\d+\.\d+$/.test(ip) ||
-      /^10\.\d+\.\d+\.\d+$/.test(ip) ||
-      /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(ip)
+      /^192\.168\.\d+\.\d+$/.test(ip)
     );
   }
 
-  function showLoadFailed() {
-    const uvEl = document.getElementById("busuanzi_value_site_uv");
-    const pvEl = document.getElementById("busuanzi_value_site_pv");
-    if (uvEl && pvEl) {
-      uvEl.textContent = "统计维护中";
-      pvEl.textContent = "统计维护中";
-    }
-  }
-
-  function loadBusuanzi() {
-    if (isLocalhost()) {
-      setTimeout(() => {
-        const uvEl = document.getElementById("busuanzi_value_site_uv");
-        const pvEl = document.getElementById("busuanzi_value_site_pv");
-        if (uvEl && pvEl) {
-          uvEl.textContent = "本地预览";
-          pvEl.textContent = "本地预览";
-        }
-      }, 100);
-      return;
-    }
-
+  if (!isLocalhost()) {
     
-    const cdnUrls = [
-      "https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js",
-      "https://cdn.jsdelivr.net/gh/busuanzi/busuanzi@2.3/js/busuanzi.pure.mini.js",
-      "https://unpkg.com/busuanzi@2.3.0/bsz.pure.mini.js",
-    ];
-
-    let currentIndex = 0;
-
-    function loadScript(index) {
-      if (index >= cdnUrls.length) {
-        showLoadFailed();
-        return;
-      }
-
-      const script = document.createElement("script");
-      script.src = cdnUrls[index];
-      script.async = true;
-      script.defer = true;
-
-      script.onload = function () {
-        console.log("Busuanzi loaded from: " + cdnUrls[index]);
-        
-        setTimeout(() => {
-          const uvEl = document.getElementById("busuanzi_value_site_uv");
-          const pvEl = document.getElementById("busuanzi_value_site_pv");
-          if (
-            uvEl &&
-            pvEl &&
-            (uvEl.textContent === "加载中..." ||
-              !uvEl.textContent ||
-              pvEl.textContent === "加载中..." ||
-              !pvEl.textContent)
-          ) {
-            loadScript(index + 1);
-          }
-        }, 3000);
-      };
-
-      script.onerror = function () {
-        console.error("Failed to load from: " + cdnUrls[index]);
-        loadScript(index + 1);
-      };
-
-      document.head.appendChild(script);
-    }
-
-    loadScript(0);
-  }
-
-  
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", loadBusuanzi);
-  } else {
-    loadBusuanzi();
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
   }
 </script>
+
+
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+</div>
 
             </main>
         </div>
