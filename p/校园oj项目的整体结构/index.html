@@ -826,11 +826,11 @@
   style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
 >
   <span id="busuanzi_container_site_uv"
-    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+    >本站访客：<span id="busuanzi_value_site_uv">加载中...</span> 人</span
   >
   ·
   <span id="busuanzi_container_site_pv"
-    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+    >总访问量：<span id="busuanzi_value_site_pv">加载中...</span> 次</span
   >
 </div>
 
@@ -847,64 +847,83 @@
   }
 
   function showLoadFailed() {
-    document.getElementById("busuanzi_value_site_uv").textContent =
-      "统计加载失败";
-    document.getElementById("busuanzi_value_site_pv").textContent =
-      "统计加载失败";
+    const uvEl = document.getElementById("busuanzi_value_site_uv");
+    const pvEl = document.getElementById("busuanzi_value_site_pv");
+    if (uvEl && pvEl) {
+      uvEl.textContent = "统计维护中";
+      pvEl.textContent = "统计维护中";
+    }
   }
 
   function loadBusuanzi() {
     if (isLocalhost()) {
       setTimeout(() => {
-        document.getElementById("busuanzi_value_site_uv").textContent =
-          "本地预览不计";
-        document.getElementById("busuanzi_value_site_pv").textContent =
-          "本地预览不计";
+        const uvEl = document.getElementById("busuanzi_value_site_uv");
+        const pvEl = document.getElementById("busuanzi_value_site_pv");
+        if (uvEl && pvEl) {
+          uvEl.textContent = "本地预览";
+          pvEl.textContent = "本地预览";
+        }
       }, 100);
       return;
     }
 
+    
     const cdnUrls = [
-      "https://cdn.jsdelivr.net/npm/busuanzi@2.3.0/js/busuanzi.pure.mini.js",
-      "https://lib.baomitu.com/busuanzi/2.3/busuanzi.pure.mini.js",
-      "https://cdn.bootcdn.net/ajax/libs/busuanzi/2.3/busuanzi.pure.mini.js",
+      "https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js",
+      "https://cdn.jsdelivr.net/gh/busuanzi/busuanzi@2.3/js/busuanzi.pure.mini.js",
+      "https://unpkg.com/busuanzi@2.3.0/bsz.pure.mini.js",
     ];
 
-    function loadScript(url, fallbackIndex = 0) {
+    let currentIndex = 0;
+
+    function loadScript(index) {
+      if (index >= cdnUrls.length) {
+        showLoadFailed();
+        return;
+      }
+
       const script = document.createElement("script");
-      script.src = url;
+      script.src = cdnUrls[index];
       script.async = true;
-
-      script.onerror = function () {
-        if (fallbackIndex < cdnUrls.length - 1) {
-          loadScript(cdnUrls[fallbackIndex + 1], fallbackIndex + 1);
-        } else {
-          showLoadFailed();
-        }
-      };
-
-      const timeoutTimer = setTimeout(() => {
-        script.onerror();
-      }, 5000);
+      script.defer = true;
 
       script.onload = function () {
-        clearTimeout(timeoutTimer);
+        console.log("Busuanzi loaded from: " + cdnUrls[index]);
+        
         setTimeout(() => {
           const uvEl = document.getElementById("busuanzi_value_site_uv");
           const pvEl = document.getElementById("busuanzi_value_site_pv");
-          if (!uvEl.textContent || !pvEl.textContent) {
-            showLoadFailed();
+          if (
+            uvEl &&
+            pvEl &&
+            (uvEl.textContent === "加载中..." ||
+              !uvEl.textContent ||
+              pvEl.textContent === "加载中..." ||
+              !pvEl.textContent)
+          ) {
+            loadScript(index + 1);
           }
-        }, 1000);
+        }, 3000);
+      };
+
+      script.onerror = function () {
+        console.error("Failed to load from: " + cdnUrls[index]);
+        loadScript(index + 1);
       };
 
       document.head.appendChild(script);
     }
 
-    loadScript(cdnUrls[0]);
+    loadScript(0);
   }
 
-  loadBusuanzi();
+  
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadBusuanzi);
+  } else {
+    loadBusuanzi();
+  }
 </script>
 
 
