@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="从新闻页面 CSS+成果图看布局设计：实用 Flex 与结构化布局技巧 在前端开发中，布局是页面的骨架，直接决定了内容呈现的逻辑性和视觉舒适度。最近落地了一个新闻列表页面（如下成果图所示），其布局设计简洁高效，尤其适合信息密集型页面（如新闻、资讯类），今天就结合成果图+对应 CSS 代码，拆解其中的布局思路和实用技巧。\n">
 <title>CSS小案例，讲布局（Flex&#43;Grid）</title>
 
 <link rel='canonical' href='https://ye-guan-xing.github.io/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/'>
 
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="CSS小案例，讲布局（Flex+Grid）">
-<meta property='og:description' content="">
+<meta property='og:description' content="从新闻页面 CSS+成果图看布局设计：实用 Flex 与结构化布局技巧 在前端开发中，布局是页面的骨架，直接决定了内容呈现的逻辑性和视觉舒适度。最近落地了一个新闻列表页面（如下成果图所示），其布局设计简洁高效，尤其适合信息密集型页面（如新闻、资讯类），今天就结合成果图+对应 CSS 代码，拆解其中的布局思路和实用技巧。\n">
 <meta property='og:url' content='https://ye-guan-xing.github.io/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-01-09T08:54:08&#43;08:00'/><meta property='article:modified_time' content='2026-01-09T08:54:08&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='项目开发' /><meta property='article:published_time' content='2025-12-14T22:36:00&#43;08:00'/><meta property='article:modified_time' content='2025-12-14T22:36:00&#43;08:00'/>
 <meta name="twitter:title" content="CSS小案例，讲布局（Flex+Grid）">
-<meta name="twitter:description" content="">
+<meta name="twitter:description" content="从新闻页面 CSS+成果图看布局设计：实用 Flex 与结构化布局技巧 在前端开发中，布局是页面的骨架，直接决定了内容呈现的逻辑性和视觉舒适度。最近落地了一个新闻列表页面（如下成果图所示），其布局设计简洁高效，尤其适合信息密集型页面（如新闻、资讯类），今天就结合成果图+对应 CSS 代码，拆解其中的布局思路和实用技巧。\n">
     </head>
     <body class="
     article-page
@@ -243,13 +243,69 @@
     </ol>
 </aside>
 
-    
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一布局基础全局样式与容器搭建成果图整体框架">一、布局基础：全局样式与容器搭建（成果图整体框架）</a>
+      <ol>
+        <li><a href="#对应成果图的效果">对应成果图的效果：</a></li>
+      </ol>
+    </li>
+    <li><a href="#二核心布局flex-的灵活运用成果图主次分栏内容排列">二、核心布局：Flex 的灵活运用（成果图主次分栏+内容排列）</a>
+      <ol>
+        <li><a href="#1-主次分栏布局成果图左右区域">1. 主次分栏布局（成果图左+右区域）</a></li>
+        <li><a href="#对应成果图的效果-1">对应成果图的效果：</a></li>
+        <li><a href="#2-单图新闻布局成果图2024-高考倒计时那条">2. 单图新闻布局（成果图“2024 高考倒计时”那条）</a></li>
+        <li><a href="#对应成果图的效果-2">对应成果图的效果：</a></li>
+        <li><a href="#3-多图新闻布局成果图第三条新闻的三个图">3. 多图新闻布局（成果图第三条新闻的三个图）</a></li>
+        <li><a href="#对应成果图的效果-3">对应成果图的效果：</a></li>
+        <li><a href="#4-热搜榜单布局成果图右侧列表">4. 热搜榜单布局（成果图右侧列表）</a></li>
+        <li><a href="#对应成果图的效果-4">对应成果图的效果：</a></li>
+      </ol>
+    </li>
+    <li><a href="#三布局设计的核心思路总结结合成果图">三、布局设计的核心思路总结（结合成果图）</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
 
             <main class="main full-width">
     <article class="main-article">
     <header class="article-header">
 
     <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/web%E5%BC%80%E5%8F%91/" style="background-color: ZgotmplZ; color: #ffffff;">
+                web开发
+            </a>
+        
+    </header>
     
 
     <div class="article-title-wrapper">
@@ -276,7 +332,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">2026-01-09 08:54 &#43;0800</time>
+                <time class="article-time--published">2025-12-14 22:36 &#43;0800</time>
             </div>
         
 
@@ -291,7 +347,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 0 分钟
+                    阅读时长: 3 分钟
                 </time>
             </div>
         
@@ -306,12 +362,241 @@
     <section class="article-content">
     
     
-    
+    <h1 id="从新闻页面-css成果图看布局设计实用-flex-与结构化布局技巧">从新闻页面 CSS+成果图看布局设计：实用 Flex 与结构化布局技巧
+</h1><p>在前端开发中，布局是页面的骨架，直接决定了内容呈现的逻辑性和视觉舒适度。最近落地了一个新闻列表页面（如下成果图所示），其布局设计简洁高效，尤其适合信息密集型页面（如新闻、资讯类），今天就结合<strong>成果图+对应 CSS 代码</strong>，拆解其中的布局思路和实用技巧。</p>
+<p>（注：下图即为本次分析对应的页面成果，后续会一一对应布局模块）
+<img src="/images/flex%e5%b8%83%e5%b1%80/image.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="新闻页面成果图"
+	
+	
+></p>
+<h2 id="一布局基础全局样式与容器搭建成果图整体框架">一、布局基础：全局样式与容器搭建（成果图整体框架）
+</h2><p>任何布局的第一步都是打“地基”——成果图里的整个内容区域，就是通过以下代码实现的核心容器：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="o">*</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">box-sizing</span><span class="p">:</span> <span class="kc">border-box</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="nt">body</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">background</span><span class="p">:</span> <span class="kc">orange</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">background-attachment</span><span class="p">:</span> <span class="kc">fixed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">padding-top</span><span class="p">:</span> <span class="mi">25</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">big_box</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">width</span><span class="p">:</span> <span class="mi">80</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span> <span class="kc">auto</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">padding</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">background</span><span class="p">:</span> <span class="nb">linear-gradient</span><span class="p">(</span><span class="mi">180</span><span class="kt">deg</span><span class="p">,</span> <span class="mh">#f0f0f0</span> <span class="mi">0</span><span class="kt">%</span><span class="p">,</span> <span class="kc">whitesmoke</span> <span class="mi">100</span><span class="kt">%</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">border-radius</span><span class="p">:</span> <span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="对应成果图的效果">对应成果图的效果：
+</h3><ul>
+<li>成果图里的所有内容（左侧新闻+右侧热搜）都包裹在<code>big_box</code>中，实现了<strong>水平居中+左右留白</strong>，适配不同屏幕；</li>
+<li>容器的渐变背景+圆角，让成果图里的内容区和外部橙色背景区分开，视觉更整洁。</li>
+</ul>
+<h2 id="二核心布局flex-的灵活运用成果图主次分栏内容排列">二、核心布局：Flex 的灵活运用（成果图主次分栏+内容排列）
+</h2><p>成果图的“左主新闻区+右热搜区”“单图/多图新闻”等结构，全靠 Flex 布局实现：</p>
+<h3 id="1-主次分栏布局成果图左右区域">1. 主次分栏布局（成果图左+右区域）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="p">.</span><span class="nc">box</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">max-width</span><span class="p">:</span> <span class="mi">1200</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">display</span><span class="p">:</span> <span class="kc">flex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">gap</span><span class="p">:</span> <span class="mi">50</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">align-items</span><span class="p">:</span> <span class="kc">flex-start</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">left</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">flex</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c">/* 成果图左侧主新闻区 */</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">right</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">width</span><span class="p">:</span> <span class="mi">360</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">flex-shrink</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c">/* 成果图右侧热搜区 */</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="对应成果图的效果-1">对应成果图的效果：
+</h3><ul>
+<li>左侧主区（<code>left</code>）自动占满剩余空间，呈现多条新闻；右侧热搜区（<code>right</code>）固定宽度不收缩，保证榜单布局稳定（成果图右侧的热搜列表不会被挤压）；</li>
+<li>两者顶部对齐（<code>align-items: flex-start</code>），对应成果图里左、右区域的顶部是齐平的。</li>
+</ul>
+<h3 id="2-单图新闻布局成果图2024-高考倒计时那条">2. 单图新闻布局（成果图“2024 高考倒计时”那条）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="p">.</span><span class="nc">row_box</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">display</span><span class="p">:</span> <span class="kc">flex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">gap</span><span class="p">:</span> <span class="mi">16</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">img1</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">width</span><span class="p">:</span> <span class="mi">32</span><span class="kt">%</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">aspect-ratio</span><span class="p">:</span> <span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">flex-shrink</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">border-radius</span><span class="p">:</span> <span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">text_box</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">flex</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">display</span><span class="p">:</span> <span class="kc">flex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">flex-direction</span><span class="p">:</span> <span class="kc">column</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">justify-content</span><span class="p">:</span> <span class="kc">space-between</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="对应成果图的效果-2">对应成果图的效果：
+</h3><ul>
+<li>成果图里“2024 高考倒计时”左侧的空白块，就是<code>img1</code>（固定宽占比+比例），不会因文本长度变形；</li>
+<li>右侧文本区上下分布（标题在上、时间/来源在下），对应成果图里这条新闻的文字区域布局均匀。</li>
+</ul>
+<h3 id="3-多图新闻布局成果图第三条新闻的三个图">3. 多图新闻布局（成果图第三条新闻的三个图）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="p">.</span><span class="nc">img3_box</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">display</span><span class="p">:</span> <span class="kc">flex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">gap</span><span class="p">:</span> <span class="mi">6</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">margin</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">img3</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">flex</span><span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">aspect-ratio</span><span class="p">:</span> <span class="mi">16</span><span class="o">/</span><span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">border-radius</span><span class="p">:</span> <span class="mi">6</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="对应成果图的效果-3">对应成果图的效果：
+</h3><p>成果图第三条新闻下方的三个空白块，就是通过<code>flex: 1</code>实现的<strong>均等分栏</strong>，无需手动算宽度，保证三张图整齐排列。</p>
+<h3 id="4-热搜榜单布局成果图右侧列表">4. 热搜榜单布局（成果图右侧列表）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="p">.</span><span class="nc">hot_li</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">display</span><span class="p">:</span> <span class="kc">flex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">align-items</span><span class="p">:</span> <span class="kc">flex-start</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">margin-bottom</span><span class="p">:</span> <span class="mi">14</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">rank</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">width</span><span class="p">:</span> <span class="mi">18</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">flex-shrink</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">font-weight</span><span class="p">:</span> <span class="mi">700</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">.</span><span class="nc">hot_text</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">white-space</span><span class="p">:</span> <span class="kc">nowrap</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">overflow</span><span class="p">:</span> <span class="kc">hidden</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">text-overflow</span><span class="p">:</span> <span class="kc">ellipsis</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="对应成果图的效果-4">对应成果图的效果：
+</h3><ul>
+<li>成果图右侧的“1、2、3&hellip;”排名，是<code>rank</code>（固定宽度不位移）；</li>
+<li>超长热搜标题自动省略（比如成果图里的第一条热搜），避免换行打乱布局。</li>
+</ul>
+<h2 id="三布局设计的核心思路总结结合成果图">三、布局设计的核心思路总结（结合成果图）
+</h2><p>这个页面的布局之所以在成果图里呈现得清晰舒适，核心是“结构化+灵活性”的平衡：</p>
+<ol>
+<li><strong>先骨架后内容</strong>：先通过<code>big_box</code>/<code>box</code>定整体框架（成果图的大容器+分栏），再填内部组件；</li>
+<li><strong>Flex 适配场景</strong>：分栏用 Flex、单图/多图用 Flex、榜单用 Flex，替代浮动/定位，代码简洁且适配成果图的各种排列需求；</li>
+<li><strong>固定+灵活结合</strong>：热搜区/图片/排名固定（保证成果图里的关键区域稳定），主新闻区灵活伸缩（适配不同屏幕）；</li>
+<li><strong>细节控体验</strong>：文本省略、统一间距、固定比例，让成果图里的布局既规整又不呆板。</li>
+</ol>
+
 </section>
 
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/">项目开发</a>
+        
+    </section>
+
 
     </footer>
 
@@ -322,6 +607,80 @@
     
 
     
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%A6%82%E4%BD%95%E5%B0%86vue-cli-%E5%86%99%E7%9A%84%E5%89%8D%E7%AB%AF%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2%E4%B8%BAvite%E8%AF%A6%E7%BB%86%E6%9D%BF/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">如何将vue cli 写的前端文件转换为vite（详细板）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E8%AE%B2%E8%A7%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">跨域问题讲解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E9%80%BB%E8%BE%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">校园OJ开发之布局逻辑</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">校园OJ项目的详细开发(登录界面)</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">校园OJ项目的整体结构</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
 
      
     
