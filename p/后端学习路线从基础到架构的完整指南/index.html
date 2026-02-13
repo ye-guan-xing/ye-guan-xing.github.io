@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="前言 这份后端学习路线源自 roadmap.sh，是全球开发者广泛参考的后端技术学习指南。它清晰梳理了从基础原理到架构设计的核心知识点，并标注了学习优先级，帮助你在后端技术体系中高效构建知识体系，避免盲目学习。（参考图见尾部）\n">
+<title>后端学习路线：从基础到架构的完整指南 🚀</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="后端学习路线：从基础到架构的完整指南 🚀">
+<meta property='og:description' content="前言 这份后端学习路线源自 roadmap.sh，是全球开发者广泛参考的后端技术学习指南。它清晰梳理了从基础原理到架构设计的核心知识点，并标注了学习优先级，帮助你在后端技术体系中高效构建知识体系，避免盲目学习。（参考图见尾部）\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-02-13T17:00:00&#43;08:00'/><meta property='article:modified_time' content='2026-02-13T17:00:00&#43;08:00'/>
+<meta name="twitter:title" content="后端学习路线：从基础到架构的完整指南 🚀">
+<meta name="twitter:description" content="前言 这份后端学习路线源自 roadmap.sh，是全球开发者广泛参考的后端技术学习指南。它清晰梳理了从基础原理到架构设计的核心知识点，并标注了学习优先级，帮助你在后端技术体系中高效构建知识体系，避免盲目学习。（参考图见尾部）\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#图例说明">图例说明</a></li>
+    <li><a href="#一互联网基础与前端知识-">一、互联网基础与前端知识 🌐</a></li>
+    <li><a href="#二操作系统和基础知识-">二、操作系统和基础知识 💻</a></li>
+    <li><a href="#三学习一门语言-">三、学习一门语言 📚</a></li>
+    <li><a href="#四版本控制系统-vcs-">四、版本控制系统 (VCS) 🛠️</a></li>
+    <li><a href="#五数据库-">五、数据库 🗄️</a>
+      <ol>
+        <li><a href="#关系式数据库">关系式数据库</a></li>
+        <li><a href="#nosql-数据库">NoSQL 数据库</a></li>
+        <li><a href="#更多关于资料库">更多关于资料库</a></li>
+      </ol>
+    </li>
+    <li><a href="#六学习-api-相关知识-">六、学习 API 相关知识 🚀</a></li>
+    <li><a href="#七缓存-caching-">七、缓存 (Caching) 🚀</a></li>
+    <li><a href="#八网络安全知识-">八、网络安全知识 🔒</a></li>
+    <li><a href="#九测试-testing-">九、测试 (Testing) ✅</a></li>
+    <li><a href="#十设计和开发原则-">十、设计和开发原则 📐</a></li>
+    <li><a href="#十一架构模式-">十一、架构模式 🏗️</a></li>
+    <li><a href="#十二容器化-vs-虚拟化-containerization--virtualization-">十二、容器化 vs 虚拟化 (Containerization / Virtualization) 🐳</a></li>
+    <li><a href="#十三graphql-">十三、GraphQL 📊</a></li>
+    <li><a href="#十四图资料库-graph-database-">十四、图资料库* (Graph Database) 🗄️</a></li>
+    <li><a href="#十五websocket-">十五、WebSocket 🔌</a></li>
+    <li><a href="#十六网页服务器-web-server-">十六、网页服务器 (Web Server) 🌐</a></li>
+    <li><a href="#十七规模化建设-">十七、规模化建设 📈</a></li>
+    <li><a href="#十八持续学习-">十八、持续学习 📖</a></li>
+    <li><a href="#图">图</a></li>
+    <li><a href="#信息来源">信息来源</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/web%E5%BC%80%E5%8F%91/" style="background-color: ZgotmplZ; color: #ffffff;">
+                web开发
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/">后端学习路线：从基础到架构的完整指南 🚀</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-02-13 17:00 &#43;0800</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="前言">前言
+</h2><p>这份后端学习路线源自 <a class="link" href="http://roadmap.sh"  target="_blank" rel="noopener"
+    >roadmap.sh</a>，是全球开发者广泛参考的后端技术学习指南。它清晰梳理了从基础原理到架构设计的核心知识点，并标注了学习优先级，帮助你在后端技术体系中高效构建知识体系，避免盲目学习。（参考图见尾部）</p>
+<hr>
+<h2 id="图例说明">图例说明
+</h2><p>在开始之前，请先了解图中标记的含义，这将帮助你判断学习的优先级：</p>
+<ul>
+<li><strong>❤️ 个人推荐 / 意见</strong>：<strong>核心必学内容</strong>，是后端开发的基石，必须掌握。</li>
+<li><strong>✅ 替代选项 — 选择此项或是紫色项目</strong>：<strong>选其一深入即可</strong>，通常是不同的技术方案或框架，无需全部学习。</li>
+<li><strong>☑ 不必严格按照路线图的顺序（随时可学）</strong>：<strong>可灵活安排学习顺序</strong>，属于进阶或补充性知识。</li>
+<li><strong>⚫ 我不推荐</strong>：<strong>优先级较低或可跳过</strong>，在当前技术环境下必要性不高。</li>
+</ul>
+<hr>
+<h2 id="一互联网基础与前端知识-">一、互联网基础与前端知识 🌐
+</h2><p>后端开发离不开对互联网和前端的理解，这是构建服务的基础。</p>
+<ul>
+<li>❤️ 互联网是如何运作的？</li>
+<li>❤️ 什么是 HTTP？</li>
+<li>❤️ 浏览器及其工作原理？</li>
+<li>❤️ DNS 及其工作原理？</li>
+<li>❤️ 什么是域名 (Domain Name)？</li>
+<li>❤️ 什么是主机托管 (Hosting)？</li>
+<li>✅ HTML</li>
+<li>☑ CSS</li>
+<li>❤️ JavaScript</li>
+</ul>
+<hr>
+<h2 id="二操作系统和基础知识-">二、操作系统和基础知识 💻
+</h2><p>操作系统是后端服务运行的根基，掌握其原理能让你写出更高效、稳定的代码。</p>
+<ul>
+<li>❤️ 终端机的使用</li>
+<li>❤️ 操作系统如何运作</li>
+<li>❤️ 行程管理（Process Management）</li>
+<li>❤️ 执行绪（Thread）和并行（Concurrency）</li>
+<li>❤️ 基础的终端机指令（grep, awk, sed, lsof, curl, wget, tail, head, less, find, ssh, kill）</li>
+<li>❤️ 记忆体管理</li>
+<li>❤️ 行程间通讯（IPC）</li>
+<li>❤️ I/O 管理</li>
+<li>❤️ POSIX 的基础认知（stdin, stdout, stderr, pipes）</li>
+<li>❤️ 基础的网络概念</li>
+</ul>
+<hr>
+<h2 id="三学习一门语言-">三、学习一门语言 📚
+</h2><p>选择一门后端语言深入学习，理解其运行时特性（如并行、内存模型）是进阶的关键。</p>
+<ul>
+<li>✅ Java</li>
+<li>✅ C#</li>
+<li>✅ PHP</li>
+<li>☑ Rust</li>
+<li>☑ Go</li>
+<li>❤️ JavaScript</li>
+<li>❤️ Python</li>
+<li>✅ Ruby</li>
+</ul>
+<hr>
+<h2 id="四版本控制系统-vcs-">四、版本控制系统 (VCS) 🛠️
+</h2><p>现代后端开发离不开版本控制，它是团队协作和代码管理的核心工具。</p>
+<ul>
+<li>☑ 版本控制系统的定义及使用价值</li>
+<li>❤️ Git 的基本用法</li>
+<li>☑ 仓库代管（Repo Hosting）服务
+<ul>
+<li>✅ 注册账号并学习使用 GitHub</li>
+<li>❤️ GitHub</li>
+<li>☑ GitLab</li>
+<li>☑ Bitbucket</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="五数据库-">五、数据库 🗄️
+</h2><p>数据库是后端服务存储数据的核心，关系型与 NoSQL 数据库各有适用场景。</p>
+<h3 id="关系式数据库">关系式数据库
+</h3><ul>
+<li>❤️ PostgreSQL</li>
+<li>✅ MySQL</li>
+<li>✅ MariaDB</li>
+<li>☑ MS SQL</li>
+<li>☑ Oracle</li>
+</ul>
+<h3 id="nosql-数据库">NoSQL 数据库
+</h3><ul>
+<li>❤️ 文件资料库（MongoDB, CouchDB）</li>
+<li>✅ 栏位资料库（Cassandra）</li>
+<li>☑ 时序型资料库（InfluxDB, TimescaleDB）</li>
+<li>☑ 即时资料库（Firebase, RethinkDB）</li>
+</ul>
+<h3 id="更多关于资料库">更多关于资料库
+</h3><ul>
+<li>❤️ ORM（物件关系映射）</li>
+<li>❤️ ACID</li>
+<li>❤️ 交易（Transaction）</li>
+<li>❤️ N+1 问题</li>
+<li>❤️ 资料库正规化（Normalization）</li>
+<li>❤️ 索引（Index）及其运作方式</li>
+<li>☑ 资料复写（Replication）</li>
+<li>☑ 分片（Sharding）策略</li>
+<li>☑ CAP 定理</li>
+</ul>
+<hr>
+<h2 id="六学习-api-相关知识-">六、学习 API 相关知识 🚀
+</h2><p>API 是后端服务对外交互的核心，掌握不同类型的 API 设计与实现至关重要。</p>
+<ul>
+<li>❤️ Cookie Based</li>
+<li>❤️ OAuth</li>
+<li>❤️ Basic Authentication</li>
+<li>❤️ Token Authentication</li>
+<li>❤️ JWT</li>
+<li>❤️ OpenID</li>
+<li>☑ SAML</li>
+<li>☑ HATEOAS</li>
+<li>❤️ OpenAPI 规范以及 Swagger</li>
+<li>❤️ 认证（Authentication）</li>
+<li>❤️ REST</li>
+<li>☑ 阅读 Roy Fielding 的论文</li>
+<li>☑ JSON API</li>
+<li>☑ SOAP</li>
+<li>❤️ gRPC</li>
+</ul>
+<hr>
+<h2 id="七缓存-caching-">七、缓存 (Caching) 🚀
+</h2><p>缓存是提升后端服务性能的关键手段，合理使用缓存能显著降低数据库压力。</p>
+<ul>
+<li>❤️ Redis</li>
+<li>✅ Memcached</li>
+<li>☑ CDN</li>
+<li>☑ 伺服器端（Server Side）</li>
+<li>☑ 用户端（Client Side）</li>
+</ul>
+<hr>
+<h2 id="八网络安全知识-">八、网络安全知识 🔒
+</h2><p>安全是后端服务不可忽视的环节，掌握常见安全机制与风险防范是必备能力。</p>
+<ul>
+<li>❤️ MD5 以及为什么不要使用它</li>
+<li>❤️ SHA 家族</li>
+<li>☑ scrypt</li>
+<li>❤️ bcrypt</li>
+<li>❤️ 杂凑（Hashing）演算法</li>
+<li>❤️ HTTPS</li>
+<li>❤️ 内容安全政策（CSP）</li>
+<li>❤️ CORS</li>
+<li>❤️ SSL/TLS</li>
+<li>❤️ OWASP 安全风险</li>
+</ul>
+<hr>
+<h2 id="九测试-testing-">九、测试 (Testing) ✅
+</h2><p>测试是保障后端服务质量的核心，不同类型的测试覆盖不同的质量维度。</p>
+<ul>
+<li>❤️ 整合测试（Integration Testing）</li>
+<li>❤️ 单元测试（Unit Testing）</li>
+<li>❤️ 功能测试（Functional Testing）</li>
+<li>☑ CI/CD（持续整合/持续交付）</li>
+</ul>
+<hr>
+<h2 id="十设计和开发原则-">十、设计和开发原则 📐
+</h2><p>遵循良好的设计原则能让代码更易维护、扩展，是资深后端开发者的核心素养。</p>
+<ul>
+<li>☑ 四人帮（GOF）设计模式</li>
+<li>☑ 领域驱动设计（DDD）</li>
+<li>☑ 测试驱动开发（TDD）</li>
+<li>❤️ SOLID</li>
+<li>❤️ KISS</li>
+<li>❤️ YAGNI</li>
+<li>❤️ DRY</li>
+<li>搜索引擎（Search Engine）
+<ul>
+<li>❤️ Elasticsearch</li>
+<li>✅ Solr</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="十一架构模式-">十一、架构模式 🏗️
+</h2><p>架构模式决定了系统的扩展性与维护性，不同场景下选择合适的架构至关重要。</p>
+<ul>
+<li>☑ 整合型*（Monolithic）应用程式</li>
+<li>❤️ 微服务（Microservice）</li>
+<li>☑ 服务导向架构（SOA）</li>
+<li>☑ CQRS 和事件来源模式</li>
+<li>☑ 无伺服器（Serverless）</li>
+<li>*译注：又译作单体式</li>
+</ul>
+<hr>
+<h2 id="十二容器化-vs-虚拟化-containerization--virtualization-">十二、容器化 vs 虚拟化 (Containerization / Virtualization) 🐳
+</h2><p>容器化技术简化了部署与环境一致性，是现代后端部署的主流方式。</p>
+<ul>
+<li>❤️ Docker</li>
+<li>⚫ rkt</li>
+<li>⚫ LXC</li>
+<li>讯息代理*（Message Broker）
+<ul>
+<li>❤️ RabbitMQ</li>
+<li>✅ Kafka</li>
+</ul>
+</li>
+<li>*译注：又译作讯息中介</li>
+</ul>
+<hr>
+<h2 id="十三graphql-">十三、GraphQL 📊
+</h2><p>GraphQL 提供了更灵活的 API 查询方式，适用于复杂数据场景的后端服务。</p>
+<ul>
+<li>❤️ Apollo</li>
+<li>✅ Relay Modern</li>
+</ul>
+<hr>
+<h2 id="十四图资料库-graph-database-">十四、图资料库* (Graph Database) 🗄️
+</h2><p>图资料库擅长处理复杂的关联数据，适用于社交网络、知识图谱等场景。</p>
+<ul>
+<li>❤️ Neo4j</li>
+<li>*译注：又译作图形资料库、图数据库</li>
+</ul>
+<hr>
+<h2 id="十五websocket-">十五、WebSocket 🔌
+</h2><p>WebSocket 实现了双向实时通信，是实时应用（如聊天、直播）的核心技术。</p>
+<ul>
+<li>缓解策略（Mitigation Strategy）
+<ul>
+<li>☑ 从容退化（Graceful Degradation）</li>
+<li>☑ 请求频率限制（Throttle）</li>
+<li>☑ 背压（Backpressure）</li>
+<li>☑ 负载转移（Loadshifting）</li>
+<li>☑ 断路器（Circuit Breaker）</li>
+</ul>
+</li>
+<li>*译注：又译作反压</li>
+</ul>
+<hr>
+<h2 id="十六网页服务器-web-server-">十六、网页服务器 (Web Server) 🌐
+</h2><p>网页服务器是后端服务的入口，选择合适的服务器能提升服务性能与稳定性。</p>
+<ul>
+<li>❤️ Nginx</li>
+<li>✅ Apache</li>
+<li>☑ Caddy</li>
+<li>☑ MS IIS</li>
+</ul>
+<hr>
+<h2 id="十七规模化建设-">十七、规模化建设 📈
+</h2><p>当服务用户量增长时，规模化建设是保障服务可用性与性能的关键。</p>
+<ul>
+<li>❤️ 迁移策略（Migration Strategy）</li>
+<li>❤️ 水平 vs 垂直扩展（Horizontal vs Vertical Scaling）</li>
+<li>以可观测性（Observability）为前提进行建设
+<ul>
+<li>☑ 仪表（Instrumentation）</li>
+<li>☑ 监测（Monitoring）</li>
+<li>☑ 遥测（Telemetry）</li>
+<li>☑ 指标纪录以及其他可观测的项目</li>
+<li>☑ 可以在出错时帮助你除错和解决问题</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="十八持续学习-">十八、持续学习 📖
+</h2><p>后端技术生态迭代迅速，从云原生到 Serverless，持续学习新工具与最佳实践是保持竞争力的核心。</p>
+<hr>
+<h2 id="图">图
+</h2><ul>
+<li><img src="/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/intro.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="前后端通用"
+	
+	
+></li>
+<li><img src="/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/backend.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="后端"
+	
+	
+></li>
+</ul>
+<h2 id="信息来源">信息来源
+</h2><ul>
+<li>台湾正体中文翻译原作者：goodjack/developer-roadmap-chinese / littlegoodjack</li>
+<li>路线图完整版及更多资源：<a class="link" href="http://roadmap.sh"  target="_blank" rel="noopener"
+    >http://roadmap.sh</a></li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端学习路线：从入门到进阶</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CSS小案例，讲布局（Flex&#43;Grid）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A6%82%E4%BD%95%E5%B0%86vue-cli-%E5%86%99%E7%9A%84%E5%89%8D%E7%AB%AF%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2%E4%B8%BAvite%E8%AF%A6%E7%BB%86%E6%9D%BF/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">如何将vue cli 写的前端文件转换为vite（详细板）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E9%80%BB%E8%BE%91/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">校园OJ开发之布局逻辑</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">校园OJ项目的详细开发(登录界面)</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <script>
+  
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+</div>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+</style>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>
