@@ -8,11 +8,11 @@
         <language>en-us</language>
         <copyright>acye</copyright>
         <lastBuildDate>Fri, 13 Feb 2026 17:00:00 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>后端学习路线：从基础到架构的完整指南 🚀</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/</link>
+        <title>后端学习路线：从基础到架构</title>
+        <link>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</link>
         <pubDate>Fri, 13 Feb 2026 17:00:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97/</guid>
+        <guid>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;这份后端学习路线源自 &lt;a class=&#34;link&#34; href=&#34;http://roadmap.sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;roadmap.sh&lt;/a&gt;，是全球开发者广泛参考的后端技术学习指南。它清晰梳理了从基础原理到架构设计的核心知识点，并标注了学习优先级，帮助你在后端技术体系中高效构建知识体系，避免盲目学习。（参考图见尾部）&lt;/p&gt;

@@ -8,12 +8,12 @@
         <language>en-us</language>
         <copyright>acye</copyright>
         <lastBuildDate>Fri, 13 Feb 2026 17:00:00 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>web开发</title>
-        <link>https://ye-guan-xing.github.io/categories/web%E5%BC%80%E5%8F%91/</link>
+        <title>学习路线</title>
+        <link>https://ye-guan-xing.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</link>
         <pubDate>Fri, 13 Feb 2026 17:00:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/categories/web%E5%BC%80%E5%8F%91/</guid>
-        <description>&lt;img src="https://ye-guan-xing.github.io/categories/web%E5%BC%80%E5%8F%91/image.png" alt="Featured image of post web开发" /&gt;</description>
+        <guid>https://ye-guan-xing.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/</guid>
+        <description>&lt;img src="https://ye-guan-xing.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/image.webp" alt="Featured image of post 学习路线" /&gt;</description>
         </item>
         <item>
         <title>Git 新手通关指南</title>
@@ -22,6 +22,14 @@
         
         <guid>https://ye-guan-xing.github.io/categories/git-%E6%96%B0%E6%89%8B%E9%80%9A%E5%85%B3%E6%8C%87%E5%8D%97/</guid>
         <description></description>
+        </item>
+        <item>
+        <title>web开发</title>
+        <link>https://ye-guan-xing.github.io/categories/web%E5%BC%80%E5%8F%91/</link>
+        <pubDate>Sun, 14 Dec 2025 22:36:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/categories/web%E5%BC%80%E5%8F%91/</guid>
+        <description>&lt;img src="https://ye-guan-xing.github.io/categories/web%E5%BC%80%E5%8F%91/image.png" alt="Featured image of post web开发" /&gt;</description>
         </item>
         <item>
         <title>开发问题精讲</title>
