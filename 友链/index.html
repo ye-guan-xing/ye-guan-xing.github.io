@@ -250,26 +250,26 @@
     <header class="article-header">
 
     <div class="article-details">
-    
+  
 
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/%E5%8F%8B%E9%93%BE/">友链</a>
-        </h2>
-    
-        
-    </div>
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/%E5%8F%8B%E9%93%BE/">友链</a>
+    </h2>
 
     
-    
-    
-    
-    <footer class="article-time">
-        
+  </div>
 
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  
+  
+  
+  
+  <footer class="article-time">
+    
+
+    
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -277,15 +277,40 @@
 
 
 
-                <time class="article-time--reading">
-                    阅读时长: 0 分钟
-                </time>
-            </div>
-        
-    </footer>
+        <time class="article-time--reading">
+          阅读时长: 0 分钟
+        </time>
+      </div>
     
 
-    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview">
+        <span class="waline-pageview-count" data-path="/%E5%8F%8B%E9%93%BE/">0</span>
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment">
+        <span class="waline-comment-count" data-path="/%E5%8F%8B%E9%93%BE/">0</span>
+        comments
+      </time>
+    </div>
+  </footer>
+  
+
+  
 </div>
 
 </header>
@@ -339,7 +364,6 @@
     
 
     <script>
-  
   function isLocalhost() {
     const ip = window.location.hostname;
     return (
@@ -350,14 +374,12 @@
   }
 
   if (!isLocalhost()) {
-    
     const script = document.createElement("script");
     script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
     script.async = true;
     document.head.appendChild(script);
   }
 </script>
-
 
 <div
   style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
@@ -369,7 +391,96 @@
   <span id="busuanzi_container_site_pv"
     >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
   >
+  ·
+  <span
+    >Waline统计：<span
+      class="waline-index-count"
+      waline-url="https://www.acyeapp.top"
+      data-path="/"
+      >0</span
+    >
+    次</span
+  >
 </div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl = indexCountEle?.getAttribute("waline-url")?.replace(/\/$/, "");
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+    const commentPathNames = Array.from(commentCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const getViewCount = async (urlList) => {
+      if (!urlList.length) return [];
+      const url = walineUrl + "/api/article/?path=" + encodeURIComponent(urlList.join(","));
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.errno === 0 ? json.data.map((i) => i.time) : [];
+    };
+
+    const addViewCount = async (pathname) => {
+      const res = await fetch(walineUrl + "/api/article", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: pathname }),
+      });
+      const json = await res.json();
+      return json.errno === 0 ? json.data[0].time : 0;
+    };
+
+    const getCommentCount = async (urlList) => {
+      if (!urlList.length) return [];
+      const url = walineUrl + "/api/comment?type=count&url=" + encodeURIComponent(urlList.join(","));
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.errno === 0 ? json.data : [];
+    };
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (isArticlePage && pagePathNames.length) {
+      const currentPath = pagePathNames[0];
+      const view = await addViewCount(currentPath);
+      if (pageCountEles[0]) pageCountEles[0].innerText = view;
+    } else if (pagePathNames.length) {
+      const views = await getViewCount(pagePathNames);
+      views.forEach((value, idx) => {
+        if (pageCountEles[idx]) pageCountEles[idx].innerText = value;
+      });
+    }
+
+    if (commentPathNames.length) {
+      const comments = await getCommentCount(commentPathNames);
+      comments.forEach((value, idx) => {
+        if (commentCountEles[idx]) commentCountEles[idx].innerText = value;
+      });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const data = await getViewCount(["/"]);
+        const count = data[0] || 0;
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+  })();
+</script>
 
 
     

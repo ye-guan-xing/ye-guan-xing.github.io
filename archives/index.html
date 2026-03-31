@@ -540,7 +540,6 @@
     
 
     <script>
-  
   function isLocalhost() {
     const ip = window.location.hostname;
     return (
@@ -551,14 +550,12 @@
   }
 
   if (!isLocalhost()) {
-    
     const script = document.createElement("script");
     script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
     script.async = true;
     document.head.appendChild(script);
   }
 </script>
-
 
 <div
   style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
@@ -570,7 +567,96 @@
   <span id="busuanzi_container_site_pv"
     >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
   >
+  ·
+  <span
+    >Waline统计：<span
+      class="waline-index-count"
+      waline-url="https://www.acyeapp.top"
+      data-path="/"
+      >0</span
+    >
+    次</span
+  >
 </div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl = indexCountEle?.getAttribute("waline-url")?.replace(/\/$/, "");
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+    const commentPathNames = Array.from(commentCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const getViewCount = async (urlList) => {
+      if (!urlList.length) return [];
+      const url = walineUrl + "/api/article/?path=" + encodeURIComponent(urlList.join(","));
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.errno === 0 ? json.data.map((i) => i.time) : [];
+    };
+
+    const addViewCount = async (pathname) => {
+      const res = await fetch(walineUrl + "/api/article", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: pathname }),
+      });
+      const json = await res.json();
+      return json.errno === 0 ? json.data[0].time : 0;
+    };
+
+    const getCommentCount = async (urlList) => {
+      if (!urlList.length) return [];
+      const url = walineUrl + "/api/comment?type=count&url=" + encodeURIComponent(urlList.join(","));
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.errno === 0 ? json.data : [];
+    };
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (isArticlePage && pagePathNames.length) {
+      const currentPath = pagePathNames[0];
+      const view = await addViewCount(currentPath);
+      if (pageCountEles[0]) pageCountEles[0].innerText = view;
+    } else if (pagePathNames.length) {
+      const views = await getViewCount(pagePathNames);
+      views.forEach((value, idx) => {
+        if (pageCountEles[idx]) pageCountEles[idx].innerText = value;
+      });
+    }
+
+    if (commentPathNames.length) {
+      const comments = await getCommentCount(commentPathNames);
+      comments.forEach((value, idx) => {
+        if (commentCountEles[idx]) commentCountEles[idx].innerText = value;
+      });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const data = await getViewCount(["/"]);
+        const count = data[0] || 0;
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+  })();
+</script>
 
 
             </main>
