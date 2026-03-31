@@ -1168,7 +1168,13 @@
   import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
   const configText = document.getElementById("waline-config")?.textContent || "{}";
   const config = JSON.parse(configText);
-  if (config.serverURL) init(config);
+  let sameOrigin = false;
+  try {
+    sameOrigin = config.serverURL
+      ? new URL(config.serverURL).origin === window.location.origin
+      : false;
+  } catch (_) {}
+  if (config.serverURL && sameOrigin) init(config);
 </script>
 
     
@@ -1206,16 +1212,17 @@
 
 <script>
   (async () => {
-    const isLocalhost =
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1" ||
-      /^192\.168\.\d+\.\d+$/.test(window.location.hostname);
     const indexCountEle = document.querySelector(".waline-index-count");
     const walineUrl = "https:\/\/www.acyeapp.top".replace(
       /\/$/,
       "",
     );
-    if (!walineUrl || isLocalhost) return;
+    if (!walineUrl) return;
+    let sameOrigin = false;
+    try {
+      sameOrigin = new URL(walineUrl).origin === window.location.origin;
+    } catch (_) {}
+    if (!sameOrigin) return;
 
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
     const pagePathNames = Array.from(pageCountEles).map((item) =>
