@@ -1350,22 +1350,13 @@
   <span id="busuanzi_container_site_pv"
     >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
   >
-  ·
-  <span
-    >Waline统计：<span
-      class="waline-index-count"
-      waline-url="https://www.acyeapp.top"
-      data-path="/"
-      >0</span
-    >
-    次</span
-  >
+  
 </div>
 
 <script>
   (async () => {
     const indexCountEle = document.querySelector(".waline-index-count");
-    const walineUrl = indexCountEle?.getAttribute("waline-url")?.replace(/\/$/, "");
+    const walineUrl = "https:\/\/www.acyeapp.top".replace(/\/$/, "");
     if (!walineUrl) return;
 
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");

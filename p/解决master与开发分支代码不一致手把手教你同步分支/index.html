@@ -554,7 +554,7 @@
   .waline-container .wl-count {
     color: var(--card-text-color-main);
   }
-</style><script type="application/json" id="waline-config">"{\"comment\":false,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.0.1/weibo\"],\"lang\":\"zh-CN\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"欢迎留言，建议填写正确邮箱以便接收回复通知\"},\"pageview\":false,\"requiredMeta\":[\"name\",\"email\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+</style><script type="application/json" id="waline-config">"{\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.0.1/weibo\"],\"lang\":\"zh-CN\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"欢迎留言，建议填写正确邮箱以便接收回复通知\"},\"pageview\":false,\"requiredMeta\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
 <script type="module">
   import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
   const configText = document.getElementById("waline-config")?.textContent || "{}";
@@ -591,22 +591,13 @@
   <span id="busuanzi_container_site_pv"
     >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
   >
-  ·
-  <span
-    >Waline统计：<span
-      class="waline-index-count"
-      waline-url="https://www.acyeapp.top"
-      data-path="/"
-      >0</span
-    >
-    次</span
-  >
+  
 </div>
 
 <script>
   (async () => {
     const indexCountEle = document.querySelector(".waline-index-count");
-    const walineUrl = indexCountEle?.getAttribute("waline-url")?.replace(/\/$/, "");
+    const walineUrl = "https:\/\/www.acyeapp.top".replace(/\/$/, "");
     if (!walineUrl) return;
 
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
