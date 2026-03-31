@@ -396,9 +396,16 @@
 
 <script>
   (async () => {
+    const isLocalhost =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(window.location.hostname);
     const indexCountEle = document.querySelector(".waline-index-count");
-    const walineUrl = "https:\/\/www.acyeapp.top".replace(/\/$/, "");
-    if (!walineUrl) return;
+    const walineUrl = "https:\/\/www.acyeapp.top".replace(
+      /\/$/,
+      "",
+    );
+    if (!walineUrl || isLocalhost) return;
 
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
     const pagePathNames = Array.from(pageCountEles).map((item) =>
@@ -412,28 +419,46 @@
 
     const getViewCount = async (urlList) => {
       if (!urlList.length) return [];
-      const url = walineUrl + "/api/article/?path=" + encodeURIComponent(urlList.join(","));
-      const res = await fetch(url);
-      const json = await res.json();
-      return json.errno === 0 ? json.data.map((i) => i.time) : [];
+      const url =
+        walineUrl +
+        "/api/article/?path=" +
+        encodeURIComponent(urlList.join(","));
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
+        return json.errno === 0 ? json.data.map((i) => i.time) : [];
+      } catch (_) {
+        return [];
+      }
     };
 
     const addViewCount = async (pathname) => {
-      const res = await fetch(walineUrl + "/api/article", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: pathname }),
-      });
-      const json = await res.json();
-      return json.errno === 0 ? json.data[0].time : 0;
+      try {
+        const res = await fetch(walineUrl + "/api/article", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ path: pathname }),
+        });
+        const json = await res.json();
+        return json.errno === 0 ? json.data[0].time : 0;
+      } catch (_) {
+        return 0;
+      }
     };
 
     const getCommentCount = async (urlList) => {
       if (!urlList.length) return [];
-      const url = walineUrl + "/api/comment?type=count&url=" + encodeURIComponent(urlList.join(","));
-      const res = await fetch(url);
-      const json = await res.json();
-      return json.errno === 0 ? json.data : [];
+      const url =
+        walineUrl +
+        "/api/comment?type=count&url=" +
+        encodeURIComponent(urlList.join(","));
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
+        return json.errno === 0 ? json.data : [];
+      } catch (_) {
+        return [];
+      }
     };
 
     const isArticlePage = document.body.classList.contains("article-page");
