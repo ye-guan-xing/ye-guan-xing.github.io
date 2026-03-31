@@ -932,18 +932,24 @@
   .waline-container .wl-count {
     color: var(--card-text-color-main);
   }
-</style><script type="application/json" id="waline-config">"{\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.0.1/weibo\"],\"lang\":\"zh-CN\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"欢迎留言，建议填写正确邮箱以便接收回复通知\"},\"pageview\":false,\"requiredMeta\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+</style><script type="application/json" id="waline-config">"{\"comment\":false,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
 <script type="module">
   import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
   const configText = document.getElementById("waline-config")?.textContent || "{}";
-  const config = JSON.parse(configText);
-  let sameOrigin = false;
+  let config = {};
   try {
-    sameOrigin = config.serverURL
-      ? new URL(config.serverURL).origin === window.location.origin
-      : false;
-  } catch (_) {}
-  if (config.serverURL && sameOrigin) init(config);
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
 </script>
 
     
@@ -982,17 +988,12 @@
 <script>
   (async () => {
     const indexCountEle = document.querySelector(".waline-index-count");
-    const walineUrl = "https:\/\/www.acyeapp.top".replace(
-      /\/$/,
-      "",
-    );
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
     if (!walineUrl) return;
-    let sameOrigin = false;
-    try {
-      sameOrigin = new URL(walineUrl).origin === window.location.origin;
-    } catch (_) {}
-    if (!sameOrigin) return;
-
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
     const pagePathNames = Array.from(pageCountEles).map((item) =>
       item.getAttribute("data-path"),

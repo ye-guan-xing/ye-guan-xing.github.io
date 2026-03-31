@@ -418,17 +418,12 @@
 <script>
   (async () => {
     const indexCountEle = document.querySelector(".waline-index-count");
-    const walineUrl = "https:\/\/www.acyeapp.top".replace(
-      /\/$/,
-      "",
-    );
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
     if (!walineUrl) return;
-    let sameOrigin = false;
-    try {
-      sameOrigin = new URL(walineUrl).origin === window.location.origin;
-    } catch (_) {}
-    if (!sameOrigin) return;
-
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
     const pagePathNames = Array.from(pageCountEles).map((item) =>
       item.getAttribute("data-path"),
