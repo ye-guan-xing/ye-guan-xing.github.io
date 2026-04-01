@@ -468,29 +468,51 @@
         "",
       );
     if (!walineUrl) return;
+
+    const walineNormalizePath = (p) => {
+      let s = p && String(p).trim() ? p : "/";
+      try {
+        let prev;
+        do {
+          prev = s;
+          s = decodeURIComponent(s);
+        } while (s !== prev);
+      } catch (_) {}
+      return s;
+    };
+
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
     const pagePathNames = Array.from(pageCountEles).map((item) =>
       item.getAttribute("data-path"),
     );
 
     const commentCountEles = document.querySelectorAll(".waline-comment-count");
-    const commentPathNames = Array.from(commentCountEles).map((item) =>
-      item.getAttribute("data-path"),
-    );
+
+    const WALINE_PATH_CHUNK = 8;
 
     const getViewCount = async (urlList) => {
       if (!urlList.length) return [];
-      const url =
-        walineUrl +
-        "/api/article/?path=" +
-        encodeURIComponent(urlList.join(","));
-      try {
-        const res = await fetch(url);
-        const json = await res.json();
-        return json.errno === 0 ? json.data.map((i) => i.time) : [];
-      } catch (_) {
-        return [];
+      const normalized = urlList.map(walineNormalizePath);
+      const out = [];
+      for (let i = 0; i < normalized.length; i += WALINE_PATH_CHUNK) {
+        const slice = normalized.slice(i, i + WALINE_PATH_CHUNK);
+        const url =
+          walineUrl +
+          "/api/article/?path=" +
+          encodeURIComponent(slice.join(","));
+        try {
+          const res = await fetch(url);
+          const json = await res.json();
+          if (json.errno === 0 && Array.isArray(json.data)) {
+            out.push(...json.data.map((item) => item.time));
+          } else {
+            for (let j = 0; j < slice.length; j++) out.push(0);
+          }
+        } catch (_) {
+          for (let j = 0; j < slice.length; j++) out.push(0);
+        }
       }
+      return out;
     };
 
     const addViewCount = async (pathname) => {
@@ -507,21 +529,6 @@
       }
     };
 
-    const getCommentCount = async (urlList) => {
-      if (!urlList.length) return [];
-      const url =
-        walineUrl +
-        "/api/comment?type=count&url=" +
-        encodeURIComponent(urlList.join(","));
-      try {
-        const res = await fetch(url);
-        const json = await res.json();
-        return json.errno === 0 ? json.data : [];
-      } catch (_) {
-        return [];
-      }
-    };
-
     const isArticlePage = document.body.classList.contains("article-page");
 
     if (isArticlePage && pagePathNames.length) {
@@ -535,11 +542,11 @@
       });
     }
 
-    if (commentPathNames.length) {
-      const comments = await getCommentCount(commentPathNames);
-      comments.forEach((value, idx) => {
-        if (commentCountEles[idx]) commentCountEles[idx].innerText = value;
-      });
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
     }
 
     if (indexCountEle) {
