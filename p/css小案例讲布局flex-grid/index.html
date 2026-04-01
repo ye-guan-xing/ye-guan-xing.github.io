@@ -10,7 +10,7 @@
 <meta property='og:description' content="从新闻页面 CSS+成果图看布局设计：实用 Flex 与结构化布局技巧 在前端开发中，布局是页面的骨架，直接决定了内容呈现的逻辑性和视觉舒适度。最近落地了一个新闻列表页面（如下成果图所示），其布局设计简洁高效，尤其适合信息密集型页面（如新闻、资讯类），今天就结合成果图+对应 CSS 代码，拆解其中的布局思路和实用技巧。\n">
 <meta property='og:url' content='https://ye-guan-xing.github.io/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='项目开发' /><meta property='article:published_time' content='2025-12-14T22:36:00&#43;08:00'/><meta property='article:modified_time' content='2025-12-14T22:36:00&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='项目开发' /><meta property='article:published_time' content='2025-12-14T22:36:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-14T22:36:00&#43;00:00'/>
 <meta name="twitter:title" content="CSS小案例，讲布局（Flex+Grid）">
 <meta name="twitter:description" content="从新闻页面 CSS+成果图看布局设计：实用 Flex 与结构化布局技巧 在前端开发中，布局是页面的骨架，直接决定了内容呈现的逻辑性和视觉舒适度。最近落地了一个新闻列表页面（如下成果图所示），其布局设计简洁高效，尤其适合信息密集型页面（如新闻、资讯类），今天就结合成果图+对应 CSS 代码，拆解其中的布局思路和实用技巧。\n">
     </head>
@@ -333,7 +333,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-      <time class="article-time--published">2025-12-14 22:36 &#43;0800</time>
+      <time class="article-time--published">2025-12-14 22:36</time>
     </div>
      
 
@@ -732,7 +732,25 @@
 
     
 
-    <script>
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
   function isLocalhost() {
     const ip = window.location.hostname;
     return (
@@ -773,18 +791,6 @@
       );
     if (!walineUrl) return;
 
-    const walineNormalizePath = (p) => {
-      let s = p && String(p).trim() ? p : "/";
-      try {
-        let prev;
-        do {
-          prev = s;
-          s = decodeURIComponent(s);
-        } while (s !== prev);
-      } catch (_) {}
-      return s;
-    };
-
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
     const pagePathNames = Array.from(pageCountEles).map((item) =>
       item.getAttribute("data-path"),
@@ -792,58 +798,21 @@
 
     const commentCountEles = document.querySelectorAll(".waline-comment-count");
 
-    const WALINE_PATH_CHUNK = 8;
-
-    const getViewCount = async (urlList) => {
-      if (!urlList.length) return [];
-      const normalized = urlList.map(walineNormalizePath);
-      const out = [];
-      for (let i = 0; i < normalized.length; i += WALINE_PATH_CHUNK) {
-        const slice = normalized.slice(i, i + WALINE_PATH_CHUNK);
-        const url =
-          walineUrl +
-          "/api/article/?path=" +
-          encodeURIComponent(slice.join(","));
-        try {
-          const res = await fetch(url);
-          const json = await res.json();
-          if (json.errno === 0 && Array.isArray(json.data)) {
-            out.push(...json.data.map((item) => item.time));
-          } else {
-            for (let j = 0; j < slice.length; j++) out.push(0);
-          }
-        } catch (_) {
-          for (let j = 0; j < slice.length; j++) out.push(0);
-        }
-      }
-      return out;
-    };
-
-    const addViewCount = async (pathname) => {
-      try {
-        const res = await fetch(walineUrl + "/api/article", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ path: pathname }),
-        });
-        const json = await res.json();
-        return json.errno === 0 ? json.data[0].time : 0;
-      } catch (_) {
-        return 0;
-      }
-    };
-
     const isArticlePage = document.body.classList.contains("article-page");
 
-    if (isArticlePage && pagePathNames.length) {
-      const currentPath = pagePathNames[0];
-      const view = await addViewCount(currentPath);
-      if (pageCountEles[0]) pageCountEles[0].innerText = view;
-    } else if (pagePathNames.length) {
-      const views = await getViewCount(pagePathNames);
-      views.forEach((value, idx) => {
-        if (pageCountEles[idx]) pageCountEles[idx].innerText = value;
-      });
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
     }
 
     if (commentCountEles.length && !document.querySelector("#waline")) {
@@ -858,8 +827,26 @@
       const cached = localStorage.getItem("indexCount");
       const now = Date.now();
       if (!last || now - last >= 3600000) {
-        const data = await getViewCount(["/"]);
-        const count = data[0] || 0;
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
         localStorage.setItem("indexCount", String(count));
         localStorage.setItem("lastVisitTime", String(now));
         indexCountEle.innerText = String(count);

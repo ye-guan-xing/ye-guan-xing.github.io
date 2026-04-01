@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="说明 我这里写个是为了做一下整理 我觉得有趣，如果开发累了，可以换一换脑子 注：题目可直抵题目，所以不写题目内容 题目讲解 两数之和 哈哈哈,虽然这是讲 hot150,但是这道题还是 要说说的 暴力法 暴力法就是遍历所有数，然后两两相加，如果和等于目标值，则返回结果，否则返回-1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 class Solution { public: vector&lt;int&gt; twoSum(std::vector&lt;int&gt;&amp; nums, int target) { int n = nums.size(); for (int i = 0; i &lt; n; i++) { for (int j = i + 1; j &lt; n; j++) { if (nums[i] + nums[j] == target) { return {i, j}; } } } return {}; } }; 哈希表 哈希表就是将数组中的数作为键，索引作为值，然后遍历数组，将每个数作为键，索引作为值，如果哈希表中存在目标值，则返回结果，否则返回-1 时间复杂度：O(n) 为什么可以优化时间呢？ 因为哈希表的查找时间杂度是 O(1)，而数组的查找时间复杂度是 O(n)，所以哈希表可以提高查找效率。\n">
-<title>力扣hot150(精讲)</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="说明 我这里写个是为了做一下整理 我觉得有趣，如果开发累了，可以换一换脑子 注：题目可直抵题目，所以不写题目内容 题目讲解 哈希：快速映射和快速查找 两数之和 暴力法 暴力法就是遍历所有数，然后两两相加，如果和等于目标值，则返回结果，否则返回-1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 class Solution { public: vector&lt;int&gt; twoSum(std::vector&lt;int&gt;&amp; nums, int target) { int n = nums.size(); for (int i = 0; i &lt; n; i++) { for (int j = i + 1; j &lt; n; j++) { if (nums[i] + nums[j] == target) { return {i, j}; } } } return {}; } }; 哈希表 哈希表就是将数组中的数作为键，索引作为值，然后遍历数组，将每个数作为键，索引作为值，如果哈希表中存在目标值，则返回结果，否则返回-1 时间复杂度：O(n) 为什么可以优化时间呢？ 因为哈希表的查找时间杂度是 O(1)，而数组的查找时间复杂度是 O(n)，所以哈希表可以提高查找效率。\n">
+<title>力扣hot100(精讲)</title>
 
-<link rel='canonical' href='https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/'>
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2/'>
 
-<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="力扣hot150(精讲)">
-<meta property='og:description' content="说明 我这里写个是为了做一下整理 我觉得有趣，如果开发累了，可以换一换脑子 注：题目可直抵题目，所以不写题目内容 题目讲解 两数之和 哈哈哈,虽然这是讲 hot150,但是这道题还是 要说说的 暴力法 暴力法就是遍历所有数，然后两两相加，如果和等于目标值，则返回结果，否则返回-1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 class Solution { public: vector&lt;int&gt; twoSum(std::vector&lt;int&gt;&amp; nums, int target) { int n = nums.size(); for (int i = 0; i &lt; n; i++) { for (int j = i + 1; j &lt; n; j++) { if (nums[i] + nums[j] == target) { return {i, j}; } } } return {}; } }; 哈希表 哈希表就是将数组中的数作为键，索引作为值，然后遍历数组，将每个数作为键，索引作为值，如果哈希表中存在目标值，则返回结果，否则返回-1 时间复杂度：O(n) 为什么可以优化时间呢？ 因为哈希表的查找时间杂度是 O(1)，而数组的查找时间复杂度是 O(n)，所以哈希表可以提高查找效率。\n">
-<meta property='og:url' content='https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/'>
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="力扣hot100(精讲)">
+<meta property='og:description' content="说明 我这里写个是为了做一下整理 我觉得有趣，如果开发累了，可以换一换脑子 注：题目可直抵题目，所以不写题目内容 题目讲解 哈希：快速映射和快速查找 两数之和 暴力法 暴力法就是遍历所有数，然后两两相加，如果和等于目标值，则返回结果，否则返回-1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 class Solution { public: vector&lt;int&gt; twoSum(std::vector&lt;int&gt;&amp; nums, int target) { int n = nums.size(); for (int i = 0; i &lt; n; i++) { for (int j = i + 1; j &lt; n; j++) { if (nums[i] + nums[j] == target) { return {i, j}; } } } return {}; } }; 哈希表 哈希表就是将数组中的数作为键，索引作为值，然后遍历数组，将每个数作为键，索引作为值，如果哈希表中存在目标值，则返回结果，否则返回-1 时间复杂度：O(n) 为什么可以优化时间呢？ 因为哈希表的查找时间杂度是 O(1)，而数组的查找时间复杂度是 O(n)，所以哈希表可以提高查找效率。\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='C&#43;&#43;' /><meta property='article:published_time' content='2025-11-28T08:36:00&#43;00:00'/><meta property='article:modified_time' content='2025-11-28T08:36:00&#43;00:00'/>
-<meta name="twitter:title" content="力扣hot150(精讲)">
-<meta name="twitter:description" content="说明 我这里写个是为了做一下整理 我觉得有趣，如果开发累了，可以换一换脑子 注：题目可直抵题目，所以不写题目内容 题目讲解 两数之和 哈哈哈,虽然这是讲 hot150,但是这道题还是 要说说的 暴力法 暴力法就是遍历所有数，然后两两相加，如果和等于目标值，则返回结果，否则返回-1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 class Solution { public: vector&lt;int&gt; twoSum(std::vector&lt;int&gt;&amp; nums, int target) { int n = nums.size(); for (int i = 0; i &lt; n; i++) { for (int j = i + 1; j &lt; n; j++) { if (nums[i] + nums[j] == target) { return {i, j}; } } } return {}; } }; 哈希表 哈希表就是将数组中的数作为键，索引作为值，然后遍历数组，将每个数作为键，索引作为值，如果哈希表中存在目标值，则返回结果，否则返回-1 时间复杂度：O(n) 为什么可以优化时间呢？ 因为哈希表的查找时间杂度是 O(1)，而数组的查找时间复杂度是 O(n)，所以哈希表可以提高查找效率。\n">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='C&#43;&#43;' /><meta property='article:published_time' content='2026-04-01T01:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-04-01T01:00:00&#43;00:00'/>
+<meta name="twitter:title" content="力扣hot100(精讲)">
+<meta name="twitter:description" content="说明 我这里写个是为了做一下整理 我觉得有趣，如果开发累了，可以换一换脑子 注：题目可直抵题目，所以不写题目内容 题目讲解 哈希：快速映射和快速查找 两数之和 暴力法 暴力法就是遍历所有数，然后两两相加，如果和等于目标值，则返回结果，否则返回-1 1 2 3 4 5 6 7 8 9 10 11 12 13 14 class Solution { public: vector&lt;int&gt; twoSum(std::vector&lt;int&gt;&amp; nums, int target) { int n = nums.size(); for (int i = 0; i &lt; n; i++) { for (int j = i + 1; j &lt; n; j++) { if (nums[i] + nums[j] == target) { return {i, j}; } } } return {}; } }; 哈希表 哈希表就是将数组中的数作为键，索引作为值，然后遍历数组，将每个数作为键，索引作为值，如果哈希表中存在目标值，则返回结果，否则返回-1 时间复杂度：O(n) 为什么可以优化时间呢？ 因为哈希表的查找时间杂度是 O(1)，而数组的查找时间复杂度是 O(n)，所以哈希表可以提高查找效率。\n">
     </head>
     <body class="
     article-page
@@ -268,15 +268,20 @@
     <li><a href="#说明">说明</a></li>
     <li><a href="#题目讲解">题目讲解</a>
       <ol>
-        <li><a href="#两数之和">两数之和</a></li>
-        <li><a href="#删除有序数组中的重复项">删除有序数组中的重复项</a>
+        <li><a href="#哈希快速映射和快速查找">哈希：快速映射和快速查找</a>
           <ol>
-            <li><a href="#题目-i">题目 I</a></li>
-            <li><a href="#题目-ii">题目 II</a></li>
+            <li><a href="#两数之和">两数之和</a></li>
+            <li><a href="#字母异位词分组">字母异位词分组</a></li>
           </ol>
         </li>
-        <li><a href="#o1-时间插入删除和获取随机元素">O(1) 时间插入、删除和获取随机元素</a></li>
-        <li><a href="#接雨水">接雨水</a></li>
+        <li><a href="#双指针">双指针</a>
+          <ol>
+            <li><a href="#移动零">移动零</a></li>
+            <li><a href="#盛最多水的容器">盛最多水的容器</a></li>
+            <li><a href="#三数之和">三数之和</a></li>
+            <li><a href="#无重复字符的最长子串">无重复字符的最长子串</a></li>
+          </ol>
+        </li>
       </ol>
     </li>
   </ol>
@@ -309,7 +314,7 @@
 
   <div class="article-title-wrapper">
     <h2 class="article-title">
-      <a href="/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/">力扣hot150(精讲)</a>
+      <a href="/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2/">力扣hot100(精讲)</a>
     </h2>
 
     
@@ -328,7 +333,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-      <time class="article-time--published">2025-11-28 08:36</time>
+      <time class="article-time--published">2026-04-01 01:00</time>
     </div>
      
 
@@ -340,7 +345,7 @@
 </svg>
 
       <time class="article-pageview">
-        <span class="waline-pageview-count" data-path="/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/"
+        <span class="waline-pageview-count" data-path="/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2/"
           >0</span
         >
         visits
@@ -354,7 +359,7 @@
 </svg>
 
       <time class="article-comment">
-        <span class="waline-comment-count" data-path="/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/"
+        <span class="waline-comment-count" data-path="/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2/"
           >0</span
         >
         comments
@@ -376,12 +381,10 @@
 <li>注：题目可直抵题目，所以不写题目内容</li>
 </ul>
 <h2 id="题目讲解">题目讲解
-</h2><h3 id="两数之和"><a class="link" href="https://leetcode.cn/problems/two-sum/"  target="_blank" rel="noopener"
+</h2><h3 id="哈希快速映射和快速查找">哈希：快速映射和快速查找
+</h3><h4 id="两数之和"><a class="link" href="https://leetcode.cn/problems/two-sum/"  target="_blank" rel="noopener"
     >两数之和</a>
-</h3><ul>
-<li>哈哈哈,虽然这是讲 hot150,但是这道题还是 要说说的</li>
-</ul>
-<ol>
+</h4><ol>
 <li>暴力法
 暴力法就是遍历所有数，然后两两相加，如果和等于目标值，则返回结果，否则返回-1</li>
 </ol>
@@ -464,74 +467,11 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="删除有序数组中的重复项">删除有序数组中的重复项
-</h3><ul>
-<li>这里将 I 和 II 的解法都给出，并给出过程</li>
-</ul>
-<h4 id="题目-i"><a class="link" href="https://leetcode.cn/problems/remove-duplicates-from-sorted-array/"  target="_blank" rel="noopener"
-    >题目 I</a>
+</div><h4 id="字母异位词分组"><a class="link" href="https://leetcode.cn/problems/group-anagrams/description/"  target="_blank" rel="noopener"
+    >字母异位词分组</a>
 </h4><ul>
-<li>我的想法是这样的，没什么好说的，stl 大法好</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">removeDuplicates</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">nums</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">()),</span><span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ul>
-<li>如果不能用呢？用快慢指针，慢指针最后的位置就是去重后的数组长度，可以优化空间复杂度<del>虽然空间不值钱</del></li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">removeDuplicates</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">nums</span><span class="p">[</span><span class="n">k</span><span class="p">]){</span>
-</span></span><span class="line"><span class="cl">                <span class="n">k</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">                <span class="n">nums</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">            <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="c1">//从0开始计数
-</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="题目-ii"><a class="link" href="https://leetcode.cn/problems/remove-duplicates-from-sorted-array-ii/"  target="_blank" rel="noopener"
-    >题目 II</a>
-</h4><ul>
-<li>我的思路：遍历数组，判断当前元素是否和前两个元素相同，相同则跳过，不同则赋给下一个位置<del>好像也是双指针</del></li>
+<li>思路：哈希表，将字符串排序，作为键，将原字符串作为值，然后遍历字符串，将排序后的字符串作为键，将原字符串作为值，如果哈希表中存在目标值，则返回结果，否则返回-1</li>
+<li>时间复杂度：O(n)</li>
 </ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -551,29 +491,32 @@
 </span><span class="lnt">14
 </span><span class="lnt">15
 </span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">removeDuplicates</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">&lt;=</span><span class="mi">2</span><span class="p">)</span> <span class="k">return</span> <span class="n">n</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">!=</span><span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">2</span><span class="p">]){</span>
-</span></span><span class="line"><span class="cl">                <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">                <span class="n">j</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">//相同则跳过
-</span></span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">j</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span> <span class="n">groupAnagrams</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">strs</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span><span class="n">m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span> <span class="nl">s</span><span class="p">:</span><span class="n">strs</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">string</span> <span class="n">s1</span><span class="o">=</span><span class="n">s</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sort</span><span class="p">(</span><span class="n">s1</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">s1</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">            <span class="n">m</span><span class="p">[</span><span class="n">s1</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span><span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ans</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">value</span><span class="p">]</span><span class="o">:</span><span class="n">m</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ans</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><ul>
-<li>双指针思路：同一的快慢指针思路，只是判断条件不同   O(n)</li>
-</ul>
+</div><p>####<a class="link" href="https://leetcode.cn/problems/longest-consecutive-sequence/description/"  target="_blank" rel="noopener"
+    >最长连续序列</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -596,42 +539,127 @@
 </span><span class="lnt">18
 </span><span class="lnt">19
 </span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">longestConsecutive</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">unordered_set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="n">st</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ans</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="nl">x</span><span class="p">:</span><span class="n">st</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">now</span><span class="o">=</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">cnt</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">now</span><span class="o">+</span><span class="mi">1</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">now</span><span class="o">++</span><span class="err">；</span>
+</span></span><span class="line"><span class="cl">                <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ans</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span><span class="n">cnt</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="双指针">双指针
+</h3><h4 id="移动零"><a class="link" href="https://leetcode.cn/problems/move-zeroes/description/"  target="_blank" rel="noopener"
+    >移动零</a>
+</h4><ul>
+<li>思路：双指针，一个指针指向当前位置，一个指针指向下一个位置，如果当前位置为0，则将下一个位置的值赋给当前位置，然后将下一个位置指针后移一位，直到下一个位置为0，然后将当前位置指针后移一位，直到数组末尾</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">removeDuplicates</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">&lt;=</span><span class="mi">2</span><span class="p">)</span> <span class="k">return</span> <span class="n">n</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">cnt</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]){</span>
-</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">cnt</span><span class="o">&gt;=</span><span class="mi">2</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">                <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">                <span class="n">j</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">                <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">moveZeroes</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="n">r</span><span class="o">&lt;</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">()){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">l</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">swap</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">],</span><span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">l</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">r</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="盛最多水的容器"><a class="link" href="https://leetcode.cn/problems/container-with-most-water/description/"  target="_blank" rel="noopener"
+    >盛最多水的容器</a>
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">maxArea</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">height</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="n">height</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ans</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;</span><span class="n">r</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">height</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">height</span><span class="p">[</span><span class="n">r</span><span class="p">]){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ans</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span><span class="n">height</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">l</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">                <span class="n">r</span><span class="o">--</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">            <span class="k">else</span><span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">cnt</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">                <span class="n">j</span><span class="o">++</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">                <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ans</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span><span class="n">height</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">l</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">                <span class="n">l</span><span class="o">++</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="o1-时间插入删除和获取随机元素"><a class="link" href="https://leetcode-cn.com/problems/insert-delete-getrandom-o1/"  target="_blank" rel="noopener"
-    >O(1) 时间插入、删除和获取随机元素</a>
-</h3><ul>
-<li>说实话我不会，这是我想的，算暴力吧</li>
-</ul>
-<div class="highlight"><div class="chroma">
+</div><h4 id="三数之和"><a class="link" href="https://leetcode.cn/problems/3sum/description/"  target="_blank" rel="noopener"
+    >三数之和</a>
+</h4><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
@@ -658,177 +686,37 @@
 </span><span class="lnt">23
 </span><span class="lnt">24
 </span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">RandomizedSet</span> <span class="p">{</span>
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">RandomizedSet</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">find</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">val</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">threeSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sort</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&amp;&amp;</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">l</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;</span><span class="n">r</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">sum</span><span class="o">=</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">+</span><span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">sum</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">ans</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">],</span><span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="p">]});</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">while</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;</span><span class="n">r</span><span class="o">&amp;&amp;</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">==</span><span class="n">nums</span><span class="p">[</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="n">l</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">while</span><span class="p">(</span><span class="n">l</span><span class="o">&lt;</span><span class="n">r</span><span class="o">&amp;&amp;</span><span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="o">==</span><span class="n">nums</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="n">r</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">l</span><span class="o">++</span><span class="p">,</span><span class="n">r</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="k">else</span> <span class="nf">if</span><span class="p">(</span><span class="n">sum</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="n">r</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">else</span> <span class="n">l</span><span class="o">++</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">insert</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">loc</span><span class="o">=</span><span class="n">find</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">loc</span><span class="o">==-</span><span class="mi">1</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">            <span class="n">a</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">remove</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">loc</span><span class="o">=</span><span class="n">find</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">loc</span><span class="o">==-</span><span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">a</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">+</span><span class="n">loc</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">getRandom</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">()];</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="n">a</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ul>
-<li>过了好一段时间，才想到的哈希</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">RandomizedSet</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">mp</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl">    <span class="n">RandomizedSet</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span> 
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">find</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">mp</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="p">{</span> 
-</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">mp</span><span class="p">[</span><span class="n">val</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">insert</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">find</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">mp</span><span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//这两步写完，才算完成。
-</span></span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">bool</span> <span class="nf">remove</span><span class="p">(</span><span class="kt">int</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">loc</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">last</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">back</span><span class="p">();</span> 
-</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">[</span><span class="n">loc</span><span class="p">]</span> <span class="o">=</span> <span class="n">last</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl">        <span class="n">mp</span><span class="p">[</span><span class="n">last</span><span class="p">]</span> <span class="o">=</span> <span class="n">loc</span><span class="p">;</span> 
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">        <span class="n">mp</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">val</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">a</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">getRandom</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span><span class="p">()];</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><ul>
-<li>讲解一下remove()方法(不太好想)</li>
-</ul>
-<blockquote>
-<p>先明确两个前提：</p>
-</blockquote>
-<ul>
-<li>数组a的特点：尾部增删元素（push_back/pop_back）是 O (1) 时间，但中间删除元素（erase）是 O (n) 时间（因为后面的元素要整体前移）。</li>
-<li>哈希表mp的作用：记录 “元素值→数组索引”，比如mp[3]=2表示元素 3 在数组a的索引 2 位置。
-你可能觉得 “元素要相连才合理”，但的核心需求是：
-插入 / 删除 / 随机访问都是 O (1)；
-元素不重复。
-它不要求元素保持任何顺序，所以哪怕用 “八竿子打不着的最后一个元素” 替换，只要最终删掉了目标元素，且哈希表映射正确，就完全符合要求。</li>
-<li>其实你想想这是一个误区，数组的顺序反而不重要</li>
-</ul>
-<h3 id="接雨水"><a class="link" href="https://leetcode-cn.com/problems/trapping-rain-water/"  target="_blank" rel="noopener"
-    >接雨水</a>
-</h3><ul>
-<li>网红题目,不必多言<del>据说字节的扫地阿姨都会做</del></li>
-<li>我的思路：<del>其实我不理解为什么说难</del>看一个柱子能接多少水，应该就能想到贪心+双指针/单调栈</li>
-</ul>
+</div><p>####<a class="link" href="https://leetcode.cn/problems/trapping-rain-water/description/"  target="_blank" rel="noopener"
+    >接雨水</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -879,6 +767,51 @@
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
+</div><p>###滑动窗口</p>
+<h4 id="无重复字符的最长子串"><a class="link" href="https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/"  target="_blank" rel="noopener"
+    >无重复字符的最长子串</a>
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">lengthOfLongestSubstring</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span><span class="n">mp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ans</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">char</span> <span class="n">c</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="n">mp</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="n">mp</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">mp</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">l</span><span class="p">]]</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">l</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ans</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span><span class="n">i</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
 </div>
 </section>
 
@@ -909,12 +842,12 @@
             
                 
 <article class="">
-    <a href="/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2/">
+    <a href="/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">力扣hot100(精讲)</h2>
+            <h2 class="article-title">力扣hot150(精讲)</h2>
         </div>
     </a>
 </article>

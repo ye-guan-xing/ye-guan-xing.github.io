@@ -10,7 +10,7 @@
 <meta property='og:description' content="欢迎来到我的博客QWQ">
 <meta property='og:url' content='https://ye-guan-xing.github.io/tags/c&#43;&#43;/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-02-13T17:00:00&#43;08:00 '/>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-04-01T01:00:00&#43;00:00 '/>
 <meta name="twitter:title" content="Tag: C++ - acye's blog">
 <meta name="twitter:description" content="欢迎来到我的博客QWQ"><link rel="alternate" type="application/rss&#43;xml" href="https://ye-guan-xing.github.io/tags/c&#43;&#43;/index.xml">
     </head>
@@ -286,7 +286,7 @@
                     <a href="/archives/#2026">
                         
                             <span class="year">2026</span>
-                            <span class="count">3</span>
+                            <span class="count">6</span>
                         
                     </a> 
                 </div>
@@ -329,6 +329,10 @@
                 校园OJ开发
             </a>
         
+            <a href="/categories/git-%E6%96%B0%E6%89%8B%E9%80%9A%E5%85%B3%E6%8C%87%E5%8D%97/" class="font_size_3">
+                Git 新手通关指南
+            </a>
+        
             <a href="/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" class="font_size_3">
                 学习路线
             </a>
@@ -337,11 +341,7 @@
                 开发问题精讲
             </a>
         
-            <a href="/categories/git-%E6%96%B0%E6%89%8B%E9%80%9A%E5%85%B3%E6%8C%87%E5%8D%97/" class="font_size_1">
-                Git 新手通关指南
-            </a>
-        
-            <a href="/categories/%E7%AE%97%E6%B3%95/" class="font_size_1">
+            <a href="/categories/%E7%AE%97%E6%B3%95/" class="font_size_2">
                 算法
             </a>
         
@@ -363,7 +363,7 @@
 
         <div class="section-card">
             <div class="section-details">
-                <h3 class="section-count">1 个页面</h3>
+                <h3 class="section-count">2 个页面</h3>
                 <h1 class="section-term">C&#43;&#43;</h1>
                 
             </div>
@@ -373,17 +373,46 @@
     <section class="article-list--compact">
         
             <article>
+    <a href="/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2/">
+        <div class="article-details">
+            <h2 class="article-title">力扣hot100(精讲)</h2>
+            <footer class="article-time">
+                <time datetime='2026-04-01T01:00:00Z'>2026-04-01 01:00</time>
+            </footer>
+        </div>
+    </a>
+</article>
+        
+            <article>
     <a href="/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/">
         <div class="article-details">
             <h2 class="article-title">力扣hot150(精讲)</h2>
             <footer class="article-time">
-                <time datetime='2025-11-28T08:36:00&#43;08:00'>2025-11-28 08:36 &#43;0800</time>
+                <time datetime='2025-11-28T08:36:00Z'>2025-11-28 08:36</time>
             </footer>
         </div>
     </a>
 </article>
         
     </section>
+<footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
 <script>
   function isLocalhost() {
     const ip = window.location.hostname;
@@ -425,18 +454,6 @@
       );
     if (!walineUrl) return;
 
-    const walineNormalizePath = (p) => {
-      let s = p && String(p).trim() ? p : "/";
-      try {
-        let prev;
-        do {
-          prev = s;
-          s = decodeURIComponent(s);
-        } while (s !== prev);
-      } catch (_) {}
-      return s;
-    };
-
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
     const pagePathNames = Array.from(pageCountEles).map((item) =>
       item.getAttribute("data-path"),
@@ -444,58 +461,21 @@
 
     const commentCountEles = document.querySelectorAll(".waline-comment-count");
 
-    const WALINE_PATH_CHUNK = 8;
-
-    const getViewCount = async (urlList) => {
-      if (!urlList.length) return [];
-      const normalized = urlList.map(walineNormalizePath);
-      const out = [];
-      for (let i = 0; i < normalized.length; i += WALINE_PATH_CHUNK) {
-        const slice = normalized.slice(i, i + WALINE_PATH_CHUNK);
-        const url =
-          walineUrl +
-          "/api/article/?path=" +
-          encodeURIComponent(slice.join(","));
-        try {
-          const res = await fetch(url);
-          const json = await res.json();
-          if (json.errno === 0 && Array.isArray(json.data)) {
-            out.push(...json.data.map((item) => item.time));
-          } else {
-            for (let j = 0; j < slice.length; j++) out.push(0);
-          }
-        } catch (_) {
-          for (let j = 0; j < slice.length; j++) out.push(0);
-        }
-      }
-      return out;
-    };
-
-    const addViewCount = async (pathname) => {
-      try {
-        const res = await fetch(walineUrl + "/api/article", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ path: pathname }),
-        });
-        const json = await res.json();
-        return json.errno === 0 ? json.data[0].time : 0;
-      } catch (_) {
-        return 0;
-      }
-    };
-
     const isArticlePage = document.body.classList.contains("article-page");
 
-    if (isArticlePage && pagePathNames.length) {
-      const currentPath = pagePathNames[0];
-      const view = await addViewCount(currentPath);
-      if (pageCountEles[0]) pageCountEles[0].innerText = view;
-    } else if (pagePathNames.length) {
-      const views = await getViewCount(pagePathNames);
-      views.forEach((value, idx) => {
-        if (pageCountEles[idx]) pageCountEles[idx].innerText = value;
-      });
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
     }
 
     if (commentCountEles.length && !document.querySelector("#waline")) {
@@ -510,8 +490,26 @@
       const cached = localStorage.getItem("indexCount");
       const now = Date.now();
       if (!last || now - last >= 3600000) {
-        const data = await getViewCount(["/"]);
-        const count = data[0] || 0;
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
         localStorage.setItem("indexCount", String(count));
         localStorage.setItem("lastVisitTime", String(now));
         indexCountEle.innerText = String(count);

@@ -10,7 +10,7 @@
 <meta property='og:description' content="这里是一个我在开HG_OJ中的部分开发步骤和开发问题的思考">
 <meta property='og:url' content='https://ye-guan-xing.github.io/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-02-13T17:00:00&#43;08:00 '/><meta property='og:image' content='https://ye-guan-xing.github.io/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/image.jpg' />
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-04-01T01:00:00&#43;00:00 '/><meta property='og:image' content='https://ye-guan-xing.github.io/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/image.jpg' />
 <meta name="twitter:title" content="Category: 校园OJ开发 - acye's blog">
 <meta name="twitter:description" content="这里是一个我在开HG_OJ中的部分开发步骤和开发问题的思考"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://ye-guan-xing.github.io/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/image.jpg' /><link rel="alternate" type="application/rss&#43;xml" href="https://ye-guan-xing.github.io/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/index.xml">
@@ -287,7 +287,7 @@
                     <a href="/archives/#2026">
                         
                             <span class="year">2026</span>
-                            <span class="count">3</span>
+                            <span class="count">6</span>
                         
                     </a> 
                 </div>
@@ -330,6 +330,10 @@
                 校园OJ开发
             </a>
         
+            <a href="/categories/git-%E6%96%B0%E6%89%8B%E9%80%9A%E5%85%B3%E6%8C%87%E5%8D%97/" class="font_size_3">
+                Git 新手通关指南
+            </a>
+        
             <a href="/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" class="font_size_3">
                 学习路线
             </a>
@@ -338,11 +342,7 @@
                 开发问题精讲
             </a>
         
-            <a href="/categories/git-%E6%96%B0%E6%89%8B%E9%80%9A%E5%85%B3%E6%8C%87%E5%8D%97/" class="font_size_1">
-                Git 新手通关指南
-            </a>
-        
-            <a href="/categories/%E7%AE%97%E6%B3%95/" class="font_size_1">
+            <a href="/categories/%E7%AE%97%E6%B3%95/" class="font_size_2">
                 算法
             </a>
         
@@ -388,7 +388,7 @@
         <div class="article-details">
             <h2 class="article-title">校园OJ开发之布局逻辑</h2>
             <footer class="article-time">
-                <time datetime='2025-12-06T12:36:00&#43;08:00'>2025-12-06 12:36 &#43;0800</time>
+                <time datetime='2025-12-06T12:36:00&#43;08:00'>2025-12-06 12:36</time>
             </footer>
         </div>
     </a>
@@ -399,7 +399,7 @@
         <div class="article-details">
             <h2 class="article-title">校园OJ项目的详细开发(登录界面)</h2>
             <footer class="article-time">
-                <time datetime='2025-12-05T18:36:00&#43;08:00'>2025-12-05 18:36 &#43;0800</time>
+                <time datetime='2025-12-05T18:36:00&#43;08:00'>2025-12-05 18:36</time>
             </footer>
         </div>
     </a>
@@ -410,7 +410,7 @@
         <div class="article-details">
             <h2 class="article-title">校园OJ项目的整体结构</h2>
             <footer class="article-time">
-                <time datetime='2025-12-05T17:36:00&#43;08:00'>2025-12-05 17:36 &#43;0800</time>
+                <time datetime='2025-12-05T17:36:00&#43;08:00'>2025-12-05 17:36</time>
             </footer>
         </div>
     </a>
@@ -421,13 +421,31 @@
         <div class="article-details">
             <h2 class="article-title">校园OJ开发之admin页面的开发</h2>
             <footer class="article-time">
-                <time datetime='2025-11-30T12:36:00&#43;08:00'>2025-11-30 12:36 &#43;0800</time>
+                <time datetime='2025-11-30T12:36:00Z'>2025-11-30 12:36</time>
             </footer>
         </div>
     </a>
 </article>
         
     </section>
+<footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
 <script>
   function isLocalhost() {
     const ip = window.location.hostname;
@@ -469,18 +487,6 @@
       );
     if (!walineUrl) return;
 
-    const walineNormalizePath = (p) => {
-      let s = p && String(p).trim() ? p : "/";
-      try {
-        let prev;
-        do {
-          prev = s;
-          s = decodeURIComponent(s);
-        } while (s !== prev);
-      } catch (_) {}
-      return s;
-    };
-
     const pageCountEles = document.querySelectorAll(".waline-pageview-count");
     const pagePathNames = Array.from(pageCountEles).map((item) =>
       item.getAttribute("data-path"),
@@ -488,58 +494,21 @@
 
     const commentCountEles = document.querySelectorAll(".waline-comment-count");
 
-    const WALINE_PATH_CHUNK = 8;
-
-    const getViewCount = async (urlList) => {
-      if (!urlList.length) return [];
-      const normalized = urlList.map(walineNormalizePath);
-      const out = [];
-      for (let i = 0; i < normalized.length; i += WALINE_PATH_CHUNK) {
-        const slice = normalized.slice(i, i + WALINE_PATH_CHUNK);
-        const url =
-          walineUrl +
-          "/api/article/?path=" +
-          encodeURIComponent(slice.join(","));
-        try {
-          const res = await fetch(url);
-          const json = await res.json();
-          if (json.errno === 0 && Array.isArray(json.data)) {
-            out.push(...json.data.map((item) => item.time));
-          } else {
-            for (let j = 0; j < slice.length; j++) out.push(0);
-          }
-        } catch (_) {
-          for (let j = 0; j < slice.length; j++) out.push(0);
-        }
-      }
-      return out;
-    };
-
-    const addViewCount = async (pathname) => {
-      try {
-        const res = await fetch(walineUrl + "/api/article", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ path: pathname }),
-        });
-        const json = await res.json();
-        return json.errno === 0 ? json.data[0].time : 0;
-      } catch (_) {
-        return 0;
-      }
-    };
-
     const isArticlePage = document.body.classList.contains("article-page");
 
-    if (isArticlePage && pagePathNames.length) {
-      const currentPath = pagePathNames[0];
-      const view = await addViewCount(currentPath);
-      if (pageCountEles[0]) pageCountEles[0].innerText = view;
-    } else if (pagePathNames.length) {
-      const views = await getViewCount(pagePathNames);
-      views.forEach((value, idx) => {
-        if (pageCountEles[idx]) pageCountEles[idx].innerText = value;
-      });
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
     }
 
     if (commentCountEles.length && !document.querySelector("#waline")) {
@@ -554,8 +523,26 @@
       const cached = localStorage.getItem("indexCount");
       const now = Date.now();
       if (!last || now - last >= 3600000) {
-        const data = await getViewCount(["/"]);
-        const count = data[0] || 0;
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
         localStorage.setItem("indexCount", String(count));
         localStorage.setItem("lastVisitTime", String(now));
         indexCountEle.innerText = String(count);

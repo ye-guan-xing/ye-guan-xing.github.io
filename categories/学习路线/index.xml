@@ -7,302 +7,10 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>acye</copyright>
-        <lastBuildDate>Fri, 13 Feb 2026 17:00:00 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>后端学习路线：从基础到架构</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</link>
-        <pubDate>Fri, 13 Feb 2026 17:00:00 +0800</pubDate>
-        
-        <guid>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</guid>
-        <description>&lt;h2 id=&#34;前言&#34;&gt;前言
-&lt;/h2&gt;&lt;p&gt;这份后端学习路线源自 &lt;a class=&#34;link&#34; href=&#34;http://roadmap.sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;roadmap.sh&lt;/a&gt;，是全球开发者广泛参考的后端技术学习指南。它清晰梳理了从基础原理到架构设计的核心知识点，并标注了学习优先级，帮助你在后端技术体系中高效构建知识体系，避免盲目学习。（参考图见尾部）&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;图例说明&#34;&gt;图例说明
-&lt;/h2&gt;&lt;p&gt;在开始之前，请先了解图中标记的含义，这将帮助你判断学习的优先级：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;❤️ 个人推荐 / 意见&lt;/strong&gt;：&lt;strong&gt;核心必学内容&lt;/strong&gt;，是后端开发的基石，必须掌握。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;✅ 替代选项 — 选择此项或是紫色项目&lt;/strong&gt;：&lt;strong&gt;选其一深入即可&lt;/strong&gt;，通常是不同的技术方案或框架，无需全部学习。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;☑ 不必严格按照路线图的顺序（随时可学）&lt;/strong&gt;：&lt;strong&gt;可灵活安排学习顺序&lt;/strong&gt;，属于进阶或补充性知识。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;⚫ 我不推荐&lt;/strong&gt;：&lt;strong&gt;优先级较低或可跳过&lt;/strong&gt;，在当前技术环境下必要性不高。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;一互联网基础与前端知识-&#34;&gt;一、互联网基础与前端知识 🌐
-&lt;/h2&gt;&lt;p&gt;后端开发离不开对互联网和前端的理解，这是构建服务的基础。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ 互联网是如何运作的？&lt;/li&gt;
-&lt;li&gt;❤️ 什么是 HTTP？&lt;/li&gt;
-&lt;li&gt;❤️ 浏览器及其工作原理？&lt;/li&gt;
-&lt;li&gt;❤️ DNS 及其工作原理？&lt;/li&gt;
-&lt;li&gt;❤️ 什么是域名 (Domain Name)？&lt;/li&gt;
-&lt;li&gt;❤️ 什么是主机托管 (Hosting)？&lt;/li&gt;
-&lt;li&gt;✅ HTML&lt;/li&gt;
-&lt;li&gt;☑ CSS&lt;/li&gt;
-&lt;li&gt;❤️ JavaScript&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;二操作系统和基础知识-&#34;&gt;二、操作系统和基础知识 💻
-&lt;/h2&gt;&lt;p&gt;操作系统是后端服务运行的根基，掌握其原理能让你写出更高效、稳定的代码。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ 终端机的使用&lt;/li&gt;
-&lt;li&gt;❤️ 操作系统如何运作&lt;/li&gt;
-&lt;li&gt;❤️ 行程管理（Process Management）&lt;/li&gt;
-&lt;li&gt;❤️ 执行绪（Thread）和并行（Concurrency）&lt;/li&gt;
-&lt;li&gt;❤️ 基础的终端机指令（grep, awk, sed, lsof, curl, wget, tail, head, less, find, ssh, kill）&lt;/li&gt;
-&lt;li&gt;❤️ 记忆体管理&lt;/li&gt;
-&lt;li&gt;❤️ 行程间通讯（IPC）&lt;/li&gt;
-&lt;li&gt;❤️ I/O 管理&lt;/li&gt;
-&lt;li&gt;❤️ POSIX 的基础认知（stdin, stdout, stderr, pipes）&lt;/li&gt;
-&lt;li&gt;❤️ 基础的网络概念&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;三学习一门语言-&#34;&gt;三、学习一门语言 📚
-&lt;/h2&gt;&lt;p&gt;选择一门后端语言深入学习，理解其运行时特性（如并行、内存模型）是进阶的关键。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;✅ Java&lt;/li&gt;
-&lt;li&gt;✅ C#&lt;/li&gt;
-&lt;li&gt;✅ PHP&lt;/li&gt;
-&lt;li&gt;☑ Rust&lt;/li&gt;
-&lt;li&gt;☑ Go&lt;/li&gt;
-&lt;li&gt;❤️ JavaScript&lt;/li&gt;
-&lt;li&gt;❤️ Python&lt;/li&gt;
-&lt;li&gt;✅ Ruby&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;四版本控制系统-vcs-&#34;&gt;四、版本控制系统 (VCS) 🛠️
-&lt;/h2&gt;&lt;p&gt;现代后端开发离不开版本控制，它是团队协作和代码管理的核心工具。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;☑ 版本控制系统的定义及使用价值&lt;/li&gt;
-&lt;li&gt;❤️ Git 的基本用法&lt;/li&gt;
-&lt;li&gt;☑ 仓库代管（Repo Hosting）服务
-&lt;ul&gt;
-&lt;li&gt;✅ 注册账号并学习使用 GitHub&lt;/li&gt;
-&lt;li&gt;❤️ GitHub&lt;/li&gt;
-&lt;li&gt;☑ GitLab&lt;/li&gt;
-&lt;li&gt;☑ Bitbucket&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;五数据库-&#34;&gt;五、数据库 🗄️
-&lt;/h2&gt;&lt;p&gt;数据库是后端服务存储数据的核心，关系型与 NoSQL 数据库各有适用场景。&lt;/p&gt;
-&lt;h3 id=&#34;关系式数据库&#34;&gt;关系式数据库
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;❤️ PostgreSQL&lt;/li&gt;
-&lt;li&gt;✅ MySQL&lt;/li&gt;
-&lt;li&gt;✅ MariaDB&lt;/li&gt;
-&lt;li&gt;☑ MS SQL&lt;/li&gt;
-&lt;li&gt;☑ Oracle&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;nosql-数据库&#34;&gt;NoSQL 数据库
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;❤️ 文件资料库（MongoDB, CouchDB）&lt;/li&gt;
-&lt;li&gt;✅ 栏位资料库（Cassandra）&lt;/li&gt;
-&lt;li&gt;☑ 时序型资料库（InfluxDB, TimescaleDB）&lt;/li&gt;
-&lt;li&gt;☑ 即时资料库（Firebase, RethinkDB）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;更多关于资料库&#34;&gt;更多关于资料库
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;❤️ ORM（物件关系映射）&lt;/li&gt;
-&lt;li&gt;❤️ ACID&lt;/li&gt;
-&lt;li&gt;❤️ 交易（Transaction）&lt;/li&gt;
-&lt;li&gt;❤️ N+1 问题&lt;/li&gt;
-&lt;li&gt;❤️ 资料库正规化（Normalization）&lt;/li&gt;
-&lt;li&gt;❤️ 索引（Index）及其运作方式&lt;/li&gt;
-&lt;li&gt;☑ 资料复写（Replication）&lt;/li&gt;
-&lt;li&gt;☑ 分片（Sharding）策略&lt;/li&gt;
-&lt;li&gt;☑ CAP 定理&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;六学习-api-相关知识-&#34;&gt;六、学习 API 相关知识 🚀
-&lt;/h2&gt;&lt;p&gt;API 是后端服务对外交互的核心，掌握不同类型的 API 设计与实现至关重要。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ Cookie Based&lt;/li&gt;
-&lt;li&gt;❤️ OAuth&lt;/li&gt;
-&lt;li&gt;❤️ Basic Authentication&lt;/li&gt;
-&lt;li&gt;❤️ Token Authentication&lt;/li&gt;
-&lt;li&gt;❤️ JWT&lt;/li&gt;
-&lt;li&gt;❤️ OpenID&lt;/li&gt;
-&lt;li&gt;☑ SAML&lt;/li&gt;
-&lt;li&gt;☑ HATEOAS&lt;/li&gt;
-&lt;li&gt;❤️ OpenAPI 规范以及 Swagger&lt;/li&gt;
-&lt;li&gt;❤️ 认证（Authentication）&lt;/li&gt;
-&lt;li&gt;❤️ REST&lt;/li&gt;
-&lt;li&gt;☑ 阅读 Roy Fielding 的论文&lt;/li&gt;
-&lt;li&gt;☑ JSON API&lt;/li&gt;
-&lt;li&gt;☑ SOAP&lt;/li&gt;
-&lt;li&gt;❤️ gRPC&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;七缓存-caching-&#34;&gt;七、缓存 (Caching) 🚀
-&lt;/h2&gt;&lt;p&gt;缓存是提升后端服务性能的关键手段，合理使用缓存能显著降低数据库压力。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ Redis&lt;/li&gt;
-&lt;li&gt;✅ Memcached&lt;/li&gt;
-&lt;li&gt;☑ CDN&lt;/li&gt;
-&lt;li&gt;☑ 伺服器端（Server Side）&lt;/li&gt;
-&lt;li&gt;☑ 用户端（Client Side）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;八网络安全知识-&#34;&gt;八、网络安全知识 🔒
-&lt;/h2&gt;&lt;p&gt;安全是后端服务不可忽视的环节，掌握常见安全机制与风险防范是必备能力。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ MD5 以及为什么不要使用它&lt;/li&gt;
-&lt;li&gt;❤️ SHA 家族&lt;/li&gt;
-&lt;li&gt;☑ scrypt&lt;/li&gt;
-&lt;li&gt;❤️ bcrypt&lt;/li&gt;
-&lt;li&gt;❤️ 杂凑（Hashing）演算法&lt;/li&gt;
-&lt;li&gt;❤️ HTTPS&lt;/li&gt;
-&lt;li&gt;❤️ 内容安全政策（CSP）&lt;/li&gt;
-&lt;li&gt;❤️ CORS&lt;/li&gt;
-&lt;li&gt;❤️ SSL/TLS&lt;/li&gt;
-&lt;li&gt;❤️ OWASP 安全风险&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;九测试-testing-&#34;&gt;九、测试 (Testing) ✅
-&lt;/h2&gt;&lt;p&gt;测试是保障后端服务质量的核心，不同类型的测试覆盖不同的质量维度。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ 整合测试（Integration Testing）&lt;/li&gt;
-&lt;li&gt;❤️ 单元测试（Unit Testing）&lt;/li&gt;
-&lt;li&gt;❤️ 功能测试（Functional Testing）&lt;/li&gt;
-&lt;li&gt;☑ CI/CD（持续整合/持续交付）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;十设计和开发原则-&#34;&gt;十、设计和开发原则 📐
-&lt;/h2&gt;&lt;p&gt;遵循良好的设计原则能让代码更易维护、扩展，是资深后端开发者的核心素养。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;☑ 四人帮（GOF）设计模式&lt;/li&gt;
-&lt;li&gt;☑ 领域驱动设计（DDD）&lt;/li&gt;
-&lt;li&gt;☑ 测试驱动开发（TDD）&lt;/li&gt;
-&lt;li&gt;❤️ SOLID&lt;/li&gt;
-&lt;li&gt;❤️ KISS&lt;/li&gt;
-&lt;li&gt;❤️ YAGNI&lt;/li&gt;
-&lt;li&gt;❤️ DRY&lt;/li&gt;
-&lt;li&gt;搜索引擎（Search Engine）
-&lt;ul&gt;
-&lt;li&gt;❤️ Elasticsearch&lt;/li&gt;
-&lt;li&gt;✅ Solr&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;十一架构模式-&#34;&gt;十一、架构模式 🏗️
-&lt;/h2&gt;&lt;p&gt;架构模式决定了系统的扩展性与维护性，不同场景下选择合适的架构至关重要。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;☑ 整合型*（Monolithic）应用程式&lt;/li&gt;
-&lt;li&gt;❤️ 微服务（Microservice）&lt;/li&gt;
-&lt;li&gt;☑ 服务导向架构（SOA）&lt;/li&gt;
-&lt;li&gt;☑ CQRS 和事件来源模式&lt;/li&gt;
-&lt;li&gt;☑ 无伺服器（Serverless）&lt;/li&gt;
-&lt;li&gt;*译注：又译作单体式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;十二容器化-vs-虚拟化-containerization--virtualization-&#34;&gt;十二、容器化 vs 虚拟化 (Containerization / Virtualization) 🐳
-&lt;/h2&gt;&lt;p&gt;容器化技术简化了部署与环境一致性，是现代后端部署的主流方式。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ Docker&lt;/li&gt;
-&lt;li&gt;⚫ rkt&lt;/li&gt;
-&lt;li&gt;⚫ LXC&lt;/li&gt;
-&lt;li&gt;讯息代理*（Message Broker）
-&lt;ul&gt;
-&lt;li&gt;❤️ RabbitMQ&lt;/li&gt;
-&lt;li&gt;✅ Kafka&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;*译注：又译作讯息中介&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;十三graphql-&#34;&gt;十三、GraphQL 📊
-&lt;/h2&gt;&lt;p&gt;GraphQL 提供了更灵活的 API 查询方式，适用于复杂数据场景的后端服务。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ Apollo&lt;/li&gt;
-&lt;li&gt;✅ Relay Modern&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;十四图资料库-graph-database-&#34;&gt;十四、图资料库* (Graph Database) 🗄️
-&lt;/h2&gt;&lt;p&gt;图资料库擅长处理复杂的关联数据，适用于社交网络、知识图谱等场景。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ Neo4j&lt;/li&gt;
-&lt;li&gt;*译注：又译作图形资料库、图数据库&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;十五websocket-&#34;&gt;十五、WebSocket 🔌
-&lt;/h2&gt;&lt;p&gt;WebSocket 实现了双向实时通信，是实时应用（如聊天、直播）的核心技术。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;缓解策略（Mitigation Strategy）
-&lt;ul&gt;
-&lt;li&gt;☑ 从容退化（Graceful Degradation）&lt;/li&gt;
-&lt;li&gt;☑ 请求频率限制（Throttle）&lt;/li&gt;
-&lt;li&gt;☑ 背压（Backpressure）&lt;/li&gt;
-&lt;li&gt;☑ 负载转移（Loadshifting）&lt;/li&gt;
-&lt;li&gt;☑ 断路器（Circuit Breaker）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;*译注：又译作反压&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;十六网页服务器-web-server-&#34;&gt;十六、网页服务器 (Web Server) 🌐
-&lt;/h2&gt;&lt;p&gt;网页服务器是后端服务的入口，选择合适的服务器能提升服务性能与稳定性。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ Nginx&lt;/li&gt;
-&lt;li&gt;✅ Apache&lt;/li&gt;
-&lt;li&gt;☑ Caddy&lt;/li&gt;
-&lt;li&gt;☑ MS IIS&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;十七规模化建设-&#34;&gt;十七、规模化建设 📈
-&lt;/h2&gt;&lt;p&gt;当服务用户量增长时，规模化建设是保障服务可用性与性能的关键。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;❤️ 迁移策略（Migration Strategy）&lt;/li&gt;
-&lt;li&gt;❤️ 水平 vs 垂直扩展（Horizontal vs Vertical Scaling）&lt;/li&gt;
-&lt;li&gt;以可观测性（Observability）为前提进行建设
-&lt;ul&gt;
-&lt;li&gt;☑ 仪表（Instrumentation）&lt;/li&gt;
-&lt;li&gt;☑ 监测（Monitoring）&lt;/li&gt;
-&lt;li&gt;☑ 遥测（Telemetry）&lt;/li&gt;
-&lt;li&gt;☑ 指标纪录以及其他可观测的项目&lt;/li&gt;
-&lt;li&gt;☑ 可以在出错时帮助你除错和解决问题&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;十八持续学习-&#34;&gt;十八、持续学习 📖
-&lt;/h2&gt;&lt;p&gt;后端技术生态迭代迅速，从云原生到 Serverless，持续学习新工具与最佳实践是保持竞争力的核心。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;图&#34;&gt;图
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;img src=&#34;https://ye-guan-xing.github.io/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/intro.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;前后端通用&#34;
-	
-	
-&gt;&lt;/li&gt;
-&lt;li&gt;&lt;img src=&#34;https://ye-guan-xing.github.io/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/backend.png&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;后端&#34;
-	
-	
-&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;信息来源&#34;&gt;信息来源
-&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;台湾正体中文翻译原作者：goodjack/developer-roadmap-chinese / littlegoodjack&lt;/li&gt;
-&lt;li&gt;路线图完整版及更多资源：&lt;a class=&#34;link&#34; href=&#34;http://roadmap.sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;http://roadmap.sh&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        </item>
-        <item>
+        <lastBuildDate>Fri, 13 Feb 2026 16:36:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>前端学习路线：从入门到进阶</title>
         <link>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/</link>
-        <pubDate>Fri, 13 Feb 2026 16:36:00 +0800</pubDate>
+        <pubDate>Fri, 13 Feb 2026 16:36:00 +0000</pubDate>
         
         <guid>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
@@ -631,6 +339,298 @@
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;前端&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;信息来源&#34;&gt;信息来源
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;台湾正体中文翻译原作者：goodjack/developer-roadmap-chinese / littlegoodjack&lt;/li&gt;
+&lt;li&gt;路线图完整版及更多资源：&lt;a class=&#34;link&#34; href=&#34;http://roadmap.sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://roadmap.sh&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>后端学习路线：从基础到架构</title>
+        <link>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</link>
+        <pubDate>Fri, 13 Feb 2026 17:00:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</guid>
+        <description>&lt;h2 id=&#34;前言&#34;&gt;前言
+&lt;/h2&gt;&lt;p&gt;这份后端学习路线源自 &lt;a class=&#34;link&#34; href=&#34;http://roadmap.sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;roadmap.sh&lt;/a&gt;，是全球开发者广泛参考的后端技术学习指南。它清晰梳理了从基础原理到架构设计的核心知识点，并标注了学习优先级，帮助你在后端技术体系中高效构建知识体系，避免盲目学习。（参考图见尾部）&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;图例说明&#34;&gt;图例说明
+&lt;/h2&gt;&lt;p&gt;在开始之前，请先了解图中标记的含义，这将帮助你判断学习的优先级：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;❤️ 个人推荐 / 意见&lt;/strong&gt;：&lt;strong&gt;核心必学内容&lt;/strong&gt;，是后端开发的基石，必须掌握。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;✅ 替代选项 — 选择此项或是紫色项目&lt;/strong&gt;：&lt;strong&gt;选其一深入即可&lt;/strong&gt;，通常是不同的技术方案或框架，无需全部学习。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;☑ 不必严格按照路线图的顺序（随时可学）&lt;/strong&gt;：&lt;strong&gt;可灵活安排学习顺序&lt;/strong&gt;，属于进阶或补充性知识。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;⚫ 我不推荐&lt;/strong&gt;：&lt;strong&gt;优先级较低或可跳过&lt;/strong&gt;，在当前技术环境下必要性不高。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;一互联网基础与前端知识-&#34;&gt;一、互联网基础与前端知识 🌐
+&lt;/h2&gt;&lt;p&gt;后端开发离不开对互联网和前端的理解，这是构建服务的基础。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ 互联网是如何运作的？&lt;/li&gt;
+&lt;li&gt;❤️ 什么是 HTTP？&lt;/li&gt;
+&lt;li&gt;❤️ 浏览器及其工作原理？&lt;/li&gt;
+&lt;li&gt;❤️ DNS 及其工作原理？&lt;/li&gt;
+&lt;li&gt;❤️ 什么是域名 (Domain Name)？&lt;/li&gt;
+&lt;li&gt;❤️ 什么是主机托管 (Hosting)？&lt;/li&gt;
+&lt;li&gt;✅ HTML&lt;/li&gt;
+&lt;li&gt;☑ CSS&lt;/li&gt;
+&lt;li&gt;❤️ JavaScript&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;二操作系统和基础知识-&#34;&gt;二、操作系统和基础知识 💻
+&lt;/h2&gt;&lt;p&gt;操作系统是后端服务运行的根基，掌握其原理能让你写出更高效、稳定的代码。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ 终端机的使用&lt;/li&gt;
+&lt;li&gt;❤️ 操作系统如何运作&lt;/li&gt;
+&lt;li&gt;❤️ 行程管理（Process Management）&lt;/li&gt;
+&lt;li&gt;❤️ 执行绪（Thread）和并行（Concurrency）&lt;/li&gt;
+&lt;li&gt;❤️ 基础的终端机指令（grep, awk, sed, lsof, curl, wget, tail, head, less, find, ssh, kill）&lt;/li&gt;
+&lt;li&gt;❤️ 记忆体管理&lt;/li&gt;
+&lt;li&gt;❤️ 行程间通讯（IPC）&lt;/li&gt;
+&lt;li&gt;❤️ I/O 管理&lt;/li&gt;
+&lt;li&gt;❤️ POSIX 的基础认知（stdin, stdout, stderr, pipes）&lt;/li&gt;
+&lt;li&gt;❤️ 基础的网络概念&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;三学习一门语言-&#34;&gt;三、学习一门语言 📚
+&lt;/h2&gt;&lt;p&gt;选择一门后端语言深入学习，理解其运行时特性（如并行、内存模型）是进阶的关键。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;✅ Java&lt;/li&gt;
+&lt;li&gt;✅ C#&lt;/li&gt;
+&lt;li&gt;✅ PHP&lt;/li&gt;
+&lt;li&gt;☑ Rust&lt;/li&gt;
+&lt;li&gt;☑ Go&lt;/li&gt;
+&lt;li&gt;❤️ JavaScript&lt;/li&gt;
+&lt;li&gt;❤️ Python&lt;/li&gt;
+&lt;li&gt;✅ Ruby&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;四版本控制系统-vcs-&#34;&gt;四、版本控制系统 (VCS) 🛠️
+&lt;/h2&gt;&lt;p&gt;现代后端开发离不开版本控制，它是团队协作和代码管理的核心工具。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;☑ 版本控制系统的定义及使用价值&lt;/li&gt;
+&lt;li&gt;❤️ Git 的基本用法&lt;/li&gt;
+&lt;li&gt;☑ 仓库代管（Repo Hosting）服务
+&lt;ul&gt;
+&lt;li&gt;✅ 注册账号并学习使用 GitHub&lt;/li&gt;
+&lt;li&gt;❤️ GitHub&lt;/li&gt;
+&lt;li&gt;☑ GitLab&lt;/li&gt;
+&lt;li&gt;☑ Bitbucket&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;五数据库-&#34;&gt;五、数据库 🗄️
+&lt;/h2&gt;&lt;p&gt;数据库是后端服务存储数据的核心，关系型与 NoSQL 数据库各有适用场景。&lt;/p&gt;
+&lt;h3 id=&#34;关系式数据库&#34;&gt;关系式数据库
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;❤️ PostgreSQL&lt;/li&gt;
+&lt;li&gt;✅ MySQL&lt;/li&gt;
+&lt;li&gt;✅ MariaDB&lt;/li&gt;
+&lt;li&gt;☑ MS SQL&lt;/li&gt;
+&lt;li&gt;☑ Oracle&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;nosql-数据库&#34;&gt;NoSQL 数据库
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;❤️ 文件资料库（MongoDB, CouchDB）&lt;/li&gt;
+&lt;li&gt;✅ 栏位资料库（Cassandra）&lt;/li&gt;
+&lt;li&gt;☑ 时序型资料库（InfluxDB, TimescaleDB）&lt;/li&gt;
+&lt;li&gt;☑ 即时资料库（Firebase, RethinkDB）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;更多关于资料库&#34;&gt;更多关于资料库
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;❤️ ORM（物件关系映射）&lt;/li&gt;
+&lt;li&gt;❤️ ACID&lt;/li&gt;
+&lt;li&gt;❤️ 交易（Transaction）&lt;/li&gt;
+&lt;li&gt;❤️ N+1 问题&lt;/li&gt;
+&lt;li&gt;❤️ 资料库正规化（Normalization）&lt;/li&gt;
+&lt;li&gt;❤️ 索引（Index）及其运作方式&lt;/li&gt;
+&lt;li&gt;☑ 资料复写（Replication）&lt;/li&gt;
+&lt;li&gt;☑ 分片（Sharding）策略&lt;/li&gt;
+&lt;li&gt;☑ CAP 定理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;六学习-api-相关知识-&#34;&gt;六、学习 API 相关知识 🚀
+&lt;/h2&gt;&lt;p&gt;API 是后端服务对外交互的核心，掌握不同类型的 API 设计与实现至关重要。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ Cookie Based&lt;/li&gt;
+&lt;li&gt;❤️ OAuth&lt;/li&gt;
+&lt;li&gt;❤️ Basic Authentication&lt;/li&gt;
+&lt;li&gt;❤️ Token Authentication&lt;/li&gt;
+&lt;li&gt;❤️ JWT&lt;/li&gt;
+&lt;li&gt;❤️ OpenID&lt;/li&gt;
+&lt;li&gt;☑ SAML&lt;/li&gt;
+&lt;li&gt;☑ HATEOAS&lt;/li&gt;
+&lt;li&gt;❤️ OpenAPI 规范以及 Swagger&lt;/li&gt;
+&lt;li&gt;❤️ 认证（Authentication）&lt;/li&gt;
+&lt;li&gt;❤️ REST&lt;/li&gt;
+&lt;li&gt;☑ 阅读 Roy Fielding 的论文&lt;/li&gt;
+&lt;li&gt;☑ JSON API&lt;/li&gt;
+&lt;li&gt;☑ SOAP&lt;/li&gt;
+&lt;li&gt;❤️ gRPC&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;七缓存-caching-&#34;&gt;七、缓存 (Caching) 🚀
+&lt;/h2&gt;&lt;p&gt;缓存是提升后端服务性能的关键手段，合理使用缓存能显著降低数据库压力。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ Redis&lt;/li&gt;
+&lt;li&gt;✅ Memcached&lt;/li&gt;
+&lt;li&gt;☑ CDN&lt;/li&gt;
+&lt;li&gt;☑ 伺服器端（Server Side）&lt;/li&gt;
+&lt;li&gt;☑ 用户端（Client Side）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;八网络安全知识-&#34;&gt;八、网络安全知识 🔒
+&lt;/h2&gt;&lt;p&gt;安全是后端服务不可忽视的环节，掌握常见安全机制与风险防范是必备能力。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ MD5 以及为什么不要使用它&lt;/li&gt;
+&lt;li&gt;❤️ SHA 家族&lt;/li&gt;
+&lt;li&gt;☑ scrypt&lt;/li&gt;
+&lt;li&gt;❤️ bcrypt&lt;/li&gt;
+&lt;li&gt;❤️ 杂凑（Hashing）演算法&lt;/li&gt;
+&lt;li&gt;❤️ HTTPS&lt;/li&gt;
+&lt;li&gt;❤️ 内容安全政策（CSP）&lt;/li&gt;
+&lt;li&gt;❤️ CORS&lt;/li&gt;
+&lt;li&gt;❤️ SSL/TLS&lt;/li&gt;
+&lt;li&gt;❤️ OWASP 安全风险&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;九测试-testing-&#34;&gt;九、测试 (Testing) ✅
+&lt;/h2&gt;&lt;p&gt;测试是保障后端服务质量的核心，不同类型的测试覆盖不同的质量维度。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ 整合测试（Integration Testing）&lt;/li&gt;
+&lt;li&gt;❤️ 单元测试（Unit Testing）&lt;/li&gt;
+&lt;li&gt;❤️ 功能测试（Functional Testing）&lt;/li&gt;
+&lt;li&gt;☑ CI/CD（持续整合/持续交付）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十设计和开发原则-&#34;&gt;十、设计和开发原则 📐
+&lt;/h2&gt;&lt;p&gt;遵循良好的设计原则能让代码更易维护、扩展，是资深后端开发者的核心素养。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;☑ 四人帮（GOF）设计模式&lt;/li&gt;
+&lt;li&gt;☑ 领域驱动设计（DDD）&lt;/li&gt;
+&lt;li&gt;☑ 测试驱动开发（TDD）&lt;/li&gt;
+&lt;li&gt;❤️ SOLID&lt;/li&gt;
+&lt;li&gt;❤️ KISS&lt;/li&gt;
+&lt;li&gt;❤️ YAGNI&lt;/li&gt;
+&lt;li&gt;❤️ DRY&lt;/li&gt;
+&lt;li&gt;搜索引擎（Search Engine）
+&lt;ul&gt;
+&lt;li&gt;❤️ Elasticsearch&lt;/li&gt;
+&lt;li&gt;✅ Solr&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十一架构模式-&#34;&gt;十一、架构模式 🏗️
+&lt;/h2&gt;&lt;p&gt;架构模式决定了系统的扩展性与维护性，不同场景下选择合适的架构至关重要。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;☑ 整合型*（Monolithic）应用程式&lt;/li&gt;
+&lt;li&gt;❤️ 微服务（Microservice）&lt;/li&gt;
+&lt;li&gt;☑ 服务导向架构（SOA）&lt;/li&gt;
+&lt;li&gt;☑ CQRS 和事件来源模式&lt;/li&gt;
+&lt;li&gt;☑ 无伺服器（Serverless）&lt;/li&gt;
+&lt;li&gt;*译注：又译作单体式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十二容器化-vs-虚拟化-containerization--virtualization-&#34;&gt;十二、容器化 vs 虚拟化 (Containerization / Virtualization) 🐳
+&lt;/h2&gt;&lt;p&gt;容器化技术简化了部署与环境一致性，是现代后端部署的主流方式。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ Docker&lt;/li&gt;
+&lt;li&gt;⚫ rkt&lt;/li&gt;
+&lt;li&gt;⚫ LXC&lt;/li&gt;
+&lt;li&gt;讯息代理*（Message Broker）
+&lt;ul&gt;
+&lt;li&gt;❤️ RabbitMQ&lt;/li&gt;
+&lt;li&gt;✅ Kafka&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;*译注：又译作讯息中介&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十三graphql-&#34;&gt;十三、GraphQL 📊
+&lt;/h2&gt;&lt;p&gt;GraphQL 提供了更灵活的 API 查询方式，适用于复杂数据场景的后端服务。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ Apollo&lt;/li&gt;
+&lt;li&gt;✅ Relay Modern&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十四图资料库-graph-database-&#34;&gt;十四、图资料库* (Graph Database) 🗄️
+&lt;/h2&gt;&lt;p&gt;图资料库擅长处理复杂的关联数据，适用于社交网络、知识图谱等场景。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ Neo4j&lt;/li&gt;
+&lt;li&gt;*译注：又译作图形资料库、图数据库&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十五websocket-&#34;&gt;十五、WebSocket 🔌
+&lt;/h2&gt;&lt;p&gt;WebSocket 实现了双向实时通信，是实时应用（如聊天、直播）的核心技术。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;缓解策略（Mitigation Strategy）
+&lt;ul&gt;
+&lt;li&gt;☑ 从容退化（Graceful Degradation）&lt;/li&gt;
+&lt;li&gt;☑ 请求频率限制（Throttle）&lt;/li&gt;
+&lt;li&gt;☑ 背压（Backpressure）&lt;/li&gt;
+&lt;li&gt;☑ 负载转移（Loadshifting）&lt;/li&gt;
+&lt;li&gt;☑ 断路器（Circuit Breaker）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;*译注：又译作反压&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十六网页服务器-web-server-&#34;&gt;十六、网页服务器 (Web Server) 🌐
+&lt;/h2&gt;&lt;p&gt;网页服务器是后端服务的入口，选择合适的服务器能提升服务性能与稳定性。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ Nginx&lt;/li&gt;
+&lt;li&gt;✅ Apache&lt;/li&gt;
+&lt;li&gt;☑ Caddy&lt;/li&gt;
+&lt;li&gt;☑ MS IIS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十七规模化建设-&#34;&gt;十七、规模化建设 📈
+&lt;/h2&gt;&lt;p&gt;当服务用户量增长时，规模化建设是保障服务可用性与性能的关键。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;❤️ 迁移策略（Migration Strategy）&lt;/li&gt;
+&lt;li&gt;❤️ 水平 vs 垂直扩展（Horizontal vs Vertical Scaling）&lt;/li&gt;
+&lt;li&gt;以可观测性（Observability）为前提进行建设
+&lt;ul&gt;
+&lt;li&gt;☑ 仪表（Instrumentation）&lt;/li&gt;
+&lt;li&gt;☑ 监测（Monitoring）&lt;/li&gt;
+&lt;li&gt;☑ 遥测（Telemetry）&lt;/li&gt;
+&lt;li&gt;☑ 指标纪录以及其他可观测的项目&lt;/li&gt;
+&lt;li&gt;☑ 可以在出错时帮助你除错和解决问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;十八持续学习-&#34;&gt;十八、持续学习 📖
+&lt;/h2&gt;&lt;p&gt;后端技术生态迭代迅速，从云原生到 Serverless，持续学习新工具与最佳实践是保持竞争力的核心。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;图&#34;&gt;图
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;img src=&#34;https://ye-guan-xing.github.io/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/intro.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;前后端通用&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;li&gt;&lt;img src=&#34;https://ye-guan-xing.github.io/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/backend.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;后端&#34;
 	
 	
 &gt;&lt;/li&gt;

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="前言 这份前端学习路线源自 roadmap.sh，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）\n">
-<title>前端学习路线：从入门到进阶</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Git 新手第一次使用：克隆、配置远程与首次推送 1. 克隆仓库到本地 1 2 git clone https://github.com/username/repo.git cd repo 2. 查看当前远程仓库地址 1 git remote -v 你会看到类似：\norigin https://github.com/username/repo.git (fetch) origin https://github.com/username/repo.git (push) 3. 设置或修改远程仓库地址 场景 A：已经有 origin，只想修改地址 1 git remote set-url origin https://github.com/yourname/new-repo.git 场景 B：没有 origin，第一次添加远程地址 1 git remote add origin https://github.com/yourname/new-repo.git 修改后再次检查：\n">
+<title>Git 新手第一次使用：克隆、配置远程与首次推送</title>
 
-<link rel='canonical' href='https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/'>
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/'>
 
-<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="前端学习路线：从入门到进阶">
-<meta property='og:description' content="前言 这份前端学习路线源自 roadmap.sh，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）\n">
-<meta property='og:url' content='https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/'>
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Git 新手第一次使用：克隆、配置远程与首次推送">
+<meta property='og:description' content="Git 新手第一次使用：克隆、配置远程与首次推送 1. 克隆仓库到本地 1 2 git clone https://github.com/username/repo.git cd repo 2. 查看当前远程仓库地址 1 git remote -v 你会看到类似：\norigin https://github.com/username/repo.git (fetch) origin https://github.com/username/repo.git (push) 3. 设置或修改远程仓库地址 场景 A：已经有 origin，只想修改地址 1 git remote set-url origin https://github.com/yourname/new-repo.git 场景 B：没有 origin，第一次添加远程地址 1 git remote add origin https://github.com/yourname/new-repo.git 修改后再次检查：\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-02-13T16:36:00&#43;00:00'/><meta property='article:modified_time' content='2026-02-13T16:36:00&#43;00:00'/>
-<meta name="twitter:title" content="前端学习路线：从入门到进阶">
-<meta name="twitter:description" content="前言 这份前端学习路线源自 roadmap.sh，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）\n">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-04-01T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-04-01T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="Git 新手第一次使用：克隆、配置远程与首次推送">
+<meta name="twitter:description" content="Git 新手第一次使用：克隆、配置远程与首次推送 1. 克隆仓库到本地 1 2 git clone https://github.com/username/repo.git cd repo 2. 查看当前远程仓库地址 1 git remote -v 你会看到类似：\norigin https://github.com/username/repo.git (fetch) origin https://github.com/username/repo.git (push) 3. 设置或修改远程仓库地址 场景 A：已经有 origin，只想修改地址 1 git remote set-url origin https://github.com/yourname/new-repo.git 场景 B：没有 origin，第一次添加远程地址 1 git remote add origin https://github.com/yourname/new-repo.git 修改后再次检查：\n">
     </head>
     <body class="
     article-page
@@ -265,49 +265,16 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#前言">前言</a></li>
-    <li><a href="#图例说明">图例说明</a></li>
-    <li><a href="#一互联网基础-">一、互联网基础 🌐</a></li>
-    <li><a href="#二html-">二、HTML 🏗️</a></li>
-    <li><a href="#三css-">三、CSS 🎨</a></li>
-    <li><a href="#四javascript-">四、JavaScript 💻</a></li>
-    <li><a href="#五工具与工程化-">五、工具与工程化 🛠️</a>
+    <li><a href="#1-克隆仓库到本地">1. 克隆仓库到本地</a></li>
+    <li><a href="#2-查看当前远程仓库地址">2. 查看当前远程仓库地址</a></li>
+    <li><a href="#3-设置或修改远程仓库地址">3. 设置或修改远程仓库地址</a>
       <ol>
-        <li><a href="#版本控制系统-vcs">版本控制系统 (VCS)</a></li>
-        <li><a href="#包管理系统">包管理系统</a></li>
-        <li><a href="#网络安全知识">网络安全知识</a></li>
-        <li><a href="#css-架构-architecture">CSS 架构 (Architecture)</a></li>
-        <li><a href="#css-预处理器-preprocessor">CSS 预处理器 (Preprocessor)</a></li>
-        <li><a href="#任务执行器-task-runner">任务执行器 (Task Runner)</a></li>
-        <li><a href="#模块打包工具-module-bundler">模块打包工具 (Module Bundler)</a></li>
-        <li><a href="#代码检查与格式化工具">代码检查与格式化工具</a></li>
+        <li><a href="#场景-a已经有-origin只想修改地址">场景 A：已经有 <code>origin</code>，只想修改地址</a></li>
+        <li><a href="#场景-b没有-origin第一次添加远程地址">场景 B：没有 <code>origin</code>，第一次添加远程地址</a></li>
       </ol>
     </li>
-    <li><a href="#六前端框架与库-">六、前端框架与库 📚</a>
-      <ol>
-        <li><a href="#选择一款框架-framework">选择一款框架 (Framework)</a></li>
-        <li><a href="#现代-css-方案">现代 CSS 方案</a></li>
-        <li><a href="#web-组件-web-component">Web 组件 (Web Component)</a></li>
-        <li><a href="#css-框架-framework">CSS 框架 (Framework)</a></li>
-      </ol>
-    </li>
-    <li><a href="#七测试与质量保障-">七、测试与质量保障 ✅</a></li>
-    <li><a href="#八进阶与拓展-">八、进阶与拓展 🚀</a>
-      <ol>
-        <li><a href="#渐进式网页应用程序-pwa">渐进式网页应用程序 (PWA*)</a></li>
-        <li><a href="#性能优化">性能优化</a></li>
-        <li><a href="#类型检查工具-type-checker">类型检查工具 (Type Checker)</a></li>
-        <li><a href="#服务器端渲染-server-side-rendering-ssr">服务器端渲染 (Server Side Rendering, SSR)</a></li>
-        <li><a href="#graphql">GraphQL</a></li>
-        <li><a href="#移动端应用开发">移动端应用开发</a></li>
-        <li><a href="#桌面端应用开发">桌面端应用开发</a></li>
-        <li><a href="#静态网站生成器-static-site-generator">静态网站生成器 (Static Site Generator)</a></li>
-        <li><a href="#web-assembly">Web Assembly</a></li>
-      </ol>
-    </li>
-    <li><a href="#九持续学习-">九、持续学习 📖</a></li>
-    <li><a href="#图">图</a></li>
-    <li><a href="#信息来源">信息来源</a></li>
+    <li><a href="#4-首次提交并推送">4. 首次提交并推送</a></li>
+    <li><a href="#5-常见检查命令">5. 常见检查命令</a></li>
   </ol>
 </nav>
         </div>
@@ -327,11 +294,10 @@
   <header class="article-category">
     
     <a
-      href="/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"
-      style="background-color: ZgotmplZ; color: #ffffff;"
+      href="/categories/git-%E6%96%B0%E6%89%8B%E9%80%9A%E5%85%B3%E6%8C%87%E5%8D%97/"
       
     >
-      学习路线
+      Git 新手通关指南
     </a>
     
   </header>
@@ -339,7 +305,7 @@
 
   <div class="article-title-wrapper">
     <h2 class="article-title">
-      <a href="/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/">前端学习路线：从入门到进阶</a>
+      <a href="/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/">Git 新手第一次使用：克隆、配置远程与首次推送</a>
     </h2>
 
     
@@ -358,7 +324,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-      <time class="article-time--published">2026-02-13 16:36</time>
+      <time class="article-time--published">2026-04-01 00:00</time>
     </div>
      
 
@@ -370,7 +336,7 @@
 </svg>
 
       <time class="article-pageview">
-        <span class="waline-pageview-count" data-path="/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/"
+        <span class="waline-pageview-count" data-path="/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/"
           >0</span
         >
         visits
@@ -384,7 +350,7 @@
 </svg>
 
       <time class="article-comment">
-        <span class="waline-comment-count" data-path="/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/"
+        <span class="waline-comment-count" data-path="/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/"
           >0</span
         >
         comments
@@ -399,343 +365,115 @@
     <section class="article-content">
     
     
-    <h2 id="前言">前言
-</h2><p>这份前端学习路线源自 <a class="link" href="http://roadmap.sh"  target="_blank" rel="noopener"
-    >roadmap.sh</a>，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）</p>
-<hr>
-<h2 id="图例说明">图例说明
-</h2><p>在开始之前，请先了解图中标记的含义，这将帮助你判断学习的优先级：</p>
+    <h1 id="git-新手第一次使用克隆配置远程与首次推送">Git 新手第一次使用：克隆、配置远程与首次推送
+</h1><h2 id="1-克隆仓库到本地">1. 克隆仓库到本地
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/username/repo.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> repo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="2-查看当前远程仓库地址">2. 查看当前远程仓库地址
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote -v
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>你会看到类似：</p>
 <ul>
-<li><strong>❤️ 个人推荐 / 意见</strong>：<strong>核心必学内容</strong>，是前端开发的基石，必须掌握。</li>
-<li><strong>✅ 替代选项 — 选择此项或是紫色项目</strong>）：<strong>选其一深入即可</strong>，通常是不同的技术方案或框架，无需全部学习。</li>
-<li><strong>☑ 不必严格按照路线图的顺序（随时可学）</strong>：<strong>可灵活安排学习顺序</strong>，属于进阶或补充性知识。</li>
-<li><strong>⚫ 我不推荐</strong>：<strong>优先级较低或可跳过</strong>，在当前技术环境下必要性不高。</li>
+<li><code>origin  https://github.com/username/repo.git (fetch)</code></li>
+<li><code>origin  https://github.com/username/repo.git (push)</code></li>
 </ul>
-<hr>
-<h2 id="一互联网基础-">一、互联网基础 🌐
-</h2><p>在学习具体的前端技术之前，理解互联网的工作原理至关重要，这能帮你建立起坚实的知识根基。</p>
-<ul>
-<li>❤️ 互联网是如何运作的？</li>
-<li>❤️ 什么是 HTTP？</li>
-<li>❤️ 浏览器及其工作原理？</li>
-<li>❤️ DNS 及其工作原理？</li>
-<li>❤️ 什么是域名 (Domain Name)？</li>
-<li>❤️ 什么是主机托管 (Hosting)？</li>
-</ul>
-<hr>
-<h2 id="二html-">二、HTML 🏗️
-</h2><p>HTML 是网页的骨架，负责定义内容的结构和语义。</p>
-<ul>
-<li>✅ 学习基础知识</li>
-<li>❤️ 撰写语义化 (Semantic) HTML</li>
-<li>❤️ 表单 (Form) 和验证 (Validation)</li>
-<li>❤️ 惯例和最佳实践 (Best Practice)</li>
-<li>☑ 无障碍 (Accessibility)</li>
-<li>☑ 基础的搜索引擎优化 (SEO)</li>
-</ul>
-<hr>
-<h2 id="三css-">三、CSS 🎨
-</h2><p>CSS 负责网页的视觉呈现，让你的页面变得美观和响应式。</p>
-<ul>
-<li>✅ 学习基础知识</li>
-<li>✅ 制作页面布局 (Layout)</li>
-<li>✅ 响应式设计* 和 媒体查询**
-<ul>
-<li>❤️ 浮动 (Float)</li>
-<li>❤️ 定位 (Positioning)</li>
-<li>❤️ 显示属性 (Display)</li>
-<li>❤️ 盒模型 (Box Model)</li>
-<li>❤️ CSS 网格 (Grid)</li>
-<li>❤️ 弹性盒子 (Flex Box)</li>
-<li>Responsive Design，也译作“响应式网页设计”</li>
-<li>*Media Query，媒体查询是实现响应式设计的核心技术</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="四javascript-">四、JavaScript 💻
-</h2><p>JavaScript 是前端的灵魂，赋予网页交互和动态能力。</p>
-<ul>
-<li>❤️ 语法和基本结构</li>
-<li>❤️ 学习 DOM 操作</li>
-<li>❤️ 了解 Fetch API / Ajax (XHR)</li>
-<li>❤️ ES6+ 及模块化 JavaScript</li>
-<li>❤️ 理解提升 (Hoisting)、事件冒泡 (Event Bubbling)、作用域 (Scope)、原型 (Prototype)、影子 (Shadow) DOM、严格模式 (Strict) 等核心概念
-<ul>
-<li>“作用域 (Scope)”也有译作“范畴”的情况，前端领域通用译法为“作用域”</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="五工具与工程化-">五、工具与工程化 🛠️
-</h2><p>现代前端开发离不开各种工具，它们能极大地提升你的开发效率和代码质量。</p>
-<h3 id="版本控制系统-vcs">版本控制系统 (VCS)
-</h3><ul>
-<li>☑ 版本控制系统的定义及使用价值</li>
-<li>❤️ Git 基本用法</li>
-<li>☑ 代码仓库托管 (Repo Hosting) 服务
-<ul>
-<li>✅ 注册账号并学习使用 GitHub</li>
-<li>❤️ GitHub</li>
-<li>☑ GitLab</li>
-<li>☑ Bitbucket</li>
-</ul>
-</li>
-</ul>
-<h3 id="包管理系统">包管理系统
-</h3><ul>
-<li>❤️ npm</li>
-<li>❤️ yarn</li>
-<li>☑ 补充说明：npm 和 yarn 功能相近，选择其一或两者都学均可，无本质差异</li>
-</ul>
-<h3 id="网络安全知识">网络安全知识
-</h3><ul>
-<li>☑ 至少掌握以下内容的基础概念
-<ul>
-<li>☑ HTTPS</li>
-<li>☑ 内容安全政策 (CSP)</li>
-<li>☑ 跨域资源共享 (CORS)</li>
-<li>☑ OWASP 安全风险（Web 应用程序常见安全漏洞）</li>
-</ul>
-</li>
-</ul>
-<h3 id="css-架构-architecture">CSS 架构 (Architecture)
-</h3><ul>
-<li>☑ 补充说明：现代框架和 CSS-in-JS 普及后，无需深入钻研这类架构，但熟悉 BEM 仍有价值
-<ul>
-<li>✅ BEM（Block-Element-Modifier，一种 CSS 命名规范）</li>
-<li>⚫ OOCSS（面向对象的 CSS）</li>
-<li>⚫ SMACSS（可扩展的模块化 CSS）</li>
-</ul>
-</li>
-</ul>
-<h3 id="css-预处理器-preprocessor">CSS 预处理器 (Preprocessor)
-</h3><ul>
-<li>☑ 补充说明：随着现代框架发展，CSS-in-JS 逐渐成为主流，这类预处理器非必需，但熟悉基础仍有帮助
-<ul>
-<li>❤️ Sass（含 SCSS 语法）</li>
-<li>☑ PostCSS</li>
-<li>⚫ Less</li>
-</ul>
-</li>
-</ul>
-<h3 id="任务执行器-task-runner">任务执行器 (Task Runner)
-</h3><ul>
-<li>❤️ npm scripts</li>
-<li>⚫ Gulp</li>
-</ul>
-<h3 id="模块打包工具-module-bundler">模块打包工具 (Module Bundler)
-</h3><ul>
-<li>❤️ Webpack</li>
-<li>☑ Rollup</li>
-<li>☑ Parcel</li>
-</ul>
-<h3 id="代码检查与格式化工具">代码检查与格式化工具
-</h3><ul>
-<li>一种静态代码分析工具，用于检测代码语法错误、规范问题
-<ul>
-<li>❤️ ESLint</li>
-</ul>
-</li>
-<li>❤️ Prettier</li>
-<li>⚫ StandardJS</li>
-</ul>
-<hr>
-<h2 id="六前端框架与库-">六、前端框架与库 📚
-</h2><p>框架和库能帮你快速构建复杂的单页应用 (SPA)，选择一个深入学习是进阶的关键。</p>
-<h3 id="选择一款框架-framework">选择一款框架 (Framework)
-</h3><ul>
-<li>❤️ React.js
-<ul>
-<li>❤️ Redux（状态管理库）</li>
-<li>❤️ MobX（替代 Redux 的状态管理库）</li>
-</ul>
-</li>
-<li>✅ Angular
-<ul>
-<li>❤️ RxJS（响应式编程库）</li>
-<li>❤️ NgRx（Angular 生态的状态管理库）</li>
-</ul>
-</li>
-<li>✅ Vue.js
-<ul>
-<li>❤️ VueX（Vue 生态的状态管理库）</li>
-</ul>
-</li>
-</ul>
-<h3 id="现代-css-方案">现代 CSS 方案
-</h3><ul>
-<li>❤️ Styled Components</li>
-<li>❤️ CSS Modules</li>
-<li>❤️ Styled JSX</li>
-<li>❤️ Emotion</li>
-<li>⚫ Radium</li>
-<li>⚫ Glamorous</li>
-</ul>
-<h3 id="web-组件-web-component">Web 组件 (Web Component)
-</h3><ul>
-<li>☑ HTML 模板 (Template)</li>
-<li>☑ 自定义元素 (Custom Elements)</li>
-<li>☑ 影子 (Shadow) DOM</li>
-</ul>
-<h3 id="css-框架-framework">CSS 框架 (Framework)
-</h3><ul>
-<li>基于 JS 的 CSS 框架（适配 JS 应用程序）：
-<ul>
-<li>❤️ Reactstrap（适配 React 的 Bootstrap 组件）</li>
-<li>❤️ Material UI</li>
-<li>❤️ Tailwind CSS</li>
-<li>❤️ Chakra UI</li>
-</ul>
-</li>
-<li>纯 CSS 优先的框架（默认不含 JS 组件）：
-<ul>
-<li>❤️ Bootstrap</li>
-<li>❤️ Materialize CSS</li>
-<li>❤️ Bulma</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="七测试与质量保障-">七、测试与质量保障 ✅
-</h2><p>写出高质量、可维护的代码，测试是必不可少的一环。</p>
-<ul>
-<li>☑ 理解单元测试 (Unit Test)、集成测试 (Integration Test)、功能测试 (Functional Test) 的区别，并学习使用以下工具编写测试：
-<ul>
-<li>❤️ Jest</li>
-<li>❤️ react-testing-library</li>
-<li>❤️ Cypress</li>
-<li>❤️ Enzyme</li>
-<li>☑ Mocha</li>
-<li>☑ Chai</li>
-<li>☑ Ava</li>
-<li>☑ Jasmine</li>
-</ul>
-</li>
-<li>☑ 补充说明：以上工具可满足各类测试需求，无需全部掌握，按需选择即可</li>
-</ul>
-<hr>
-<h2 id="八进阶与拓展-">八、进阶与拓展 🚀
-</h2><p>当你掌握了基础和框架后，可以向更广阔的领域拓展。</p>
-<h3 id="渐进式网页应用程序-pwa">渐进式网页应用程序 (PWA*)
-</h3><ul>
-<li>Progressive Web App，渐进式网页应用，可实现类原生应用的体验
-<ul>
-<li>❤️ Storage（存储 API）</li>
-<li>❤️ Web Sockets（网络通信 API）</li>
-<li>❤️ Service Workers（离线缓存核心）</li>
-<li>❤️ Location（地理位置 API）</li>
-<li>❤️ Notifications（通知 API）</li>
-<li>❤️ Device Orientation（设备方向 API）</li>
-<li>❤️ Payments（支付 API）</li>
-<li>❤️ Credentials（凭证 API）</li>
-</ul>
-</li>
-<li>☑ 补充说明：需了解 PWA 中涉及的各类 Web API 基础用法</li>
-</ul>
-<h3 id="性能优化">性能优化
-</h3><ul>
-<li>☑ PRPL 模式 (Pattern)（前端加载性能优化模式）</li>
-<li>☑ RAIL 模型 (Model)（以用户体验为核心的性能评估模型）</li>
-<li>☑ 性能指标* (Performance Metric)
-<ul>
-<li>如 LCP、FID、CLS 等核心 Web 性能指标</li>
-</ul>
-</li>
-<li>☑ 使用 Lighthouse（Chrome 内置性能检测工具）</li>
-<li>☑ 使用浏览器开发者工具 (DevTool)</li>
-<li>☑ 计算、测量并优化应用性能</li>
-</ul>
-<h3 id="类型检查工具-type-checker">类型检查工具 (Type Checker)
-</h3><ul>
-<li>❤️ TypeScript</li>
-<li>⚫ Flow</li>
-</ul>
-<h3 id="服务器端渲染-server-side-rendering-ssr">服务器端渲染 (Server Side Rendering, SSR)
-</h3><ul>
-<li>❤️ React.js 生态：
-<ul>
-<li>❤️ Next.js</li>
-<li>⚫ After.js</li>
-</ul>
-</li>
-<li>✅ Angular 生态：
-<ul>
-<li>☑ Universal</li>
-</ul>
-</li>
-<li>✅ Vue.js 生态：
-<ul>
-<li>❤️ Nuxt.js</li>
-</ul>
-</li>
-</ul>
-<h3 id="graphql">GraphQL
-</h3><ul>
-<li>❤️ Apollo（GraphQL 客户端/服务端框架）</li>
-<li>❤️ Relay Modern（React 生态的 GraphQL 框架）</li>
-</ul>
-<h3 id="移动端应用开发">移动端应用开发
-</h3><ul>
-<li>❤️ React Native（基于 React 的跨平台原生应用框架）</li>
-<li>☑ NativeScript（跨平台原生应用框架）</li>
-<li>☑ Flutter（Google 推出的跨平台 UI 框架）</li>
-<li>☑ Ionic（基于 Web 技术的混合应用框架）</li>
-</ul>
-<h3 id="桌面端应用开发">桌面端应用开发
-</h3><ul>
-<li>❤️ Electron（基于 Web 技术的跨平台桌面应用框架）</li>
-<li>⚫ Carlo（轻量级桌面应用框架）</li>
-<li>⚫ Proton Native（类 React Native 的桌面应用框架）</li>
-</ul>
-<h3 id="静态网站生成器-static-site-generator">静态网站生成器 (Static Site Generator)
-</h3><ul>
-<li>☑ Next.js</li>
-<li>☑ GatsbyJS（React 生态）</li>
-<li>☑ Nuxt.js（Vue 生态）</li>
-<li>☑ Vuepress（Vue 生态文档生成工具）</li>
-<li>☑ Jekyll（Ruby 开发的静态生成器）</li>
-<li>☑ Hugo（Go 开发的高性能静态生成器）</li>
-<li>☑ Gridsome（Vue 生态，类似 Gatsby）</li>
-</ul>
-<h3 id="web-assembly">Web Assembly
-</h3><ul>
-<li>☑ 补充说明：Web Assembly（简称 WASM）是由高级语言（如 Go、C、C++、Rust）编译生成的二进制指令集，运行速度远超 JavaScript。WASM 1.0 已被主流浏览器支持，W3C 于 2019 年底将其列为官方标准，但距离全面普及仍需时间。</li>
-</ul>
-<hr>
-<h2 id="九持续学习-">九、持续学习 📖
-</h2><p>前端技术日新月异，这份路线图只是一个起点。保持好奇心，持续学习新的特性、工具和最佳实践，才能在这个领域不断进步。</p>
-<hr>
-<h2 id="图">图
-</h2><ul>
-<li><img src="/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/intro.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="前后端通用"
-	
-	
-></li>
-<li><img src="/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/frontend.png"
-	
-	
-	
-	loading="lazy"
-	
-		alt="前端"
-	
-	
-></li>
-</ul>
-<h2 id="信息来源">信息来源
-</h2><ul>
-<li>台湾正体中文翻译原作者：goodjack/developer-roadmap-chinese / littlegoodjack</li>
-<li>路线图完整版及更多资源：<a class="link" href="http://roadmap.sh"  target="_blank" rel="noopener"
-    >http://roadmap.sh</a></li>
-</ul>
-
+<h2 id="3-设置或修改远程仓库地址">3. 设置或修改远程仓库地址
+</h2><h3 id="场景-a已经有-origin只想修改地址">场景 A：已经有 <code>origin</code>，只想修改地址
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote set-url origin https://github.com/yourname/new-repo.git
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="场景-b没有-origin第一次添加远程地址">场景 B：没有 <code>origin</code>，第一次添加远程地址
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote add origin https://github.com/yourname/new-repo.git
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改后再次检查：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote -v
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="4-首次提交并推送">4. 首次提交并推送
+</h2><p>先把改动提交到本地仓库：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;init project&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>再首次推送到远程分支：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push -u origin main
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果你的默认分支叫 <code>master</code>，则使用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push -u origin master
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>-u</code> 的作用是建立本地分支和远程分支的追踪关系。设置后，后续可以直接使用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push
+</span></span><span class="line"><span class="cl">git pull
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="5-常见检查命令">5. 常见检查命令
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git status
+</span></span><span class="line"><span class="cl">git branch
+</span></span><span class="line"><span class="cl">git log --oneline
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
@@ -759,12 +497,12 @@
             
                 
 <article class="">
-    <a href="/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/">
+    <a href="/p/git-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E5%9B%BE%E8%A7%A3/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">后端学习路线：从基础到架构</h2>
+            <h2 class="article-title">Git 工作流程与基本操作图解</h2>
         </div>
     </a>
 </article>
@@ -772,12 +510,12 @@
             
                 
 <article class="">
-    <a href="/p/%E5%A4%A7%E4%B8%80%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E8%BD%AF%E4%BB%B6%E7%AF%87/">
+    <a href="/p/%E8%A7%A3%E5%86%B3master%E4%B8%8E%E5%BC%80%E5%8F%91%E5%88%86%E6%94%AF%E4%BB%A3%E7%A0%81%E4%B8%8D%E4%B8%80%E8%87%B4%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%90%8C%E6%AD%A5%E5%88%86%E6%94%AF/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">大一的学习路径（软件篇）</h2>
+            <h2 class="article-title">解决master与开发分支代码不一致,手把手教你同步分支</h2>
         </div>
     </a>
 </article>
