@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础\n本文用9道经典洛谷题，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂\n一、先搞懂：什么是 DFS？ DFS = 深度优先搜索 一句话：一条路走到黑，不撞南墙不回头，回头了再换条路走。 几乎都用递归实现，核心是递归 + 回溯。\n">
+<title>dfs和bfs的讲解(新手向)</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="dfs和bfs的讲解(新手向)">
+<meta property='og:description' content="DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础\n本文用9道经典洛谷题，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂\n一、先搞懂：什么是 DFS？ DFS = 深度优先搜索 一句话：一条路走到黑，不撞南墙不回头，回头了再换条路走。 几乎都用递归实现，核心是递归 + 回溯。\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='C&#43;&#43;' /><meta property='article:published_time' content='2026-04-05T01:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-04-05T01:00:00&#43;00:00'/>
+<meta name="twitter:title" content="dfs和bfs的讲解(新手向)">
+<meta name="twitter:description" content="DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础\n本文用9道经典洛谷题，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂\n一、先搞懂：什么是 DFS？ DFS = 深度优先搜索 一句话：一条路走到黑，不撞南墙不回头，回头了再换条路走。 几乎都用递归实现，核心是递归 + 回溯。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一先搞懂什么是-dfs">一、先搞懂：什么是 DFS？</a>
+      <ol>
+        <li><a href="#dfs-万能模板新手背会就能用">DFS 万能模板（新手背会就能用）</a></li>
+      </ol>
+    </li>
+    <li><a href="#二dfs-四大题型9道题全涵盖">二、DFS 四大题型（9道题全涵盖）</a>
+      <ol>
+        <li><a href="#题型1组合排列枚举类-dfs选不选填充枚举">题型1：组合/排列枚举类 DFS（选/不选、填充枚举）</a>
+          <ol>
+            <li><a href="#对应题目">对应题目</a></li>
+          </ol>
+        </li>
+        <li><a href="#题型2记忆化-dfs递归优化神器">题型2：记忆化 DFS（递归优化神器）</a>
+          <ol>
+            <li><a href="#对应题目-1">对应题目</a></li>
+          </ol>
+        </li>
+        <li><a href="#题型3网格搜索-dfs二维图遍历">题型3：网格搜索 DFS（二维图遍历）</a>
+          <ol>
+            <li><a href="#对应题目-2">对应题目</a></li>
+          </ol>
+        </li>
+        <li><a href="#题型4棋盘状态枚举-dfs进阶网格">题型4：棋盘状态枚举 DFS（进阶网格）</a>
+          <ol>
+            <li><a href="#对应题目-3">对应题目</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#三再搞懂什么是-bfs">三、再搞懂：什么是 BFS？</a>
+      <ol>
+        <li><a href="#bfs-万能模板新手背会">BFS 万能模板（新手背会）</a></li>
+      </ol>
+    </li>
+    <li><a href="#四bfs-核心题型最短路径">四、BFS 核心题型：最短路径</a>
+      <ol>
+        <li><a href="#对应题目-4">对应题目</a></li>
+      </ol>
+    </li>
+    <li><a href="#五新手必记dfs-vs-bfs-对比">五、新手必记：DFS vs BFS 对比</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/%E7%AE%97%E6%B3%95/"
+      
+    >
+      算法
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/">dfs和bfs的讲解(新手向)</a>
+    </h2>
+
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-04-05 01:00</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview">
+        <span class="waline-pageview-count" data-path="/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/"
+          >0</span
+        >
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment">
+        <span class="waline-comment-count" data-path="/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/"
+          >0</span
+        >
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础</p>
+<p>本文用<strong>9道经典洛谷题</strong>，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂</p>
+<h2 id="一先搞懂什么是-dfs">一、先搞懂：什么是 DFS？
+</h2><p><strong>DFS = 深度优先搜索</strong>
+一句话：<strong>一条路走到黑，不撞南墙不回头，回头了再换条路走</strong>。
+几乎都用<strong>递归</strong>实现，核心是<strong>递归 + 回溯</strong>。</p>
+<h3 id="dfs-万能模板新手背会就能用">DFS 万能模板（新手背会就能用）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">dfs</span><span class="p">(</span><span class="err">当前状态</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 1. 终止条件：到头了/满足要求了，直接返回
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="err">满足终止条件</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="err">记录答案</span><span class="o">/</span><span class="err">判断结果</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 2. 遍历所有可能的分支
+</span></span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="err">所有可选方向</span><span class="o">/</span><span class="err">选择</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="err">标记选择</span><span class="p">;</span>       <span class="c1">// 选这个
+</span></span></span><span class="line"><span class="cl">        <span class="n">dfs</span><span class="p">(</span><span class="err">下一个状态</span><span class="p">);</span> <span class="c1">// 往下走
+</span></span></span><span class="line"><span class="cl">        <span class="err">取消标记</span><span class="p">;</span>       <span class="c1">// 回溯：不选这个，换一个
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="二dfs-四大题型9道题全涵盖">二、DFS 四大题型（9道题全涵盖）
+</h2><p>结合所有题目，我们分成<strong>4类</strong>，新手按这个分类学最快，全覆盖所有搜索场景！</p>
+<h3 id="题型1组合排列枚举类-dfs选不选填充枚举">题型1：组合/排列枚举类 DFS（选/不选、填充枚举）
+</h3><p><strong>适用场景</strong>：从一堆东西里选若干个、填充通配符、枚举排列组合、判断合法组合。
+<strong>核心</strong>：要么<strong>选/不选</strong>，要么<strong>固定顺序枚举</strong>，回溯保证不重不漏。</p>
+<h4 id="对应题目">对应题目
+</h4><ol>
+<li><strong><a class="link" href="https://www.luogu.com.cn/problem/P2036#ide"  target="_blank" rel="noopener"
+    >P2036 PERKET</a></strong>：配料选或不选，求酸度苦度最小差值</li>
+<li><strong><a class="link" href="https://www.luogu.com.cn/problem/P1036"  target="_blank" rel="noopener"
+    >P1036 选数</a></strong>：从n个数选k个，求和为质数的数量</li>
+<li><strong><a class="link" href="https://www.luogu.com.cn/problem/P9241"  target="_blank" rel="noopener"
+    >P9241 飞机降落</a></strong>：枚举飞机降落顺序，判断能否全降落</li>
+<li><strong><a class="link" href="https://www.luogu.com.cn/problem/B4158"  target="_blank" rel="noopener"
+    >B4158 质数补全</a></strong>：把<code>*</code>填0-9，找最小质数</li>
+</ol>
+<hr>
+<h3 id="题型2记忆化-dfs递归优化神器">题型2：记忆化 DFS（递归优化神器）
+</h3><p><strong>适用场景</strong>：纯递归会重复计算无数次，效率极低，用数组存已算结果。
+<strong>核心</strong>：<code>memo[状态]</code>存结果，算过直接返回，<strong>空间换时间</strong>。</p>
+<h4 id="对应题目-1">对应题目
+</h4><p><strong><a class="link" href="https://www.luogu.com.cn/problem/P1464"  target="_blank" rel="noopener"
+    >P1464 Function</a></strong>：递归函数优化</p>
+<ul>
+<li>原始递归重复计算爆炸，记忆化后秒出答案</li>
+</ul>
+<hr>
+<h3 id="题型3网格搜索-dfs二维图遍历">题型3：网格搜索 DFS（二维图遍历）
+</h3><p><strong>适用场景</strong>：二维矩阵/方格，上下左右/8方向搜索、填色、匹配单词。
+<strong>核心</strong>：<strong>方向数组</strong><code>dx[]/dy[]</code>，标记访问位置，边界判断。</p>
+<h4 id="对应题目-2">对应题目
+</h4><ol>
+<li><strong><a class="link" href="https://www.luogu.com.cn/problem/P1162"  target="_blank" rel="noopener"
+    >P1162 填涂颜色</a></strong>：把闭合圈内的0填2</li>
+<li><strong><a class="link" href="https://www.luogu.com.cn/problem/P1101"  target="_blank" rel="noopener"
+    >P1101 单词方阵</a></strong>：找<code>yizhong</code>并标记</li>
+</ol>
+<hr>
+<h3 id="题型4棋盘状态枚举-dfs进阶网格">题型4：棋盘状态枚举 DFS（进阶网格）
+</h3><p><strong>适用场景</strong>：棋盘逐格放置棋子/状态，带胜负/终止条件，统计合法方案数。
+<strong>核心</strong>：<strong>逐格遍历枚举状态</strong>，提前剪枝（不合法直接返回），回溯维护棋盘状态。</p>
+<h4 id="对应题目-3">对应题目
+</h4><p><strong><a class="link" href="https://www.luogu.com.cn/problem/P10386"  target="_blank" rel="noopener"
+    >P10386 五子棋对弈</a></strong></p>
+<ul>
+<li>5x5棋盘枚举白棋/黑棋，出现<strong>五子连珠平局</strong>立刻剪枝</li>
+<li>统计白棋数量为13的合法方案数</li>
+<li>逐格递归（x,y），切换状态后回溯，完美适配DFS模板</li>
+</ul>
+<hr>
+<h2 id="三再搞懂什么是-bfs">三、再搞懂：什么是 BFS？
+</h2><p><strong>BFS = 广度优先搜索</strong>
+一句话：<strong>一层一层往外搜，先搜到的就是最短路径</strong>。
+用<strong>队列</strong>实现，<strong>最适合求最短步数/最少操作次数</strong>。</p>
+<h3 id="bfs-万能模板新手背会">BFS 万能模板（新手背会）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">queue</span><span class="o">&lt;</span><span class="err">状态</span><span class="o">&gt;</span> <span class="n">q</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="err">初始化起点，入队，标记访问</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="err">取出队首</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="err">遍历所有邻点</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="err">邻点合法</span> <span class="o">&amp;&amp;</span> <span class="err">没访问</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">       <span class="err">标记访问</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="err">记录步数</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="err">入队</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="err">到达终点</span><span class="p">)</span> <span class="err">直接返回结果</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="四bfs-核心题型最短路径">四、BFS 核心题型：最短路径
+</h2><h3 id="对应题目-4">对应题目
+</h3><p><strong><a class="link" href="https://www.luogu.com.cn/problem/P1135"  target="_blank" rel="noopener"
+    >P1135 奇怪的电梯</a></strong>：求从A到B最少按几次按钮</p>
+<ul>
+<li>每层楼是节点，上下楼是边，<strong>BFS天生求最短路径</strong></li>
+<li>第一次到达终点就是最少步数，无需继续搜索</li>
+</ul>
+<hr>
+<h2 id="五新手必记dfs-vs-bfs-对比">五、新手必记：DFS vs BFS 对比
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>维度</th>
+          <th>DFS</th>
+          <th>BFS</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>实现方式</td>
+          <td>递归（常用）/栈</td>
+          <td>队列</td>
+      </tr>
+      <tr>
+          <td>搜索方式</td>
+          <td>一条路走到底</td>
+          <td>一层一层扩散</td>
+      </tr>
+      <tr>
+          <td>适用场景</td>
+          <td>组合枚举、棋盘、网格</td>
+          <td>最短路径、最少步数</td>
+      </tr>
+      <tr>
+          <td>核心技巧</td>
+          <td>回溯、剪枝、记忆化</td>
+          <td>队列、标记访问</td>
+      </tr>
+      <tr>
+          <td>内存占用</td>
+          <td>较小</td>
+          <td>较大（层多会爆内存）</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>搜索是算法的<strong>基础中的基础</strong>
+搜索算法是<strong>最核心、最常用的算法</strong>，<strong>DFS 和 BFS 都是搜索算法的代表</strong>。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">力扣hot100(精讲)</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">力扣hot150(精讲)</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+</style>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>
