@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是前端/全栈开发的常见痛点。本文对比NVM、npm的核心缺点，详解Volta和pnpm的优势，并整理常用命令、全栈项目标准化启动流程及最佳实践。\n">
+<title>从 10 分钟到 10 秒：Volta&#43;pnpm 如何重构你的开发流程</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="从 10 分钟到 10 秒：Volta+pnpm 如何重构你的开发流程">
+<meta property='og:description' content="Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是前端/全栈开发的常见痛点。本文对比NVM、npm的核心缺点，详解Volta和pnpm的优势，并整理常用命令、全栈项目标准化启动流程及最佳实践。\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-05-15T17:00:00&#43;08:00'/><meta property='article:modified_time' content='2026-05-15T17:00:00&#43;08:00'/>
+<meta name="twitter:title" content="从 10 分钟到 10 秒：Volta+pnpm 如何重构你的开发流程">
+<meta name="twitter:description" content="Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是前端/全栈开发的常见痛点。本文对比NVM、npm的核心缺点，详解Volta和pnpm的优势，并整理常用命令、全栈项目标准化启动流程及最佳实践。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一nvmnpm-的核心痛点">一、NVM+npm 的核心痛点</a>
+      <ol>
+        <li><a href="#1-nvm-的问题">1. NVM 的问题</a></li>
+        <li><a href="#2-npm-的致命问题从依赖臃肿到幽灵依赖">2. npm 的致命问题：从依赖臃肿到幽灵依赖</a></li>
+      </ol>
+    </li>
+    <li><a href="#二volta更轻更稳的node版本管理">二、Volta：更轻更稳的Node版本管理</a>
+      <ol>
+        <li><a href="#volta-vs-nvm-核心优势">Volta vs NVM 核心优势</a></li>
+        <li><a href="#volta-工作原理">Volta 工作原理</a></li>
+        <li><a href="#volta-常用命令">Volta 常用命令</a></li>
+      </ol>
+    </li>
+    <li><a href="#三pnpm彻底解决npm的依赖问题">三、pnpm：彻底解决npm的依赖问题</a>
+      <ol>
+        <li><a href="#什么是幽灵依赖">什么是幽灵依赖？</a></li>
+        <li><a href="#pnpm-如何解决幽灵依赖">pnpm 如何解决幽灵依赖？</a></li>
+        <li><a href="#pnpm-vs-npm-核心优势">pnpm vs npm 核心优势</a></li>
+        <li><a href="#pnpm-基础命令">pnpm 基础命令</a></li>
+        <li><a href="#配置npm-run别名一键替换">配置npm run别名（一键替换）</a></li>
+      </ol>
+    </li>
+    <li><a href="#四voltapnpm-全栈项目启动流程">四、Volta+pnpm 全栈项目启动流程</a>
+      <ol>
+        <li><a href="#前置准备">前置准备</a></li>
+        <li><a href="#1-nestjs企业级后端">1. Nest.js（企业级后端）</a></li>
+        <li><a href="#2-express轻量后端">2. Express（轻量后端）</a></li>
+        <li><a href="#3-vue-3前端">3. Vue 3（前端）</a></li>
+        <li><a href="#4-nextjsreact-ssr">4. Next.js（React SSR）</a></li>
+        <li><a href="#5-reactvite">5. React（Vite）</a></li>
+      </ol>
+    </li>
+    <li><a href="#五最佳实践与常见问题">五、最佳实践与常见问题</a>
+      <ol>
+        <li><a href="#1-配置国内镜像源">1. 配置国内镜像源</a></li>
+        <li><a href="#2-从npmyarn迁移到pnpm">2. 从npm/yarn迁移到pnpm</a></li>
+        <li><a href="#3-常见问题解决">3. 常见问题解决</a></li>
+      </ol>
+    </li>
+    <li><a href="#六总结">六、总结</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/%E5%B7%A5%E7%A8%8B%E4%BC%98%E5%8C%96/"
+      
+    >
+      工程优化
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/">从 10 分钟到 10 秒：Volta&#43;pnpm 如何重构你的开发流程</a>
+    </h2>
+
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-05-15 17:00</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview">
+        <span class="waline-pageview-count" data-path="/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/"
+          >0</span
+        >
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment">
+        <span class="waline-comment-count" data-path="/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/"
+          >0</span
+        >
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是前端/全栈开发的常见痛点。本文对比NVM、npm的核心缺点，详解Volta和pnpm的优势，并整理常用命令、全栈项目标准化启动流程及最佳实践。</p>
+<h2 id="一nvmnpm-的核心痛点">一、NVM+npm 的核心痛点
+</h2><h3 id="1-nvm-的问题">1. NVM 的问题
+</h3><ul>
+<li><strong>跨平台差</strong>：仅原生支持Linux/macOS，Windows需用非官方的NVM-windows，且存在兼容性问题</li>
+<li><strong>全局CLI失效</strong>：切换Node版本后，已安装的全局工具需重新安装，浪费时间</li>
+<li><strong>配置繁琐</strong>：需手动配置环境变量，不同终端（如bash、zsh、fish）可能出现版本不生效问题</li>
+<li><strong>速度慢</strong>：虽有缓存但机制不完善，每次安装/切换仍需较长时间</li>
+<li><strong>项目锁定不智能</strong>：需手动创建.nvmrc文件，且不会自动切换版本</li>
+</ul>
+<h3 id="2-npm-的致命问题从依赖臃肿到幽灵依赖">2. npm 的致命问题：从依赖臃肿到幽灵依赖
+</h3><p>npm的扁平化依赖设计虽然解决了早期的嵌套地狱问题，但引入了更严重的隐患：</p>
+<ul>
+<li><strong>安装慢</strong>：扁平化依赖树导致重复下载，大型项目安装动辄几分钟</li>
+<li><strong>体积大</strong>：node_modules臃肿，一个小项目可能占几百MB空间</li>
+<li><strong>锁包不稳</strong>：package-lock.json偶尔出现版本不一致，导致&quot;我这能跑你那不行&quot;</li>
+<li><strong>权限问题</strong>：macOS/Linux下全局安装需sudo，易导致权限混乱</li>
+<li><strong>幽灵依赖</strong>：这是npm最隐蔽也最危险的问题</li>
+</ul>
+<h2 id="二volta更轻更稳的node版本管理">二、Volta：更轻更稳的Node版本管理
+</h2><p>Volta是LinkedIn推出的跨平台Node版本管理器，主打&quot;无痛版本切换+全局CLI持久化&quot;。</p>
+<h3 id="volta-vs-nvm-核心优势">Volta vs NVM 核心优势
+</h3><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>特性</th>
+          <th>NVM</th>
+          <th>Volta</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>跨平台</td>
+          <td>仅Linux/macOS</td>
+          <td>Windows/macOS/Linux原生支持</td>
+      </tr>
+      <tr>
+          <td>全局CLI</td>
+          <td>切换版本后失效</td>
+          <td>与Node版本解耦，无需重装</td>
+      </tr>
+      <tr>
+          <td>速度</td>
+          <td>有缓存但速度一般</td>
+          <td>内置高效缓存，秒级切换</td>
+      </tr>
+      <tr>
+          <td>配置</td>
+          <td>需手动配置环境变量</td>
+          <td>自动配置所有主流终端</td>
+      </tr>
+      <tr>
+          <td>项目锁定</td>
+          <td>需手动创建.nvmrc</td>
+          <td>自动识别package.json的volta字段</td>
+      </tr>
+      <tr>
+          <td>自动切换</td>
+          <td>需手动执行nvm use</td>
+          <td>进入项目目录自动切换版本</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="volta-工作原理">Volta 工作原理
+</h3><p>Volta通过在系统PATH中插入一个轻量级的shim（垫片）来工作。当你运行node、npm或任何全局安装的CLI工具时，Volta会：</p>
+<ol>
+<li>检查当前项目的package.json是否有volta字段</li>
+<li>如果有，使用项目指定的Node版本</li>
+<li>如果没有，使用全局默认的Node版本</li>
+<li>全局CLI工具会自动使用它们安装时的Node版本，与当前系统版本无关</li>
+</ol>
+<h3 id="volta-常用命令">Volta 常用命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装（Unix/macOS通用）</span>
+</span></span><span class="line"><span class="cl">curl https://get.volta.sh <span class="p">|</span> bash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Windows安装（PowerShell）</span>
+</span></span><span class="line"><span class="cl">winget install Volta.Volta
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证安装</span>
+</span></span><span class="line"><span class="cl">volta -V
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 版本管理</span>
+</span></span><span class="line"><span class="cl">volta install node@20 <span class="c1"># 安装指定版本</span>
+</span></span><span class="line"><span class="cl">volta install node@lts <span class="c1"># 安装最新LTS版本</span>
+</span></span><span class="line"><span class="cl">volta <span class="nb">set</span> node@20 <span class="c1"># 设置全局默认版本</span>
+</span></span><span class="line"><span class="cl">volta pin node@18 <span class="c1"># 为当前项目锁定版本（自动写入package.json）</span>
+</span></span><span class="line"><span class="cl">volta list node <span class="c1"># 查看已安装的Node版本</span>
+</span></span><span class="line"><span class="cl">volta uninstall node@16 <span class="c1"># 卸载指定版本</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 全局CLI管理（关键：切换Node版本不失效）</span>
+</span></span><span class="line"><span class="cl">volta install @nestjs/cli
+</span></span><span class="line"><span class="cl">volta install pnpm
+</span></span><span class="line"><span class="cl">volta list <span class="c1"># 查看所有全局安装的工具</span>
+</span></span><span class="line"><span class="cl">volta uninstall @nestjs/cli
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="三pnpm彻底解决npm的依赖问题">三、pnpm：彻底解决npm的依赖问题
+</h2><p>pnpm通过&quot;内容寻址存储&quot;和&quot;非扁平化依赖树&quot;，不仅解决了npm的&quot;慢、臃肿&quot;问题，更是<strong>唯一从根本上解决幽灵依赖</strong>的主流包管理器。</p>
+<h3 id="什么是幽灵依赖">什么是幽灵依赖？
+</h3><p>幽灵依赖（Phantom Dependencies）指的是：<strong>项目代码中直接使用了没有在package.json中声明的依赖包</strong>。</p>
+<p>npm/yarn的扁平化机制会将子依赖提升到node_modules根目录，导致你可以在代码中<code>require('lodash')</code>，即使lodash只被你的某个依赖包所依赖，而没有在你自己的package.json中声明。</p>
+<p><strong>幽灵依赖的危害</strong>：</p>
+<ul>
+<li>依赖版本不可控：子依赖升级可能导致你的代码突然崩溃</li>
+<li>构建产物不稳定：不同环境安装的依赖版本可能不同</li>
+<li>依赖清理困难：无法安全地删除未使用的依赖</li>
+<li>团队协作灾难：&ldquo;我这能跑，你那不行&quot;的终极原因</li>
+</ul>
+<h3 id="pnpm-如何解决幽灵依赖">pnpm 如何解决幽灵依赖？
+</h3><p>pnpm采用<strong>非扁平化的依赖结构</strong>：</p>
+<ul>
+<li>所有依赖都安装在全局内容可寻址仓库中（默认在~/.pnpm-store）</li>
+<li>项目的node_modules中只包含你在package.json中明确声明的依赖</li>
+<li>子依赖通过符号链接指向全局仓库，但不会被提升到根目录</li>
+</ul>
+<p>这意味着：<strong>你只能require/package.json中声明的依赖</strong>，从根本上杜绝了幽灵依赖的产生。</p>
+<h3 id="pnpm-vs-npm-核心优势">pnpm vs npm 核心优势
+</h3><ul>
+<li><strong>速度提升5倍+</strong>：相同包仅存一份，安装时硬链接到项目</li>
+<li><strong>体积减少80%</strong>：通过符号链接实现依赖共享，节省大量磁盘空间</li>
+<li><strong>锁包严谨</strong>：pnpm-lock.yaml确保团队依赖版本完全一致</li>
+<li><strong>无幽灵依赖</strong>：非扁平化结构从根本上解决问题</li>
+<li><strong>无权限问题</strong>：全局安装无需sudo</li>
+<li><strong>兼容npm</strong>：大部分命令可直接替换，学习成本低</li>
+<li><strong>强大的monorepo支持</strong>：内置workspace功能，无需额外工具</li>
+</ul>
+<h3 id="pnpm-基础命令">pnpm 基础命令
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 推荐用Volta安装pnpm（自动与Node版本关联）</span>
+</span></span><span class="line"><span class="cl">volta install pnpm
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 常用命令</span>
+</span></span><span class="line"><span class="cl">pnpm init -y <span class="c1"># 初始化项目</span>
+</span></span><span class="line"><span class="cl">pnpm install <span class="c1"># 安装所有依赖</span>
+</span></span><span class="line"><span class="cl">pnpm add express <span class="c1"># 生产依赖</span>
+</span></span><span class="line"><span class="cl">pnpm add -D eslint <span class="c1"># 开发依赖</span>
+</span></span><span class="line"><span class="cl">pnpm remove express <span class="c1"># 移除依赖</span>
+</span></span><span class="line"><span class="cl">pnpm update <span class="c1"># 更新所有依赖</span>
+</span></span><span class="line"><span class="cl">pnpm dev <span class="c1"># 运行脚本（与npm run dev相同）</span>
+</span></span><span class="line"><span class="cl">pnpm store prune <span class="c1"># 清理全局缓存中未使用的包</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="配置npm-run别名一键替换">配置npm run别名（一键替换）
+</h3><p>如果你习惯了使用<code>npm run</code>命令，可以在~/.bashrc、<del>/.zshrc或</del>/.config/fish/config.fish中添加以下别名：</p>
+<p><strong>bash/zsh</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">npm</span><span class="o">=</span><span class="s1">&#39;pnpm&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>fish</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nb">alias </span>npm pnpm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样，你输入<code>npm run dev</code>时，实际执行的是<code>pnpm dev</code>，无需改变原有习惯。</p>
+<h2 id="四voltapnpm-全栈项目启动流程">四、Volta+pnpm 全栈项目启动流程
+</h2><h3 id="前置准备">前置准备
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装Volta（见上文）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装全局默认Node版本</span>
+</span></span><span class="line"><span class="cl">volta install node@20
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装pnpm</span>
+</span></span><span class="line"><span class="cl">volta install pnpm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="1-nestjs企业级后端">1. Nest.js（企业级后端）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装Nest CLI（全局，切换Node版本不失效）</span>
+</span></span><span class="line"><span class="cl">volta install @nestjs/cli
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建新项目</span>
+</span></span><span class="line"><span class="cl">nest new nest-demo
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> nest-demo
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装依赖</span>
+</span></span><span class="line"><span class="cl">pnpm install
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动开发服务器</span>
+</span></span><span class="line"><span class="cl">pnpm run start:dev
+</span></span><span class="line"><span class="cl"><span class="c1"># 锁定项目Node版本（团队协作必备）</span>
+</span></span><span class="line"><span class="cl">volta pin node@20
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-express轻量后端">2. Express（轻量后端）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 方式1：手动搭建</span>
+</span></span><span class="line"><span class="cl">mkdir express-demo <span class="o">&amp;&amp;</span> <span class="nb">cd</span> express-demo
+</span></span><span class="line"><span class="cl">pnpm init -y
+</span></span><span class="line"><span class="cl">pnpm add express
+</span></span><span class="line"><span class="cl">volta pin node@20
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 方式2：官方脚手架</span>
+</span></span><span class="line"><span class="cl">volta install express-generator
+</span></span><span class="line"><span class="cl">express express-demo
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> express-demo
+</span></span><span class="line"><span class="cl">pnpm install
+</span></span><span class="line"><span class="cl">pnpm start
+</span></span><span class="line"><span class="cl">volta pin node@20
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-vue-3前端">3. Vue 3（前端）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pnpm create vue@latest vue-demo
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> vue-demo
+</span></span><span class="line"><span class="cl">pnpm install
+</span></span><span class="line"><span class="cl">pnpm dev
+</span></span><span class="line"><span class="cl">volta pin node@20
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="4-nextjsreact-ssr">4. Next.js（React SSR）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pnpm create next-app next-demo
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> next-demo
+</span></span><span class="line"><span class="cl">pnpm install
+</span></span><span class="line"><span class="cl">pnpm dev
+</span></span><span class="line"><span class="cl">volta pin node@20
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="5-reactvite">5. React（Vite）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pnpm create vite@latest react-demo -- --template react
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> react-demo
+</span></span><span class="line"><span class="cl">pnpm install
+</span></span><span class="line"><span class="cl">pnpm dev
+</span></span><span class="line"><span class="cl">volta pin node@20
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="五最佳实践与常见问题">五、最佳实践与常见问题
+</h2><h3 id="1-配置国内镜像源">1. 配置国内镜像源
+</h3><p>为了提升下载速度，建议配置国内镜像源：</p>
+<p><strong>Volta镜像</strong>：
+在~/.bashrc或~/.zshrc中添加：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">VOLTA_NODE_DOWNLOAD_URL</span><span class="o">=</span>https://npmmirror.com/mirrors/node
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">VOLTA_NPM_DOWNLOAD_URL</span><span class="o">=</span>https://npmmirror.com/mirrors/npm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>pnpm镜像</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pnpm config <span class="nb">set</span> registry https://registry.npmmirror.com
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="2-从npmyarn迁移到pnpm">2. 从npm/yarn迁移到pnpm
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 删除旧的node_modules和锁文件</span>
+</span></span><span class="line"><span class="cl">rm -rf node_modules package-lock.json yarn.lock
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用pnpm重新安装依赖</span>
+</span></span><span class="line"><span class="cl">pnpm install
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试项目是否正常运行</span>
+</span></span><span class="line"><span class="cl">pnpm dev
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="3-常见问题解决">3. 常见问题解决
+</h3><p><strong>问题1：Volta安装后版本不生效</strong></p>
+<ul>
+<li>重启终端</li>
+<li>检查~/.bashrc、<del>/.zshrc或</del>/.profile中是否有Volta的配置</li>
+<li>如果使用fish终端，运行<code>volta setup fish</code></li>
+</ul>
+<p><strong>问题2：pnpm安装依赖时出现权限错误</strong></p>
+<ul>
+<li>不要使用sudo安装pnpm</li>
+<li>检查~/.pnpm-store的权限，确保当前用户有读写权限</li>
+</ul>
+<p><strong>问题3：全局CLI工具找不到</strong></p>
+<ul>
+<li>确保使用<code>volta install</code>而不是<code>pnpm install -g</code>安装全局工具</li>
+<li>运行<code>volta list</code>查看已安装的全局工具</li>
+</ul>
+<h2 id="六总结">六、总结
+</h2><p>Volta+pnpm组合能解决开发中80%的环境和依赖问题：</p>
+<ul>
+<li><strong>高效</strong>：秒级切换Node版本，秒级安装依赖</li>
+<li><strong>统一</strong>：跨平台一套配置，团队协作无环境差异</li>
+<li><strong>节省</strong>：磁盘空间占用减少80%</li>
+<li><strong>稳定</strong>：双重版本锁定+无幽灵依赖，彻底解决&quot;我这能跑你那不行&rdquo;</li>
+</ul>
+<p>这是一次无痛升级，无需重构开发习惯，却能大幅提升开发效率和项目稳定性。现在就开始使用Volta+pnpm，告别版本混乱和依赖臃肿吧！</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+</style>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>
