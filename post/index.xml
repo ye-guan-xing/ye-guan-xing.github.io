@@ -84,7 +84,8 @@
 &lt;hr&gt;
 &lt;h2 id=&#34;三异步二代promise规范化解决方案&#34;&gt;三、异步二代：Promise（规范化解决方案）
 &lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;推荐的手撕过程:https://www.jiangxu.net/blog/promiseTutorial&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.jiangxu.net/blog/promiseTutorial&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;推荐的手撕过程&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;如果说回调函数是「口头约定」，那 Promise 就是标准化的异步凭证，可以通俗理解为「取餐号」。&lt;/p&gt;
 &lt;p&gt;异步任务开始后，不会直接返回结果，而是返回一个Promise凭证，任务成功/失败后，再通过凭证获取结果，彻底消灭嵌套回调。&lt;/p&gt;
