@@ -418,45 +418,45 @@
 </h2><p>Volta是LinkedIn推出的跨平台Node版本管理器，主打&quot;无痛版本切换+全局CLI持久化&quot;。</p>
 <h3 id="volta-vs-nvm-核心优势">Volta vs NVM 核心优势
 </h3><div class="table-wrapper"><table>
-  <thead>
-      <tr>
-          <th>特性</th>
-          <th>NVM</th>
-          <th>Volta</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>跨平台</td>
-          <td>仅Linux/macOS</td>
-          <td>Windows/macOS/Linux原生支持</td>
-      </tr>
-      <tr>
-          <td>全局CLI</td>
-          <td>切换版本后失效</td>
-          <td>与Node版本解耦，无需重装</td>
-      </tr>
-      <tr>
-          <td>速度</td>
-          <td>有缓存但速度一般</td>
-          <td>内置高效缓存，秒级切换</td>
-      </tr>
-      <tr>
-          <td>配置</td>
-          <td>需手动配置环境变量</td>
-          <td>自动配置所有主流终端</td>
-      </tr>
-      <tr>
-          <td>项目锁定</td>
-          <td>需手动创建.nvmrc</td>
-          <td>自动识别package.json的volta字段</td>
-      </tr>
-      <tr>
-          <td>自动切换</td>
-          <td>需手动执行nvm use</td>
-          <td>进入项目目录自动切换版本</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>特性</th>
+					<th>NVM</th>
+					<th>Volta</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>跨平台</td>
+					<td>仅Linux/macOS</td>
+					<td>Windows/macOS/Linux原生支持</td>
+			</tr>
+			<tr>
+					<td>全局CLI</td>
+					<td>切换版本后失效</td>
+					<td>与Node版本解耦，无需重装</td>
+			</tr>
+			<tr>
+					<td>速度</td>
+					<td>有缓存但速度一般</td>
+					<td>内置高效缓存，秒级切换</td>
+			</tr>
+			<tr>
+					<td>配置</td>
+					<td>需手动配置环境变量</td>
+					<td>自动配置所有主流终端</td>
+			</tr>
+			<tr>
+					<td>项目锁定</td>
+					<td>需手动创建.nvmrc</td>
+					<td>自动识别package.json的volta字段</td>
+			</tr>
+			<tr>
+					<td>自动切换</td>
+					<td>需手动执行nvm use</td>
+					<td>进入项目目录自动切换版本</td>
+			</tr>
+	</tbody>
 </table></div>
 <h3 id="volta-工作原理">Volta 工作原理
 </h3><p>Volta通过在系统PATH中插入一个轻量级的shim（垫片）来工作。当你运行node、npm或任何全局安装的CLI工具时，Volta会：</p>
