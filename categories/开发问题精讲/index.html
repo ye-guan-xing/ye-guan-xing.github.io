@@ -10,7 +10,7 @@
 <meta property='og:description' content="这里是一个开发问题的收录，也是日常开发我所遇到的有趣问题，解决方法和总结">
 <meta property='og:url' content='https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-05-20T16:36:00&#43;00:00 '/><meta property='og:image' content='https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/image.jpg' />
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-05-29T01:00:00&#43;00:00 '/><meta property='og:image' content='https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/image.jpg' />
 <meta name="twitter:title" content="Category: 开发问题精讲 - acye's blog">
 <meta name="twitter:description" content="这里是一个开发问题的收录，也是日常开发我所遇到的有趣问题，解决方法和总结"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/image.jpg' /><link rel="alternate" type="application/rss&#43;xml" href="https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/index.xml">
@@ -287,7 +287,7 @@
                     <a href="/archives/#2026">
                         
                             <span class="year">2026</span>
-                            <span class="count">12</span>
+                            <span class="count">21</span>
                         
                     </a> 
                 </div>
@@ -322,8 +322,12 @@
 
     <div class="tagCloud-tags">
         
-            <a href="/categories/web%E5%BC%80%E5%8F%91/" class="font_size_8">
+            <a href="/categories/web%E5%BC%80%E5%8F%91/" class="font_size_9">
                 web开发
+            </a>
+        
+            <a href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" class="font_size_8">
+                后端开发
             </a>
         
             <a href="/categories/%E7%AE%97%E6%B3%95/" class="font_size_5">
@@ -599,7 +603,26 @@
     #waifu-tips {
         z-index: 10000 !important;
     }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
 </style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
 
 
 

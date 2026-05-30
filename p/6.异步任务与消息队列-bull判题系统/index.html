@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 上一篇：02 模块与依赖注入 | 下一篇：04 数据库与 ORM\n本篇学习入口 类型 内容 官方概念 Controllers：路由和参数装饰器；Pipes、Guards、Interceptors、Exception filters：请求生命周期 小满知识点 Controller、DTO、Pipe、Guard、Interceptor、Filter 的请求顺序 本项目代码入口 src/modules/user/user.controller.ts、src/modules/user/user.service.ts、src/common/guards、src/common/interceptors、src/common/filters 案例：用户登录 前端发：\n">
+<title>6.异步任务与消息队列-Bull判题系统</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/6.%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-bull%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="6.异步任务与消息队列-Bull判题系统">
+<meta property='og:description' content=" 上一篇：02 模块与依赖注入 | 下一篇：04 数据库与 ORM\n本篇学习入口 类型 内容 官方概念 Controllers：路由和参数装饰器；Pipes、Guards、Interceptors、Exception filters：请求生命周期 小满知识点 Controller、DTO、Pipe、Guard、Interceptor、Filter 的请求顺序 本项目代码入口 src/modules/user/user.controller.ts、src/modules/user/user.service.ts、src/common/guards、src/common/interceptors、src/common/filters 案例：用户登录 前端发：\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/6.%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-bull%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-05-27T01:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-05-27T01:00:00&#43;00:00'/>
+<meta name="twitter:title" content="6.异步任务与消息队列-Bull判题系统">
+<meta name="twitter:description" content=" 上一篇：02 模块与依赖注入 | 下一篇：04 数据库与 ORM\n本篇学习入口 类型 内容 官方概念 Controllers：路由和参数装饰器；Pipes、Guards、Interceptors、Exception filters：请求生命周期 小满知识点 Controller、DTO、Pipe、Guard、Interceptor、Filter 的请求顺序 本项目代码入口 src/modules/user/user.controller.ts、src/modules/user/user.service.ts、src/common/guards、src/common/interceptors、src/common/filters 案例：用户登录 前端发：\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#本篇学习入口">本篇学习入口</a></li>
+    <li><a href="#案例用户登录">案例：用户登录</a></li>
+    <li><a href="#全链路时序">全链路时序</a></li>
+    <li><a href="#step-1controller-接路由">Step 1：Controller 接路由</a></li>
+    <li><a href="#step-2dto-校验">Step 2：DTO 校验</a></li>
+    <li><a href="#step-3service-执行业务">Step 3：Service 执行业务</a></li>
+    <li><a href="#step-4参数装饰器一览">Step 4：参数装饰器一览</a></li>
+    <li><a href="#step-5responseinterceptor-包装">Step 5：ResponseInterceptor 包装</a></li>
+    <li><a href="#step-6异常-filter">Step 6：异常 Filter</a></li>
+    <li><a href="#step-7logginginterceptor">Step 7：LoggingInterceptor</a></li>
+    <li><a href="#带-guard-的请求">带 Guard 的请求</a></li>
+    <li><a href="#前端对接要点">前端对接要点</a></li>
+    <li><a href="#本篇小结">本篇小结</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/"
+      
+    >
+      后端开发
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/6.%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-bull%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F/">6.异步任务与消息队列-Bull判题系统</a>
+    </h2>
+
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-05-27 01:00</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview">
+        <span class="waline-pageview-count" data-path="/p/6.%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-bull%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F/"
+          >0</span
+        >
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment">
+        <span class="waline-comment-count" data-path="/p/6.%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-bull%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F/"
+          >0</span
+        >
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>上一篇：<a class="link" href="./02-%e6%a8%a1%e5%9d%97%e4%b8%8e%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5-NestJS%e7%9a%84%e5%bf%83%e6%99%ba%e6%a8%a1%e5%9e%8b.md" >02 模块与依赖注入</a> | 下一篇：<a class="link" href="./04-%e6%95%b0%e6%8d%ae%e5%ba%93%e4%b8%8eORM-TypeORM%e5%ae%9e%e6%88%98.md" >04 数据库与 ORM</a></p>
+</blockquote>
+<h2 id="本篇学习入口">本篇学习入口
+</h2><div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>类型</th>
+					<th>内容</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>官方概念</td>
+					<td><a class="link" href="https://docs.nestjs.com/controllers"  target="_blank" rel="noopener"
+    >Controllers</a>：路由和参数装饰器；<a class="link" href="https://docs.nestjs.com/pipes"  target="_blank" rel="noopener"
+    >Pipes</a>、<a class="link" href="https://docs.nestjs.com/guards"  target="_blank" rel="noopener"
+    >Guards</a>、<a class="link" href="https://docs.nestjs.com/interceptors"  target="_blank" rel="noopener"
+    >Interceptors</a>、<a class="link" href="https://docs.nestjs.com/exception-filters"  target="_blank" rel="noopener"
+    >Exception filters</a>：请求生命周期</td>
+			</tr>
+			<tr>
+					<td>小满知识点</td>
+					<td>Controller、DTO、Pipe、Guard、Interceptor、Filter 的请求顺序</td>
+			</tr>
+			<tr>
+					<td>本项目代码入口</td>
+					<td><code>src/modules/user/user.controller.ts</code>、<code>src/modules/user/user.service.ts</code>、<code>src/common/guards</code>、<code>src/common/interceptors</code>、<code>src/common/filters</code></td>
+			</tr>
+	</tbody>
+</table></div>
+<h2 id="案例用户登录">案例：用户登录
+</h2><p>前端发：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="err">POST /api/user/login
+</span></span></span><span class="line"><span class="cl"><span class="err">Content-Type: application/json
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">{ &#34;username&#34;: &#34;alice&#34;, &#34;password&#34;: &#34;123456&#34; }
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>后端返回：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;code&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;success&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;data&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;登录成功&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;uuid-xxx&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;username&#34;</span><span class="p">:</span> <span class="s2">&#34;alice&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;token&#34;</span><span class="p">:</span> <span class="s2">&#34;a1b2c3...&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;roles&#34;</span><span class="p">:</span> <span class="s2">&#34;user&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="全链路时序">全链路时序
+</h2><pre class="mermaid">sequenceDiagram
+  participant FE as 前端
+  participant Pipe as ValidationPipe
+  participant Ctrl as UserController
+  participant Svc as UserService
+  participant DB as MySQL
+  participant RD as Redis
+  participant Int as ResponseInterceptor
+
+  FE-&gt;&gt;Pipe: POST /api/user/login
+  Pipe-&gt;&gt;Pipe: LoginDto 校验
+  Pipe-&gt;&gt;Ctrl: 通过
+  Ctrl-&gt;&gt;Svc: login(dto)
+  Svc-&gt;&gt;DB: findOne username
+  DB--&gt;&gt;Svc: user 记录
+  Svc-&gt;&gt;Svc: MD5 比对密码
+  Svc-&gt;&gt;RD: SET token username EX 3600
+  Svc--&gt;&gt;Ctrl: 返回 user&#43;token
+  Ctrl-&gt;&gt;Int: 包装响应
+  Int--&gt;&gt;FE: code=1 data=...</pre>
+
+<h2 id="step-1controller-接路由">Step 1：Controller 接路由
+</h2><p>文件：<code>backend/oj-nest/src/modules/user/user.controller.ts</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kd">@Controller</span><span class="p">(</span><span class="s1">&#39;api/user&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">UserController</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">constructor</span><span class="p">(</span><span class="kr">private</span> <span class="kr">readonly</span> <span class="nx">userService</span>: <span class="kt">UserService</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">@Post</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">login</span><span class="p">(</span><span class="kd">@Body</span><span class="p">()</span> <span class="nx">dto</span>: <span class="kt">LoginDto</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">userService</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">dto</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>@Post('login')</code> 匹配 POST + <code>/api/user/login</code></li>
+<li><code>@Body() dto: LoginDto</code> — body 自动映射到 DTO 类</li>
+</ul>
+<blockquote>
+<p>知识点：Controller 是请求进入业务代码的第一层，它把 URL、HTTP 方法和方法参数绑定起来。</p>
+<p>前端类比：Vue Router 负责匹配页面；Nest Controller 负责匹配接口。</p>
+<p>本项目落点：<code>UserController.login</code> 只负责接收 <code>LoginDto</code> 并调用 <code>UserService.login</code>。</p>
+</blockquote>
+<h2 id="step-2dto-校验">Step 2：DTO 校验
+</h2><p>文件：<code>backend/oj-nest/src/modules/user/dto/user.dto.ts</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">LoginDto</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">@IsString</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">@IsNotEmpty</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">username</span>: <span class="kt">string</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">@IsString</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">@IsNotEmpty</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">password</span>: <span class="kt">string</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>全局 <code>ValidationPipe</code> 会检查：</p>
+<ul>
+<li><code>username</code> 必须是字符串且非空</li>
+<li>多余字段会被 <code>whitelist</code> 剥掉</li>
+</ul>
+<p>校验失败自动返回 400，<strong>进不了 Service</strong>。</p>
+<p>类比 Element Plus / Ant Design 表单 rules，但在服务端强制执行 — 前端可以绕过，后端不能信前端。</p>
+<blockquote>
+<p>知识点：DTO 定义接口输入结构，Pipe 按 DTO 上的校验装饰器执行校验。</p>
+<p>前端类比：前端表单 rules 提升体验，后端 DTO + Pipe 保证接口边界可靠。</p>
+<p>本项目落点：全局 <code>ValidationPipe</code> 会处理 <code>LoginDto</code>、<code>RegisterDto</code>、<code>SubmitTestQuestionDto</code> 等输入对象。</p>
+</blockquote>
+<h2 id="step-3service-执行业务">Step 3：Service 执行业务
+</h2><p>文件：<code>backend/oj-nest/src/modules/user/user.service.ts</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kr">async</span> <span class="nx">login</span><span class="p">(</span><span class="nx">dto</span>: <span class="kt">LoginDto</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">userRepo</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nx">where</span><span class="o">:</span> <span class="p">{</span> <span class="nx">username</span>: <span class="kt">dto.username</span> <span class="p">}</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">NotFoundException</span><span class="p">(</span><span class="s1">&#39;用户不存在&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">md5Pass</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">MD5</span><span class="p">(</span><span class="nx">dto</span><span class="p">.</span><span class="nx">password</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">password</span> <span class="o">!==</span> <span class="nx">md5Pass</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">UnauthorizedException</span><span class="p">(</span><span class="s1">&#39;密码错误&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">MD5</span><span class="p">(</span><span class="nx">dto</span><span class="p">.</span><span class="nx">username</span> <span class="o">+</span> <span class="nx">dto</span><span class="p">.</span><span class="nx">password</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">redis</span><span class="p">.</span><span class="kr">set</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="s1">&#39;EX&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">tokenTtl</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">{</span> <span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;登录成功&#39;</span><span class="p">,</span> <span class="nx">id</span>: <span class="kt">user.id</span><span class="p">,</span> <span class="nx">username</span>: <span class="kt">user.username</span><span class="p">,</span> <span class="nx">token</span><span class="p">,</span> <span class="nx">roles</span>: <span class="kt">user.roles</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>流程：查用户 → 验密码 → 生成 token 写 Redis → 返回。</p>
+<p><code>throw new NotFoundException(...)</code> 会被全局 Filter 捕获，转成 <code>{ code: 404, message: '...', data: null }</code>。</p>
+<blockquote>
+<p>知识点：Service 是业务层，不关心 HTTP 路由怎么匹配，只关心业务规则和数据读写。</p>
+<p>前端类比：把页面事件里的请求、状态计算、错误处理抽到 store action 或 composable。</p>
+<p>本项目落点：登录流程里的查用户、比对密码、写 Redis token 都在 <code>UserService.login</code>。</p>
+</blockquote>
+<h2 id="step-4参数装饰器一览">Step 4：参数装饰器一览
+</h2><div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>装饰器</th>
+					<th>来源</th>
+					<th>示例</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>@Body()</code></td>
+					<td>POST JSON body</td>
+					<td><code>login(@Body() dto)</code></td>
+			</tr>
+			<tr>
+					<td><code>@Query('id')</code></td>
+					<td>URL <code>?id=xxx</code></td>
+					<td><code>getById(@Query('id') id)</code></td>
+			</tr>
+			<tr>
+					<td><code>@Headers('authorization')</code></td>
+					<td>请求头</td>
+					<td><code>getUserStatus(@Headers('authorization') auth)</code></td>
+			</tr>
+			<tr>
+					<td><code>@Param('id')</code></td>
+					<td>路径 <code>/user/:id</code></td>
+					<td>本项目较少用</td>
+			</tr>
+	</tbody>
+</table></div>
+<p>Query 参数默认是字符串，<code>ValidationPipe</code> 的 <code>transform: true</code> 可配合 DTO 里的 <code>@Type(() =&gt; Number)</code> 做类型转换。</p>
+<h2 id="step-5responseinterceptor-包装">Step 5：ResponseInterceptor 包装
+</h2><p>文件：<code>backend/oj-nest/src/common/interceptors/response.interceptor.ts</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="nx">intercept</span><span class="p">(</span><span class="nx">_ctx</span>: <span class="kt">ExecutionContext</span><span class="p">,</span> <span class="nx">next</span>: <span class="kt">CallHandler</span><span class="p">&lt;</span><span class="nt">T</span><span class="p">&gt;)</span><span class="o">:</span> <span class="nx">Observable</span><span class="p">&lt;</span><span class="nt">any</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">next</span><span class="p">.</span><span class="nx">handle</span><span class="p">().</span><span class="nx">pipe</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">map</span><span class="p">((</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">({</span> <span class="nx">code</span>: <span class="kt">1</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="nx">data</span>: <span class="kt">data</span> <span class="o">??</span> <span class="kc">null</span> <span class="p">})),</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Service 返回 <code>{ message: '登录成功', token: '...' }</code>，拦截器包一层：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span> <span class="nt">&#34;code&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;success&#34;</span><span class="p">,</span> <span class="nt">&#34;data&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;登录成功&#34;</span><span class="p">,</span> <span class="nt">&#34;token&#34;</span><span class="p">:</span> <span class="s2">&#34;...&#34;</span> <span class="p">}</span> <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>前端 axios 可以统一：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">code</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* 成功 */</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span> <span class="p">{</span> <span class="cm">/* 业务/HTTP 错误 */</span> <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>知识点：Interceptor 处理成功返回链路，可以统一改写响应结构、记录耗时、做缓存等。</p>
+<p>前端类比：axios response interceptor 统一拆包；Nest response interceptor 统一装包。</p>
+<p>本项目落点：<code>ResponseInterceptor</code> 固定输出 <code>{ code, message, data }</code>，前端只需要按一种结构取数据。</p>
+</blockquote>
+<h2 id="step-6异常-filter">Step 6：异常 Filter
+</h2><p>文件：<code>backend/oj-nest/src/common/filters/http-exception.filter.ts</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kd">@Catch</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">AllExceptionsFilter</span> <span class="kr">implements</span> <span class="nx">ExceptionFilter</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">catch</span><span class="p">(</span><span class="nx">exception</span>: <span class="kt">unknown</span><span class="p">,</span> <span class="nx">host</span>: <span class="kt">ArgumentsHost</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">exception</span> <span class="k">instanceof</span> <span class="nx">HttpException</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">status</span> <span class="o">=</span> <span class="nx">exception</span><span class="p">.</span><span class="nx">getStatus</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="p">...;</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">response</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="nx">status</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">code</span>: <span class="kt">status</span><span class="p">,</span> <span class="nx">message</span><span class="p">,</span> <span class="nx">data</span>: <span class="kt">null</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">response</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">500</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">code</span>: <span class="kt">500</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;服务器内部错误&#39;</span><span class="p">,</span> <span class="nx">data</span>: <span class="kt">null</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>异常类型</th>
+					<th>HTTP 状态</th>
+					<th>前端看到的 code</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>NotFoundException</td>
+					<td>404</td>
+					<td>404</td>
+			</tr>
+			<tr>
+					<td>UnauthorizedException</td>
+					<td>401</td>
+					<td>401</td>
+			</tr>
+			<tr>
+					<td>BadRequestException</td>
+					<td>400</td>
+					<td>400</td>
+			</tr>
+			<tr>
+					<td>未捕获错误</td>
+					<td>500</td>
+					<td>500</td>
+			</tr>
+	</tbody>
+</table></div>
+<blockquote>
+<p>知识点：Filter 处理异常链路，和 Interceptor 的成功包装分开，避免每个 Controller 自己写 try/catch。</p>
+<p>前端类比：axios error handler 统一弹错误提示；Nest Filter 统一返回错误 JSON。</p>
+<p>本项目落点：<code>AllExceptionsFilter</code> 让 <code>NotFoundException</code>、<code>UnauthorizedException</code> 等异常都变成前端可读的 <code>{ code, message, data: null }</code>。</p>
+</blockquote>
+<h2 id="step-7logginginterceptor">Step 7：LoggingInterceptor
+</h2><p>文件：<code>backend/oj-nest/src/common/interceptors/logging.interceptor.ts</code></p>
+<p>每个请求打一行日志：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[HTTP] POST /api/user/login 200 45ms [127.0.0.1]
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>排错时先看这行 — 比在前端 console 猜快。</p>
+<h2 id="带-guard-的请求">带 Guard 的请求
+</h2><p>需要登录的接口（如提交代码）多一步：</p>
+<pre class="mermaid">flowchart LR
+  Req[请求] --&gt; Guard[TokenGuard]
+  Guard --&gt;|token有效| Pipe[ValidationPipe]
+  Guard --&gt;|无效| Err401[401]
+  Pipe --&gt; Ctrl[Controller]</pre>
+
+<p><code>TokenGuard</code> 检查 Redis 里 token 是否存在，详见 <a class="link" href="./05-%e8%ae%a4%e8%af%81%e4%b8%8e%e4%bc%9a%e8%af%9d-Token%e5%92%8cRedis.md" >05 认证与会话</a>。</p>
+<blockquote>
+<p>知识点：Guard 运行在业务方法前，适合做登录、权限、角色判断。</p>
+<p>前端类比：<code>router.beforeEach</code> 能拦页面跳转；Guard 能拦接口请求。</p>
+<p>本项目落点：<code>TokenGuard</code> 会在提交题目、评论等接口前检查 Redis 中 token 是否存在。</p>
+</blockquote>
+<h2 id="前端对接要点">前端对接要点
+</h2><ol>
+<li><strong>BaseURL</strong> — <code>http://localhost:8080</code></li>
+<li><strong>成功</strong> — <code>code === 1</code>，业务数据在 <code>data</code></li>
+<li><strong>失败</strong> — <code>code !== 1</code> 或 HTTP 4xx/5xx，<code>message</code> 可读</li>
+<li><strong>鉴权</strong> — Header 带 <code>Authorization: Bearer &lt;token&gt;</code> 或 <code>token: &lt;token&gt;</code></li>
+<li><strong>登录接口无 Guard</strong> — login/register 不需要 token</li>
+</ol>
+<h2 id="本篇小结">本篇小结
+</h2><p>一次请求 = <strong>路由匹配 → 可选 Guard → Pipe 校验 → Controller → Service → Interceptor 包装 → JSON</strong>。</p>
+<p>异常走 Filter 旁路，不经过 Interceptor 的成功包装。</p>
+<p>Controller 薄、Service 厚 — 这是 NestJS 社区惯例，也是你写后端时要养成的习惯。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/7.%E9%85%8D%E7%BD%AE%E4%B8%8E%E9%83%A8%E7%BD%B2-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Edocker/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">7.配置与部署-环境变量与Docker</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/5.%E8%AE%A4%E8%AF%81%E4%B8%8E%E4%BC%9A%E8%AF%9D-token%E5%92%8Credis/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">5.认证与会话-Token和Redis</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/4.%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E-ormtypeorm-%E5%AE%9E%E6%88%98/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">4.数据库与 ORM：TypeORM 实战</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/3.%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">3.一个请求的完整生命周期</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/2.%E6%A8%A1%E5%9D%97%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5nestjs-%E7%9A%84%E5%BF%83%E6%99%BA%E6%A8%A1%E5%9E%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">2.模块与依赖注入：NestJS 的心智模型</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
+</style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>

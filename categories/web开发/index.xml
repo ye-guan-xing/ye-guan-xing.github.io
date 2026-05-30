@@ -7,7 +7,224 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>acye</copyright>
-        <lastBuildDate>Sun, 14 Dec 2025 22:36:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/web%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 29 May 2026 01:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/web%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Hugo 博客集成 Mermaid 流程图（客户端渲染方案)</title>
+        <link>https://ye-guan-xing.github.io/p/hugo-%E5%8D%9A%E5%AE%A2%E9%9B%86%E6%88%90-mermaid-%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%B2%E6%9F%93%E6%96%B9%E6%A1%88/</link>
+        <pubDate>Fri, 29 May 2026 01:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/hugo-%E5%8D%9A%E5%AE%A2%E9%9B%86%E6%88%90-mermaid-%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%B2%E6%9F%93%E6%96%B9%E6%A1%88/</guid>
+        <description>&lt;p&gt;本文记录 Hugo 博客接入 Mermaid 图表的完整配置、原理、代码及优化方案，采用&lt;strong&gt;客户端动态渲染&lt;/strong&gt;，部署简单、适配主流主题。&lt;/p&gt;
+&lt;h2 id=&#34;一实现思路&#34;&gt;一、实现思路
+&lt;/h2&gt;&lt;p&gt;Hugo 内置语法高亮工具 Chroma 仅能给代码上色，无法解析 Mermaid 绘图语法，因此采用「构建层改造代码块 + 浏览器端 JS 渲染」两步方案：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;构建阶段&lt;/strong&gt;：通过 Hugo 代码块钩子，将 &lt;code&gt;mermaid&lt;/code&gt; 代码块转为带指定 class 的 &lt;code&gt;&amp;lt;pre&amp;gt;&lt;/code&gt; 标签；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;运行阶段&lt;/strong&gt;：浏览器检测页面内 Mermaid 节点，动态加载 Mermaid 库，完成图表渲染。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;二完整配置文件&#34;&gt;二、完整配置文件
+&lt;/h2&gt;&lt;p&gt;一共需要&lt;strong&gt;两个核心文件&lt;/strong&gt;，直接放置到对应目录即可生效。&lt;/p&gt;
+&lt;h3 id=&#34;1-代码块钩子构建阶段转换标签&#34;&gt;1. 代码块钩子（构建阶段转换标签）
+&lt;/h3&gt;&lt;p&gt;文件路径：&lt;code&gt;layouts/_markup/render-codeblock-mermaid.html&lt;/code&gt;
+作用：接管 &lt;code&gt;```mermaid&lt;/code&gt; 代码块，替换默认高亮逻辑，输出 Mermaid 可识别标签，并标记页面包含图表。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;pre&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;mermaid&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  {{- .Inner -}}
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;pre&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{{ .Page.Store.Set &amp;#34;hasMermaid&amp;#34; true }}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;代码说明&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;&amp;lt;pre class=&amp;quot;mermaid&amp;quot;&amp;gt;&lt;/code&gt;：Mermaid.js 识别的专属节点；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{{- .Inner -}}&lt;/code&gt;：读取 Markdown 代码块内容，&lt;code&gt;-&lt;/code&gt; 去除首尾多余空格换行；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.Page.Store.Set&lt;/code&gt;：页面级标记，用于后续判断是否加载脚本。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;原理：Hugo 会根据代码块语言名，自动匹配同名渲染钩子，命中后不再走 Chroma 语法高亮。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;2-客户端渲染脚本浏览器执行&#34;&gt;2. 客户端渲染脚本（浏览器执行）
+&lt;/h3&gt;&lt;p&gt;文件路径：&lt;code&gt;layouts/partials/footer/custom.html&lt;/code&gt;
+作用：页面加载后按需加载 Mermaid 库、适配明暗主题、手动触发图表渲染。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;script&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;module&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mermaidBlocks&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;querySelectorAll&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;pre.mermaid&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;// 页面存在 Mermaid 块才加载库
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;mermaidBlocks&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;length&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// 动态引入 CDN 版本 Mermaid 11
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;default&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mermaid&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;kr&#34;&gt;await&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// 适配博客明暗主题
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;theme&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;documentElement&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;dataset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;scheme&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;===&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;dark&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;dark&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// 初始化配置：关闭自动渲染，改为手动触发
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;mermaid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;initialize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;startOnLoad&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;theme&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;theme&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;c1&#34;&gt;// 渲染所有 Mermaid 节点
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kr&#34;&gt;await&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mermaid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;nodes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mermaidBlocks&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;script&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;执行流程&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;遍历页面所有 &lt;code&gt;pre.mermaid&lt;/code&gt; 节点，无图表则直接终止；&lt;/li&gt;
+&lt;li&gt;ESM 动态导入 Mermaid CDN 资源，&lt;strong&gt;按需加载&lt;/strong&gt;，减少空白页面资源请求；&lt;/li&gt;
+&lt;li&gt;读取页面主题标识，自动切换 Mermaid 明暗样式；&lt;/li&gt;
+&lt;li&gt;关闭库默认自动渲染，手动调用 &lt;code&gt;run&lt;/code&gt; 统一渲染，提升可控性。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;三markdown-写法&#34;&gt;三、Markdown 写法
+&lt;/h2&gt;&lt;p&gt;配置完成后，文章内正常使用标准 Mermaid 语法即可，无需额外改动：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;```mermaid
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;flowchart TB
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  A[开始] --&amp;gt; B[处理逻辑]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  B --&amp;gt; C[输出图表]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;```&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;四核心原理与方案对比&#34;&gt;四、核心原理与方案对比
+&lt;/h2&gt;&lt;h3 id=&#34;1-为什么不使用-hugo-内置高亮&#34;&gt;1. 为什么不使用 Hugo 内置高亮？
+&lt;/h3&gt;&lt;p&gt;Chroma 仅负责&lt;strong&gt;代码语法高亮&lt;/strong&gt;，不解析 Mermaid 绘图 DSL，&lt;code&gt;mermaid&lt;/code&gt; 不在其支持的语言列表中，最终会降级为纯文本代码块，无法生成图表。&lt;/p&gt;
+&lt;h3 id=&#34;2-客户端渲染-vs-服务端预渲染&#34;&gt;2. 客户端渲染 vs 服务端预渲染
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;方案&lt;/th&gt;
+					&lt;th&gt;优点&lt;/th&gt;
+					&lt;th&gt;缺点&lt;/th&gt;
+					&lt;th&gt;适用场景&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;客户端渲染（本文方案）&lt;/td&gt;
+					&lt;td&gt;配置简单、零额外依赖、无需改造构建流程&lt;/td&gt;
+					&lt;td&gt;依赖外网 CDN、搜索引擎无法抓取 SVG 内容&lt;/td&gt;
+					&lt;td&gt;个人博客、小型站点（推荐）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;服务端预渲染&lt;/td&gt;
+					&lt;td&gt;输出静态 SVG、无 JS 依赖、SEO 友好&lt;/td&gt;
+					&lt;td&gt;需要安装 &lt;code&gt;mermaid-cli&lt;/code&gt;、改造 CI/构建流程&lt;/td&gt;
+					&lt;td&gt;企业站点、内网部署、高 SEO 要求站点&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;3-startonload-false-关键作用&#34;&gt;3. &lt;code&gt;startOnLoad: false&lt;/code&gt; 关键作用
+&lt;/h3&gt;&lt;p&gt;Mermaid 默认开启自动扫描渲染，设置为 &lt;code&gt;false&lt;/code&gt; 后由代码手动控制渲染时机，优势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先完成主题配置，再执行渲染，样式不错乱；&lt;/li&gt;
+&lt;li&gt;灵活控制加载逻辑，支持懒加载、动态刷新等扩展；&lt;/li&gt;
+&lt;li&gt;避免脚本执行顺序导致的渲染失败。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;五整体执行流程&#34;&gt;五、整体执行流程
+&lt;/h2&gt;&lt;h3 id=&#34;1-阶段流程图&#34;&gt;1. 阶段流程图
+&lt;/h3&gt;&lt;pre class=&#34;mermaid&#34;&gt;flowchart TB
+    subgraph Hugo 构建阶段
+        MD[Markdown 文章&amp;lt;br/&amp;gt;```mermaid 代码块]
+        Hook[render-codeblock-mermaid 钩子]
+        HTML[输出 &amp;lt;pre class=&amp;#34;mermaid&amp;#34;&amp;gt; 标签]
+        MD --&amp;gt; Hook --&amp;gt; HTML
+    end
+    subgraph 浏览器运行阶段
+        DOM[检测 pre.mermaid 节点]
+        CDN[动态加载 mermaid.js]
+        SVG[替换为 SVG 图表]
+        HTML --&amp;gt; DOM --&amp;gt; CDN --&amp;gt; SVG
+    end&lt;/pre&gt;
+
+&lt;h3 id=&#34;2-时序流程&#34;&gt;2. 时序流程
+&lt;/h3&gt;&lt;pre class=&#34;mermaid&#34;&gt;sequenceDiagram
+    作者-&amp;gt;&amp;gt;Hugo: 编写含 mermaid 代码块的文档
+    Hugo-&amp;gt;&amp;gt;Hugo: 执行代码块钩子转换标签
+    Hugo-&amp;gt;&amp;gt;浏览器: 输出静态 HTML
+    浏览器-&amp;gt;&amp;gt;浏览器: 检测页面 Mermaid 节点
+    浏览器-&amp;gt;&amp;gt;mermaid.js: 动态加载库文件
+    mermaid.js-&amp;gt;&amp;gt;mermaid.js: 初始化&amp;#43;主题适配
+    mermaid.js-&amp;gt;&amp;gt;浏览器: 将 pre 渲染为 SVG 图表&lt;/pre&gt;
+
+&lt;h2 id=&#34;六可选优化进阶配置&#34;&gt;六、可选优化（进阶配置）
+&lt;/h2&gt;&lt;p&gt;根据自身需求按需开启，提升体验与兼容性：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;主题切换自动重渲染&lt;/strong&gt;
+监听页面明暗主题切换事件，清除节点渲染标记后重新执行 &lt;code&gt;mermaid.run&lt;/code&gt;，实现主题联动。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;脚本条件加载&lt;/strong&gt;
+利用页面标记 &lt;code&gt;hasMermaid&lt;/code&gt; 包裹脚本，&lt;strong&gt;无图表页面完全不执行 JS&lt;/strong&gt;，进一步优化性能：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{{ if .Page.Store.Get &amp;#34;hasMermaid&amp;#34; }}
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&amp;lt;!-- 上方 Mermaid 脚本放此处 --&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;{{ end }}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;本地静态资源（内网/离线使用）&lt;/strong&gt;
+下载 &lt;code&gt;mermaid.esm.min.mjs&lt;/code&gt; 放到站点 &lt;code&gt;static&lt;/code&gt; 目录，将 CDN 地址改为本地相对路径，脱离外网依赖。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;抽离独立 Partial&lt;/strong&gt;
+将渲染脚本单独新建文件 &lt;code&gt;layouts/partials/mermaid.html&lt;/code&gt;，在 footer 中通过 &lt;code&gt;{{ partial &amp;quot;mermaid&amp;quot; . }}&lt;/code&gt; 引入，方便统一管理。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;样式优化&lt;/strong&gt;
+为 &lt;code&gt;.mermaid&lt;/code&gt; 增加 CSS 样式，实现图表居中、自适应、横向滚动，避免宽图表撑破页面布局。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;七本地验证&#34;&gt;七、本地验证
+&lt;/h2&gt;&lt;p&gt;配置完成后启动本地服务测试：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;hugo server
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;打开对应文章，若 &lt;code&gt;mermaid&lt;/code&gt; 代码块正常转为图表、不再显示代码文本，即配置生效。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>CSS小案例，讲布局（Flex&#43;Grid）</title>
         <link>https://ye-guan-xing.github.io/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/</link>
         <pubDate>Sun, 14 Dec 2025 22:36:00 +0000</pubDate>

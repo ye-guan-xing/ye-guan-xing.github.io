@@ -878,7 +878,26 @@
     #waifu-tips {
         z-index: 10000 !important;
     }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
 </style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
 
 
 

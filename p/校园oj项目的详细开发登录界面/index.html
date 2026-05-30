@@ -1558,12 +1558,12 @@
             
                 
 <article class="">
-    <a href="/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/">
+    <a href="/p/hugo-%E5%8D%9A%E5%AE%A2%E9%9B%86%E6%88%90-mermaid-%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%B2%E6%9F%93%E6%96%B9%E6%A1%88/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">CSS小案例，讲布局（Flex&#43;Grid）</h2>
+            <h2 class="article-title">Hugo 博客集成 Mermaid 流程图（客户端渲染方案)</h2>
         </div>
     </a>
 </article>
@@ -1571,12 +1571,12 @@
             
                 
 <article class="">
-    <a href="/p/%E5%A6%82%E4%BD%95%E5%B0%86vue-cli-%E5%86%99%E7%9A%84%E5%89%8D%E7%AB%AF%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2%E4%B8%BAvite%E8%AF%A6%E7%BB%86%E6%9D%BF/">
+    <a href="/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">如何将vue cli 写的前端文件转换为vite（详细板）</h2>
+            <h2 class="article-title">CSS小案例，讲布局（Flex&#43;Grid）</h2>
         </div>
     </a>
 </article>
@@ -1883,7 +1883,26 @@
     #waifu-tips {
         z-index: 10000 !important;
     }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
 </style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
 
 
 

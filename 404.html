@@ -10,7 +10,7 @@
 <meta property='og:description' content="欢迎来到我的博客QWQ">
 <meta property='og:url' content='https://ye-guan-xing.github.io/404.html'>
 <meta property='og:site_name' content='acye&#39;s blog'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-05-20T16:36:00&#43;00:00 '/>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-05-29T01:00:00&#43;00:00 '/>
 <meta name="twitter:title" content="404 Page not found">
 <meta name="twitter:description" content="欢迎来到我的博客QWQ">
     </head>
@@ -460,7 +460,26 @@
     #waifu-tips {
         z-index: 10000 !important;
     }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
 </style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
 
 
 
