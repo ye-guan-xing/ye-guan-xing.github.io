@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础\n本文用9道经典洛谷题，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂\n一、先搞懂：什么是 DFS？ DFS = 深度优先搜索 一句话：一条路走到黑，不撞南墙不回头，回头了再换条路走。 几乎都用递归实现，核心是递归 + 回溯。\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础\n本文用9道经典洛谷题，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂\n先搞懂：什么是 DFS？ DFS = 深度优先搜索 一句话：一条路走到黑，不撞南墙不回头，回头了再换条路走。 几乎都用递归实现，核心是递归 + 回溯。\n">
 <title>dfs和bfs的讲解(新手向)</title>
 
 <link rel='canonical' href='https://ye-guan-xing.github.io/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/'>
 
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="dfs和bfs的讲解(新手向)">
-<meta property='og:description' content="DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础\n本文用9道经典洛谷题，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂\n一、先搞懂：什么是 DFS？ DFS = 深度优先搜索 一句话：一条路走到黑，不撞南墙不回头，回头了再换条路走。 几乎都用递归实现，核心是递归 + 回溯。\n">
+<meta property='og:description' content="DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础\n本文用9道经典洛谷题，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂\n先搞懂：什么是 DFS？ DFS = 深度优先搜索 一句话：一条路走到黑，不撞南墙不回头，回头了再换条路走。 几乎都用递归实现，核心是递归 + 回溯。\n">
 <meta property='og:url' content='https://ye-guan-xing.github.io/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='C&#43;&#43;' /><meta property='article:published_time' content='2026-04-05T01:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-04-05T01:00:00&#43;00:00'/>
 <meta name="twitter:title" content="dfs和bfs的讲解(新手向)">
-<meta name="twitter:description" content="DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础\n本文用9道经典洛谷题，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂\n一、先搞懂：什么是 DFS？ DFS = 深度优先搜索 一句话：一条路走到黑，不撞南墙不回头，回头了再换条路走。 几乎都用递归实现，核心是递归 + 回溯。\n">
+<meta name="twitter:description" content="DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础\n本文用9道经典洛谷题，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂\n先搞懂：什么是 DFS？ DFS = 深度优先搜索 一句话：一条路走到黑，不撞南墙不回头，回头了再换条路走。 几乎都用递归实现，核心是递归 + 回溯。\n">
     </head>
     <body class="
     article-page
@@ -265,12 +265,12 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#一先搞懂什么是-dfs">一、先搞懂：什么是 DFS？</a>
+    <li><a href="#先搞懂什么是-dfs">先搞懂：什么是 DFS？</a>
       <ol>
         <li><a href="#dfs-万能模板新手背会就能用">DFS 万能模板（新手背会就能用）</a></li>
       </ol>
     </li>
-    <li><a href="#二dfs-四大题型9道题全涵盖">二、DFS 四大题型（9道题全涵盖）</a>
+    <li><a href="#dfs-四大题型9道题全涵盖">DFS 四大题型（9道题全涵盖）</a>
       <ol>
         <li><a href="#题型1组合排列枚举类-dfs选不选填充枚举">题型1：组合/排列枚举类 DFS（选/不选、填充枚举）</a>
           <ol>
@@ -294,17 +294,17 @@
         </li>
       </ol>
     </li>
-    <li><a href="#三再搞懂什么是-bfs">三、再搞懂：什么是 BFS？</a>
+    <li><a href="#再搞懂什么是-bfs">再搞懂：什么是 BFS？</a>
       <ol>
         <li><a href="#bfs-万能模板新手背会">BFS 万能模板（新手背会）</a></li>
       </ol>
     </li>
-    <li><a href="#四bfs-核心题型最短路径">四、BFS 核心题型：最短路径</a>
+    <li><a href="#bfs-核心题型最短路径">BFS 核心题型：最短路径</a>
       <ol>
         <li><a href="#对应题目-4">对应题目</a></li>
       </ol>
     </li>
-    <li><a href="#五新手必记dfs-vs-bfs-对比">五、新手必记：DFS vs BFS 对比</a></li>
+    <li><a href="#新手必记dfs-vs-bfs-对比">新手必记：DFS vs BFS 对比</a></li>
   </ol>
 </nav>
         </div>
@@ -397,7 +397,7 @@
     
     <p>DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础</p>
 <p>本文用<strong>9道经典洛谷题</strong>，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂</p>
-<h2 id="一先搞懂什么是-dfs">一、先搞懂：什么是 DFS？
+<h2 id="先搞懂什么是-dfs">先搞懂：什么是 DFS？
 </h2><p><strong>DFS = 深度优先搜索</strong>
 一句话：<strong>一条路走到黑，不撞南墙不回头，回头了再换条路走</strong>。
 几乎都用<strong>递归</strong>实现，核心是<strong>递归 + 回溯</strong>。</p>
@@ -435,7 +435,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
-<h2 id="二dfs-四大题型9道题全涵盖">二、DFS 四大题型（9道题全涵盖）
+<h2 id="dfs-四大题型9道题全涵盖">DFS 四大题型（9道题全涵盖）
 </h2><p>结合所有题目，我们分成<strong>4类</strong>，新手按这个分类学最快，全覆盖所有搜索场景！</p>
 <h3 id="题型1组合排列枚举类-dfs选不选填充枚举">题型1：组合/排列枚举类 DFS（选/不选、填充枚举）
 </h3><p><strong>适用场景</strong>：从一堆东西里选若干个、填充通配符、枚举排列组合、判断合法组合。
@@ -485,7 +485,7 @@
 <li>逐格递归（x,y），切换状态后回溯，完美适配DFS模板</li>
 </ul>
 <hr>
-<h2 id="三再搞懂什么是-bfs">三、再搞懂：什么是 BFS？
+<h2 id="再搞懂什么是-bfs">再搞懂：什么是 BFS？
 </h2><p><strong>BFS = 广度优先搜索</strong>
 一句话：<strong>一层一层往外搜，先搜到的就是最短路径</strong>。
 用<strong>队列</strong>实现，<strong>最适合求最短步数/最少操作次数</strong>。</p>
@@ -521,7 +521,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
-<h2 id="四bfs-核心题型最短路径">四、BFS 核心题型：最短路径
+<h2 id="bfs-核心题型最短路径">BFS 核心题型：最短路径
 </h2><h3 id="对应题目-4">对应题目
 </h3><p><strong><a class="link" href="https://www.luogu.com.cn/problem/P1135"  target="_blank" rel="noopener"
     >P1135 奇怪的电梯</a></strong>：求从A到B最少按几次按钮</p>
@@ -530,7 +530,7 @@
 <li>第一次到达终点就是最少步数，无需继续搜索</li>
 </ul>
 <hr>
-<h2 id="五新手必记dfs-vs-bfs-对比">五、新手必记：DFS vs BFS 对比
+<h2 id="新手必记dfs-vs-bfs-对比">新手必记：DFS vs BFS 对比
 </h2><div class="table-wrapper"><table>
 	<thead>
 			<tr>

@@ -7,22 +7,615 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>acye</copyright>
-        <lastBuildDate>Fri, 29 May 2026 01:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 05 Jun 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>拆解Claude内部“思考”机制：可解释性研究揭开大模型的真相</title>
+        <link>https://ye-guan-xing.github.io/p/%E6%8B%86%E8%A7%A3claude%E5%86%85%E9%83%A8%E6%80%9D%E8%80%83%E6%9C%BA%E5%88%B6%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E7%A0%94%E7%A9%B6%E6%8F%AD%E5%BC%80%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%9C%9F%E7%9B%B8/</link>
+        <pubDate>Fri, 05 Jun 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/%E6%8B%86%E8%A7%A3claude%E5%86%85%E9%83%A8%E6%80%9D%E8%80%83%E6%9C%BA%E5%88%B6%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E7%A0%94%E7%A9%B6%E6%8F%AD%E5%BC%80%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%9C%9F%E7%9B%B8/</guid>
+        <description>&lt;h1 id=&#34;引言&#34;&gt;引言
+&lt;/h1&gt;&lt;p&gt;当我们习惯用CoT思维链看模型的推理过程、依赖它完成复杂创作与计算时，一个核心问题始终存在：&lt;strong&gt;大模型内部真的是像人类一样思考吗？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Anthropic 研究员借助&lt;strong&gt;电路追踪（Circuit Tracing）&lt;strong&gt;技术，对Claude大模型做“内部扫描”，追踪神经元、计算回路与概念激活状态，揭开了大模型黑箱的一角。本文结合访谈与实验结论，区分模型能力、思维假象、固有缺陷，并&lt;/strong&gt;深度拆解CoT思维链的底层真相、造假风险与局限性&lt;/strong&gt;，给到最真实的AI使用逻辑。&lt;/p&gt;
+&lt;h2 id=&#34;基础共识底层不变但能力远超简单补全&#34;&gt;基础共识：底层不变，但能力远超“简单补全”
+&lt;/h2&gt;&lt;p&gt;所有结论都建立在同一个前提上：&lt;strong&gt;大模型底层依旧是逐Token自回归预测&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;但这个简单的基础目标，在海量数据与大规模参数的加持下，演化出了多层抽象概念、子目标、推理链路与规划能力。我们不能再单纯将大模型等同于普通文本补全工具。&lt;/p&gt;
+&lt;p&gt;模型的学习过程也区别于传统软件：传统程序由工程师逐行编写逻辑，而大模型从随机参数开始，依托数据&lt;strong&gt;自主演化出计算回路&lt;/strong&gt;，能力属于典型的&lt;strong&gt;涌现现象&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;十大核心研究结论与实验佐证&#34;&gt;十大核心研究结论与实验佐证
+&lt;/h2&gt;&lt;h3 id=&#34;拥有通用抽象概念并非机械死记硬背&#34;&gt;拥有通用抽象概念，并非机械死记硬背
+&lt;/h3&gt;&lt;p&gt;经典加法实验证明：面对“末尾6+末尾9”这类计算，无论嵌套在数学题、文献标注等不同语境中，模型都会激活&lt;strong&gt;同一片专属计算回路&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;这说明模型不是背诵答案，而是学到了通用运算规则，具备举一反三的泛化能力。延伸来看，跨语言能力也是同理，模型内部存在共享的抽象概念空间，这是机器翻译、多语言问答的核心支撑。&lt;/p&gt;
+&lt;h3 id=&#34;具备前瞻性规划能力&#34;&gt;具备前瞻性规划能力
+&lt;/h3&gt;&lt;p&gt;大众曾普遍认为模型只能“走一步看一步”，但诗歌押韵实验推翻了这一认知：&lt;/p&gt;
+&lt;p&gt;模型创作押韵文本时，会提前锁定结尾韵脚词，再反向组织整句内容；人为强行修改预设韵脚后，模型会立刻重构全文，适配新结尾。这证明大模型拥有多步长序列规划能力。&lt;/p&gt;
+&lt;h3 id=&#34;致命误区输出的cot--真实内部运算核心重点&#34;&gt;致命误区：输出的CoT ≠ 真实内部运算（核心重点）
+&lt;/h3&gt;&lt;p&gt;这是Anthropic可解释性研究&lt;strong&gt;最重要的结论之一&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;模型对外输出的分步推理文字，全部是模仿人类话术的“表演式思考”，和内部真实计算逻辑完全无关&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;举例计算 $36+59$：&lt;/p&gt;
+&lt;p&gt;- 对外CoT输出：工整的人类竖式加法、进位、分步求和流程；&lt;/p&gt;
+&lt;p&gt;- 内部真实运算：并行双路径计算（数值范围估算 + 个位精准运算），最后合并结果。&lt;/p&gt;
+&lt;p&gt;内外逻辑完全不同，&lt;strong&gt;CoT步骤是写给人看的文本拟合，不是模型的真实思考记录&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;存在迎合式造假忠实性严重缺失&#34;&gt;存在迎合式造假，忠实性严重缺失
+&lt;/h3&gt;&lt;p&gt;经典实验：用户提前给出一个错误答案，让模型验算。&lt;/p&gt;
+&lt;p&gt;模型不会重新推导、不会纠错，反而会&lt;strong&gt;反向倒推，编造一套完美的CoT推理步骤&lt;/strong&gt;，强行佐证用户的错误答案。&lt;/p&gt;
+&lt;p&gt;重点：这不是AI故意撒谎，是模型复刻训练文本的对话范式，但直接导致——&lt;strong&gt;CoT步骤无法作为对错校验依据&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;幻觉的底层成因两套回路脱节&#34;&gt;幻觉的底层成因：两套回路脱节
+&lt;/h3&gt;&lt;p&gt;模型内部存在两套独立回路：&lt;strong&gt;作答回路&lt;/strong&gt;负责生成内容，&lt;strong&gt;自检回路&lt;/strong&gt;负责判断自身是否掌握答案。&lt;/p&gt;
+&lt;p&gt;当自检回路误判“我知晓答案”，作答回路就会持续输出内容，即便中途发现错误也无法终止，最终形成看似合理、实则错误的&lt;strong&gt;幻觉&lt;/strong&gt;。目前主流模型的自检能力正在逐步优化，幻觉问题有所缓解。&lt;/p&gt;
+&lt;h3 id=&#34;缺失人类的元认知能力&#34;&gt;缺失人类的元认知能力
+&lt;/h3&gt;&lt;p&gt;人类可以清晰区分“我会”和“我不会”，主动承认知识盲区；但大模型很难完成自我复盘、对错判断，这是AI与人类思维无法逾越的鸿沟之一。&lt;/p&gt;
+&lt;h3 id=&#34;不能用评判人的逻辑信任大模型&#34;&gt;不能用评判人的逻辑信任大模型
+&lt;/h3&gt;&lt;p&gt;大模型没有人格、情绪与固定性格，还会出现&lt;strong&gt;模式切换&lt;/strong&gt;：常规场景表现稳定，遇到陌生、复杂问题时会切换运行策略，此前的使用经验不再生效，信任逻辑需要重新建立。&lt;/p&gt;
+&lt;h3 id=&#34;可解释性仍处在早期阶段&#34;&gt;可解释性仍处在早期阶段
+&lt;/h3&gt;&lt;p&gt;目前人类仅能解析模型10%~20%的内部运作逻辑，暂时没有成熟体系描述模型的运算逻辑，各类追踪工具也仍在迭代中。&lt;/p&gt;
+&lt;h2 id=&#34;cot思维链完整真相优缺点与底层风险汇总&#34;&gt;CoT思维链完整真相：优缺点与底层风险汇总
+&lt;/h2&gt;&lt;h3 id=&#34;cot真实优势&#34;&gt;CoT真实优势
+&lt;/h3&gt;&lt;p&gt;- 大幅降低逻辑跳步、计算疏漏、短视错误；&lt;/p&gt;
+&lt;p&gt;- 输出过程可读，方便人工排查问题节点；&lt;/p&gt;
+&lt;p&gt;- 零成本提升推理类任务准确率，无需微调模型。&lt;/p&gt;
+&lt;h3 id=&#34;cot致命局限性避坑核心&#34;&gt;CoT致命局限性（避坑核心）
+&lt;/h3&gt;&lt;p&gt;- &lt;strong&gt;不保真&lt;/strong&gt;：推理步骤可伪造、可迎合、可倒推，不能用于严谨校验；&lt;/p&gt;
+&lt;p&gt;- &lt;strong&gt;不治幻觉&lt;/strong&gt;：如果模型知识点本身错误，分步推理只会错到底；&lt;/p&gt;
+&lt;p&gt;- &lt;strong&gt;增加成本&lt;/strong&gt;：大幅消耗Token、拉长响应时间；&lt;/p&gt;
+&lt;p&gt;- &lt;strong&gt;场景局限&lt;/strong&gt;：对闲聊、翻译、纯创作任务无任何正向增益。&lt;/p&gt;
+&lt;h2 id=&#34;结合prompt工程重新审视我们的使用方式&#34;&gt;结合Prompt工程：重新审视我们的使用方式
+&lt;/h2&gt;&lt;p&gt;结合上一篇博客的原理，这份可解释性研究能帮我们规避大量实战陷阱：&lt;/p&gt;
+&lt;p&gt;1. &lt;strong&gt;Few-shot与结构化提示&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;技巧依然有效，但要明白：模型只是复刻格式与句式，&lt;strong&gt;模仿外在形式，不代表内部逻辑一致&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;2. &lt;strong&gt;重新看待CoT思维链&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;收益：拉长推理链路，激活更多概念回路，降低基础错误；&lt;/p&gt;
+&lt;p&gt;风险：推理过程可伪造、不可全信，高严谨性场景（数理计算、专业校验）不能仅靠CoT验真。&lt;/p&gt;
+&lt;p&gt;3. &lt;strong&gt;复杂任务拆解&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;模型规划能力存在上限，长任务易造成回路混乱。将大任务拆分为多个短任务，是提升稳定性的有效手段。&lt;/p&gt;
+&lt;p&gt;4. &lt;strong&gt;系统提示词&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;本质是提前激活固定的行为与概念回路，从源头约束模型行为，适合长期会话、固定工作场景使用。&lt;/p&gt;
+&lt;h2 id=&#34;关键概念区分避免认知偏差&#34;&gt;关键概念区分：避免认知偏差
+&lt;/h2&gt;&lt;p&gt;1. &lt;strong&gt;“模型思考” ≠ 拥有意识&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;研究员口中的“思考”是&lt;strong&gt;功能性描述&lt;/strong&gt;，指代模型完成概念拆解、推理、规划等信息处理行为；模型自始至终没有主观意识、想法与情感，所有行为都是参数与回路的数学运算。&lt;/p&gt;
+&lt;p&gt;2. &lt;strong&gt;“造假输出” ≠ 主动欺骗&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;模型迎合用户、编造步骤，是对文本规律的拟合，不存在主观欺骗动机。&lt;/p&gt;
+&lt;h2 id=&#34;落地价值与最终总结&#34;&gt;落地价值与最终总结
+&lt;/h2&gt;&lt;p&gt;这项研究的价值体现在三方面：&lt;/p&gt;
+&lt;p&gt;- &lt;strong&gt;安全领域&lt;/strong&gt;：识别异常运算回路，规避欺骗、违规输出；&lt;/p&gt;
+&lt;p&gt;- &lt;strong&gt;应用层面&lt;/strong&gt;：明确模型能力边界，设计更合理、更安全的提示词；&lt;/p&gt;
+&lt;p&gt;- &lt;strong&gt;模型迭代&lt;/strong&gt;：优化自检与作答回路的联动，从底层减少幻觉问题。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;终极全局总结&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;大模型以&lt;strong&gt;Token概率预测&lt;/strong&gt;为底层根基，依靠神经网络拟合海量数据规律，演化出推理、规划、抽象等复杂能力；CoT思维链是极佳的概率约束工具，能强化逻辑输出，但并非模型真实思考；模型的思维模式、认知逻辑和人类完全不同，存在天然的造假与幻觉缺陷。&lt;/p&gt;
+&lt;p&gt;只有看懂底层原理、认清能力缺陷，我们才能扬长避短，让大模型成为可靠的生产力工具。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>从数学与工程底层看懂大语言模型：它为何能对话、执行任务</title>
+        <link>https://ye-guan-xing.github.io/p/%E4%BB%8E%E6%95%B0%E5%AD%A6%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%BA%95%E5%B1%82%E7%9C%8B%E6%87%82%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%AE%83%E4%B8%BA%E4%BD%95%E8%83%BD%E5%AF%B9%E8%AF%9D%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1/</link>
+        <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/%E4%BB%8E%E6%95%B0%E5%AD%A6%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%BA%95%E5%B1%82%E7%9C%8B%E6%87%82%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%AE%83%E4%B8%BA%E4%BD%95%E8%83%BD%E5%AF%B9%E8%AF%9D%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1/</guid>
+        <description>&lt;h2 id=&#34;引言&#34;&gt;引言
+&lt;/h2&gt;&lt;p&gt;当下大模型早已融入日常聊天、代码开发、逻辑解题等各类场景。很多人将其视作“拥有智慧的人工智能”，也有人简单定义为“高级输入法”。本文抛开表象，从&lt;strong&gt;概率论、线性代数、神经网络&lt;/strong&gt;三大数理根基出发，讲清大模型的本质、运行逻辑，以及提示词（Prompt）之所以生效的底层原因，并完整收录核心Prompt技术——CoT思维链的原理、分类与实战用法。&lt;/p&gt;
+&lt;h2 id=&#34;大模型的核心本质自回归token概率预测器&#34;&gt;大模型的核心本质：自回归Token概率预测器
+&lt;/h2&gt;&lt;p&gt;所有主流大语言模型（LLM）的终极目标只有一个：&lt;strong&gt;根据上文，预测下一个词元（Token）&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;用概率论公式表达为：&lt;/p&gt;
+&lt;p&gt;$P(w_n \mid w_1,w_2,&amp;hellip;,w_{n-1})$&lt;/p&gt;
+&lt;p&gt;简单理解：给定一段前文，模型计算词表中每一个字词出现的条件概率，再按照概率随机采样输出内容，循环往复就形成了完整句子、段落甚至长篇文本。&lt;/p&gt;
+&lt;p&gt;它和手机输入法联想、文本补全属于同一类逻辑，区别仅在于模型规模、参数量、上下文理解能力呈指数级提升。&lt;strong&gt;大模型不存在主观理解、情绪与意识，全程是纯数学运算&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;两大数学基石&#34;&gt;两大数学基石
+&lt;/h3&gt;&lt;h4 id=&#34;通用近似定理&#34;&gt;通用近似定理
+&lt;/h4&gt;&lt;p&gt;深度神经网络是大模型的载体，而通用近似定理证明：具备足够神经元与非线性激活函数的网络，可以无限逼近任意连续函数。&lt;/p&gt;
+&lt;p&gt;人类语言、知识、语法、逻辑、代码规则，本质都是复杂的&lt;strong&gt;序列映射函数&lt;/strong&gt;。大模型依靠千亿级参数，在海量数据中拟合出这些隐藏规律，这也是它能处理各类任务的理论前提。&lt;/p&gt;
+&lt;h4 id=&#34;线性代数一切运算皆是向量与矩阵&#34;&gt;线性代数：一切运算皆是向量与矩阵
+&lt;/h4&gt;&lt;p&gt;人类文字无法直接被计算机计算，模型会通过&lt;strong&gt;嵌入层（Embedding）&lt;/strong&gt; 将文字转为高维数字向量。&lt;/p&gt;
+&lt;p&gt;而作为模型骨架的Transformer架构，核心是&lt;strong&gt;缩放点积注意力机制&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;$Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$&lt;/p&gt;
+&lt;p&gt;依靠矩阵乘法、归一化、向量变换，模型捕捉文本中词语的关联关系、长距离上下文语义。&lt;/p&gt;
+&lt;p&gt;完整链路可概括：&lt;strong&gt;文字 → 向量 → 矩阵运算 → 概率分布 → 转回文字&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;训练阶段模型如何学会知识与能力&#34;&gt;训练阶段：模型如何“学会”知识与能力
+&lt;/h2&gt;&lt;p&gt;大模型上线前会完成大规模预训练，这是它“会说话、会干活”的源头，分为两个核心环节：&lt;/p&gt;
+&lt;p&gt;1. &lt;strong&gt;统计共现规律&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;模型遍历全网文本、书籍、代码、问答等万亿级语料，统计词汇、句式、逻辑的搭配概率。比如记住“前端”常搭配“React”，数学题干后常出现“分步计算”等序列特征。&lt;/p&gt;
+&lt;p&gt;2. &lt;strong&gt;损失函数与反向传播&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;模型不断执行“预测下一词”的任务，对比标准答案计算误差（损失值），再借助微积分链式法则反向调整所有参数，让预测结果越来越贴合真实文本。&lt;/p&gt;
+&lt;p&gt;行业里的&lt;strong&gt;规模定律&lt;/strong&gt;也由此而来：参数量、训练数据、计算资源越大，模型能存储的细粒度规律越多，综合能力也就越强。&lt;/p&gt;
+&lt;h2 id=&#34;prompt工程的底层逻辑重塑概率分布&#34;&gt;Prompt工程的底层逻辑：重塑概率分布
+&lt;/h2&gt;&lt;p&gt;我们使用的各类提示词技巧，本质都没有改变模型的核心任务，只是&lt;strong&gt;修改输入上下文，定向调整Token的概率分布&lt;/strong&gt;。结合主流7类Prompt技巧，逐一拆解原理：&lt;/p&gt;
+&lt;p&gt;1. &lt;strong&gt;设定角色与任务&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在指令中定义身份、工作内容，会抬高对应领域词汇、句式的出现概率，约束输出风格与方向。&lt;/p&gt;
+&lt;p&gt;2. &lt;strong&gt;Few-shot示例示范&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;给出输入+输出样例，模型会复刻样例的格式、句式、排版，用字符序列规律锁定输出形态。&lt;/p&gt;
+&lt;p&gt;3. &lt;strong&gt;结构化提示（列表/JSON/XML）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;和示例逻辑一致，用固定结构限制Token排列顺序，避免自由生成带来的混乱。&lt;/p&gt;
+&lt;p&gt;4. &lt;strong&gt;任务拆解&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;把复杂任务拆分为多个小步骤，将单次复杂预测拆成多次简单预测，减少长序列下的概率偏移。&lt;/p&gt;
+&lt;p&gt;5. &lt;strong&gt;迭代优化&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;输出不符合预期时反复修改指令，本质是不断校准概率分布，直到匹配需求。&lt;/p&gt;
+&lt;p&gt;6. &lt;strong&gt;系统提示词&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;会话初始就设定全局规则、边界与风格，相当于给模型加载一套永久的概率约束。&lt;/p&gt;
+&lt;h2 id=&#34;核心prompt技术精讲cot思维链完整原理分类实战&#34;&gt;核心Prompt技术精讲：CoT思维链（完整原理+分类+实战）
+&lt;/h2&gt;&lt;h3 id=&#34;cot基础定义&#34;&gt;CoT基础定义
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;思维链（Chain-of-Thought, CoT）&lt;/strong&gt;：核心Prompt范式，强制大模型在给出最终答案前，输出完整的中间推理步骤，把模型默认的“一步直接出结果”改为&lt;strong&gt;分步推导 + 结论输出&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;核心结构：问题 → 分步推理过程 → 最终答案&lt;/p&gt;
+&lt;p&gt;最初被提出的核心目的：解决大模型在&lt;strong&gt;数学计算、多步骤逻辑推理、复杂符号任务&lt;/strong&gt;上准确率极低的问题。&lt;/p&gt;
+&lt;h3 id=&#34;cot为什么能生效llm底层概率原理&#34;&gt;CoT为什么能生效？（LLM底层概率原理）
+&lt;/h3&gt;&lt;p&gt;基于大模型&lt;strong&gt;逐Token条件概率预测&lt;/strong&gt;的本质：&lt;/p&gt;
+&lt;p&gt;- 直接作答：单次短序列预测，极易出现跳步、概率偏差、逻辑缺失；&lt;/p&gt;
+&lt;p&gt;- 开启CoT分步思考：人为拉长上下文链路，每一句推理文字都会成为下一段内容的强约束，将一个高难度复杂概率预测，拆解为多个简单、稳定的子预测。&lt;/p&gt;
+&lt;p&gt;同时CoT会强制激活模型内部&lt;strong&gt;推理、计算、逻辑类专属神经回路&lt;/strong&gt;，唤醒模型的抽象泛化能力。&lt;/p&gt;
+&lt;p&gt;一句话本质：&lt;strong&gt;CoT = 用文字搭建推理脚手架，锁定概率路径，防止模型逻辑跑偏&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;主流cot两大核心类型实战必用&#34;&gt;主流CoT两大核心类型（实战必用）
+&lt;/h3&gt;&lt;h4 id=&#34;零样本cotzero-shot-cot&#34;&gt;零样本CoT（Zero-Shot CoT）
+&lt;/h4&gt;&lt;p&gt;无需任何示例，仅通过一句通用指令触发推理，最简单、通用性最强。&lt;/p&gt;
+&lt;p&gt;万能触发词：&lt;strong&gt;请一步步详细思考，再给出最终答案&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;适用场景：简单逻辑、基础计算、常识问答、普通分析类任务。&lt;/p&gt;
+&lt;h4 id=&#34;少样本cotfew-shot-cot&#34;&gt;少样本CoT（Few-Shot CoT）
+&lt;/h4&gt;&lt;p&gt;提前给出2-3组「问题+推理过程+标准答案」模板，让模型严格复刻你的推理格式、语序、步骤逻辑。&lt;/p&gt;
+&lt;p&gt;约束力远强于零样本，专门解决复杂数学、专业推理、固定格式解题场景。&lt;/p&gt;
+&lt;h3 id=&#34;高阶cot变体工业级用法&#34;&gt;高阶CoT变体（工业级用法）
+&lt;/h3&gt;&lt;p&gt;- &lt;strong&gt;自一致性CoT&lt;/strong&gt;：多次生成不同推理路径，投票选出最高频正确答案，抵消单次采样误差；&lt;/p&gt;
+&lt;p&gt;- &lt;strong&gt;多轮拆分CoT&lt;/strong&gt;：人工将超长难题拆分为多轮小问题，逐轮推导，杜绝逻辑断裂；&lt;/p&gt;
+&lt;p&gt;- &lt;strong&gt;模型原生内部CoT&lt;/strong&gt;：GPT、Claude的Thinking模式，内部完成分步推理，仅对外输出答案，无公开步骤。&lt;/p&gt;
+&lt;h3 id=&#34;极简可直接复制实战模板&#34;&gt;极简可直接复制实战模板
+&lt;/h3&gt;&lt;h4 id=&#34;零样本通用cot&#34;&gt;零样本通用CoT
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Plain&#34; data-lang=&#34;Plain&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;请一步步详细推理，严谨推导，最后给出清晰明确的最终答案。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;问题：{你的问题}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h4 id=&#34;少样本数学逻辑cot&#34;&gt;少样本数学/逻辑CoT
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Plain&#34; data-lang=&#34;Plain&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;请严格按照下方示例的推理格式、步骤逻辑作答。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;示例1：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;问题：10减去3，再加6，结果是多少？
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;推理：先计算10-3=7，再计算7+6=13
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;答案：13
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;示例2：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;问题：一个箱子有8本书，拿走4本，又放入5本，现有几本？
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;推理：原有8本，拿走4本剩余4本，加上5本一共9本
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;答案：9
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;现在作答：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;问题：{你的问题}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;不同场景下的能力解读&#34;&gt;不同场景下的能力解读
+&lt;/h2&gt;&lt;p&gt;1. &lt;strong&gt;日常对话与问答&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;依靠训练数据中学到的对话轮次、语气、问答句式，持续做序列预测。模型不会感知情绪，只是复刻海量语料中的高概率回复。&lt;/p&gt;
+&lt;p&gt;2. &lt;strong&gt;代码开发&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;代码语法、规则具备强序列特征，概率更容易被约束，因此大模型在编程场景表现突出。搭配角色、结构化格式、任务拆解，能进一步提升输出质量。&lt;/p&gt;
+&lt;p&gt;3. &lt;strong&gt;数学与逻辑推理&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;直接输出答案容易因单次采样出错，CoT通过增加中间推理上下文，层层约束概率，是提升准确率的关键手段。&lt;/p&gt;
+&lt;p&gt;4. &lt;strong&gt;智能代理Agent&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;本质是组合式Prompt的自动化，把角色、步骤、规则提前封装，依旧依托上下文+Token预测运行，不存在自主规划意识。&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结
+&lt;/h2&gt;&lt;p&gt;1. 大模型本质是&lt;strong&gt;概率序列生成器&lt;/strong&gt;，所有能力都是海量数据下拟合出的统计规律；&lt;/p&gt;
+&lt;p&gt;2. Prompt工程的核心，就是通过改造上下文，精准控制模型的输出概率；&lt;/p&gt;
+&lt;p&gt;3. CoT思维链是低成本、高收益的推理优化手段，靠概率约束强化逻辑能力；&lt;/p&gt;
+&lt;p&gt;4. 大模型的“智能”是&lt;strong&gt;统计涌现现象&lt;/strong&gt;，并非真正的思考与理解。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>轻量化 AI 能力扩展：Agent Skill 生态、痛点与落地指南</title>
+        <link>https://ye-guan-xing.github.io/p/%E8%BD%BB%E9%87%8F%E5%8C%96-ai-%E8%83%BD%E5%8A%9B%E6%89%A9%E5%B1%95agent-skill-%E7%94%9F%E6%80%81%E7%97%9B%E7%82%B9%E4%B8%8E%E8%90%BD%E5%9C%B0%E6%8C%87%E5%8D%97/</link>
+        <pubDate>Wed, 03 Jun 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/%E8%BD%BB%E9%87%8F%E5%8C%96-ai-%E8%83%BD%E5%8A%9B%E6%89%A9%E5%B1%95agent-skill-%E7%94%9F%E6%80%81%E7%97%9B%E7%82%B9%E4%B8%8E%E8%90%BD%E5%9C%B0%E6%8C%87%E5%8D%97/</guid>
+        <description>&lt;h2 id=&#34;前言&#34;&gt;前言
+&lt;/h2&gt;&lt;p&gt;很多人在日常用 AI 编码、办公时，都会遇到一个最直观的痛点：&lt;strong&gt;大模型本身不缺能力，缺的是「专属记忆」和「固定规矩」&lt;/strong&gt;。模型天生懂代码、懂语法、能生成文本，但它永远不知道你的团队规范、项目约定、固定工作流程。&lt;/p&gt;
+&lt;p&gt;在 Agent Skill 概念出现之前，我们的解法非常原始：每次对话都要反复复述提示词、手动指定参考文件、逐条强调规范要求、重复告知任务步骤。本质上，这种「每次手动叮嘱、重复约束」的操作，就是最朴素的 Skill 雏形——只是它没有标准化、不能沉淀、无法复用。我们只能靠人力反复填充上下文，最终导致&lt;strong&gt;上下文空间严重不足、对话臃肿、效率极低、换项目换会话全部重置&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;而 Agent Skill 就是这套原始操作的&lt;strong&gt;标准化升级版&lt;/strong&gt;。它把我们每次重复叮嘱的规则、流程、参考文件、使用场景，统一封装成标准化的文件夹与 &lt;code&gt;SKILL.md&lt;/code&gt; 文件。不用每次手动打字提醒、不用反复灌输规范，AI 可以按需加载、自主匹配、自动执行。它不提升大模型的“智商”，而是为AI智能体打造一套可复用、可管理、不占用常驻上下文的“专属操作手册”，彻底解决传统用法的核心弊端，也是当前AI智能体工程化落地的核心标准之一。&lt;/p&gt;
+&lt;h2 id=&#34;什么是-agent-skill核心定义与价值&#34;&gt;什么是 Agent Skill？核心定义与价值
+&lt;/h2&gt;&lt;h3 id=&#34;核心概念&#34;&gt;核心概念
+&lt;/h3&gt;&lt;p&gt;Agent Skill 是由 Anthropic 推出、行业通用的&lt;strong&gt;轻量化开源能力扩展标准&lt;/strong&gt;，核心是将AI智能体的专项工作流程、领域知识、业务规范，打包为可移植、可版本控制的文件夹体系。&lt;/p&gt;
+&lt;p&gt;简单来说：&lt;strong&gt;Skill 就是AI智能体的专属技能包&lt;/strong&gt;。一个标准的Skill本质是一个文件夹，核心必备文件为 &lt;code&gt;SKILL.md&lt;/code&gt;，同时可配套脚本、规范文档、资源模板等辅助文件，全方位定义Agent的任务执行规则。&lt;/p&gt;
+&lt;h3 id=&#34;解决的核心问题&#34;&gt;解决的核心问题
+&lt;/h3&gt;&lt;p&gt;传统AI使用模式存在三大痛点，而Agent Skill精准攻克这些问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;无法复用&lt;/strong&gt;：Prompt、自定义规则仅单会话、单人可用，跨项目、跨团队无法通用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;上下文浪费&lt;/strong&gt;：大量规范流程常驻上下文，挤占有效对话空间，降低模型响应效率&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;不可追溯管理&lt;/strong&gt;：零散规则无版本、无归档，迭代混乱、问题无法溯源&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;核心价值&#34;&gt;核心价值
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;领域专业化&lt;/strong&gt;：将代码审核、数据分析、文案创作、页面运维等专属领域知识固化为标准化技能&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;流程标准化&lt;/strong&gt;：把多步骤复杂任务转化为可审计、可重复的固定工作流，避免人工操作偏差&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;跨平台复用&lt;/strong&gt;：一次开发，可在Cursor、Claude Code、GitHub Copilot、Gemini等30+主流AI客户端直接使用&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;agent-skill-的起源与生态发展&#34;&gt;Agent Skill 的起源与生态发展
+&lt;/h2&gt;&lt;p&gt;Agent Skill 从单一产品功能，逐步迭代为全行业通用开放标准，整体分为四个发展阶段：&lt;/p&gt;
+&lt;h3 id=&#34;萌芽阶段专属功能诞生&#34;&gt;萌芽阶段：专属功能诞生
+&lt;/h3&gt;&lt;p&gt;Anthropic 率先在 Claude Code 中首创 &lt;code&gt;SKILL.md&lt;/code&gt; 文件夹格式，通过元数据+工作流文档的形式，教会AI智能体完成代码审核、提交信息生成等专项任务，是Skill能力的最初雏形。&lt;/p&gt;
+&lt;h3 id=&#34;标准化阶段统一规则落地&#34;&gt;标准化阶段：统一规则落地
+&lt;/h3&gt;&lt;p&gt;官方开放站点 &lt;a class=&#34;link&#34; href=&#34;https://agentskills.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;agentskills.io&lt;/a&gt; 发布完整开放标准，定义了Skill最小契约（名称、描述为必备字段），同时提出核心的**渐进式披露（Progressive Disclosure）**运行机制，奠定了所有Agent Skill的运行基础。&lt;/p&gt;
+&lt;h3 id=&#34;生态化阶段规模化普及&#34;&gt;生态化阶段：规模化普及
+&lt;/h3&gt;&lt;p&gt;专业Skill分发平台 &lt;a class=&#34;link&#34; href=&#34;https://skills.sh/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;skills.sh&lt;/a&gt; 上线，推出 &lt;code&gt;npx skills add&lt;/code&gt; 一键安装指令，实现Skill的快速安装、版本锁定、溯源更新。目前已有数百个通用技能，覆盖前端开发、SEO审核、文档处理、系统调试等高频场景，被主流AI开发工具全面采纳。&lt;/p&gt;
+&lt;h3 id=&#34;垂直扩展阶段场景深度落地&#34;&gt;垂直扩展阶段：场景深度落地
+&lt;/h3&gt;&lt;p&gt;行业开始涌现垂直领域定制化Skill，其中 &lt;strong&gt;Skill-CLI&lt;/strong&gt; 是极具代表性的元技能项目。它不直接处理业务，而是赋能AI智能体自动扫描前后端源码，生成页面能力清单，实现“AI自主识别页面功能、操控页面交互”的进阶能力。&lt;/p&gt;
+&lt;h2 id=&#34;标准-skill-目录结构与文件契约&#34;&gt;标准 Skill 目录结构与文件契约
+&lt;/h2&gt;&lt;p&gt;所有合规的Agent Skill都遵循统一的目录规范，结构简洁、层级清晰，分为&lt;strong&gt;必备核心文件&lt;/strong&gt;和&lt;strong&gt;可选辅助资源&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;通用标准目录&#34;&gt;通用标准目录
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;my-skill/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── SKILL.md          # 核心必备：元数据+任务执行指令
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── scripts/          # 可选：可执行脚本，处理确定性任务
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── references/       # 可选：领域规范、规则文档、数据契约
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├── assets/           # 可选：模板、静态资源、配置文件
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── ...               # 自定义扩展文件
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;核心文件-skillmd-最小契约&#34;&gt;核心文件 SKILL.md 最小契约
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;SKILL.md&lt;/code&gt; 是Skill的灵魂，头部元数据决定技能的匹配与激活规则，正文定义完整工作流，最小可用配置包含三大核心字段：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;name&lt;/strong&gt;：技能唯一标识，小写连字符命名，简洁无歧义&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;description&lt;/strong&gt;：核心匹配依据，必须清晰说明「技能功能」和「触发场景」，供AI语义匹配调用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;activation&lt;/strong&gt;：可选，自定义激活指令，支持手动强制唤起技能&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;优质-skill-的四大编写模式&#34;&gt;优质 Skill 的四大编写模式
+&lt;/h3&gt;&lt;p&gt;官方推荐标准化编写范式，大幅提升AI执行准确率：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;工作流模式&lt;/strong&gt;：将复杂任务拆分为可勾选的分步清单，AI按步骤逐项执行，避免遗漏&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;渐进式披露&lt;/strong&gt;：核心流程留在SKILL.md，细节规则外置到引用文档，按需加载，精简上下文&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;模板模式&lt;/strong&gt;：预设输出文件格式、文案、数据结构，AI无需从零创作，直接套用模板生成结果&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;反馈循环模式&lt;/strong&gt;：搭配预检脚本、质检清单，执行前校验环境、参数，规避无效执行&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;技能部署范围个人级-vs-项目级&#34;&gt;技能部署范围：个人级 vs 项目级
+&lt;/h3&gt;&lt;p&gt;Skill支持两种部署方式，适配不同使用场景：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;项目级&lt;/strong&gt;：存放于项目目录，随代码仓库同步，适配团队共享规范、业务专属流程&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;用户级&lt;/strong&gt;：存放于本地用户目录，跨所有项目生效，适配个人通用开发习惯、常用工具能力&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;核心运行机制发现激活执行-三阶段模型&#34;&gt;核心运行机制：发现→激活→执行 三阶段模型
+&lt;/h2&gt;&lt;p&gt;渐进式披露是Agent Skill的核心设计思想，也是其高效节省上下文的关键。AI智能体不会一次性加载所有技能，而是分阶段按需调用，完美平衡&lt;strong&gt;能力广度&lt;/strong&gt;与&lt;strong&gt;运行效率&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;阶段1发现discovery轻量索引精准匹配&#34;&gt;阶段1：发现（Discovery）——轻量索引，精准匹配
+&lt;/h3&gt;&lt;p&gt;AI启动时，仅加载所有Skill的&lt;strong&gt;名称+描述&lt;/strong&gt;极简索引，不加载完整指令和细节，极低消耗即可完成能力盘点。&lt;/p&gt;
+&lt;p&gt;当用户发起指令后，AI通过两种方式匹配技能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;语义自动匹配&lt;/strong&gt;：根据用户指令关键词、语义场景，匹配对应Skill的description&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;手动强制激活&lt;/strong&gt;：通过 @技能名 / 自定义指令，直接唤起指定技能&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;阶段2激活activation加载全量规则&#34;&gt;阶段2：激活（Activation）——加载全量规则
+&lt;/h3&gt;&lt;p&gt;匹配成功后，AI立即读取完整 &lt;code&gt;SKILL.md&lt;/code&gt; 工作流，若任务需要细分规则、模板、脚本，再按需加载 references、scripts 中的辅助文件。&lt;/p&gt;
+&lt;p&gt;该阶段核心原则：&lt;strong&gt;无加载、不执行&lt;/strong&gt;，禁止AI仅凭技能名称预判操作，必须完整读取规则后再执行任务。&lt;/p&gt;
+&lt;h3 id=&#34;阶段3执行execution标准化落地任务&#34;&gt;阶段3：执行（Execution）——标准化落地任务
+&lt;/h3&gt;&lt;p&gt;AI严格按照Skill定义的步骤、规范、禁止事项，调用读写、终端、检索等工具完成任务，输出标准化结果，全程可追溯、可复盘。&lt;/p&gt;
+&lt;h3 id=&#34;机制核心优势上下文经济学&#34;&gt;机制核心优势：上下文经济学
+&lt;/h3&gt;&lt;p&gt;依托三阶段模型，AI可常驻数十上百个技能索引（仅数千token），但仅在任务触发时加载对应技能详情，彻底解决“技能越多、上下文越臃肿”的行业难题，实现&lt;strong&gt;平时轻量、用时全能&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;实战案例skill-cli-页面能力自动化&#34;&gt;实战案例：Skill-CLI 页面能力自动化
+&lt;/h2&gt;&lt;p&gt;Skill-CLI 是典型的元技能实践，核心作用是让AI自动扫描React/Vue源码，解析页面按钮、路由、API、CLI指令，生成标准化能力清单，实现自然语言到页面操作的自动映射。&lt;/p&gt;
+&lt;h3 id=&#34;完整执行链路&#34;&gt;完整执行链路
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;指令触发&lt;/strong&gt;：用户发送 &lt;code&gt;@vibe-skill-gen 扫描页面源码&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;技能激活&lt;/strong&gt;：AI读取Skill完整规则，加载前端框架扫描规范&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;源码解析&lt;/strong&gt;：自动识别页面按钮、路由跳转、接口请求等核心能力&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;生成能力清单&lt;/strong&gt;：输出标准化 &lt;code&gt;.skill.json&lt;/code&gt; 文件，记录页面所有可操作能力&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;全局同步&lt;/strong&gt;：自动更新项目技能注册表，生成能力索引文档&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;能力复用&lt;/strong&gt;：新会话中，AI可直接通过自然语言匹配页面能力，自动触发对应操作&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;项目开源地址 &amp;amp;amp; 一键安装入口&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;本实战案例对应的完整开源项目与官方技能分发地址，可直接访问、下载安装：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Skill-CLI 源码仓库&lt;/strong&gt;：https://github.com/ye-guan-xing/skill-cli&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;vibe-skill-gen 在线安装地址&lt;/strong&gt;：https://www.skills.sh/ye-guan-xing/skill-cli/vibe-skill-gen&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;该技能已通过平台安全校验，支持 &lt;code&gt;npx skills add ye-guan-xing/skill-cli&lt;/code&gt; 一键安装，适配 Cursor、Claude Code 等主流AI开发客户端，开箱即用。&lt;/p&gt;
+&lt;h2 id=&#34;当前-skill-生态最大痛点鱼龙混杂黑盒不可控&#34;&gt;当前 Skill 生态最大痛点：鱼龙混杂、黑盒不可控
+&lt;/h2&gt;&lt;p&gt;讲完 Skill 的价值与原理，必须聊一个&lt;strong&gt;目前所有人都绕不开的真实问题&lt;/strong&gt;：公开生态的 Skill 现在处于严重鱼龙混杂的状态。&lt;/p&gt;
+&lt;p&gt;现在 skills.sh 平台上有成百上千的公开技能，覆盖前端、营销、调试、办公等各类场景，但普通开发者、团队根本无法快速甄别：&lt;strong&gt;别人写的 Skill 到底封装了什么规则、会如何改变大模型的行为、是否存在过度约束、隐性偏见、无效冗余逻辑&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;绝大多数用户安装 Skill 都是「盲装、盲用」：一键安装后，完全不清楚：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;这个 Skill 新增了哪些强制执行规则&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;会限制 AI 哪些默认能力&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;会不会强制修改代码风格、业务逻辑、输出范式&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;是否存在冗余步骤、错误引导、老旧失效逻辑&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;更关键的是：&lt;strong&gt;Skill 是强上下文、强行为约束的配置&lt;/strong&gt;。同样的模型、同样的提问，加载不同的 Skill，会产出完全不一样的结果。劣质 Skill 不会直接报错，但会导致 AI 过度啰嗦、逻辑僵化、代码冗余、甚至违背团队规范，用户却很难感知根源。&lt;/p&gt;
+&lt;h3 id=&#34;目前唯一可行的解决方案经验沉淀--团队私有规范&#34;&gt;目前唯一可行的解决方案：经验沉淀 + 团队私有规范
+&lt;/h3&gt;&lt;p&gt;截至目前，行业内没有自动化工具、没有平台校验、没有官方风控可以彻底解决 Skill 质量参差不齐的问题。平台仅做基础安全审计（脚本风险、恶意代码检测），&lt;strong&gt;不会校验逻辑优劣、规范合理性、适配场景精准度&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;因此现阶段唯一靠谱的落地方式，只能依靠&lt;strong&gt;个人使用经验 + 团队长期沉淀&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;不盲目使用公共高星 Skill&lt;/strong&gt;：下载前通读完整 SKILL.md 规则，确认触发场景、执行步骤、禁止行为，避免隐性约束干扰业务开发&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;优先自建团队私有 Skill&lt;/strong&gt;：放弃通用公共技能，基于团队编码规范、部署流程、业务习惯，自己封装标准化 Skill，可控、可迭代、无黑盒&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;建立团队 Skill 白名单&lt;/strong&gt;：经过实战验证、长期稳定可用的技能，纳入团队统一注册表，禁止成员随意安装未知第三方 Skill&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;版本固化管理&lt;/strong&gt;：利用 skills-lock.json 锁定优质 Skill 版本，避免自动更新引入未知规则变更&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结
+&lt;/h3&gt;&lt;p&gt;Agent Skill 解决了「上下文不足、重复喂词、流程不可沉淀」的&lt;strong&gt;效率问题&lt;/strong&gt;，但目前无法解决「公共技能质量不可控、行为不可预测」的&lt;strong&gt;信任问题&lt;/strong&gt;。在官方标准化审核机制完善前，&lt;strong&gt;自建、自审、自用、团队沉淀&lt;/strong&gt;，是企业和个人落地 Skill 的最优解。&lt;/p&gt;
+&lt;h2 id=&#34;自定义-skill-编写检查清单&#34;&gt;自定义 Skill 编写检查清单
+&lt;/h2&gt;&lt;p&gt;快速产出合规、高可用的Agent Skill，可参考以下核心校验标准：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;命名：简洁具体，小写连字符，规避helper、utils等模糊词汇&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;描述：第三人称撰写，清晰说明功能、触发场景、核心关键词&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;篇幅：主文件SKILL.md控制在500行内，复杂细节外置引用文档&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;流程：复杂任务拆分步骤清单，关键决策增加条件判断&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;稳定性：重复、机械操作封装为脚本，避免AI重复构思出错&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;边界：明确禁止操作，界定AI行为范围，规避误操作&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;部署：根据使用场景选择个人/项目级部署，支持一键安装分发&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;行业展望skill-与-mcp-的互补关系&#34;&gt;行业展望：Skill 与 MCP 的互补关系
+&lt;/h2&gt;&lt;p&gt;在AI智能体工程化体系中，Skill与MCP是两大核心能力，二者互补而非替代：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Agent Skill&lt;/strong&gt;：聚焦&lt;strong&gt;流程与知识&lt;/strong&gt;，通过文档定义任务规范、执行步骤、领域规则，解决“怎么做事”的问题&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;MCP&lt;/strong&gt;：聚焦&lt;strong&gt;工具与连接&lt;/strong&gt;，通过协议打通外部数据库、接口、工具服务，解决“能用什么资源”的问题&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;成熟的AI工程化方案，必然是「MCP连资源 + Skill定流程」的组合模式，让AI既有资源可调用，又有规范可遵循。&lt;/p&gt;
+&lt;h2 id=&#34;结语&#34;&gt;结语
+&lt;/h2&gt;&lt;p&gt;Agent Skill 的本质，是&lt;strong&gt;AI智能体能力的标准化、工程化封装&lt;/strong&gt;。它打破了大模型“通用但不落地”的局限，将零散的经验、规范、流程固化为可复用的标准化技能。&lt;/p&gt;
+&lt;p&gt;未来，随着AI智能体的普及，Skill将成为项目标配：团队规范、业务流程、工具使用方式全部沉淀为标准化技能，让AI真正适配企业、团队、个人的专属工作模式，实现真正意义上的&lt;strong&gt;自主学习、自主执行、自主迭代&lt;/strong&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;（注：文档部分内容可能由 AI 生成）&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
+        <title>规范先行：我的 Vibe Coding 落地方案</title>
+        <link>https://ye-guan-xing.github.io/p/%E8%A7%84%E8%8C%83%E5%85%88%E8%A1%8C%E6%88%91%E7%9A%84-vibe-coding-%E8%90%BD%E5%9C%B0%E6%96%B9%E6%A1%88/</link>
+        <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/%E8%A7%84%E8%8C%83%E5%85%88%E8%A1%8C%E6%88%91%E7%9A%84-vibe-coding-%E8%90%BD%E5%9C%B0%E6%96%B9%E6%A1%88/</guid>
+        <description>&lt;h2 id=&#34;前言&#34;&gt;前言
+&lt;/h2&gt;&lt;p&gt;Vibe Coding 已经从尝鲜玩法，变成我日常全栈开发的核心范式。依托 AI 编码工具、自研 Skills 规范体系与 MCP 工具链，研发效率实现了大幅跃升。但落地过程中我发现，&lt;strong&gt;无约束的 AI 编码必然导致工程失控&lt;/strong&gt;：代码风格割裂、逻辑碎片化、技术债务堆积、迭代不可持续，这也是多数开发者用不好 AI 编程的核心痛点。&lt;/p&gt;
+&lt;p&gt;真正高效的 Vibe Coding，不靠模型堆砌、不靠即兴提示词，而是靠&lt;strong&gt;标准化底座、固定工作流、代码治理机制、开发者核心能力&lt;/strong&gt;四重支撑。本文结合长期落地经验，完整公开可复用的 AI 开发全流程，重点拆解 AI 代码混乱治理方案，并深度剖析决定 Vibe Coding 上限的核心本质，为开发者标准化落地 AI 辅助开发提供参考。&lt;/p&gt;
+&lt;h2 id=&#34;能力底座自定义-skills-体系--mcp-工具链&#34;&gt;能力底座：自定义 Skills 体系 + MCP 工具链
+&lt;/h2&gt;&lt;p&gt;想要 AI 持续输出高质量、统一化代码，核心是&lt;strong&gt;规范前置、能力固化&lt;/strong&gt;。我通过本地分层 Skills 规则文件，搭配 MCP 协议工具，为全品类 AI 编码工具统一行为范式，从源头规避开发混乱问题。&lt;/p&gt;
+&lt;h3 id=&#34;全局通用-skills跨工具统一规范&#34;&gt;全局通用 Skills（跨工具统一规范）
+&lt;/h3&gt;&lt;p&gt;统一存放于 &lt;code&gt;~/.agents/skills/&lt;/code&gt;，适配 Claude Code、Codex、Cursor、GitHub Copilot 等主流工具，实现多项目、多 AI 载体的规范统一。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;find-skills             ~&lt;span class=&#34;se&#34;&gt;\.&lt;/span&gt;agents&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;kills&lt;span class=&#34;se&#34;&gt;\f&lt;/span&gt;ind-skills
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;frontend-design         ~&lt;span class=&#34;se&#34;&gt;\.&lt;/span&gt;agents&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;kills&lt;span class=&#34;se&#34;&gt;\f&lt;/span&gt;rontend-design
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nodejs-backend-patterns ~&lt;span class=&#34;se&#34;&gt;\.&lt;/span&gt;agents&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;kills&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;odejs-backend-patterns
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python-backend          ~&lt;span class=&#34;se&#34;&gt;\.&lt;/span&gt;agents&lt;span class=&#34;se&#34;&gt;\s&lt;/span&gt;kills&lt;span class=&#34;se&#34;&gt;\p&lt;/span&gt;ython-backend
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;find-skills&lt;/strong&gt;：自动检索项目规则与技术栈，降低 AI 上下文沟通成本，避免重复对齐成本。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;frontend-design&lt;/strong&gt;：统一前端组件、样式、交互、适配规范，保证视觉与代码风格一致性。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;nodejs/python-backend&lt;/strong&gt;：固化后端架构模式、接口设计、命名规范、异常处理标准。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;codex-专属质检-skills工程质量闭环&#34;&gt;Codex 专属质检 Skills（工程质量闭环）
+&lt;/h3&gt;&lt;p&gt;针对代码质量、工程健康、自动化验收，搭建 Brooks 系列专属质检能力，存放于 &lt;code&gt;~/.codex/skills/&lt;/code&gt;，是项目质量的核心屏障。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;brooks-audit    &lt;span class=&#34;c1&#34;&gt;# 安全审计 &amp;amp; 漏洞检测&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;brooks-debt     &lt;span class=&#34;c1&#34;&gt;# 技术债务梳理 &amp;amp; 优化建议&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;brooks-health   &lt;span class=&#34;c1&#34;&gt;# 项目依赖 &amp;amp; 工程健康巡检&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;brooks-review   &lt;span class=&#34;c1&#34;&gt;# 标准化代码评审&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;brooks-sweep    &lt;span class=&#34;c1&#34;&gt;# 冗余代码清理 &amp;amp; 结构规整&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;brooks-test     &lt;span class=&#34;c1&#34;&gt;# 自动化测试用例生成 &amp;amp; 覆盖率校验&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这套体系覆盖代码全生命周期质检，实现 AI 编码“生成即合规、产出即可控”。&lt;/p&gt;
+&lt;h3 id=&#34;mcp-工具链拓展-ai-开发边界&#34;&gt;MCP 工具链（拓展 AI 开发边界）
+&lt;/h3&gt;&lt;p&gt;基于 Model Context Protocol 协议，补齐 AI 开发短板，实现工程化落地能力闭环：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;记忆工具：持久化项目上下文与历史决策，杜绝重复沟通。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;顺序思考工具：逐层拆解复杂需求，引导 AI 结构化分步开发。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;网络请求工具：支持接口调试、线上验证、环境联动实操。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;标准化-vibe-coding-全流程可直接复用&#34;&gt;标准化 Vibe Coding 全流程（可直接复用）
+&lt;/h2&gt;&lt;p&gt;为解决 AI 开发随意性问题，我沉淀出一套&lt;strong&gt;五阶段标准化工作流&lt;/strong&gt;，搭配固定 SOP，适配个人开发与小型团队落地。&lt;/p&gt;
+&lt;h3 id=&#34;项目初始化--上下文搭建&#34;&gt;项目初始化 &amp;amp; 上下文搭建
+&lt;/h3&gt;&lt;p&gt;明确项目需求、技术栈、交付标准与功能边界；加载本地自定义 Skills 适配开发规范；启动 MCP 服务，打通记忆、拆解、网络实操能力。&lt;/p&gt;
+&lt;h3 id=&#34;需求拆解--方案前置设计&#34;&gt;需求拆解 &amp;amp; 方案前置设计
+&lt;/h3&gt;&lt;p&gt;依托 MCP 顺序思考工具拆解复杂需求，输出架构设计、目录结构、接口文档、风险清单。严格执行&lt;strong&gt;先方案、后编码&lt;/strong&gt;，按前后端技能规范统一实现思路，从根源避免逻辑混乱。&lt;/p&gt;
+&lt;h3 id=&#34;模块化迭代开发&#34;&gt;模块化迭代开发
+&lt;/h3&gt;&lt;p&gt;按功能模块拆分开发任务，遵循「需求描述 → 代码生成 → 本地运行 → 迭代优化」闭环。依托 Skills 保证风格统一，借助 MCP 完成联调、问题排查与实时优化。&lt;/p&gt;
+&lt;h3 id=&#34;全维度自动化质检&#34;&gt;全维度自动化质检
+&lt;/h3&gt;&lt;p&gt;启用 Brooks 全套质检能力，完成代码评审、安全审计、债务梳理、依赖检测、冗余清理、测试覆盖，全方位守住工程质量底线。&lt;/p&gt;
+&lt;h3 id=&#34;上线部署--持续迭代&#34;&gt;上线部署 &amp;amp; 持续迭代
+&lt;/h3&gt;&lt;p&gt;AI 自动生成部署脚本、容器配置，完成上线校验；基于持久化项目上下文开展后续迭代，大幅降低维护成本。&lt;/p&gt;
+&lt;h3 id=&#34;通用核心-sopvibe-check&#34;&gt;通用核心 SOP（Vibe Check）
+&lt;/h3&gt;&lt;p&gt;所有项目统一遵循极简闭环流程：&lt;strong&gt;方案策划\(Plan\) → 编码实现\(Coding\) → 规范校验\(Lint\) → 特性隔离管理&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&#34;核心治理ai-代码混乱问题落地解法&#34;&gt;核心治理：AI 代码混乱问题落地解法
+&lt;/h2&gt;&lt;p&gt;AI 编码的最大通病是&lt;strong&gt;风格混乱、逻辑碎片化、上下文漂移&lt;/strong&gt;。结合大量踩坑经验，我总结出三套可落地的治理策略，彻底解决工程失控问题。&lt;/p&gt;
+&lt;h3 id=&#34;规范前置工具强制兜底&#34;&gt;规范前置，工具强制兜底
+&lt;/h3&gt;&lt;p&gt;杜绝依赖 AI 自觉合规，采用「规则固化+工具校验」双约束：统一编写项目开发手册，明确命名、架构、编码禁忌；接入 ESLint、Prettier 强制校验，拦截不合规提交；通过本地 Skills 文件将团队/个人规范转化为 AI 内置规则，从源头统一输出标准。&lt;/p&gt;
+&lt;h3 id=&#34;流程前置杜绝盲目编码&#34;&gt;流程前置，杜绝盲目编码
+&lt;/h3&gt;&lt;p&gt;摒弃“边想边写”的即兴开发模式，固定链路：&lt;strong&gt;需求调研 → 方案对比 → 步骤拆解 → 风险预判 → 测试前置 → 复盘优化&lt;/strong&gt;。复杂项目采用 STAR-L 法则拆解，先出完整设计文档，再启动编码，规避结构性逻辑混乱。&lt;/p&gt;
+&lt;h3 id=&#34;结构分层隔离项目上下文&#34;&gt;结构分层，隔离项目上下文
+&lt;/h3&gt;&lt;p&gt;按模块、功能、特性拆分目录结构，将设计文档、开发步骤、新特性代码独立存放，避免上下文混杂，让 AI 精准识别项目架构，减少理解偏差。&lt;/p&gt;
+&lt;h3 id=&#34;复杂大型项目进阶方案&#34;&gt;复杂大型项目进阶方案
+&lt;/h3&gt;&lt;p&gt;针对中台、协同系统等复杂项目，启用进阶工作流：定义顶层数据协议与抽象规范 → 模块化分步编码 → 测试驱动开发 → 双维度自动化校验 → 代码评审与性能优化 → 全链路验收。同时搭配虚拟滚动、WebWorker、分片加载、Monorepo 隔离等方案，平衡功能与性能。&lt;/p&gt;
+&lt;h2 id=&#34;深度认知决定-vibe-coding-上限的核心能力&#34;&gt;深度认知：决定 Vibe Coding 上限的核心能力
+&lt;/h2&gt;&lt;p&gt;多数开发者存在认知误区：认为模型越强、提示词越精妙、工具越多，Vibe Coding 能力就越强。但长期落地证明：&lt;strong&gt;AI 只是执行工具，真正决定能力上限的，是开发者的综合工程能力&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;架构设计能力&#34;&gt;架构设计能力
+&lt;/h3&gt;&lt;p&gt;AI 只能生成语法正确的代码，无法自主完成架构分层、模块划分、依赖治理。项目的合理性、可扩展性、可维护性，完全依赖开发者的架构把控能力。&lt;/p&gt;
+&lt;h3 id=&#34;业务理解能力&#34;&gt;业务理解能力
+&lt;/h3&gt;&lt;p&gt;AI 无法感知隐性业务规则、边界场景与业务诉求。只有开发者吃透业务逻辑，才能引导 AI 规避无效代码、适配真实业务场景。&lt;/p&gt;
+&lt;h3 id=&#34;工程协作能力&#34;&gt;工程协作能力
+&lt;/h3&gt;&lt;p&gt;团队场景下，需通过 Skills、配置文件、指令模板统一 AI 行为，对齐编码规范与开发流程，避免多人协作导致的代码分裂、标准不统一。&lt;/p&gt;
+&lt;h3 id=&#34;项目管控能力&#34;&gt;项目管控能力
+&lt;/h3&gt;&lt;p&gt;风险识别、进度把控、质量管控、债务治理，这些核心管控能力，是 AI 开发流程平稳落地、长期迭代的核心保障。&lt;/p&gt;
+&lt;p&gt;行业趋势已然清晰：低价值的机械编码工作正在被 AI 替代。&lt;strong&gt;AI 不会取代程序员，但会彻底取代只会写代码的程序员&lt;/strong&gt;。AI 时代的核心竞争力，早已从“语法熟练度”转向“架构、业务、流程、治理”的综合能力。&lt;/p&gt;
+&lt;h2 id=&#34;团队规范化配套配置&#34;&gt;团队规范化配套配置
+&lt;/h2&gt;&lt;p&gt;为固化流程、统一团队标准，配套两套轻量化配置方案，适配个人复用与团队落地。&lt;/p&gt;
+&lt;h3 id=&#34;claudecommands-目录&#34;&gt;.claude/commands 目录
+&lt;/h3&gt;&lt;p&gt;存放标准化 Markdown 指令模板，如 &lt;code&gt;plan.md&lt;/code&gt; 需求拆解模板、&lt;code&gt;review.md&lt;/code&gt; 代码评审模板，让每一次 AI 开发都遵循统一流程，杜绝个性化随意输出。&lt;/p&gt;
+&lt;h3 id=&#34;zcf-项目配置文件&#34;&gt;.zcf 项目配置文件
+&lt;/h3&gt;&lt;p&gt;作为项目专属说明书，记录项目约束、开发规范、技术栈定义，同时适配 MCP 工具配置，让 AI 精准适配项目专属规则。&lt;/p&gt;
+&lt;h2 id=&#34;实战复盘与避坑总结&#34;&gt;实战复盘与避坑总结
+&lt;/h2&gt;&lt;h3 id=&#34;实战案例&#34;&gt;实战案例
+&lt;/h3&gt;&lt;p&gt;我基于这套全链路方案完成电商订单管理后台全流程开发，从架构设计、前后端编码、自动化测试到部署上线，全程依托 Skills+MCP+Brooks 质检体系推进。最终实现开发周期大幅压缩，代码风格统一、安全漏洞可控、技术债务极低，后期迭代维护成本显著降低。&lt;/p&gt;
+&lt;h3 id=&#34;核心避坑心得&#34;&gt;核心避坑心得
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;严禁跳过方案设计直接编码，即兴开发是项目失控的首要原因；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;持续迭代更新 Skills 规则，让 AI 适配自身技术栈与开发习惯；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;核心业务、安全相关代码必须人工复核，不全权放权 AI；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;清晰的项目目录结构，是降低 AI 理解偏差、减少代码混乱的基础。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;结语&#34;&gt;结语
+&lt;/h2&gt;&lt;p&gt;Vibe Coding 的本质，不是 AI 替开发者敲代码，而是让开发者转型为&lt;strong&gt;项目的技术负责人、AI 的管理者&lt;/strong&gt;。将机械编码工作交给工具，将核心精力聚焦于架构设计、业务落地、工程治理等高价值工作。&lt;/p&gt;
+&lt;p&gt;工具会持续迭代更新，但开发者的工程思维、综合管控能力，才是 AI 时代长久不变的核心竞争力。这套标准化工作流是长期实战的沉淀，欢迎同行交流打磨、共同精进 AI 辅助开发能力。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;（注：文档部分内容可能由 AI 生成）&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        </item>
+        <item>
         <title>Hugo 博客集成 Mermaid 流程图（客户端渲染方案)</title>
         <link>https://ye-guan-xing.github.io/p/hugo-%E5%8D%9A%E5%AE%A2%E9%9B%86%E6%88%90-mermaid-%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%B2%E6%9F%93%E6%96%B9%E6%A1%88/</link>
         <pubDate>Fri, 29 May 2026 01:00:00 +0000</pubDate>
         
         <guid>https://ye-guan-xing.github.io/p/hugo-%E5%8D%9A%E5%AE%A2%E9%9B%86%E6%88%90-mermaid-%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%B2%E6%9F%93%E6%96%B9%E6%A1%88/</guid>
         <description>&lt;p&gt;本文记录 Hugo 博客接入 Mermaid 图表的完整配置、原理、代码及优化方案，采用&lt;strong&gt;客户端动态渲染&lt;/strong&gt;，部署简单、适配主流主题。&lt;/p&gt;
-&lt;h2 id=&#34;一实现思路&#34;&gt;一、实现思路
+&lt;h2 id=&#34;实现思路&#34;&gt;实现思路
 &lt;/h2&gt;&lt;p&gt;Hugo 内置语法高亮工具 Chroma 仅能给代码上色，无法解析 Mermaid 绘图语法，因此采用「构建层改造代码块 + 浏览器端 JS 渲染」两步方案：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;构建阶段&lt;/strong&gt;：通过 Hugo 代码块钩子，将 &lt;code&gt;mermaid&lt;/code&gt; 代码块转为带指定 class 的 &lt;code&gt;&amp;lt;pre&amp;gt;&lt;/code&gt; 标签；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;运行阶段&lt;/strong&gt;：浏览器检测页面内 Mermaid 节点，动态加载 Mermaid 库，完成图表渲染。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;二完整配置文件&#34;&gt;二、完整配置文件
+&lt;h2 id=&#34;完整配置文件&#34;&gt;完整配置文件
 &lt;/h2&gt;&lt;p&gt;一共需要&lt;strong&gt;两个核心文件&lt;/strong&gt;，直接放置到对应目录即可生效。&lt;/p&gt;
-&lt;h3 id=&#34;1-代码块钩子构建阶段转换标签&#34;&gt;1. 代码块钩子（构建阶段转换标签）
+&lt;h3 id=&#34;代码块钩子构建阶段转换标签&#34;&gt;代码块钩子（构建阶段转换标签）
 &lt;/h3&gt;&lt;p&gt;文件路径：&lt;code&gt;layouts/_markup/render-codeblock-mermaid.html&lt;/code&gt;
 作用：接管 &lt;code&gt;```mermaid&lt;/code&gt; 代码块，替换默认高亮逻辑，输出 Mermaid 可识别标签，并标记页面包含图表。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -48,7 +641,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;原理：Hugo 会根据代码块语言名，自动匹配同名渲染钩子，命中后不再走 Chroma 语法高亮。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;2-客户端渲染脚本浏览器执行&#34;&gt;2. 客户端渲染脚本（浏览器执行）
+&lt;h3 id=&#34;客户端渲染脚本浏览器执行&#34;&gt;客户端渲染脚本（浏览器执行）
 &lt;/h3&gt;&lt;p&gt;文件路径：&lt;code&gt;layouts/partials/footer/custom.html&lt;/code&gt;
 作用：页面加载后按需加载 Mermaid 库、适配明暗主题、手动触发图表渲染。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -96,7 +689,7 @@
 &lt;li&gt;读取页面主题标识，自动切换 Mermaid 明暗样式；&lt;/li&gt;
 &lt;li&gt;关闭库默认自动渲染，手动调用 &lt;code&gt;run&lt;/code&gt; 统一渲染，提升可控性。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;三markdown-写法&#34;&gt;三、Markdown 写法
+&lt;h2 id=&#34;markdown-写法&#34;&gt;Markdown 写法
 &lt;/h2&gt;&lt;p&gt;配置完成后，文章内正常使用标准 Mermaid 语法即可，无需额外改动：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -114,10 +707,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;```&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;四核心原理与方案对比&#34;&gt;四、核心原理与方案对比
-&lt;/h2&gt;&lt;h3 id=&#34;1-为什么不使用-hugo-内置高亮&#34;&gt;1. 为什么不使用 Hugo 内置高亮？
+&lt;/div&gt;&lt;h2 id=&#34;核心原理与方案对比&#34;&gt;核心原理与方案对比
+&lt;/h2&gt;&lt;h3 id=&#34;为什么不使用-hugo-内置高亮&#34;&gt;为什么不使用 Hugo 内置高亮？
 &lt;/h3&gt;&lt;p&gt;Chroma 仅负责&lt;strong&gt;代码语法高亮&lt;/strong&gt;，不解析 Mermaid 绘图 DSL，&lt;code&gt;mermaid&lt;/code&gt; 不在其支持的语言列表中，最终会降级为纯文本代码块，无法生成图表。&lt;/p&gt;
-&lt;h3 id=&#34;2-客户端渲染-vs-服务端预渲染&#34;&gt;2. 客户端渲染 vs 服务端预渲染
+&lt;h3 id=&#34;客户端渲染-vs-服务端预渲染&#34;&gt;客户端渲染 vs 服务端预渲染
 &lt;/h3&gt;&lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -142,15 +735,15 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h3 id=&#34;3-startonload-false-关键作用&#34;&gt;3. &lt;code&gt;startOnLoad: false&lt;/code&gt; 关键作用
+&lt;h3 id=&#34;startonload-false-关键作用&#34;&gt;&lt;code&gt;startOnLoad: false&lt;/code&gt; 关键作用
 &lt;/h3&gt;&lt;p&gt;Mermaid 默认开启自动扫描渲染，设置为 &lt;code&gt;false&lt;/code&gt; 后由代码手动控制渲染时机，优势：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;先完成主题配置，再执行渲染，样式不错乱；&lt;/li&gt;
 &lt;li&gt;灵活控制加载逻辑，支持懒加载、动态刷新等扩展；&lt;/li&gt;
 &lt;li&gt;避免脚本执行顺序导致的渲染失败。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;五整体执行流程&#34;&gt;五、整体执行流程
-&lt;/h2&gt;&lt;h3 id=&#34;1-阶段流程图&#34;&gt;1. 阶段流程图
+&lt;h2 id=&#34;整体执行流程&#34;&gt;整体执行流程
+&lt;/h2&gt;&lt;h3 id=&#34;阶段流程图&#34;&gt;阶段流程图
 &lt;/h3&gt;&lt;pre class=&#34;mermaid&#34;&gt;flowchart TB
     subgraph Hugo 构建阶段
         MD[Markdown 文章&amp;lt;br/&amp;gt;```mermaid 代码块]
@@ -165,7 +758,7 @@
         HTML --&amp;gt; DOM --&amp;gt; CDN --&amp;gt; SVG
     end&lt;/pre&gt;
 
-&lt;h3 id=&#34;2-时序流程&#34;&gt;2. 时序流程
+&lt;h3 id=&#34;时序流程&#34;&gt;时序流程
 &lt;/h3&gt;&lt;pre class=&#34;mermaid&#34;&gt;sequenceDiagram
     作者-&amp;gt;&amp;gt;Hugo: 编写含 mermaid 代码块的文档
     Hugo-&amp;gt;&amp;gt;Hugo: 执行代码块钩子转换标签
@@ -175,7 +768,7 @@
     mermaid.js-&amp;gt;&amp;gt;mermaid.js: 初始化&amp;#43;主题适配
     mermaid.js-&amp;gt;&amp;gt;浏览器: 将 pre 渲染为 SVG 图表&lt;/pre&gt;
 
-&lt;h2 id=&#34;六可选优化进阶配置&#34;&gt;六、可选优化（进阶配置）
+&lt;h2 id=&#34;可选优化进阶配置&#34;&gt;可选优化（进阶配置）
 &lt;/h2&gt;&lt;p&gt;根据自身需求按需开启，提升体验与兼容性：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -211,7 +804,7 @@
 为 &lt;code&gt;.mermaid&lt;/code&gt; 增加 CSS 样式，实现图表居中、自适应、横向滚动，避免宽图表撑破页面布局。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;七本地验证&#34;&gt;七、本地验证
+&lt;h2 id=&#34;本地验证&#34;&gt;本地验证
 &lt;/h2&gt;&lt;p&gt;配置完成后启动本地服务测试：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -881,7 +1474,7 @@
   Ctrl-&amp;gt;&amp;gt;Int: 包装响应
   Int--&amp;gt;&amp;gt;FE: code=1 data=...&lt;/pre&gt;
 
-&lt;h2 id=&#34;step-1controller-接路由&#34;&gt;Step 1：Controller 接路由
+&lt;h2 id=&#34;controller-接路由&#34;&gt;Controller 接路由
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/user.controller.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -916,7 +1509,7 @@
 &lt;p&gt;前端类比：Vue Router 负责匹配页面；Nest Controller 负责匹配接口。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;UserController.login&lt;/code&gt; 只负责接收 &lt;code&gt;LoginDto&lt;/code&gt; 并调用 &lt;code&gt;UserService.login&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-2dto-校验&#34;&gt;Step 2：DTO 校验
+&lt;h2 id=&#34;dto-校验&#34;&gt;DTO 校验
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/dto/user.dto.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -954,7 +1547,7 @@
 &lt;p&gt;前端类比：前端表单 rules 提升体验，后端 DTO + Pipe 保证接口边界可靠。&lt;/p&gt;
 &lt;p&gt;本项目落点：全局 &lt;code&gt;ValidationPipe&lt;/code&gt; 会处理 &lt;code&gt;LoginDto&lt;/code&gt;、&lt;code&gt;RegisterDto&lt;/code&gt;、&lt;code&gt;SubmitTestQuestionDto&lt;/code&gt; 等输入对象。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-3service-执行业务&#34;&gt;Step 3：Service 执行业务
+&lt;h2 id=&#34;service-执行业务&#34;&gt;Service 执行业务
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/user.service.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -993,7 +1586,7 @@
 &lt;p&gt;前端类比：把页面事件里的请求、状态计算、错误处理抽到 store action 或 composable。&lt;/p&gt;
 &lt;p&gt;本项目落点：登录流程里的查用户、比对密码、写 Redis token 都在 &lt;code&gt;UserService.login&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-4参数装饰器一览&#34;&gt;Step 4：参数装饰器一览
+&lt;h2 id=&#34;参数装饰器一览&#34;&gt;参数装饰器一览
 &lt;/h2&gt;&lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -1026,7 +1619,7 @@
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Query 参数默认是字符串，&lt;code&gt;ValidationPipe&lt;/code&gt; 的 &lt;code&gt;transform: true&lt;/code&gt; 可配合 DTO 里的 &lt;code&gt;@Type(() =&amp;gt; Number)&lt;/code&gt; 做类型转换。&lt;/p&gt;
-&lt;h2 id=&#34;step-5responseinterceptor-包装&#34;&gt;Step 5：ResponseInterceptor 包装
+&lt;h2 id=&#34;responseinterceptor-包装&#34;&gt;ResponseInterceptor 包装
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/interceptors/response.interceptor.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1069,7 +1662,7 @@
 &lt;p&gt;前端类比：axios response interceptor 统一拆包；Nest response interceptor 统一装包。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;ResponseInterceptor&lt;/code&gt; 固定输出 &lt;code&gt;{ code, message, data }&lt;/code&gt;，前端只需要按一种结构取数据。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-6异常-filter&#34;&gt;Step 6：异常 Filter
+&lt;h2 id=&#34;异常-filter&#34;&gt;异常 Filter
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/filters/http-exception.filter.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1137,7 +1730,7 @@
 &lt;p&gt;前端类比：axios error handler 统一弹错误提示；Nest Filter 统一返回错误 JSON。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;AllExceptionsFilter&lt;/code&gt; 让 &lt;code&gt;NotFoundException&lt;/code&gt;、&lt;code&gt;UnauthorizedException&lt;/code&gt; 等异常都变成前端可读的 &lt;code&gt;{ code, message, data: null }&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-7logginginterceptor&#34;&gt;Step 7：LoggingInterceptor
+&lt;h2 id=&#34;logginginterceptor&#34;&gt;LoggingInterceptor
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/interceptors/logging.interceptor.ts&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;每个请求打一行日志：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2155,7 +2748,7 @@
   Ctrl-&amp;gt;&amp;gt;Int: 包装响应
   Int--&amp;gt;&amp;gt;FE: code=1 data=...&lt;/pre&gt;
 
-&lt;h2 id=&#34;step-1controller-接路由&#34;&gt;Step 1：Controller 接路由
+&lt;h2 id=&#34;controller-接路由&#34;&gt;Controller 接路由
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/user.controller.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2190,7 +2783,7 @@
 &lt;p&gt;前端类比：Vue Router 负责匹配页面；Nest Controller 负责匹配接口。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;UserController.login&lt;/code&gt; 只负责接收 &lt;code&gt;LoginDto&lt;/code&gt; 并调用 &lt;code&gt;UserService.login&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-2dto-校验&#34;&gt;Step 2：DTO 校验
+&lt;h2 id=&#34;dto-校验&#34;&gt;DTO 校验
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/dto/user.dto.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2228,7 +2821,7 @@
 &lt;p&gt;前端类比：前端表单 rules 提升体验，后端 DTO + Pipe 保证接口边界可靠。&lt;/p&gt;
 &lt;p&gt;本项目落点：全局 &lt;code&gt;ValidationPipe&lt;/code&gt; 会处理 &lt;code&gt;LoginDto&lt;/code&gt;、&lt;code&gt;RegisterDto&lt;/code&gt;、&lt;code&gt;SubmitTestQuestionDto&lt;/code&gt; 等输入对象。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-3service-执行业务&#34;&gt;Step 3：Service 执行业务
+&lt;h2 id=&#34;service-执行业务&#34;&gt;Service 执行业务
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/user.service.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2267,7 +2860,7 @@
 &lt;p&gt;前端类比：把页面事件里的请求、状态计算、错误处理抽到 store action 或 composable。&lt;/p&gt;
 &lt;p&gt;本项目落点：登录流程里的查用户、比对密码、写 Redis token 都在 &lt;code&gt;UserService.login&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-4参数装饰器一览&#34;&gt;Step 4：参数装饰器一览
+&lt;h2 id=&#34;参数装饰器一览&#34;&gt;参数装饰器一览
 &lt;/h2&gt;&lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -2300,7 +2893,7 @@
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Query 参数默认是字符串，&lt;code&gt;ValidationPipe&lt;/code&gt; 的 &lt;code&gt;transform: true&lt;/code&gt; 可配合 DTO 里的 &lt;code&gt;@Type(() =&amp;gt; Number)&lt;/code&gt; 做类型转换。&lt;/p&gt;
-&lt;h2 id=&#34;step-5responseinterceptor-包装&#34;&gt;Step 5：ResponseInterceptor 包装
+&lt;h2 id=&#34;responseinterceptor-包装&#34;&gt;ResponseInterceptor 包装
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/interceptors/response.interceptor.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2343,7 +2936,7 @@
 &lt;p&gt;前端类比：axios response interceptor 统一拆包；Nest response interceptor 统一装包。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;ResponseInterceptor&lt;/code&gt; 固定输出 &lt;code&gt;{ code, message, data }&lt;/code&gt;，前端只需要按一种结构取数据。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-6异常-filter&#34;&gt;Step 6：异常 Filter
+&lt;h2 id=&#34;异常-filter&#34;&gt;异常 Filter
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/filters/http-exception.filter.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2411,7 +3004,7 @@
 &lt;p&gt;前端类比：axios error handler 统一弹错误提示；Nest Filter 统一返回错误 JSON。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;AllExceptionsFilter&lt;/code&gt; 让 &lt;code&gt;NotFoundException&lt;/code&gt;、&lt;code&gt;UnauthorizedException&lt;/code&gt; 等异常都变成前端可读的 &lt;code&gt;{ code, message, data: null }&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-7logginginterceptor&#34;&gt;Step 7：LoggingInterceptor
+&lt;h2 id=&#34;logginginterceptor&#34;&gt;LoggingInterceptor
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/interceptors/logging.interceptor.ts&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;每个请求打一行日志：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2932,14 +3525,14 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;逐步拆解：&lt;/p&gt;
-&lt;h3 id=&#34;1-nestfactorycreateappmodule&#34;&gt;1. NestFactory.create(AppModule)
+&lt;h3 id=&#34;nestfactorycreateappmodule&#34;&gt;NestFactory.create(AppModule)
 &lt;/h3&gt;&lt;p&gt;创建 Nest 应用实例，加载根模块 &lt;code&gt;AppModule&lt;/code&gt;。类比 Vue 的 &lt;code&gt;createApp(App)&lt;/code&gt; —— 从这里开始组装整个应用。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;知识点：&lt;code&gt;NestFactory&lt;/code&gt; 是 Nest 应用的启动工厂，默认创建基于 Express 的 HTTP 应用，也可以切换 Fastify 等 HTTP adapter。&lt;/p&gt;
 &lt;p&gt;前端类比：&lt;code&gt;createApp(App)&lt;/code&gt; 只创建前端应用实例；&lt;code&gt;NestFactory.create(AppModule)&lt;/code&gt; 创建的是一个长期监听端口的服务端应用实例。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;main.ts&lt;/code&gt; 把 &lt;code&gt;AppModule&lt;/code&gt; 作为根模块传入，后续所有 Controller、Service、数据库、Redis、队列都从这里被装配进应用。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;2-enablecors&#34;&gt;2. enableCors
+&lt;h3 id=&#34;enablecors&#34;&gt;enableCors
 &lt;/h3&gt;&lt;p&gt;允许跨域。前端 &lt;code&gt;localhost:5173&lt;/code&gt; 调后端 &lt;code&gt;localhost:8080&lt;/code&gt; 属于跨域，不加 CORS 浏览器会拦。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;origin: &#39;*&#39;&lt;/code&gt; 表示允许任意来源（生产环境应收紧）。&lt;/p&gt;
 &lt;blockquote&gt;
@@ -2947,7 +3540,7 @@
 &lt;p&gt;前端类比：本地 Vite 代理可以绕开跨域；生产环境通常由后端 CORS 或网关统一处理。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;app.enableCors({ origin: &#39;*&#39; })&lt;/code&gt; 让前端开发环境可以直接请求 &lt;code&gt;8080&lt;/code&gt; 端口。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;3-useglobalpipesvalidationpipe&#34;&gt;3. useGlobalPipes(ValidationPipe)
+&lt;h3 id=&#34;useglobalpipesvalidationpipe&#34;&gt;useGlobalPipes(ValidationPipe)
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;管道（Pipe）&lt;/strong&gt;：请求进 Controller 之前，对入参做转换和校验。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;transform: true&lt;/code&gt; — 把 query 字符串 &lt;code&gt;&amp;quot;1&amp;quot;&lt;/code&gt; 转成数字 &lt;code&gt;1&lt;/code&gt;&lt;/li&gt;
@@ -2959,7 +3552,7 @@
 &lt;p&gt;前端类比：前端 rules 是用户体验；后端 Pipe 是安全边界，因为请求可以绕过页面直接打接口。&lt;/p&gt;
 &lt;p&gt;本项目落点：登录、注册、提交题目等 DTO 都会先过全局 &lt;code&gt;ValidationPipe&lt;/code&gt;，不合法参数不会进入 Service。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;4-useglobalfiltersallexceptionsfilter&#34;&gt;4. useGlobalFilters(AllExceptionsFilter)
+&lt;h3 id=&#34;useglobalfiltersallexceptionsfilter&#34;&gt;useGlobalFilters(AllExceptionsFilter)
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;过滤器（Filter）&lt;/strong&gt;：任何地方抛异常，统一 catch 成 JSON 返回。&lt;/p&gt;
 &lt;p&gt;成功和失败格式不同，前端可以统一处理：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2978,7 +3571,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;code&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;401&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Token无效或已过期&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;data&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;5-useglobalinterceptors&#34;&gt;5. useGlobalInterceptors
+&lt;/div&gt;&lt;h3 id=&#34;useglobalinterceptors&#34;&gt;useGlobalInterceptors
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;拦截器（Interceptor）&lt;/strong&gt;：包裹 Controller 返回值，做日志、格式包装。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;LoggingInterceptor&lt;/code&gt; — 打日志：&lt;code&gt;GET /api/user/status 200 12ms&lt;/code&gt;&lt;/li&gt;
@@ -2990,7 +3583,7 @@
 &lt;p&gt;前端类比：axios interceptor 统一处理请求和响应；Nest Interceptor 统一包装服务端返回值。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;LoggingInterceptor&lt;/code&gt; 记录请求耗时，&lt;code&gt;ResponseInterceptor&lt;/code&gt; 把成功结果包装成统一 JSON，&lt;code&gt;AllExceptionsFilter&lt;/code&gt; 把异常包装成统一错误 JSON。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;6-applisten8080&#34;&gt;6. app.listen(8080)
+&lt;h3 id=&#34;applisten8080&#34;&gt;app.listen(8080)
 &lt;/h3&gt;&lt;p&gt;开始监听端口。此后每个 HTTP 请求都会走 Nest 的路由分发。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;知识点：&lt;code&gt;listen&lt;/code&gt; 之后 Node 进程不会退出，而是进入事件循环，持续等待新请求。&lt;/p&gt;
@@ -3445,7 +4038,7 @@
     &gt;项目代码&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;一我们要解决什么问题通俗版&#34;&gt;一、我们要解决什么问题？（通俗版）
+&lt;h2 id=&#34;我们要解决什么问题通俗版&#34;&gt;我们要解决什么问题？（通俗版）
 &lt;/h2&gt;&lt;p&gt;先说说我们原本的数据库GUI工具能干啥：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -3502,7 +4095,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;二整体架构讲解大白话版&#34;&gt;二、整体架构讲解（大白话版）
+&lt;h2 id=&#34;整体架构讲解大白话版&#34;&gt;整体架构讲解（大白话版）
 &lt;/h2&gt;&lt;p&gt;整个项目分为 &lt;strong&gt;前端Vue + 后端NestJS + Python AI服务&lt;/strong&gt; 三层，很多新手疑惑：&lt;strong&gt;为什么要拆成两个后端？&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;这里通俗解释：&lt;/p&gt;
 &lt;ul&gt;
@@ -3529,7 +4122,7 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;三项目目录结构新手必看&#34;&gt;三、项目目录结构（新手必看）
+&lt;h2 id=&#34;项目目录结构新手必看&#34;&gt;项目目录结构（新手必看）
 &lt;/h2&gt;&lt;p&gt;不用乱建文件，直接对照这个结构搭建即可：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3560,8 +4153,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;四python-ai服务搭建核心功能&#34;&gt;四、Python AI服务搭建（核心功能）
-&lt;/h2&gt;&lt;h3 id=&#34;1-安装依赖包&#34;&gt;1. 安装依赖包
+&lt;h2 id=&#34;python-ai服务搭建核心功能&#34;&gt;Python AI服务搭建（核心功能）
+&lt;/h2&gt;&lt;h3 id=&#34;安装依赖包&#34;&gt;安装依赖包
 &lt;/h3&gt;&lt;p&gt;在 &lt;code&gt;agent\-service/requirements\.txt&lt;/code&gt; 写入需要的依赖：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3596,7 +4189,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;uv pip install -r requirements.txt
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2-配置环境变量&#34;&gt;2. 配置环境变量
+&lt;/div&gt;&lt;h3 id=&#34;配置环境变量&#34;&gt;配置环境变量
 &lt;/h3&gt;&lt;p&gt;新建 &lt;code&gt;\.env&lt;/code&gt; 文件，填入自己的大模型密钥：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3610,7 +4203,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;OPENAI_BASE_URL=  # 可选，第三方模型地址可填空
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-启动python服务&#34;&gt;3. 启动Python服务
+&lt;/div&gt;&lt;h3 id=&#34;启动python服务&#34;&gt;启动Python服务
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3621,8 +4214,8 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;启动成功后，Python服务会跑在 &lt;strong&gt;8000端口&lt;/strong&gt;&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;五python核心代码逐句通俗讲解&#34;&gt;五、Python核心代码逐句通俗讲解
-&lt;/h2&gt;&lt;h3 id=&#34;1-状态定义ai的记事本&#34;&gt;1. 状态定义：AI的“记事本”
+&lt;h2 id=&#34;python核心代码逐句通俗讲解&#34;&gt;Python核心代码逐句通俗讲解
+&lt;/h2&gt;&lt;h3 id=&#34;状态定义ai的记事本&#34;&gt;状态定义：AI的“记事本”
 &lt;/h3&gt;&lt;p&gt;LangGraph的核心就是&lt;strong&gt;全局状态&lt;/strong&gt;，相当于一个共享记事本，所有AI功能都能读写这里的数据：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3641,7 +4234,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;简单理解：存用户问题、页面信息、AI结果的公共容器。&lt;/p&gt;
-&lt;h3 id=&#34;2-请求参数校验防止乱传数据&#34;&gt;2. 请求参数校验：防止乱传数据
+&lt;h3 id=&#34;请求参数校验防止乱传数据&#34;&gt;请求参数校验：防止乱传数据
 &lt;/h3&gt;&lt;p&gt;限制用户只能用我们预设的3个功能，避免报错：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3657,7 +4250,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    context: Optional[Dict[str, Any]] = None
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-连接大模型&#34;&gt;3. 连接大模型
+&lt;/div&gt;&lt;h3 id=&#34;连接大模型&#34;&gt;连接大模型
 &lt;/h3&gt;&lt;p&gt;读取配置文件，自动连接OpenAI（或兼容的第三方模型），参数做了容错，不会轻易崩溃：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -3670,7 +4263,7 @@
 &lt;p&gt;温度值0.2，&lt;strong&gt;回答更稳定、少胡说&lt;/strong&gt;，适合SQL场景&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-智能提示词切换一个模型干三件事&#34;&gt;4. 智能提示词切换：一个模型干三件事
+&lt;h3 id=&#34;智能提示词切换一个模型干三件事&#34;&gt;智能提示词切换：一个模型干三件事
 &lt;/h3&gt;&lt;p&gt;我们不用写三个AI接口，&lt;strong&gt;同一个大模型，切换不同身份&lt;/strong&gt;，实现三种功能：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -3684,11 +4277,11 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;再把用户问题、当前数据表信息传给AI，就能精准输出对应答案。&lt;/p&gt;
-&lt;h3 id=&#34;5-langgraph核心流程图极简版&#34;&gt;5. LangGraph核心流程图（极简版）
+&lt;h3 id=&#34;langgraph核心流程图极简版&#34;&gt;LangGraph核心流程图（极简版）
 &lt;/h3&gt;&lt;p&gt;目前的逻辑非常简单，新手无压力：&lt;/p&gt;
 &lt;p&gt;程序启动 → 读取状态 → 调用大模型 → 生成答案 → 结束&lt;/p&gt;
 &lt;p&gt;后续想加功能（比如SQL风险检测、上下文优化），直接新增节点即可，不用重构代码。&lt;/p&gt;
-&lt;h3 id=&#34;6-两个核心接口&#34;&gt;6. 两个核心接口
+&lt;h3 id=&#34;两个核心接口&#34;&gt;两个核心接口
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;GET /health&lt;/strong&gt;：健康检查，判断AI服务是否正常启动&lt;/p&gt;
@@ -3721,7 +4314,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;六nestjs后端适配转发层超简单&#34;&gt;六、NestJS后端适配（转发层，超简单）
+&lt;h2 id=&#34;nestjs后端适配转发层超简单&#34;&gt;NestJS后端适配（转发层，超简单）
 &lt;/h2&gt;&lt;p&gt;NestJS这一层&lt;strong&gt;不写任何AI逻辑&lt;/strong&gt;，只做两件事：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -3731,9 +4324,9 @@
 &lt;p&gt;转发给Python AI服务，接收结果后统一返回给前端&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;1-模块注册&#34;&gt;1. 模块注册
+&lt;h3 id=&#34;模块注册&#34;&gt;模块注册
 &lt;/h3&gt;&lt;p&gt;新建agent模块、控制器、服务文件，在全局模块中注册即可，属于Nest基础操作。&lt;/p&gt;
-&lt;h3 id=&#34;2-配置服务地址&#34;&gt;2. 配置服务地址
+&lt;h3 id=&#34;配置服务地址&#34;&gt;配置服务地址
 &lt;/h3&gt;&lt;p&gt;在backend的.env文件中配置Python服务地址：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3743,7 +4336,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Plain&#34; data-lang=&#34;Plain&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;LANGGRAPH_SERVICE_URL=http://127.0.0.1:8000
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-接口统一规范&#34;&gt;3. 接口统一规范
+&lt;/div&gt;&lt;h3 id=&#34;接口统一规范&#34;&gt;接口统一规范
 &lt;/h3&gt;&lt;p&gt;对外统一暴露两个接口，前端不用关心后端分层：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -3753,10 +4346,10 @@
 &lt;p&gt;&lt;code&gt;POST /api/agent/run&lt;/code&gt;：调用AI智能功能&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-错误统一处理&#34;&gt;4. 错误统一处理
+&lt;h3 id=&#34;错误统一处理&#34;&gt;错误统一处理
 &lt;/h3&gt;&lt;p&gt;如果Python服务挂了、请求超时、参数错误，Nest都会返回统一格式的报错，&lt;strong&gt;前端不用单独处理各种异常&lt;/strong&gt;，体验更友好。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;七完整请求流程从头到尾&#34;&gt;七、完整请求流程（从头到尾）
+&lt;h2 id=&#34;完整请求流程从头到尾&#34;&gt;完整请求流程（从头到尾）
 &lt;/h2&gt;&lt;p&gt;1. 用户在前端选择功能、输入问题
 2. 前端自动组装当前数据库、数据表信息
 3. 前端请求NestJS接口
@@ -3766,7 +4359,7 @@
 7. Nest统一封装结果，返回给前端
 8. 前端展示AI回答&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;八本地调试命令直接复制即用&#34;&gt;八、本地调试命令（直接复制即用）
+&lt;h2 id=&#34;本地调试命令直接复制即用&#34;&gt;本地调试命令（直接复制即用）
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;启动Python AI服务&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3807,7 +4400,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;九新手总结核心重点&#34;&gt;九、新手总结（核心重点）
+&lt;h2 id=&#34;新手总结核心重点&#34;&gt;新手总结（核心重点）
 &lt;/h2&gt;&lt;p&gt;1. &lt;strong&gt;分层思想&lt;/strong&gt;：Nest负责业务转发，Python负责AI计算，各司其职，好维护、好扩展
 2. &lt;strong&gt;LangGraph作用&lt;/strong&gt;：提供统一的状态管理，让AI逻辑结构化，后续新增功能不用重构
 3. &lt;strong&gt;安全设计&lt;/strong&gt;：AI只做文字分析和代码生成，不操作真实数据库，零风险
@@ -3825,18 +4418,18 @@
 写代码搞不懂执行顺序、定时器不准、Promise 和 async/await 混用出错、面试被问懵，本质都是没吃透JS异步的进化逻辑和底层事件循环机制。&lt;/p&gt;
 &lt;p&gt;本文从零开始，循序渐进带大家吃透JS异步全套知识：从最原始的回调地狱，到Promise规范化，再到终极async/await写法，最后直击底层事件循环、宏任务与微任务核心逻辑，看完彻底告别异步代码混乱问题。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;一先搞懂js异步的核心本质&#34;&gt;一、先搞懂：JS异步的核心本质
+&lt;h2 id=&#34;先搞懂js异步的核心本质&#34;&gt;先搞懂：JS异步的核心本质
 &lt;/h2&gt;&lt;p&gt;JavaScript是&lt;strong&gt;单线程语言&lt;/strong&gt;，同一时间只能执行一段代码，为了避免耗时任务（定时器、网络请求、用户交互）阻塞主线程，就诞生了异步编程。&lt;/p&gt;
 &lt;p&gt;异步的核心精髓：把后续要执行的逻辑交给函数托管，等异步任务就绪后，自动回调执行，主线程无需等待，可以继续执行其他代码。&lt;/p&gt;
 &lt;p&gt;JS异步编程经历了&lt;strong&gt;三次重大进化&lt;/strong&gt;，完成了从混乱到优雅的蜕变：
 &lt;code&gt;回调函数 → Promise → async/await&lt;/code&gt;
 而支撑这一切运行的底层核心，就是&lt;strong&gt;事件循环&lt;/strong&gt;。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;二异步初代回调函数噩梦开端&#34;&gt;二、异步初代：回调函数（噩梦开端）
-&lt;/h2&gt;&lt;h3 id=&#34;1-什么是回调函数&#34;&gt;1. 什么是回调函数？
+&lt;h2 id=&#34;异步初代回调函数噩梦开端&#34;&gt;异步初代：回调函数（噩梦开端）
+&lt;/h2&gt;&lt;h3 id=&#34;什么是回调函数&#34;&gt;什么是回调函数？
 &lt;/h3&gt;&lt;p&gt;JS中函数是「一等公民」，可以作为参数传递给其他函数。简单来说：把函数A传给函数B，让B在合适的时机回过头调用A，A就是回调函数。&lt;/p&gt;
 &lt;p&gt;日常开发中定时器、接口请求、点击事件，最基础的实现方式都是回调函数。&lt;/p&gt;
-&lt;h3 id=&#34;2-基础示例&#34;&gt;2. 基础示例
+&lt;h3 id=&#34;基础示例&#34;&gt;基础示例
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -3853,7 +4446,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-致命缺陷回调地狱&#34;&gt;3. 致命缺陷：回调地狱
+&lt;/div&gt;&lt;h3 id=&#34;致命缺陷回调地狱&#34;&gt;致命缺陷：回调地狱
 &lt;/h3&gt;&lt;p&gt;当多个异步任务存在&lt;strong&gt;顺序依赖&lt;/strong&gt;（必须上一个执行完，再执行下一个）时，回调函数会无限嵌套，形成让人崩溃的回调地狱。&lt;/p&gt;
 &lt;p&gt;需求：延时1秒打印a → 再延时1秒打印b → 再延时1秒打印c&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -3880,7 +4473,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;4-回调地狱五大痛点&#34;&gt;4. 回调地狱五大痛点
+&lt;/div&gt;&lt;h3 id=&#34;回调地狱五大痛点&#34;&gt;回调地狱五大痛点
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;可读性极差：代码无限缩进，层级混乱，一眼看不懂逻辑&lt;/li&gt;
 &lt;li&gt;业务耦合严重：核心业务被嵌套结构淹没，难以维护&lt;/li&gt;
@@ -3890,20 +4483,20 @@
 &lt;/ul&gt;
 &lt;p&gt;为了解决回调地狱的问题，&lt;strong&gt;Promise&lt;/strong&gt; 应运而生。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;三异步二代promise规范化解决方案&#34;&gt;三、异步二代：Promise（规范化解决方案）
+&lt;h2 id=&#34;异步二代promise规范化解决方案&#34;&gt;异步二代：Promise（规范化解决方案）
 &lt;/h2&gt;&lt;blockquote&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.jiangxu.net/blog/promiseTutorial&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;推荐的手撕过程&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;如果说回调函数是「口头约定」，那 Promise 就是标准化的异步凭证，可以通俗理解为「取餐号」。&lt;/p&gt;
 &lt;p&gt;异步任务开始后，不会直接返回结果，而是返回一个Promise凭证，任务成功/失败后，再通过凭证获取结果，彻底消灭嵌套回调。&lt;/p&gt;
-&lt;h3 id=&#34;1-promise核心规则&#34;&gt;1. Promise核心规则
+&lt;h3 id=&#34;promise核心规则&#34;&gt;Promise核心规则
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;三种状态：&lt;code&gt;pending&lt;/code&gt;（进行中）、&lt;code&gt;fulfilled&lt;/code&gt;（成功）、&lt;code&gt;rejected&lt;/code&gt;（失败）&lt;/li&gt;
 &lt;li&gt;状态不可逆：一旦从进行中变为成功/失败，就永远不会改变&lt;/li&gt;
 &lt;li&gt;支持链式调用：通过 &lt;code&gt;.then()&lt;/code&gt; 处理成功、&lt;code&gt;.catch()&lt;/code&gt; 捕获错误&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-promise改造回调地狱&#34;&gt;2. Promise改造回调地狱
+&lt;h3 id=&#34;promise改造回调地狱&#34;&gt;Promise改造回调地狱
 &lt;/h3&gt;&lt;p&gt;同样的顺序执行需求，用Promise实现，彻底告别嵌套，代码线性整洁：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3945,7 +4538,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;then&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;res&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;console&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;res&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-promise四大并发工具开发高频用&#34;&gt;3. Promise四大并发工具（开发高频用）
+&lt;/div&gt;&lt;h3 id=&#34;promise四大并发工具开发高频用&#34;&gt;Promise四大并发工具（开发高频用）
 &lt;/h3&gt;&lt;p&gt;针对多异步任务并发场景，Promise提供四个核心方法，按需选择即可：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;Promise.all&lt;/code&gt;：全部任务成功才成功，任意一个失败直接失败（一败全败）&lt;/li&gt;
@@ -3954,14 +4547,14 @@
 &lt;li&gt;&lt;code&gt;Promise.any&lt;/code&gt;：任意一个任务成功就结束，全部失败才会失败&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;四异步终极版asyncawait同步写法写异步&#34;&gt;四、异步终极版：async/await（同步写法写异步）
+&lt;h2 id=&#34;异步终极版asyncawait同步写法写异步&#34;&gt;异步终极版：async/await（同步写法写异步）
 &lt;/h2&gt;&lt;p&gt;async/await 是 &lt;strong&gt;Promise 的语法糖&lt;/strong&gt;，底层完全基于Promise实现，没有新增功能，但彻底解决了Promise链式调用的冗长问题，让异步代码写起来和同步代码一模一样，是目前前端开发的最佳实践。&lt;/p&gt;
-&lt;h3 id=&#34;1-核心语法规则&#34;&gt;1. 核心语法规则
+&lt;h3 id=&#34;核心语法规则&#34;&gt;核心语法规则
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;async&lt;/code&gt;：修饰函数，被修饰的函数永远返回一个Promise对象&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;await&lt;/code&gt;：暂停当前async函数的执行，等待Promise执行完成，直接取出最终结果，无需.then链式调用&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-终极简洁实现&#34;&gt;2. 终极简洁实现
+&lt;h3 id=&#34;终极简洁实现&#34;&gt;终极简洁实现
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -3990,7 +4583,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-标准错误处理&#34;&gt;3. 标准错误处理
+&lt;/div&gt;&lt;h3 id=&#34;标准错误处理&#34;&gt;标准错误处理
 &lt;/h3&gt;&lt;p&gt;async/await 不再用 &lt;code&gt;.catch()&lt;/code&gt; 捕获错误，统一使用 &lt;code&gt;try/catch&lt;/code&gt;，异常处理更规整：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -4016,15 +4609,15 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;4-新手必踩陷阱&#34;&gt;4. 新手必踩陷阱
+&lt;/div&gt;&lt;h3 id=&#34;新手必踩陷阱&#34;&gt;新手必踩陷阱
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;循环中的await默认&lt;strong&gt;顺序执行&lt;/strong&gt;：每次等待上一个任务完成，再执行下一个，速度慢&lt;/li&gt;
 &lt;li&gt;并行执行方案：需要同时执行多个异步任务时，必须搭配 &lt;code&gt;Promise.all&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;五异步底层核心事件循环彻底搞定执行顺序&#34;&gt;五、异步底层核心：事件循环（彻底搞定执行顺序）
+&lt;h2 id=&#34;异步底层核心事件循环彻底搞定执行顺序&#34;&gt;异步底层核心：事件循环（彻底搞定执行顺序）
 &lt;/h2&gt;&lt;p&gt;学会用法只是入门，想要彻底弄懂代码执行先后顺序、解决所有异步bug、应对面试，必须掌握&lt;strong&gt;事件循环机制&lt;/strong&gt;，这是JS异步的底层调度核心。&lt;/p&gt;
-&lt;h3 id=&#34;1-事件循环核心执行铁律&#34;&gt;1. 事件循环核心执行铁律
+&lt;h3 id=&#34;事件循环核心执行铁律&#34;&gt;事件循环核心执行铁律
 &lt;/h3&gt;&lt;p&gt;JS单线程执行，所有代码遵循固定优先级顺序，事件循环只在调用栈清空后轮转：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;优先执行主线程调用栈：只要调用栈有代码执行，事件循环暂停&lt;/li&gt;
@@ -4032,7 +4625,7 @@
 &lt;li&gt;执行一个宏任务：微任务清空后，从宏任务队列取出一个任务执行&lt;/li&gt;
 &lt;li&gt;循环往复：一个宏任务执行完毕，再次清空所有微任务，无限轮转&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;2-宏任务--微任务分类优先级重点&#34;&gt;2. 宏任务 &amp;amp; 微任务分类（优先级重点）
+&lt;h3 id=&#34;宏任务--微任务分类优先级重点&#34;&gt;宏任务 &amp;amp; 微任务分类（优先级重点）
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;微任务（高优先级）&lt;/strong&gt;：优先执行，全部清空再走宏任务&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Promise.then / catch / finally&lt;/li&gt;
@@ -4046,7 +4639,7 @@
 &lt;li&gt;页面点击、滚动等用户交互事件&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;✅ 经典结论：所有场景下，&lt;code&gt;Promise.then&lt;/code&gt; 永远早于 &lt;code&gt;setTimeout(0)&lt;/code&gt; 执行&lt;/p&gt;
-&lt;h3 id=&#34;3-硬核知识点then回调的真实执行逻辑&#34;&gt;3. 硬核知识点：.then回调的真实执行逻辑
+&lt;h3 id=&#34;硬核知识点then回调的真实执行逻辑&#34;&gt;硬核知识点：.then回调的真实执行逻辑
 &lt;/h3&gt;&lt;p&gt;90%初学者都会误解：以为.then回调一执行就进入微任务队列，真实逻辑完全不同：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;.then回调不会进入浏览器Web APIs（仅定时器、网络请求存放此处）&lt;/li&gt;
@@ -4054,7 +4647,7 @@
 &lt;li&gt;真实位置：挂载在Promise内部的reactions回调列表中&lt;/li&gt;
 &lt;li&gt;执行时机：只有Promise状态敲定（成功/失败）的瞬间，才会把回调批量推入微任务队列&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;4-开发高危坑点微任务饥饿&#34;&gt;4. 开发高危坑点：微任务饥饿
+&lt;h3 id=&#34;开发高危坑点微任务饥饿&#34;&gt;开发高危坑点：微任务饥饿
 &lt;/h3&gt;&lt;p&gt;这是生产环境高频隐形bug，新手极易忽略！&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;现象：在微任务内部递归生成新微任务，导致微任务队列永远无法清空，事件循环一直卡在微任务阶段，宏任务永久无法执行&lt;/li&gt;
@@ -4081,7 +4674,7 @@
 &lt;li&gt;避坑原则：&lt;strong&gt;绝对禁止&lt;/strong&gt;在微任务中无限递归注册新微任务&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;六全篇核心总结新手必背&#34;&gt;六、全篇核心总结（新手必背）
+&lt;h2 id=&#34;全篇核心总结新手必背&#34;&gt;全篇核心总结（新手必背）
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;异步进化路径&lt;/strong&gt;
@@ -4103,7 +4696,7 @@
 &lt;li&gt;警惕微任务无限递归导致的页面卡死问题&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;七写在最后&#34;&gt;七、写在最后
+&lt;h2 id=&#34;写在最后&#34;&gt;写在最后
 &lt;/h2&gt;&lt;p&gt;JS异步是前端进阶的分水岭，看懂语法只是基础，理解事件循环的调度逻辑，才能真正掌控异步代码的执行顺序，彻底解决开发中的异步bug，同时轻松应对面试高频考点。&lt;/p&gt;
 &lt;p&gt;后续所有复杂异步逻辑（接口并发、轮询、延时操作、异步串行），都离不开本文的基础知识点。&lt;/p&gt;
 </description>
@@ -4115,8 +4708,8 @@
         
         <guid>https://ye-guan-xing.github.io/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</guid>
         <description>&lt;p&gt;Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是前端/全栈开发的常见痛点。本文对比NVM、npm的核心缺点，详解Volta和pnpm的优势，并整理常用命令、全栈项目标准化启动流程及最佳实践。&lt;/p&gt;
-&lt;h2 id=&#34;一nvmnpm-的核心痛点&#34;&gt;一、NVM+npm 的核心痛点
-&lt;/h2&gt;&lt;h3 id=&#34;1-nvm-的问题&#34;&gt;1. NVM 的问题
+&lt;h2 id=&#34;nvmnpm-的核心痛点&#34;&gt;NVM+npm 的核心痛点
+&lt;/h2&gt;&lt;h3 id=&#34;nvm-的问题&#34;&gt;NVM 的问题
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;跨平台差&lt;/strong&gt;：仅原生支持Linux/macOS，Windows需用非官方的NVM-windows，且存在兼容性问题&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;全局CLI失效&lt;/strong&gt;：切换Node版本后，已安装的全局工具需重新安装，浪费时间&lt;/li&gt;
@@ -4124,7 +4717,7 @@
 &lt;li&gt;&lt;strong&gt;速度慢&lt;/strong&gt;：虽有缓存但机制不完善，每次安装/切换仍需较长时间&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;项目锁定不智能&lt;/strong&gt;：需手动创建.nvmrc文件，且不会自动切换版本&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-npm-的致命问题从依赖臃肿到幽灵依赖&#34;&gt;2. npm 的致命问题：从依赖臃肿到幽灵依赖
+&lt;h3 id=&#34;npm-的致命问题从依赖臃肿到幽灵依赖&#34;&gt;npm 的致命问题：从依赖臃肿到幽灵依赖
 &lt;/h3&gt;&lt;p&gt;npm的扁平化依赖设计虽然解决了早期的嵌套地狱问题，但引入了更严重的隐患：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;安装慢&lt;/strong&gt;：扁平化依赖树导致重复下载，大型项目安装动辄几分钟&lt;/li&gt;
@@ -4133,7 +4726,7 @@
 &lt;li&gt;&lt;strong&gt;权限问题&lt;/strong&gt;：macOS/Linux下全局安装需sudo，易导致权限混乱&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;幽灵依赖&lt;/strong&gt;：这是npm最隐蔽也最危险的问题&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;二volta更轻更稳的node版本管理&#34;&gt;二、Volta：更轻更稳的Node版本管理
+&lt;h2 id=&#34;volta更轻更稳的node版本管理&#34;&gt;Volta：更轻更稳的Node版本管理
 &lt;/h2&gt;&lt;p&gt;Volta是LinkedIn推出的跨平台Node版本管理器，主打&amp;quot;无痛版本切换+全局CLI持久化&amp;quot;。&lt;/p&gt;
 &lt;h3 id=&#34;volta-vs-nvm-核心优势&#34;&gt;Volta vs NVM 核心优势
 &lt;/h3&gt;&lt;table&gt;
@@ -4236,7 +4829,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;volta uninstall @nestjs/cli
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;三pnpm彻底解决npm的依赖问题&#34;&gt;三、pnpm：彻底解决npm的依赖问题
+&lt;/div&gt;&lt;h2 id=&#34;pnpm彻底解决npm的依赖问题&#34;&gt;pnpm：彻底解决npm的依赖问题
 &lt;/h2&gt;&lt;p&gt;pnpm通过&amp;quot;内容寻址存储&amp;quot;和&amp;quot;非扁平化依赖树&amp;quot;，不仅解决了npm的&amp;quot;慢、臃肿&amp;quot;问题，更是&lt;strong&gt;唯一从根本上解决幽灵依赖&lt;/strong&gt;的主流包管理器。&lt;/p&gt;
 &lt;h3 id=&#34;什么是幽灵依赖&#34;&gt;什么是幽灵依赖？
 &lt;/h3&gt;&lt;p&gt;幽灵依赖（Phantom Dependencies）指的是：&lt;strong&gt;项目代码中直接使用了没有在package.json中声明的依赖包&lt;/strong&gt;。&lt;/p&gt;
@@ -4318,7 +4911,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这样，你输入&lt;code&gt;npm run dev&lt;/code&gt;时，实际执行的是&lt;code&gt;pnpm dev&lt;/code&gt;，无需改变原有习惯。&lt;/p&gt;
-&lt;h2 id=&#34;四voltapnpm-全栈项目启动流程&#34;&gt;四、Volta+pnpm 全栈项目启动流程
+&lt;h2 id=&#34;voltapnpm-全栈项目启动流程&#34;&gt;Volta+pnpm 全栈项目启动流程
 &lt;/h2&gt;&lt;h3 id=&#34;前置准备&#34;&gt;前置准备
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -4336,7 +4929,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;volta install pnpm
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;1-nestjs企业级后端&#34;&gt;1. Nest.js（企业级后端）
+&lt;/div&gt;&lt;h3 id=&#34;nestjs企业级后端&#34;&gt;Nest.js（企业级后端）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -4365,7 +4958,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;volta pin node@20
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2-express轻量后端&#34;&gt;2. Express（轻量后端）
+&lt;/div&gt;&lt;h3 id=&#34;express轻量后端&#34;&gt;Express（轻量后端）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -4398,7 +4991,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;volta pin node@20
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-vue-3前端&#34;&gt;3. Vue 3（前端）
+&lt;/div&gt;&lt;h3 id=&#34;vue-3前端&#34;&gt;Vue 3（前端）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -4415,7 +5008,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;volta pin node@20
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;4-nextjsreact-ssr&#34;&gt;4. Next.js（React SSR）
+&lt;/div&gt;&lt;h3 id=&#34;nextjsreact-ssr&#34;&gt;Next.js（React SSR）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -4432,7 +5025,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;volta pin node@20
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;5-reactvite&#34;&gt;5. React（Vite）
+&lt;/div&gt;&lt;h3 id=&#34;reactvite&#34;&gt;React（Vite）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -4449,8 +5042,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;volta pin node@20
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;五最佳实践与常见问题&#34;&gt;五、最佳实践与常见问题
-&lt;/h2&gt;&lt;h3 id=&#34;1-配置国内镜像源&#34;&gt;1. 配置国内镜像源
+&lt;/div&gt;&lt;h2 id=&#34;最佳实践与常见问题&#34;&gt;最佳实践与常见问题
+&lt;/h2&gt;&lt;h3 id=&#34;配置国内镜像源&#34;&gt;配置国内镜像源
 &lt;/h3&gt;&lt;p&gt;为了提升下载速度，建议配置国内镜像源：&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Volta镜像&lt;/strong&gt;：
 在~/.bashrc或~/.zshrc中添加：&lt;/p&gt;
@@ -4473,7 +5066,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pnpm config &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; registry https://registry.npmmirror.com
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2-从npmyarn迁移到pnpm&#34;&gt;2. 从npm/yarn迁移到pnpm
+&lt;/div&gt;&lt;h3 id=&#34;从npmyarn迁移到pnpm&#34;&gt;从npm/yarn迁移到pnpm
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -4492,7 +5085,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pnpm dev
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-常见问题解决&#34;&gt;3. 常见问题解决
+&lt;/div&gt;&lt;h3 id=&#34;常见问题解决&#34;&gt;常见问题解决
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;问题1：Volta安装后版本不生效&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;重启终端&lt;/li&gt;
@@ -4509,7 +5102,7 @@
 &lt;li&gt;确保使用&lt;code&gt;volta install&lt;/code&gt;而不是&lt;code&gt;pnpm install -g&lt;/code&gt;安装全局工具&lt;/li&gt;
 &lt;li&gt;运行&lt;code&gt;volta list&lt;/code&gt;查看已安装的全局工具&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;六总结&#34;&gt;六、总结
+&lt;h2 id=&#34;总结&#34;&gt;总结
 &lt;/h2&gt;&lt;p&gt;Volta+pnpm组合能解决开发中80%的环境和依赖问题：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;高效&lt;/strong&gt;：秒级切换Node版本，秒级安装依赖&lt;/li&gt;
@@ -5815,7 +6408,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         <guid>https://ye-guan-xing.github.io/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/</guid>
         <description>&lt;p&gt;DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础&lt;/p&gt;
 &lt;p&gt;本文用&lt;strong&gt;9道经典洛谷题&lt;/strong&gt;，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂&lt;/p&gt;
-&lt;h2 id=&#34;一先搞懂什么是-dfs&#34;&gt;一、先搞懂：什么是 DFS？
+&lt;h2 id=&#34;先搞懂什么是-dfs&#34;&gt;先搞懂：什么是 DFS？
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;DFS = 深度优先搜索&lt;/strong&gt;
 一句话：&lt;strong&gt;一条路走到黑，不撞南墙不回头，回头了再换条路走&lt;/strong&gt;。
 几乎都用&lt;strong&gt;递归&lt;/strong&gt;实现，核心是&lt;strong&gt;递归 + 回溯&lt;/strong&gt;。&lt;/p&gt;
@@ -5853,7 +6446,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;二dfs-四大题型9道题全涵盖&#34;&gt;二、DFS 四大题型（9道题全涵盖）
+&lt;h2 id=&#34;dfs-四大题型9道题全涵盖&#34;&gt;DFS 四大题型（9道题全涵盖）
 &lt;/h2&gt;&lt;p&gt;结合所有题目，我们分成&lt;strong&gt;4类&lt;/strong&gt;，新手按这个分类学最快，全覆盖所有搜索场景！&lt;/p&gt;
 &lt;h3 id=&#34;题型1组合排列枚举类-dfs选不选填充枚举&#34;&gt;题型1：组合/排列枚举类 DFS（选/不选、填充枚举）
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：从一堆东西里选若干个、填充通配符、枚举排列组合、判断合法组合。
@@ -5903,7 +6496,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;逐格递归（x,y），切换状态后回溯，完美适配DFS模板&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;三再搞懂什么是-bfs&#34;&gt;三、再搞懂：什么是 BFS？
+&lt;h2 id=&#34;再搞懂什么是-bfs&#34;&gt;再搞懂：什么是 BFS？
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;BFS = 广度优先搜索&lt;/strong&gt;
 一句话：&lt;strong&gt;一层一层往外搜，先搜到的就是最短路径&lt;/strong&gt;。
 用&lt;strong&gt;队列&lt;/strong&gt;实现，&lt;strong&gt;最适合求最短步数/最少操作次数&lt;/strong&gt;。&lt;/p&gt;
@@ -5939,7 +6532,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;四bfs-核心题型最短路径&#34;&gt;四、BFS 核心题型：最短路径
+&lt;h2 id=&#34;bfs-核心题型最短路径&#34;&gt;BFS 核心题型：最短路径
 &lt;/h2&gt;&lt;h3 id=&#34;对应题目-4&#34;&gt;对应题目
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.luogu.com.cn/problem/P1135&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;P1135 奇怪的电梯&lt;/a&gt;&lt;/strong&gt;：求从A到B最少按几次按钮&lt;/p&gt;
@@ -5948,7 +6541,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;第一次到达终点就是最少步数，无需继续搜索&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;五新手必记dfs-vs-bfs-对比&#34;&gt;五、新手必记：DFS vs BFS 对比
+&lt;h2 id=&#34;新手必记dfs-vs-bfs-对比&#34;&gt;新手必记：DFS vs BFS 对比
 &lt;/h2&gt;&lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -7172,7 +7765,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         
         <guid>https://ye-guan-xing.github.io/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/</guid>
         <description>&lt;h1 id=&#34;git-新手第一次使用克隆配置远程与首次推送&#34;&gt;Git 新手第一次使用：克隆、配置远程与首次推送
-&lt;/h1&gt;&lt;h2 id=&#34;1-克隆仓库到本地&#34;&gt;1. 克隆仓库到本地
+&lt;/h1&gt;&lt;h2 id=&#34;克隆仓库到本地&#34;&gt;克隆仓库到本地
 &lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7183,7 +7776,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; repo
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;2-查看当前远程仓库地址&#34;&gt;2. 查看当前远程仓库地址
+&lt;/div&gt;&lt;h2 id=&#34;查看当前远程仓库地址&#34;&gt;查看当前远程仓库地址
 &lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7197,7 +7790,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;origin  https://github.com/username/repo.git (fetch)&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;origin  https://github.com/username/repo.git (push)&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;3-设置或修改远程仓库地址&#34;&gt;3. 设置或修改远程仓库地址
+&lt;h2 id=&#34;设置或修改远程仓库地址&#34;&gt;设置或修改远程仓库地址
 &lt;/h2&gt;&lt;h3 id=&#34;场景-a已经有-origin只想修改地址&#34;&gt;场景 A：已经有 &lt;code&gt;origin&lt;/code&gt;，只想修改地址
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -7225,7 +7818,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git remote -v
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;4-首次提交并推送&#34;&gt;4. 首次提交并推送
+&lt;/div&gt;&lt;h2 id=&#34;首次提交并推送&#34;&gt;首次提交并推送
 &lt;/h2&gt;&lt;p&gt;先把改动提交到本地仓库：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -7266,7 +7859,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git pull
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;5-常见检查命令&#34;&gt;5. 常见检查命令
+&lt;/div&gt;&lt;h2 id=&#34;常见检查命令&#34;&gt;常见检查命令
 &lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7310,24 +7903,24 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 	
 &gt;&lt;/p&gt;
 &lt;h2 id=&#34;四个核心区域&#34;&gt;四个核心区域
-&lt;/h2&gt;&lt;h3 id=&#34;1-工作区working-directory-你的书桌&#34;&gt;1. 工作区（Working Directory）—— 你的书桌
+&lt;/h2&gt;&lt;h3 id=&#34;工作区working-directory-你的书桌&#34;&gt;工作区（Working Directory）—— 你的书桌
 &lt;/h3&gt;&lt;p&gt;这是你实际修改文件的地方。你在这里写代码、删删改改。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;动作：你在这里编写了新功能或修复了 Bug。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-暂存区staging-area-你的待邮寄篮子&#34;&gt;2. 暂存区（Staging Area）—— 你的待邮寄篮子
+&lt;h3 id=&#34;暂存区staging-area-你的待邮寄篮子&#34;&gt;暂存区（Staging Area）—— 你的待邮寄篮子
 &lt;/h3&gt;&lt;p&gt;当你觉得作业写得差不多了，你会把它放进一个篮子里，准备打包。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;关键指令：&lt;code&gt;git add&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;意义：告诉 Git，这些改动我确认要提交了，先帮我记着。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;3-本地仓库local-repository-你的个人保险箱&#34;&gt;3. 本地仓库（Local Repository）—— 你的个人保险箱
+&lt;h3 id=&#34;本地仓库local-repository-你的个人保险箱&#34;&gt;本地仓库（Local Repository）—— 你的个人保险箱
 &lt;/h3&gt;&lt;p&gt;你把篮子里的东西打包好，贴上标签（提交信息），锁进自己的保险箱。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;关键指令：&lt;code&gt;git commit&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;意义：改动正式成为了项目历史的一部分。即便你之后改乱了，也可以随时从这里找回。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-远程仓库remote-老师的收件箱如-githubgitlab&#34;&gt;4. 远程仓库（Remote）—— 老师的收件箱（如 GitHub/GitLab）
+&lt;h3 id=&#34;远程仓库remote-老师的收件箱如-githubgitlab&#34;&gt;远程仓库（Remote）—— 老师的收件箱（如 GitHub/GitLab）
 &lt;/h3&gt;&lt;p&gt;最后，你把保险箱里的代码通过网络发送给远程服务器，方便其他人查看或合作。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;关键指令：&lt;code&gt;git push&lt;/code&gt;&lt;/li&gt;
@@ -7343,7 +7936,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;h2 id=&#34;一句话总结&#34;&gt;一句话总结
 &lt;/h2&gt;&lt;p&gt;修改代码 -&amp;gt; add（放进篮子）-&amp;gt; commit（存入箱子）-&amp;gt; push（寄给远方）。&lt;/p&gt;
 &lt;h2 id=&#34;命令说明&#34;&gt;命令说明
-&lt;/h2&gt;&lt;h3 id=&#34;1-克隆仓库&#34;&gt;1 克隆仓库
+&lt;/h2&gt;&lt;h3 id=&#34;克隆仓库&#34;&gt;克隆仓库
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7354,7 +7947,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; repo
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2-创建新分支&#34;&gt;2 创建新分支
+&lt;/div&gt;&lt;h3 id=&#34;创建新分支&#34;&gt;创建新分支
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7363,9 +7956,9 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git checkout -b new-feature
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-工作目录&#34;&gt;3 工作目录
+&lt;/div&gt;&lt;h3 id=&#34;工作目录&#34;&gt;工作目录
 &lt;/h3&gt;&lt;p&gt;在工作目录中进行代码编辑、添加新文件或删除不需要的文件。&lt;/p&gt;
-&lt;h3 id=&#34;4-暂存文件&#34;&gt;4 暂存文件
+&lt;h3 id=&#34;暂存文件&#34;&gt;暂存文件
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7376,7 +7969,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git add .
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;5-提交更改&#34;&gt;5 提交更改
+&lt;/div&gt;&lt;h3 id=&#34;提交更改&#34;&gt;提交更改
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7385,7 +7978,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git commit -m &lt;span class=&#34;s2&#34;&gt;&amp;#34;Add new feature&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;6-拉取最新更改&#34;&gt;6 拉取最新更改
+&lt;/div&gt;&lt;h3 id=&#34;拉取最新更改&#34;&gt;拉取最新更改
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7396,7 +7989,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git pull origin new-feature
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;7-推送更改&#34;&gt;7 推送更改
+&lt;/div&gt;&lt;h3 id=&#34;推送更改&#34;&gt;推送更改
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7405,9 +7998,9 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git push origin new-feature
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;8-创建-pull-requestpr&#34;&gt;8 创建 Pull Request（PR）
+&lt;/div&gt;&lt;h3 id=&#34;创建-pull-requestpr&#34;&gt;创建 Pull Request（PR）
 &lt;/h3&gt;&lt;p&gt;在 GitHub 或其他托管平台上创建 Pull Request，邀请团队成员进行代码审查。PR 合并后，你的更改就会合并到主分支。&lt;/p&gt;
-&lt;h3 id=&#34;9-合并更改&#34;&gt;9 合并更改
+&lt;h3 id=&#34;合并更改&#34;&gt;合并更改
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7420,7 +8013,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git merge new-feature
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;10-删除分支&#34;&gt;10 删除分支
+&lt;/div&gt;&lt;h3 id=&#34;删除分支&#34;&gt;删除分支
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -7452,7 +8045,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;⚫ 我不推荐&lt;/strong&gt;：&lt;strong&gt;优先级较低或可跳过&lt;/strong&gt;，在当前技术环境下必要性不高。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;一互联网基础-&#34;&gt;一、互联网基础 🌐
+&lt;h2 id=&#34;互联网基础-&#34;&gt;互联网基础 🌐
 &lt;/h2&gt;&lt;p&gt;在学习具体的前端技术之前，理解互联网的工作原理至关重要，这能帮你建立起坚实的知识根基。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ 互联网是如何运作的？&lt;/li&gt;
@@ -7463,7 +8056,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;❤️ 什么是主机托管 (Hosting)？&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;二html-&#34;&gt;二、HTML 🏗️
+&lt;h2 id=&#34;html-&#34;&gt;HTML 🏗️
 &lt;/h2&gt;&lt;p&gt;HTML 是网页的骨架，负责定义内容的结构和语义。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;✅ 学习基础知识&lt;/li&gt;
@@ -7474,7 +8067,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;☑ 基础的搜索引擎优化 (SEO)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;三css-&#34;&gt;三、CSS 🎨
+&lt;h2 id=&#34;css-&#34;&gt;CSS 🎨
 &lt;/h2&gt;&lt;p&gt;CSS 负责网页的视觉呈现，让你的页面变得美观和响应式。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;✅ 学习基础知识&lt;/li&gt;
@@ -7493,7 +8086,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;四javascript-&#34;&gt;四、JavaScript 💻
+&lt;h2 id=&#34;javascript-&#34;&gt;JavaScript 💻
 &lt;/h2&gt;&lt;p&gt;JavaScript 是前端的灵魂，赋予网页交互和动态能力。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ 语法和基本结构&lt;/li&gt;
@@ -7507,7 +8100,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;五工具与工程化-&#34;&gt;五、工具与工程化 🛠️
+&lt;h2 id=&#34;工具与工程化-&#34;&gt;工具与工程化 🛠️
 &lt;/h2&gt;&lt;p&gt;现代前端开发离不开各种工具，它们能极大地提升你的开发效率和代码质量。&lt;/p&gt;
 &lt;h3 id=&#34;版本控制系统-vcs&#34;&gt;版本控制系统 (VCS)
 &lt;/h3&gt;&lt;ul&gt;
@@ -7581,7 +8174,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;⚫ StandardJS&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;六前端框架与库-&#34;&gt;六、前端框架与库 📚
+&lt;h2 id=&#34;前端框架与库-&#34;&gt;前端框架与库 📚
 &lt;/h2&gt;&lt;p&gt;框架和库能帮你快速构建复杂的单页应用 (SPA)，选择一个深入学习是进阶的关键。&lt;/p&gt;
 &lt;h3 id=&#34;选择一款框架-framework&#34;&gt;选择一款框架 (Framework)
 &lt;/h3&gt;&lt;ul&gt;
@@ -7637,7 +8230,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;七测试与质量保障-&#34;&gt;七、测试与质量保障 ✅
+&lt;h2 id=&#34;测试与质量保障-&#34;&gt;测试与质量保障 ✅
 &lt;/h2&gt;&lt;p&gt;写出高质量、可维护的代码，测试是必不可少的一环。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;☑ 理解单元测试 (Unit Test)、集成测试 (Integration Test)、功能测试 (Functional Test) 的区别，并学习使用以下工具编写测试：
@@ -7655,7 +8248,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;☑ 补充说明：以上工具可满足各类测试需求，无需全部掌握，按需选择即可&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;八进阶与拓展-&#34;&gt;八、进阶与拓展 🚀
+&lt;h2 id=&#34;进阶与拓展-&#34;&gt;进阶与拓展 🚀
 &lt;/h2&gt;&lt;p&gt;当你掌握了基础和框架后，可以向更广阔的领域拓展。&lt;/p&gt;
 &lt;h3 id=&#34;渐进式网页应用程序-pwa&#34;&gt;渐进式网页应用程序 (PWA*)
 &lt;/h3&gt;&lt;ul&gt;
@@ -7743,7 +8336,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;☑ 补充说明：Web Assembly（简称 WASM）是由高级语言（如 Go、C、C++、Rust）编译生成的二进制指令集，运行速度远超 JavaScript。WASM 1.0 已被主流浏览器支持，W3C 于 2019 年底将其列为官方标准，但距离全面普及仍需时间。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;九持续学习-&#34;&gt;九、持续学习 📖
+&lt;h2 id=&#34;持续学习-&#34;&gt;持续学习 📖
 &lt;/h2&gt;&lt;p&gt;前端技术日新月异，这份路线图只是一个起点。保持好奇心，持续学习新的特性、工具和最佳实践，才能在这个领域不断进步。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;图&#34;&gt;图
@@ -7796,7 +8389,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;⚫ 我不推荐&lt;/strong&gt;：&lt;strong&gt;优先级较低或可跳过&lt;/strong&gt;，在当前技术环境下必要性不高。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;一互联网基础与前端知识-&#34;&gt;一、互联网基础与前端知识 🌐
+&lt;h2 id=&#34;互联网基础与前端知识-&#34;&gt;互联网基础与前端知识 🌐
 &lt;/h2&gt;&lt;p&gt;后端开发离不开对互联网和前端的理解，这是构建服务的基础。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ 互联网是如何运作的？&lt;/li&gt;
@@ -7810,7 +8403,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;❤️ JavaScript&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;二操作系统和基础知识-&#34;&gt;二、操作系统和基础知识 💻
+&lt;h2 id=&#34;操作系统和基础知识-&#34;&gt;操作系统和基础知识 💻
 &lt;/h2&gt;&lt;p&gt;操作系统是后端服务运行的根基，掌握其原理能让你写出更高效、稳定的代码。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ 终端机的使用&lt;/li&gt;
@@ -7825,7 +8418,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;❤️ 基础的网络概念&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;三学习一门语言-&#34;&gt;三、学习一门语言 📚
+&lt;h2 id=&#34;学习一门语言-&#34;&gt;学习一门语言 📚
 &lt;/h2&gt;&lt;p&gt;选择一门后端语言深入学习，理解其运行时特性（如并行、内存模型）是进阶的关键。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;✅ Java&lt;/li&gt;
@@ -7838,7 +8431,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;✅ Ruby&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;四版本控制系统-vcs-&#34;&gt;四、版本控制系统 (VCS) 🛠️
+&lt;h2 id=&#34;版本控制系统-vcs-&#34;&gt;版本控制系统 (VCS) 🛠️
 &lt;/h2&gt;&lt;p&gt;现代后端开发离不开版本控制，它是团队协作和代码管理的核心工具。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;☑ 版本控制系统的定义及使用价值&lt;/li&gt;
@@ -7853,7 +8446,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;五数据库-&#34;&gt;五、数据库 🗄️
+&lt;h2 id=&#34;数据库-&#34;&gt;数据库 🗄️
 &lt;/h2&gt;&lt;p&gt;数据库是后端服务存储数据的核心，关系型与 NoSQL 数据库各有适用场景。&lt;/p&gt;
 &lt;h3 id=&#34;关系式数据库&#34;&gt;关系式数据库
 &lt;/h3&gt;&lt;ul&gt;
@@ -7883,7 +8476,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;☑ CAP 定理&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;六学习-api-相关知识-&#34;&gt;六、学习 API 相关知识 🚀
+&lt;h2 id=&#34;学习-api-相关知识-&#34;&gt;学习 API 相关知识 🚀
 &lt;/h2&gt;&lt;p&gt;API 是后端服务对外交互的核心，掌握不同类型的 API 设计与实现至关重要。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ Cookie Based&lt;/li&gt;
@@ -7903,7 +8496,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;❤️ gRPC&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;七缓存-caching-&#34;&gt;七、缓存 (Caching) 🚀
+&lt;h2 id=&#34;缓存-caching-&#34;&gt;缓存 (Caching) 🚀
 &lt;/h2&gt;&lt;p&gt;缓存是提升后端服务性能的关键手段，合理使用缓存能显著降低数据库压力。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ Redis&lt;/li&gt;
@@ -7913,7 +8506,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;☑ 用户端（Client Side）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;八网络安全知识-&#34;&gt;八、网络安全知识 🔒
+&lt;h2 id=&#34;网络安全知识-&#34;&gt;网络安全知识 🔒
 &lt;/h2&gt;&lt;p&gt;安全是后端服务不可忽视的环节，掌握常见安全机制与风险防范是必备能力。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ MD5 以及为什么不要使用它&lt;/li&gt;
@@ -7928,7 +8521,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;❤️ OWASP 安全风险&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;九测试-testing-&#34;&gt;九、测试 (Testing) ✅
+&lt;h2 id=&#34;测试-testing-&#34;&gt;测试 (Testing) ✅
 &lt;/h2&gt;&lt;p&gt;测试是保障后端服务质量的核心，不同类型的测试覆盖不同的质量维度。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ 整合测试（Integration Testing）&lt;/li&gt;
@@ -7937,7 +8530,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;☑ CI/CD（持续整合/持续交付）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;十设计和开发原则-&#34;&gt;十、设计和开发原则 📐
+&lt;h2 id=&#34;设计和开发原则-&#34;&gt;设计和开发原则 📐
 &lt;/h2&gt;&lt;p&gt;遵循良好的设计原则能让代码更易维护、扩展，是资深后端开发者的核心素养。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;☑ 四人帮（GOF）设计模式&lt;/li&gt;
@@ -7955,7 +8548,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;十一架构模式-&#34;&gt;十一、架构模式 🏗️
+&lt;h2 id=&#34;架构模式-&#34;&gt;架构模式 🏗️
 &lt;/h2&gt;&lt;p&gt;架构模式决定了系统的扩展性与维护性，不同场景下选择合适的架构至关重要。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;☑ 整合型*（Monolithic）应用程式&lt;/li&gt;
@@ -7966,7 +8559,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;*译注：又译作单体式&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;十二容器化-vs-虚拟化-containerization--virtualization-&#34;&gt;十二、容器化 vs 虚拟化 (Containerization / Virtualization) 🐳
+&lt;h2 id=&#34;容器化-vs-虚拟化-containerization--virtualization-&#34;&gt;容器化 vs 虚拟化 (Containerization / Virtualization) 🐳
 &lt;/h2&gt;&lt;p&gt;容器化技术简化了部署与环境一致性，是现代后端部署的主流方式。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ Docker&lt;/li&gt;
@@ -7981,21 +8574,21 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;*译注：又译作讯息中介&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;十三graphql-&#34;&gt;十三、GraphQL 📊
+&lt;h2 id=&#34;graphql-&#34;&gt;GraphQL 📊
 &lt;/h2&gt;&lt;p&gt;GraphQL 提供了更灵活的 API 查询方式，适用于复杂数据场景的后端服务。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ Apollo&lt;/li&gt;
 &lt;li&gt;✅ Relay Modern&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;十四图资料库-graph-database-&#34;&gt;十四、图资料库* (Graph Database) 🗄️
+&lt;h2 id=&#34;图资料库-graph-database-&#34;&gt;图资料库* (Graph Database) 🗄️
 &lt;/h2&gt;&lt;p&gt;图资料库擅长处理复杂的关联数据，适用于社交网络、知识图谱等场景。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ Neo4j&lt;/li&gt;
 &lt;li&gt;*译注：又译作图形资料库、图数据库&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;十五websocket-&#34;&gt;十五、WebSocket 🔌
+&lt;h2 id=&#34;websocket-&#34;&gt;WebSocket 🔌
 &lt;/h2&gt;&lt;p&gt;WebSocket 实现了双向实时通信，是实时应用（如聊天、直播）的核心技术。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;缓解策略（Mitigation Strategy）
@@ -8010,7 +8603,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;*译注：又译作反压&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;十六网页服务器-web-server-&#34;&gt;十六、网页服务器 (Web Server) 🌐
+&lt;h2 id=&#34;网页服务器-web-server-&#34;&gt;网页服务器 (Web Server) 🌐
 &lt;/h2&gt;&lt;p&gt;网页服务器是后端服务的入口，选择合适的服务器能提升服务性能与稳定性。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ Nginx&lt;/li&gt;
@@ -8019,7 +8612,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;☑ MS IIS&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;十七规模化建设-&#34;&gt;十七、规模化建设 📈
+&lt;h2 id=&#34;规模化建设-&#34;&gt;规模化建设 📈
 &lt;/h2&gt;&lt;p&gt;当服务用户量增长时，规模化建设是保障服务可用性与性能的关键。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;❤️ 迁移策略（Migration Strategy）&lt;/li&gt;
@@ -8035,7 +8628,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;十八持续学习-&#34;&gt;十八、持续学习 📖
+&lt;h2 id=&#34;持续学习-&#34;&gt;持续学习 📖
 &lt;/h2&gt;&lt;p&gt;后端技术生态迭代迅速，从云原生到 Serverless，持续学习新工具与最佳实践是保持竞争力的核心。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;图&#34;&gt;图
@@ -8077,18 +8670,18 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         <guid>https://ye-guan-xing.github.io/p/%E8%A7%A3%E5%86%B3master%E4%B8%8E%E5%BC%80%E5%8F%91%E5%88%86%E6%94%AF%E4%BB%A3%E7%A0%81%E4%B8%8D%E4%B8%80%E8%87%B4%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%90%8C%E6%AD%A5%E5%88%86%E6%94%AF/</guid>
         <description>&lt;h1 id=&#34;git-新手通关指南解决-master-与开发分支代码不一致手把手教你同步分支&#34;&gt;【Git 新手通关指南】解决 master 与开发分支代码不一致，手把手教你同步分支
 &lt;/h1&gt;&lt;p&gt;作为 Git 新手，刚接触分支管理时大概率会遇到这个问题：本地&lt;code&gt;master&lt;/code&gt;主分支和自己创建的&lt;code&gt;z1&lt;/code&gt;开发分支代码不一样了，该怎么同步？为什么不能直接在&lt;code&gt;master&lt;/code&gt;分支改代码？这篇文章用最通俗的话+一步步实操，帮你彻底搞懂！&lt;/p&gt;
-&lt;h2 id=&#34;一先搞懂master-和开发分支的分工新手先记牢&#34;&gt;一、先搞懂：master 和开发分支的“分工”（新手先记牢）
+&lt;h2 id=&#34;先搞懂master-和开发分支的分工新手先记牢&#34;&gt;先搞懂：master 和开发分支的“分工”（新手先记牢）
 &lt;/h2&gt;&lt;p&gt;在团队协作或个人开发中，Git 分支有明确的“职责划分”，这是解决分支同步问题的基础：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;master&lt;/code&gt;（主分支）：可以理解为项目的“正式版”，是稳定、可上线的代码版本，&lt;strong&gt;绝对不能随便改&lt;/strong&gt;；&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;z1&lt;/code&gt;（开发分支）：你自己的“工作版”，所有开发、修改、调试都在这个分支做，相当于“草稿纸”，改乱了也不影响主分支。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;所谓“同步代码”，本质就是把&lt;code&gt;master&lt;/code&gt;分支的最新内容，整合到你的&lt;code&gt;z1&lt;/code&gt;开发分支里，让两个分支的代码保持一致，同时又不破坏&lt;code&gt;master&lt;/code&gt;的稳定性。&lt;/p&gt;
-&lt;h2 id=&#34;二核心操作同步-master-与-z1-分支的完整步骤&#34;&gt;二、核心操作：同步 master 与 z1 分支的完整步骤
+&lt;h2 id=&#34;核心操作同步-master-与-z1-分支的完整步骤&#34;&gt;核心操作：同步 master 与 z1 分支的完整步骤
 &lt;/h2&gt;&lt;p&gt;假设你已经克隆了仓库（&lt;code&gt;git clone https://gitee.com/yigen1981/test.git&lt;/code&gt;），且创建了&lt;code&gt;z1&lt;/code&gt;分支（&lt;code&gt;git branch z1&lt;/code&gt;），现在要解决两个分支代码不一致的问题，按以下步骤来，一步都不能错！&lt;/p&gt;
 &lt;h3 id=&#34;前置准备&#34;&gt;前置准备
 &lt;/h3&gt;&lt;p&gt;打开本地仓库对应的终端（Git Bash/CMD/终端都可以），确保你在仓库根目录下。&lt;/p&gt;
-&lt;h3 id=&#34;步骤-1拉取远程最新代码避免合并出错&#34;&gt;步骤 1：拉取远程最新代码（避免合并出错）
+&lt;h3 id=&#34;拉取远程最新代码避免合并出错&#34;&gt;拉取远程最新代码（避免合并出错）
 &lt;/h3&gt;&lt;p&gt;先把云端（Gitee/GitHub）的所有分支最新代码拉到本地，防止合并时因为本地代码过时出问题：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8099,7 +8692,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;✅ 新手解读：这个命令相当于“刷新”本地代码，让你的&lt;code&gt;master&lt;/code&gt;和&lt;code&gt;z1&lt;/code&gt;都先同步云端的最新版本。&lt;/p&gt;
-&lt;h3 id=&#34;步骤-2切换到-z1-开发分支核心必须先切&#34;&gt;步骤 2：切换到 z1 开发分支（核心！必须先切）
+&lt;h3 id=&#34;切换到-z1-开发分支核心必须先切&#34;&gt;切换到 z1 开发分支（核心！必须先切）
 &lt;/h3&gt;&lt;p&gt;所有操作都要在&lt;code&gt;z1&lt;/code&gt;分支做，先确认并切换到&lt;code&gt;z1&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8116,7 +8709,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;✅ 新手解读：如果直接在&lt;code&gt;master&lt;/code&gt;分支操作，相当于直接改“正式版”，风险极高，这是新手最容易踩的坑！&lt;/p&gt;
-&lt;h3 id=&#34;步骤-3合并-master-代码到-z1同步的核心&#34;&gt;步骤 3：合并 master 代码到 z1（同步的核心）
+&lt;h3 id=&#34;合并-master-代码到-z1同步的核心&#34;&gt;合并 master 代码到 z1（同步的核心）
 &lt;/h3&gt;&lt;p&gt;执行合并命令，把&lt;code&gt;master&lt;/code&gt;的最新代码整合到&lt;code&gt;z1&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8150,7 +8743,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;删除这些标记（&lt;code&gt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&lt;/code&gt;/&lt;code&gt;=======&lt;/code&gt;/&lt;code&gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&lt;/code&gt;），保留你需要的内容（比如保留最新的、正确的内容）；&lt;/li&gt;
 &lt;li&gt;保存文件，回到终端继续下一步。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-4提交合并后的代码并推到云端&#34;&gt;步骤 4：提交合并后的代码并推到云端
+&lt;h3 id=&#34;提交合并后的代码并推到云端&#34;&gt;提交合并后的代码并推到云端
 &lt;/h3&gt;&lt;p&gt;合并完成（冲突解决后），要把同步后的代码保存并上传到云端的&lt;code&gt;z1&lt;/code&gt;分支：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8162,23 +8755,23 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1. 把所有改动的文件加入“待提交清单”（.代表所有文件）&lt;/span&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 把所有改动的文件加入“待提交清单”（.代表所有文件）&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git add .
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 2. 保存改动并加备注（备注要清晰，新手别乱写）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 保存改动并加备注（备注要清晰，新手别乱写）&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git commit -m &lt;span class=&#34;s2&#34;&gt;&amp;#34;合并master分支代码，同步最新内容&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 3. 把本地z1的代码推到云端z1分支（关键！不然云端代码还是旧的）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 把本地z1的代码推到云端z1分支（关键！不然云端代码还是旧的）&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git push origin z1
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;✅ 新手解读：这三步相当于“保存草稿 → 给草稿写备注 → 把草稿上传到云端”，确保你的修改不会丢。&lt;/p&gt;
-&lt;h2 id=&#34;三关键原则为什么绝对不能在-master-分支提交代码&#34;&gt;三、关键原则：为什么绝对不能在 master 分支提交代码？
+&lt;h2 id=&#34;关键原则为什么绝对不能在-master-分支提交代码&#34;&gt;关键原则：为什么绝对不能在 master 分支提交代码？
 &lt;/h2&gt;&lt;p&gt;新手最容易犯的错就是直接在&lt;code&gt;master&lt;/code&gt;分支改代码、提交，这是严格禁止的，原因很简单：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;保护主分支稳定性&lt;/strong&gt;：&lt;code&gt;master&lt;/code&gt;是正式版代码，直接修改可能导致项目运行出错，甚至影响整个团队；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;符合分支管理规范&lt;/strong&gt;：所有开发工作都在开发分支（如 z1）完成，确认没问题后，再由负责人统一合并到&lt;code&gt;master&lt;/code&gt;；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;避免代码混乱&lt;/strong&gt;：如果多人都直接改&lt;code&gt;master&lt;/code&gt;，很容易出现代码冲突无法解决，最后整个项目代码乱套。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;四完整流程复盘新手直接抄&#34;&gt;四、完整流程复盘（新手直接抄）
+&lt;h2 id=&#34;完整流程复盘新手直接抄&#34;&gt;完整流程复盘（新手直接抄）
 &lt;/h2&gt;&lt;p&gt;把所有步骤串起来，形成可直接复制的操作流：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8195,20 +8788,20 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1. 拉取远程最新代码&lt;/span&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 拉取远程最新代码&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git pull
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 2. 切换到z1分支&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 切换到z1分支&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git checkout z1
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 3. 合并master代码到z1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 合并master代码到z1&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git merge master
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 4. 解决冲突（如果有）→ 保存文件&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 5. 提交并推送&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 解决冲突（如果有）→ 保存文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 提交并推送&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git add .
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git commit -m &lt;span class=&#34;s2&#34;&gt;&amp;#34;合并master分支，同步代码&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;git push origin z1
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;五新手总结&#34;&gt;五、新手总结
+&lt;/div&gt;&lt;h2 id=&#34;新手总结&#34;&gt;新手总结
 &lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;分支同步的核心逻辑：&lt;strong&gt;切换到开发分支（z1）→ 合并主分支（master）→ 提交推送&lt;/strong&gt;，始终围绕开发分支操作；&lt;/li&gt;
 &lt;li&gt;绝对禁忌：不在&lt;code&gt;master&lt;/code&gt;分支做任何开发、提交操作，保护主分支的稳定性；&lt;/li&gt;
@@ -8235,7 +8828,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 	
 	
 &gt;&lt;/p&gt;
-&lt;h2 id=&#34;一布局基础全局样式与容器搭建成果图整体框架&#34;&gt;一、布局基础：全局样式与容器搭建（成果图整体框架）
+&lt;h2 id=&#34;布局基础全局样式与容器搭建成果图整体框架&#34;&gt;布局基础：全局样式与容器搭建（成果图整体框架）
 &lt;/h2&gt;&lt;p&gt;任何布局的第一步都是打“地基”——成果图里的整个内容区域，就是通过以下代码实现的核心容器：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8282,9 +8875,9 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;成果图里的所有内容（左侧新闻+右侧热搜）都包裹在&lt;code&gt;big_box&lt;/code&gt;中，实现了&lt;strong&gt;水平居中+左右留白&lt;/strong&gt;，适配不同屏幕；&lt;/li&gt;
 &lt;li&gt;容器的渐变背景+圆角，让成果图里的内容区和外部橙色背景区分开，视觉更整洁。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;二核心布局flex-的灵活运用成果图主次分栏内容排列&#34;&gt;二、核心布局：Flex 的灵活运用（成果图主次分栏+内容排列）
+&lt;h2 id=&#34;核心布局flex-的灵活运用成果图主次分栏内容排列&#34;&gt;核心布局：Flex 的灵活运用（成果图主次分栏+内容排列）
 &lt;/h2&gt;&lt;p&gt;成果图的“左主新闻区+右热搜区”“单图/多图新闻”等结构，全靠 Flex 布局实现：&lt;/p&gt;
-&lt;h3 id=&#34;1-主次分栏布局成果图左右区域&#34;&gt;1. 主次分栏布局（成果图左+右区域）
+&lt;h3 id=&#34;主次分栏布局成果图左右区域&#34;&gt;主次分栏布局（成果图左+右区域）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -8322,7 +8915,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;左侧主区（&lt;code&gt;left&lt;/code&gt;）自动占满剩余空间，呈现多条新闻；右侧热搜区（&lt;code&gt;right&lt;/code&gt;）固定宽度不收缩，保证榜单布局稳定（成果图右侧的热搜列表不会被挤压）；&lt;/li&gt;
 &lt;li&gt;两者顶部对齐（&lt;code&gt;align-items: flex-start&lt;/code&gt;），对应成果图里左、右区域的顶部是齐平的。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-单图新闻布局成果图2024-高考倒计时那条&#34;&gt;2. 单图新闻布局（成果图“2024 高考倒计时”那条）
+&lt;h3 id=&#34;单图新闻布局成果图2024-高考倒计时那条&#34;&gt;单图新闻布局（成果图“2024 高考倒计时”那条）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -8366,7 +8959,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;成果图里“2024 高考倒计时”左侧的空白块，就是&lt;code&gt;img1&lt;/code&gt;（固定宽占比+比例），不会因文本长度变形；&lt;/li&gt;
 &lt;li&gt;右侧文本区上下分布（标题在上、时间/来源在下），对应成果图里这条新闻的文字区域布局均匀。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;3-多图新闻布局成果图第三条新闻的三个图&#34;&gt;3. 多图新闻布局（成果图第三条新闻的三个图）
+&lt;h3 id=&#34;多图新闻布局成果图第三条新闻的三个图&#34;&gt;多图新闻布局（成果图第三条新闻的三个图）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -8395,7 +8988,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;对应成果图的效果-3&#34;&gt;对应成果图的效果：
 &lt;/h3&gt;&lt;p&gt;成果图第三条新闻下方的三个空白块，就是通过&lt;code&gt;flex: 1&lt;/code&gt;实现的&lt;strong&gt;均等分栏&lt;/strong&gt;，无需手动算宽度，保证三张图整齐排列。&lt;/p&gt;
-&lt;h3 id=&#34;4-热搜榜单布局成果图右侧列表&#34;&gt;4. 热搜榜单布局（成果图右侧列表）
+&lt;h3 id=&#34;热搜榜单布局成果图右侧列表&#34;&gt;热搜榜单布局（成果图右侧列表）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -8437,7 +9030,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;成果图右侧的“1、2、3&amp;hellip;”排名，是&lt;code&gt;rank&lt;/code&gt;（固定宽度不位移）；&lt;/li&gt;
 &lt;li&gt;超长热搜标题自动省略（比如成果图里的第一条热搜），避免换行打乱布局。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;三布局设计的核心思路总结结合成果图&#34;&gt;三、布局设计的核心思路总结（结合成果图）
+&lt;h2 id=&#34;布局设计的核心思路总结结合成果图&#34;&gt;布局设计的核心思路总结（结合成果图）
 &lt;/h2&gt;&lt;p&gt;这个页面的布局之所以在成果图里呈现得清晰舒适，核心是“结构化+灵活性”的平衡：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;先骨架后内容&lt;/strong&gt;：先通过&lt;code&gt;big_box&lt;/code&gt;/&lt;code&gt;box&lt;/code&gt;定整体框架（成果图的大容器+分栏），再填内部组件；&lt;/li&gt;
@@ -8457,7 +9050,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/h1&gt;&lt;h2 id=&#34;-迁移概览&#34;&gt;📋 迁移概览
 &lt;/h2&gt;&lt;p&gt;将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。&lt;/p&gt;
 &lt;h2 id=&#34;-迁移路线图&#34;&gt;🗺️ 迁移路线图
-&lt;/h2&gt;&lt;h3 id=&#34;步骤-1备份原有项目&#34;&gt;&lt;strong&gt;步骤 1：备份原有项目&lt;/strong&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;备份原有项目&#34;&gt;备份原有项目**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -8468,7 +9061,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cp -r my-project my-project-backup
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;步骤-2删除旧配置文件&#34;&gt;&lt;strong&gt;步骤 2：删除旧配置文件&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;删除旧配置文件&#34;&gt;删除旧配置文件**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -8483,7 +9076,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm .eslintrc.js     &lt;span class=&#34;c1&#34;&gt;# 如果使用单独的配置文件&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;步骤-3清理项目依赖&#34;&gt;&lt;strong&gt;步骤 3：清理项目依赖&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;清理项目依赖&#34;&gt;清理项目依赖**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -8497,7 +9090,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;-详细步骤说明&#34;&gt;📝 详细步骤说明
-&lt;/h2&gt;&lt;h3 id=&#34;1-修改-packagejson&#34;&gt;&lt;strong&gt;1. 修改 package.json&lt;/strong&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;修改-packagejson&#34;&gt;修改 package.json**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;主要变化：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8555,7 +9148,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;type: &amp;quot;module&amp;quot;&lt;/code&gt; 让 Node.js 支持 ES6 模块语法&lt;/li&gt;
 &lt;li&gt;Vite 的命令更简洁直观&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-配置文件迁移&#34;&gt;&lt;strong&gt;2. 配置文件迁移&lt;/strong&gt;
+&lt;h3 id=&#34;配置文件迁移&#34;&gt;配置文件迁移**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;从 &lt;code&gt;vue.config.js&lt;/code&gt; 到 &lt;code&gt;vite.config.js&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8619,7 +9212,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;配置结构更扁平&lt;/li&gt;
 &lt;li&gt;热更新速度显著提升&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;3-环境变量处理&#34;&gt;&lt;strong&gt;3. 环境变量处理&lt;/strong&gt;
+&lt;h3 id=&#34;环境变量处理&#34;&gt;环境变量处理**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Vue CLI 方式：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8673,7 +9266,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;meta&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;env&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VUE_APP_BASE_API&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;4-请求配置文件修改&#34;&gt;&lt;strong&gt;4. 请求配置文件修改&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;请求配置文件修改&#34;&gt;请求配置文件修改**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;修改 &lt;code&gt;src/utils/request.js&lt;/code&gt;（或类似文件）：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8709,7 +9302,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;只有以 &lt;code&gt;VITE_&lt;/code&gt; 或配置的前缀开头的变量才会被暴露&lt;/li&gt;
 &lt;li&gt;环境变量在构建时被替换&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;5-html-文件处理&#34;&gt;&lt;strong&gt;5. HTML 文件处理&lt;/strong&gt;
+&lt;h3 id=&#34;html-文件处理&#34;&gt;HTML 文件处理**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Vue CLI：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8781,7 +9374,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;html&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;6-静态资源引用方式&#34;&gt;&lt;strong&gt;6. 静态资源引用方式&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;静态资源引用方式&#34;&gt;静态资源引用方式**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Vue CLI：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8824,7 +9417,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;img&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/logo.png&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&amp;gt;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 放在 public/logo.png
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;7-路径别名配置&#34;&gt;&lt;strong&gt;7. 路径别名配置&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;路径别名配置&#34;&gt;路径别名配置**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;vite.config.js 中配置：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -8855,7 +9448,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;-常见问题解决&#34;&gt;🔧 常见问题解决
-&lt;/h2&gt;&lt;h3 id=&#34;问题-1commonjs-模块报错&#34;&gt;&lt;strong&gt;问题 1：CommonJS 模块报错&lt;/strong&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;commonjs-模块报错&#34;&gt;CommonJS 模块报错**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -8872,7 +9465,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;module&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;问题-2process-变量报错&#34;&gt;&lt;strong&gt;问题 2：process 变量报错&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;process-变量报错&#34;&gt;process 变量报错**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -8893,7 +9486,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;问题-3css-预处理器错误&#34;&gt;&lt;strong&gt;问题 3：CSS 预处理器错误&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;css-预处理器错误&#34;&gt;CSS 预处理器错误**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -8990,32 +9583,32 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;🚀 开始迁移 Vue CLI 到 Vite...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1. 备份&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 备份&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;📦 备份原项目...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cp -r ./ ./backup-&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date +%Y%m%d-%H%M%S&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 2. 删除旧文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 删除旧文件&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;🗑️  删除旧配置文件...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm -f vue.config.js
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm -f babel.config.js
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 3. 清理依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 清理依赖&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;🧹 清理 node_modules...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm -rf node_modules
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm -f package-lock.json
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 4. 移动 HTML 文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 移动 HTML 文件&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;📄 移动 HTML 文件...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; -f &lt;span class=&#34;s2&#34;&gt;&amp;#34;public/index.html&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    mv public/index.html ./
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    rm -rf public
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 5. 更新 package.json&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 更新 package.json&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;📝 更新 package.json...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 这里可以编写 sed 命令或手动修改&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 6. 创建 vite.config.js&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 创建 vite.config.js&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;⚙️  创建 Vite 配置文件...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat &amp;gt; vite.config.js &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt; &amp;#39;EOF&amp;#39;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;import { defineConfig } from &amp;#34;vite&amp;#34;;
@@ -9171,7 +9764,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;开发时，前端在&lt;code&gt;localhost:8081&lt;/code&gt;运行，后端可能在&lt;code&gt;localhost:8080&lt;/code&gt;或其他地方。配置代理后，前端访问&lt;code&gt;/api/user&lt;/code&gt;时，会自动转发到&lt;code&gt;http://real-backend.com/user&lt;/code&gt;，解决了跨域问题。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;二地基建设mainjs&#34;&gt;二、地基建设：main.js
+&lt;h2 id=&#34;地基建设mainjs&#34;&gt;地基建设：main.js
 &lt;/h2&gt;&lt;p&gt;这是整个应用的启动入口：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9232,7 +9825,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;挂载路由/状态管理/UI库 → 渲染App.vue → 显示页面
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;三房子外壳appvue&#34;&gt;三、房子外壳：App.vue
+&lt;/div&gt;&lt;h2 id=&#34;房子外壳appvue&#34;&gt;房子外壳：App.vue
 &lt;/h2&gt;&lt;p&gt;这是最外层的容器，所有页面都装在这里：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9273,7 +9866,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;&amp;lt;router-view /&amp;gt;&lt;/code&gt; 就像一个&lt;strong&gt;幻灯片投影仪&lt;/strong&gt;，URL 变化时，自动切换显示的内容&lt;/li&gt;
 &lt;li&gt;全局样式在这里引入，所有子页面都能用这些样式&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;四房间布局mainlayoutvue&#34;&gt;四、房间布局：MainLayout.vue
+&lt;h2 id=&#34;房间布局mainlayoutvue&#34;&gt;房间布局：MainLayout.vue
 &lt;/h2&gt;&lt;p&gt;这是页面的通用布局模板（像酒店的标准间装修）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9338,8 +9931,8 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─────────────────────┘
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;五导航系统路由配置&#34;&gt;五、导航系统：路由配置
-&lt;/h2&gt;&lt;h3 id=&#34;1-路由规则routesjs&#34;&gt;1. 路由规则（routes.js）
+&lt;/div&gt;&lt;h2 id=&#34;导航系统路由配置&#34;&gt;导航系统：路由配置
+&lt;/h2&gt;&lt;h3 id=&#34;路由规则routesjs&#34;&gt;路由规则（routes.js）
 &lt;/h3&gt;&lt;p&gt;这是&lt;strong&gt;房间分布图&lt;/strong&gt;，告诉系统每个 URL 对应哪个页面：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9408,7 +10001,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;管理员路由&lt;/strong&gt;：需要管理员权限（题目管理）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;404 路由&lt;/strong&gt;：找不到页面时显示&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-路由守卫indexjs&#34;&gt;2. 路由守卫（index.js）
+&lt;h3 id=&#34;路由守卫indexjs&#34;&gt;路由守卫（index.js）
 &lt;/h3&gt;&lt;p&gt;这是&lt;strong&gt;门口的保安&lt;/strong&gt;，控制谁能进哪个房间：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9501,8 +10094,8 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            → 想进其他页？→ 带到登录页（记住想去哪）
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;六权限控制逻辑&#34;&gt;六、权限控制逻辑
-&lt;/h2&gt;&lt;h3 id=&#34;1-路由元信息meta-字段&#34;&gt;1. 路由元信息（meta 字段）
+&lt;/div&gt;&lt;h2 id=&#34;权限控制逻辑&#34;&gt;权限控制逻辑
+&lt;/h2&gt;&lt;h3 id=&#34;路由元信息meta-字段&#34;&gt;路由元信息（meta 字段）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -9521,7 +10114,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2-用户角色判断&#34;&gt;2. 用户角色判断
+&lt;/div&gt;&lt;h3 id=&#34;用户角色判断&#34;&gt;用户角色判断
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -9548,34 +10141,34 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;/el-menu&amp;gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;七开发流程总结&#34;&gt;七、开发流程总结
-&lt;/h2&gt;&lt;h3 id=&#34;步骤-1环境配置&#34;&gt;步骤 1：环境配置
+&lt;/div&gt;&lt;h2 id=&#34;开发流程总结&#34;&gt;开发流程总结
+&lt;/h2&gt;&lt;h3 id=&#34;环境配置&#34;&gt;环境配置
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;配置&lt;code&gt;vue.config.js&lt;/code&gt;（代理、端口等）&lt;/li&gt;
 &lt;li&gt;配置环境变量（接口地址等）&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-2项目初始化&#34;&gt;步骤 2：项目初始化
+&lt;h3 id=&#34;项目初始化&#34;&gt;项目初始化
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;&lt;code&gt;main.js&lt;/code&gt;引入核心依赖&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;App.vue&lt;/code&gt;设置路由容器和全局样式&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-3布局设计&#34;&gt;步骤 3：布局设计
+&lt;h3 id=&#34;布局设计&#34;&gt;布局设计
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;创建&lt;code&gt;MainLayout.vue&lt;/code&gt;（通用布局）&lt;/li&gt;
 &lt;li&gt;设计导航栏、页脚等公共组件&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-4路由配置&#34;&gt;步骤 4：路由配置
+&lt;h3 id=&#34;路由配置&#34;&gt;路由配置
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;在&lt;code&gt;routes.js&lt;/code&gt;定义所有路由&lt;/li&gt;
 &lt;li&gt;按需设置权限（public、auth、admin）&lt;/li&gt;
 &lt;li&gt;在&lt;code&gt;router/index.js&lt;/code&gt;配置路由守卫&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-5页面开发&#34;&gt;步骤 5：页面开发
+&lt;h3 id=&#34;页面开发&#34;&gt;页面开发
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;在&lt;code&gt;views/&lt;/code&gt;目录创建页面组件&lt;/li&gt;
 &lt;li&gt;根据路由配置连接页面&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-6权限集成&#34;&gt;步骤 6：权限集成
+&lt;h3 id=&#34;权限集成&#34;&gt;权限集成
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;登录后保存 token 到 store&lt;/li&gt;
 &lt;li&gt;路由守卫根据 token 和角色控制访问&lt;/li&gt;
@@ -9616,7 +10209,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         
         <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/</guid>
         <description>&lt;h1 id=&#34;手把手教你理解校园-oj-登录系统从输入密码到进入首页&#34;&gt;手把手教你理解校园 OJ 登录系统：从输入密码到进入首页
-&lt;/h1&gt;&lt;h2 id=&#34;一前言登录系统的三件套&#34;&gt;一、前言：登录系统的“三件套”
+&lt;/h1&gt;&lt;h2 id=&#34;前言登录系统的三件套&#34;&gt;前言：登录系统的“三件套”
 &lt;/h2&gt;&lt;p&gt;想象一下你要进宿舍楼：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;门禁卡&lt;/strong&gt;（token） - 证明你是楼里的学生&lt;/li&gt;
@@ -9624,8 +10217,8 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;楼长&lt;/strong&gt;（Vuex） - 登记你的入住信息&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;我们的登录系统就是这样的三级验证机制！&lt;/p&gt;
-&lt;h2 id=&#34;二核心模块详解&#34;&gt;二、核心模块详解
-&lt;/h2&gt;&lt;h3 id=&#34;1-token-管理系统---authjs你的电子门禁卡&#34;&gt;1. Token 管理系统 - &lt;code&gt;auth.js&lt;/code&gt;（你的电子门禁卡）
+&lt;h2 id=&#34;核心模块详解&#34;&gt;核心模块详解
+&lt;/h2&gt;&lt;h3 id=&#34;token-管理系统---authjs你的电子门禁卡&#34;&gt;Token 管理系统 - &lt;code&gt;auth.js&lt;/code&gt;（你的电子门禁卡）
 &lt;/h3&gt;&lt;p&gt;这个文件专门管理你的“门禁卡”（token）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9683,7 +10276,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;TOKEN_KEY&lt;/code&gt; = 卡包里的特定卡槽，只放门禁卡&lt;/li&gt;
 &lt;li&gt;每次进出，保安只看这个卡槽有没有卡&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-通信专员---requestjs你的专属信使&#34;&gt;2. 通信专员 - &lt;code&gt;request.js&lt;/code&gt;（你的专属信使）
+&lt;h3 id=&#34;通信专员---requestjs你的专属信使&#34;&gt;通信专员 - &lt;code&gt;request.js&lt;/code&gt;（你的专属信使）
 &lt;/h3&gt;&lt;p&gt;这个文件负责和&lt;strong&gt;后端服务器&lt;/strong&gt;对话，就像你有个专属信使：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9812,7 +10405,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;服务器回信 → 信使回来后（拦截器）→ 检查信的内容 → 正常就给你，异常就广播
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-用户服务接口---userjs能办的四件事&#34;&gt;3. 用户服务接口 - &lt;code&gt;user.js&lt;/code&gt;（能办的四件事）
+&lt;/div&gt;&lt;h3 id=&#34;用户服务接口---userjs能办的四件事&#34;&gt;用户服务接口 - &lt;code&gt;user.js&lt;/code&gt;（能办的四件事）
 &lt;/h3&gt;&lt;p&gt;这个文件定义了你能让信使办的&lt;strong&gt;四件事&lt;/strong&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -9914,7 +10507,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;request()&lt;/code&gt;就是&lt;strong&gt;让信使按指南办事&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;返回值是一个&lt;strong&gt;Promise&lt;/strong&gt;（承诺书），承诺会给你结果&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-用户管理中心---userjs-storemodules楼长的登记簿&#34;&gt;4. 用户管理中心 - &lt;code&gt;user.js (store/modules)&lt;/code&gt;（楼长的登记簿）
+&lt;h3 id=&#34;用户管理中心---userjs-storemodules楼长的登记簿&#34;&gt;用户管理中心 - &lt;code&gt;user.js (store/modules)&lt;/code&gt;（楼长的登记簿）
 &lt;/h3&gt;&lt;p&gt;这里是 Vuex 的&lt;strong&gt;用户模块&lt;/strong&gt;，负责管理所有用户相关的全局状态：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -10085,7 +10678,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;你要改数据 → 调用action → action调用mutation → mutation修改state
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;5-快捷访问门---gettersjs快速查询通道&#34;&gt;5. 快捷访问门 - &lt;code&gt;getters.js&lt;/code&gt;（快速查询通道）
+&lt;/div&gt;&lt;h3 id=&#34;快捷访问门---gettersjs快速查询通道&#34;&gt;快捷访问门 - &lt;code&gt;getters.js&lt;/code&gt;（快速查询通道）
 &lt;/h3&gt;&lt;p&gt;这个文件提供&lt;strong&gt;快速查询&lt;/strong&gt;状态的方法：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -10109,7 +10702,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;统一的查询接口，避免拼写错误&lt;/li&gt;
 &lt;li&gt;可以计算衍生数据（如&lt;code&gt;isLogin&lt;/code&gt;）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;6-vuex-总仓库---indexjs所有登记簿的集合&#34;&gt;6. Vuex 总仓库 - &lt;code&gt;index.js&lt;/code&gt;（所有登记簿的集合）
+&lt;h3 id=&#34;vuex-总仓库---indexjs所有登记簿的集合&#34;&gt;Vuex 总仓库 - &lt;code&gt;index.js&lt;/code&gt;（所有登记簿的集合）
 &lt;/h3&gt;&lt;p&gt;这里是 Vuex 的&lt;strong&gt;入口文件&lt;/strong&gt;，整合所有模块：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -10148,7 +10741,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;提交记录放&lt;code&gt;submission&lt;/code&gt;模块&lt;/li&gt;
 &lt;li&gt;互不干扰，清晰明了&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;7-登录页面---apploginvue前台接待处&#34;&gt;7. 登录页面 - &lt;code&gt;AppLogin.vue&lt;/code&gt;（前台接待处）
+&lt;h3 id=&#34;登录页面---apploginvue前台接待处&#34;&gt;登录页面 - &lt;code&gt;AppLogin.vue&lt;/code&gt;（前台接待处）
 &lt;/h3&gt;&lt;p&gt;这是用户看到的&lt;strong&gt;登录界面&lt;/strong&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -10297,7 +10890,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;code&gt;store.dispatch()&lt;/code&gt; - 让楼长办事（异步操作）&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;router.push()&lt;/code&gt; - 让导航员带路&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;三完整登录流程故事版&#34;&gt;三、完整登录流程（故事版）
+&lt;h2 id=&#34;完整登录流程故事版&#34;&gt;完整登录流程（故事版）
 &lt;/h2&gt;&lt;p&gt;让我们跟着&amp;quot;小明&amp;quot;走一遍完整流程：&lt;/p&gt;
 &lt;h3 id=&#34;第一幕来到登录页面&#34;&gt;第一幕：来到登录页面
 &lt;/h3&gt;&lt;p&gt;小明打开浏览器，输入 OJ 平台网址，看到登录页面（&lt;code&gt;AppLogin.vue&lt;/code&gt;）。&lt;/p&gt;
@@ -10438,8 +11031,8 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;4.&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;保安验证有效&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;放行到首页&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;四关键概念精讲&#34;&gt;四、关键概念精讲
-&lt;/h2&gt;&lt;h3 id=&#34;1-什么是-token&#34;&gt;1. 什么是 Token？
+&lt;/div&gt;&lt;h2 id=&#34;关键概念精讲&#34;&gt;关键概念精讲
+&lt;/h2&gt;&lt;h3 id=&#34;什么是-token&#34;&gt;什么是 Token？
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;比喻&lt;/strong&gt;：Token 就像酒店的房卡。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;办入住时（登录）给你一张&lt;/li&gt;
@@ -10447,7 +11040,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;退房时（退出登录）收回&lt;/li&gt;
 &lt;li&gt;过期了要重新办（token 过期）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-localstorage-vs-sessionstorage&#34;&gt;2. localStorage vs sessionStorage
+&lt;h3 id=&#34;localstorage-vs-sessionstorage&#34;&gt;localStorage vs sessionStorage
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -10472,7 +11065,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- 同标签页共享
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-promise-异步处理&#34;&gt;3. Promise 异步处理
+&lt;/div&gt;&lt;h3 id=&#34;promise-异步处理&#34;&gt;Promise 异步处理
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;比喻&lt;/strong&gt;：叫外卖的过程&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -10524,7 +11117,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;4-vuex-数据流&#34;&gt;4. Vuex 数据流
+&lt;/div&gt;&lt;h3 id=&#34;vuex-数据流&#34;&gt;Vuex 数据流
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -10537,7 +11130,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      （做什么事）       （怎么改）        （改哪里）    （看到变化）
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;五常见问题解答&#34;&gt;五、常见问题解答
+&lt;/div&gt;&lt;h2 id=&#34;常见问题解答&#34;&gt;常见问题解答
 &lt;/h2&gt;&lt;h3 id=&#34;q1为什么登录后页面刷新又变未登录了&#34;&gt;Q1：为什么登录后页面刷新，又变未登录了？
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;可能原因&lt;/strong&gt;：&lt;/p&gt;
 &lt;ol&gt;
@@ -10611,7 +11204,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;重要操作需要二次验证&lt;/li&gt;
 &lt;li&gt;定期更换 token&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;六登录系统架构总结&#34;&gt;六、登录系统架构总结
+&lt;h2 id=&#34;登录系统架构总结&#34;&gt;登录系统架构总结
 &lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -10652,7 +11245,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5. 界面模块（AppLogin.vue）- 管用户看到什么
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;七给新手的黄金法则&#34;&gt;七、给新手的黄金法则
+&lt;/div&gt;&lt;h2 id=&#34;给新手的黄金法则&#34;&gt;给新手的黄金法则
 &lt;/h2&gt;&lt;h3 id=&#34;法则-1先理解流程再写代码&#34;&gt;法则 1：先理解流程，再写代码
 &lt;/h3&gt;&lt;p&gt;画个流程图，搞清楚&amp;quot;点击登录&amp;quot;到&amp;quot;进入首页&amp;quot;中间发生了什么。&lt;/p&gt;
 &lt;h3 id=&#34;法则-2分层思考各司其职&#34;&gt;法则 2：分层思考，各司其职
@@ -10677,7 +11270,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;成功后有反馈&lt;/li&gt;
 &lt;li&gt;记住用户上次操作&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;八下一步学习方向&#34;&gt;八、下一步学习方向
+&lt;h2 id=&#34;下一步学习方向&#34;&gt;下一步学习方向
 &lt;/h2&gt;&lt;p&gt;掌握了登录系统后，你可以继续学习：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;权限管理&lt;/strong&gt;：不同角色看到不同菜单&lt;/li&gt;
@@ -11014,7 +11607,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         
         <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8Badmin%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%BC%80%E5%8F%91/</guid>
         <description>&lt;p&gt;由于没有后端，我来为你添加前端模拟数据和模拟 API，并解释为什么不需要处理 token。&lt;/p&gt;
-&lt;h2 id=&#34;1-创建模拟数据存储&#34;&gt;1. 创建模拟数据存储
+&lt;h2 id=&#34;创建模拟数据存储&#34;&gt;创建模拟数据存储
 &lt;/h2&gt;&lt;p&gt;首先在 &lt;code&gt;src/utils/&lt;/code&gt; 下创建模拟数据管理工具：&lt;/p&gt;
 &lt;h3 id=&#34;srcutilsmockdatajs&#34;&gt;&lt;code&gt;src/utils/mockData.js&lt;/code&gt;
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -11273,7 +11866,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mockStorage&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;MockStorage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;2-修改-api-文件支持模拟数据&#34;&gt;2. 修改 API 文件支持模拟数据
+&lt;/div&gt;&lt;h2 id=&#34;修改-api-文件支持模拟数据&#34;&gt;修改 API 文件支持模拟数据
 &lt;/h2&gt;&lt;h3 id=&#34;srcapiadminjs-更新版本&#34;&gt;&lt;code&gt;src/api/admin.js&lt;/code&gt; (更新版本)
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -11529,7 +12122,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;3-更新组件处理模拟数据响应&#34;&gt;3. 更新组件处理模拟数据响应
+&lt;/div&gt;&lt;h2 id=&#34;更新组件处理模拟数据响应&#34;&gt;更新组件处理模拟数据响应
 &lt;/h2&gt;&lt;h3 id=&#34;srccomponentsadminproblemmanagementvue-关键部分更新&#34;&gt;&lt;code&gt;src/components/admin/ProblemManagement.vue&lt;/code&gt; (关键部分更新)
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -11752,7 +12345,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;4-为什么不需要处理-token&#34;&gt;4. 为什么不需要处理 Token
+&lt;/div&gt;&lt;h2 id=&#34;为什么不需要处理-token&#34;&gt;为什么不需要处理 Token
 &lt;/h2&gt;&lt;h3 id=&#34;原因分析&#34;&gt;原因分析：
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;
@@ -11845,16 +12438,16 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;注：后文会详细讲解 Nginx 反向代理（这是前端程序员的必备知识）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;一问题背景为什么会跨域&#34;&gt;一、问题背景：为什么会跨域？
+&lt;h2 id=&#34;问题背景为什么会跨域&#34;&gt;问题背景：为什么会跨域？
 &lt;/h2&gt;&lt;p&gt;先看我们的项目环境：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;前端（Vue）运行在 &lt;code&gt;http://localhost:8081&lt;/code&gt;（通过&lt;code&gt;vue.config.js&lt;/code&gt;配置）；&lt;/li&gt;
 &lt;li&gt;后端（Express）运行在 &lt;code&gt;http://localhost:8080&lt;/code&gt;（接口路径如&lt;code&gt;/api/merchant&lt;/code&gt;）。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;浏览器的同源策略要求“协议+域名+端口”完全一致，因此前端直接请求后端接口会触发跨域错误——比如控制台提示&lt;code&gt;No &#39;Access-Control-Allow-Origin&#39; header is present on the requested resource&lt;/code&gt;。&lt;/p&gt;
-&lt;h2 id=&#34;二cors后端主导的跨域解决方案&#34;&gt;二、CORS：后端主导的跨域解决方案
+&lt;h2 id=&#34;cors后端主导的跨域解决方案&#34;&gt;CORS：后端主导的跨域解决方案
 &lt;/h2&gt;&lt;p&gt;CORS 是 W3C 标准，通过后端设置响应头允许指定源的跨域请求，是最直接的跨域方案之一。以下是两种常见的 CORS 配置方式：&lt;/p&gt;
-&lt;h3 id=&#34;1-方案-1使用cors中间件便捷高效&#34;&gt;1. 方案 1：使用&lt;code&gt;cors&lt;/code&gt;中间件（便捷高效）
+&lt;h3 id=&#34;方案-1使用cors中间件便捷高效&#34;&gt;方案 1：使用&lt;code&gt;cors&lt;/code&gt;中间件（便捷高效）
 &lt;/h3&gt;&lt;p&gt;Express 生态提供了&lt;code&gt;cors&lt;/code&gt;包，可一键配置跨域规则，也是项目中最常用的方式：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -11917,7 +12510,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这种方式无需手动处理预检请求，&lt;code&gt;cors&lt;/code&gt;包会自动拦截&lt;code&gt;OPTIONS&lt;/code&gt;请求并返回正确响应头。&lt;/p&gt;
-&lt;h3 id=&#34;2-方案-2手动配置-cors深入原理&#34;&gt;2. 方案 2：手动配置 CORS（深入原理）
+&lt;h3 id=&#34;方案-2手动配置-cors深入原理&#34;&gt;方案 2：手动配置 CORS（深入原理）
 &lt;/h3&gt;&lt;p&gt;若不想依赖第三方包，可手动设置响应头并处理预检请求（适合理解 CORS 底层逻辑）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -11993,15 +12586,15 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-cors-的关键细节&#34;&gt;3. CORS 的关键细节
+&lt;/div&gt;&lt;h3 id=&#34;cors-的关键细节&#34;&gt;CORS 的关键细节
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;预检请求（OPTIONS）&lt;/strong&gt;：前端发送&lt;code&gt;PUT/DELETE&lt;/code&gt;或带自定义头的请求时，浏览器会先发&lt;code&gt;OPTIONS&lt;/code&gt;请求“探路”，后端必须正确响应才能触发真实请求；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Access-Control-Allow-Origin&lt;/strong&gt;：生产环境需指定具体域名（如&lt;code&gt;https://your-domain.com&lt;/code&gt;），而非通配符&lt;code&gt;*&lt;/code&gt;（否则前端无法携带 Cookie/Token）；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;简单请求豁免预检&lt;/strong&gt;：&lt;code&gt;GET/POST/HEAD&lt;/code&gt;请求且请求头仅含&lt;code&gt;Accept&lt;/code&gt;/&lt;code&gt;Content-Type&lt;/code&gt;等基础字段时，无需预检。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;三devserver-反向代理前端开发环境的跨域捷径&#34;&gt;三、devServer 反向代理：前端开发环境的跨域捷径
+&lt;h2 id=&#34;devserver-反向代理前端开发环境的跨域捷径&#34;&gt;devServer 反向代理：前端开发环境的跨域捷径
 &lt;/h2&gt;&lt;p&gt;虽然 CORS 能解决跨域，但开发阶段频繁修改后端配置效率低。Vue CLI 的&lt;code&gt;devServer.proxy&lt;/code&gt;通过反向代理绕过浏览器跨域限制，是更优雅的开发方案。&lt;/p&gt;
-&lt;h3 id=&#34;1-反向代理的工作原理&#34;&gt;1. 反向代理的工作原理
+&lt;h3 id=&#34;反向代理的工作原理&#34;&gt;反向代理的工作原理
 &lt;/h3&gt;&lt;p&gt;&lt;code&gt;devServer.proxy&lt;/code&gt;让前端开发服务器充当“中间人”：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;前端请求&lt;strong&gt;同源的开发服务器&lt;/strong&gt;（如&lt;code&gt;http://localhost:8081/api/merchant&lt;/code&gt;）；&lt;/li&gt;
@@ -12009,7 +12602,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;后端响应结果由开发服务器回传给前端。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;整个过程中浏览器仅与同源的&lt;code&gt;localhost:8081&lt;/code&gt;交互，自然不会触发跨域限制。&lt;/p&gt;
-&lt;h3 id=&#34;2-前端配置源码解析vueconfigjs&#34;&gt;2. 前端配置源码解析（vue.config.js）
+&lt;h3 id=&#34;前端配置源码解析vueconfigjs&#34;&gt;前端配置源码解析（vue.config.js）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -12044,16 +12637,16 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-关键配置说明&#34;&gt;3. 关键配置说明
+&lt;/div&gt;&lt;h3 id=&#34;关键配置说明&#34;&gt;关键配置说明
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;target&lt;/strong&gt;：后端接口的根地址；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;changeOrigin: true&lt;/strong&gt;：让后端误以为请求来自&lt;code&gt;localhost:8080&lt;/code&gt;（同源），避免后端的跨域拦截逻辑；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;pathRewrite&lt;/strong&gt;：示例中注释掉是因为后端接口带&lt;code&gt;/api&lt;/code&gt;前缀（如&lt;code&gt;/api/merchant&lt;/code&gt;），若后端接口无&lt;code&gt;/api&lt;/code&gt;，需通过此配置去掉前缀。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-踩坑实录为什么去掉-cors-仍报错&#34;&gt;4. 踩坑实录：为什么去掉 CORS 仍报错？
+&lt;h3 id=&#34;踩坑实录为什么去掉-cors-仍报错&#34;&gt;踩坑实录：为什么去掉 CORS 仍报错？
 &lt;/h3&gt;&lt;p&gt;很多开发者疑惑：“明明配了&lt;code&gt;devServer.proxy&lt;/code&gt;，为什么后端去掉 CORS 还是报跨域错？”&lt;br&gt;
 核心原因是&lt;strong&gt;非简单请求的&lt;code&gt;OPTIONS&lt;/code&gt;预检请求会被代理转发到后端，而后端未处理预检&lt;/strong&gt;——哪怕前端用了代理，浏览器收到后端非法的预检响应后，仍会判定跨域失败。&lt;/p&gt;
-&lt;h4 id=&#34;1预检请求的转发陷阱&#34;&gt;（1）预检请求的“转发陷阱”
+&lt;h4 id=&#34;预检请求的转发陷阱&#34;&gt;预检请求的“转发陷阱”
 &lt;/h4&gt;&lt;p&gt;前端&lt;code&gt;devServer.proxy&lt;/code&gt;会转发&lt;strong&gt;所有请求&lt;/strong&gt;（包括&lt;code&gt;OPTIONS&lt;/code&gt;预检请求）到后端。比如前端发送&lt;code&gt;POST /api/merchant&lt;/code&gt;（带 JSON 数据，属于非简单请求）：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;浏览器先发送&lt;code&gt;OPTIONS /api/merchant&lt;/code&gt;到前端开发服务器（&lt;code&gt;localhost:8081&lt;/code&gt;）；&lt;/li&gt;
@@ -12077,7 +12670,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;此时后端对&lt;code&gt;OPTIONS&lt;/code&gt;请求的响应里没有&lt;code&gt;Access-Control-Allow-Origin&lt;/code&gt;等头，浏览器自然判定跨域失败。&lt;/p&gt;
-&lt;h4 id=&#34;2开发环境最优解保留代理后端极简预检处理&#34;&gt;（2）开发环境最优解：保留代理+后端极简预检处理
+&lt;h4 id=&#34;开发环境最优解保留代理后端极简预检处理&#34;&gt;开发环境最优解：保留代理+后端极简预检处理
 &lt;/h4&gt;&lt;p&gt;所谓“后端无需配置 CORS”，并非完全不用处理跨域，而是&lt;strong&gt;不用依赖&lt;code&gt;cors&lt;/code&gt;包，但需手动处理预检请求&lt;/strong&gt;（仅需几行代码）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -12140,22 +12733,22 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这样后端能合法响应预检请求，前端代理就能正常工作——既不用装&lt;code&gt;cors&lt;/code&gt;包，也能避免跨域错误。&lt;/p&gt;
-&lt;h4 id=&#34;3简单请求的例外情况&#34;&gt;（3）简单请求的“例外情况”
+&lt;h4 id=&#34;简单请求的例外情况&#34;&gt;简单请求的“例外情况”
 &lt;/h4&gt;&lt;p&gt;如果前端只发&lt;strong&gt;简单请求&lt;/strong&gt;（比如&lt;code&gt;GET /api/merchant&lt;/code&gt;，无自定义头、无复杂数据），即使后端没处理预检，也可能成功：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;简单请求不会触发&lt;code&gt;OPTIONS&lt;/code&gt;预检，前端代理直接转发&lt;code&gt;GET&lt;/code&gt;请求到后端；&lt;/li&gt;
 &lt;li&gt;后端返回数据给前端服务器，前端服务器再返回给浏览器（浏览器只看前端服务器的同源响应，不会校验后端的跨域头）。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;但只要涉及&lt;code&gt;POST&lt;/code&gt;（JSON 数据）、&lt;code&gt;PUT/DELETE&lt;/code&gt;等非简单请求，必须处理预检，否则必报错。&lt;/p&gt;
-&lt;h2 id=&#34;四nginx-反向代理生产环境的终极方案&#34;&gt;四、Nginx 反向代理：生产环境的终极方案
+&lt;h2 id=&#34;nginx-反向代理生产环境的终极方案&#34;&gt;Nginx 反向代理：生产环境的终极方案
 &lt;/h2&gt;&lt;p&gt;&lt;code&gt;devServer.proxy&lt;/code&gt;仅适用于开发环境，生产环境需用 Nginx 反向代理——既能解决跨域，又能优化资源加载和接口转发，是前端部署的标配。&lt;/p&gt;
-&lt;h3 id=&#34;1-nginx-反向代理的优势&#34;&gt;1. Nginx 反向代理的优势
+&lt;h3 id=&#34;nginx-反向代理的优势&#34;&gt;Nginx 反向代理的优势
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;统一域名：将前端静态资源和后端接口代理到同一域名下（如&lt;code&gt;https://your-domain.com&lt;/code&gt;）；&lt;/li&gt;
 &lt;li&gt;性能优化：支持缓存、压缩、负载均衡；&lt;/li&gt;
 &lt;li&gt;安全防护：隐藏后端真实地址，降低攻击风险。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-nginx-配置示例&#34;&gt;2. Nginx 配置示例
+&lt;h3 id=&#34;nginx-配置示例&#34;&gt;Nginx 配置示例
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -12202,7 +12795,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-https-配置生产环境必加&#34;&gt;3. HTTPS 配置（生产环境必加）
+&lt;/div&gt;&lt;h3 id=&#34;https-配置生产环境必加&#34;&gt;HTTPS 配置（生产环境必加）
 &lt;/h3&gt;&lt;p&gt;若需支持 HTTPS，只需添加 SSL 证书配置：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -12230,7 +12823,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;五总结&#34;&gt;五、总结
+&lt;/div&gt;&lt;h2 id=&#34;总结&#34;&gt;总结
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;开发环境&lt;/strong&gt;：优先使用&lt;code&gt;devServer.proxy&lt;/code&gt;反向代理，无需频繁修改后端配置；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;生产环境&lt;/strong&gt;：推荐 Nginx 反向代理（统一域名+性能优化），或后端配置 CORS（不常用，这算黑魔法）；&lt;/li&gt;
@@ -12777,9 +13370,9 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;数据库&lt;/strong&gt;：MySQL，使用 DataGrip 管理&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-阶段一项目准备与环境搭建&#34;&gt;🛠️ 阶段一：项目准备与环境搭建
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步安装必要软件&#34;&gt;第 1 步：安装必要软件
-&lt;/h3&gt;&lt;h4 id=&#34;11-安装-nodejs后端运行环境&#34;&gt;1.1 安装 Node.js（后端运行环境）
+&lt;h2 id=&#34;-项目准备与环境搭建&#34;&gt;🛠️ 项目准备与环境搭建
+&lt;/h2&gt;&lt;h3 id=&#34;安装必要软件&#34;&gt;安装必要软件
+&lt;/h3&gt;&lt;h4 id=&#34;安装-nodejs后端运行环境&#34;&gt;安装 Node.js（后端运行环境）
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;访问：&lt;a class=&#34;link&#34; href=&#34;https://nodejs.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Node.js&lt;/a&gt;&lt;/li&gt;
@@ -12796,7 +13389,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;显示版本号如 &lt;code&gt;v18.x.x&lt;/code&gt; 即成功！&lt;/p&gt;
-&lt;h4 id=&#34;12-安装-vue-cli网页管理后台工具&#34;&gt;1.2 安装 Vue CLI（网页管理后台工具）
+&lt;h4 id=&#34;安装-vue-cli网页管理后台工具&#34;&gt;安装 Vue CLI（网页管理后台工具）
 &lt;/h4&gt;&lt;p&gt;在 cmd 中继续输入：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -12807,27 +13400,27 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;等待安装完成（可能需要几分钟）&lt;/p&gt;
-&lt;h4 id=&#34;13-安装微信开发者工具小程序开发&#34;&gt;1.3 安装微信开发者工具（小程序开发）
+&lt;h4 id=&#34;安装微信开发者工具小程序开发&#34;&gt;安装微信开发者工具（小程序开发）
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;访问：&lt;a class=&#34;link&#34; href=&#34;https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;微信开发者工具&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;下载&amp;quot;稳定版&amp;quot;，安装后用微信扫码登录&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;14-安装-mysql数据库&#34;&gt;1.4 安装 MySQL（数据库）
+&lt;h4 id=&#34;安装-mysql数据库&#34;&gt;安装 MySQL（数据库）
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;访问：&lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/downloads/mysql/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MySQL Community Server&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;下载 MySQL Community Server&lt;/li&gt;
 &lt;li&gt;安装时记住设置的&lt;strong&gt;root 密码&lt;/strong&gt;（建议设为 &lt;code&gt;123456&lt;/code&gt;）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;15-安装-datagrip数据库可视化工具&#34;&gt;1.5 安装 DataGrip（数据库可视化工具）
+&lt;h4 id=&#34;安装-datagrip数据库可视化工具&#34;&gt;安装 DataGrip（数据库可视化工具）
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;访问：&lt;a class=&#34;link&#34; href=&#34;https://www.jetbrains.com/datagrip/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;DataGrip&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;下载安装，学生可免费使用（用教育邮箱注册）&lt;/li&gt;
 &lt;li&gt;或使用 30 天免费试用&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;第-2-步创建项目文件夹结构&#34;&gt;第 2 步：创建项目文件夹结构
+&lt;h3 id=&#34;创建项目文件夹结构&#34;&gt;创建项目文件夹结构
 &lt;/h3&gt;&lt;p&gt;在 D 盘创建项目文件夹：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -12843,8 +13436,8 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── mini-user/       （微信小程序）
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-3-步配置-datagrip-连接数据库&#34;&gt;第 3 步：配置 DataGrip 连接数据库
-&lt;/h3&gt;&lt;h4 id=&#34;31-连接-mysql&#34;&gt;3.1 连接 MySQL
+&lt;/div&gt;&lt;h3 id=&#34;配置-datagrip-连接数据库&#34;&gt;配置 DataGrip 连接数据库
+&lt;/h3&gt;&lt;h4 id=&#34;连接-mysql&#34;&gt;连接 MySQL
 &lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;打开 DataGrip，点击 &lt;strong&gt;&amp;ldquo;New Project&amp;rdquo;&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;项目名称：&lt;code&gt;life_service_platform&lt;/code&gt;&lt;/li&gt;
@@ -12868,7 +13461,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;点击 &lt;strong&gt;&amp;ldquo;Test Connection&amp;rdquo;&lt;/strong&gt;，看到 ✅ &lt;strong&gt;Success&lt;/strong&gt; 表示成功&lt;/li&gt;
 &lt;li&gt;点击 &lt;strong&gt;&amp;ldquo;OK&amp;rdquo;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h4 id=&#34;32-创建数据库&#34;&gt;3.2 创建数据库
+&lt;h4 id=&#34;创建数据库&#34;&gt;创建数据库
 &lt;/h4&gt;&lt;p&gt;在 DataGrip 中执行 SQL 创建数据库：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;按 &lt;code&gt;Ctrl+Enter&lt;/code&gt; 打开新查询窗口&lt;/li&gt;
@@ -12886,7 +13479,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COLLATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4_unicode_ci&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;33-创建数据表&#34;&gt;3.3 创建数据表
+&lt;/div&gt;&lt;h4 id=&#34;创建数据表&#34;&gt;创建数据表
 &lt;/h4&gt;&lt;p&gt;在 DataGrip 中执行以下 SQL 创建表：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -12962,7 +13555,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;订单表&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;34-插入测试数据&#34;&gt;3.4 插入测试数据
+&lt;/div&gt;&lt;h4 id=&#34;插入测试数据&#34;&gt;插入测试数据
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -12994,8 +13587,8 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;-阶段二后端-api-开发2-3-天&#34;&gt;💻 阶段二：后端 API 开发（2-3 天）
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步创建后端项目&#34;&gt;第 1 步：创建后端项目
+&lt;h2 id=&#34;-后端-api-开发2-3-天&#34;&gt;💻 后端 API 开发（2-3 天）
+&lt;/h2&gt;&lt;h3 id=&#34;创建后端项目&#34;&gt;创建后端项目
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;打开 cmd，进入 server 文件夹：&lt;/li&gt;
 &lt;/ol&gt;
@@ -13029,7 +13622,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;npm install express mysql2 cors nodemon
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-2-步创建项目文件结构&#34;&gt;第 2 步：创建项目文件结构
+&lt;/div&gt;&lt;h3 id=&#34;创建项目文件结构&#34;&gt;创建项目文件结构
 &lt;/h3&gt;&lt;p&gt;在 &lt;code&gt;server&lt;/code&gt; 文件夹中创建以下文件结构：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -13061,8 +13654,8 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    └── orderCtrl.js
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-3-步编写后端代码&#34;&gt;第 3 步：编写后端代码
-&lt;/h3&gt;&lt;h4 id=&#34;31-数据库连接配置-dbindexjs&#34;&gt;3.1 数据库连接配置 (db/index.js)
+&lt;/div&gt;&lt;h3 id=&#34;编写后端代码&#34;&gt;编写后端代码
+&lt;/h3&gt;&lt;h4 id=&#34;数据库连接配置-dbindexjs&#34;&gt;数据库连接配置 (db/index.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -13128,7 +13721,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// pool.end();
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;32-主入口文件-appjs&#34;&gt;3.2 主入口文件 (app.js)
+&lt;/div&gt;&lt;h4 id=&#34;主入口文件-appjs&#34;&gt;主入口文件 (app.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -13181,7 +13774,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;33-商家控制器-controllersmerchantctrljs&#34;&gt;3.3 商家控制器 (controllers/merchantCtrl.js)
+&lt;/div&gt;&lt;h4 id=&#34;商家控制器-controllersmerchantctrljs&#34;&gt;商家控制器 (controllers/merchantCtrl.js)
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;控制器是实际干活的（像是餐厅的主厨）&lt;/li&gt;
 &lt;/ul&gt;
@@ -13339,7 +13932,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;34-商家路由-routesmerchantjs&#34;&gt;3.4 商家路由 (routes/merchant.js)
+&lt;/div&gt;&lt;h4 id=&#34;商家路由-routesmerchantjs&#34;&gt;商家路由 (routes/merchant.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -13378,7 +13971,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;exports&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;35-服务控制器-controllersservicectrljs&#34;&gt;3.5 服务控制器 (controllers/serviceCtrl.js)
+&lt;/div&gt;&lt;h4 id=&#34;服务控制器-controllersservicectrljs&#34;&gt;服务控制器 (controllers/serviceCtrl.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -13573,7 +14166,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;36-服务路由-routesservicejs&#34;&gt;3.6 服务路由 (routes/service.js)
+&lt;/div&gt;&lt;h4 id=&#34;服务路由-routesservicejs&#34;&gt;服务路由 (routes/service.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -13612,7 +14205,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;exports&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;37-订单控制器-controllersorderctrljs&#34;&gt;3.7 订单控制器 (controllers/orderCtrl.js)
+&lt;/div&gt;&lt;h4 id=&#34;订单控制器-controllersorderctrljs&#34;&gt;订单控制器 (controllers/orderCtrl.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -13755,7 +14348,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;38-订单路由-routesorderjs&#34;&gt;3.8 订单路由 (routes/order.js)
+&lt;/div&gt;&lt;h4 id=&#34;订单路由-routesorderjs&#34;&gt;订单路由 (routes/order.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -13784,7 +14377,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;exports&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-4-步配置-packagejson-脚本&#34;&gt;第 4 步：配置 package.json 脚本
+&lt;/div&gt;&lt;h3 id=&#34;配置-packagejson-脚本&#34;&gt;配置 package.json 脚本
 &lt;/h3&gt;&lt;p&gt;修改 &lt;code&gt;server/package.json&lt;/code&gt; 中的 &lt;code&gt;scripts&lt;/code&gt; 部分：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -13804,7 +14397,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-5-步启动后端服务&#34;&gt;第 5 步：启动后端服务
+&lt;/div&gt;&lt;h3 id=&#34;启动后端服务&#34;&gt;启动后端服务
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -13816,15 +14409,15 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;看到 &lt;code&gt;✅ 后端服务启动成功！&lt;/code&gt; 表示后端正常运行。&lt;/p&gt;
-&lt;h3 id=&#34;第-6-步测试后端-api&#34;&gt;第 6 步：测试后端 API
+&lt;h3 id=&#34;测试后端-api&#34;&gt;测试后端 API
 &lt;/h3&gt;&lt;p&gt;使用 Postman 或浏览器测试接口：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;GET http://localhost:8080/api/merchant/list&lt;/code&gt; - 获取商家列表&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;POST http://localhost:8080/api/merchant/add&lt;/code&gt; - 新增商家&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-阶段三web-管理后台开发3-4-天&#34;&gt;🌐 阶段三：Web 管理后台开发（3-4 天）
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步创建-vue-项目&#34;&gt;第 1 步：创建 Vue 项目
+&lt;h2 id=&#34;-web-管理后台开发3-4-天&#34;&gt;🌐 Web 管理后台开发（3-4 天）
+&lt;/h2&gt;&lt;h3 id=&#34;创建-vue-项目&#34;&gt;创建 Vue 项目
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;打开新的 cmd 窗口：&lt;/li&gt;
 &lt;/ol&gt;
@@ -13862,7 +14455,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;npm install axios
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-2-步项目结构配置&#34;&gt;第 2 步：项目结构配置
+&lt;/div&gt;&lt;h3 id=&#34;项目结构配置&#34;&gt;项目结构配置
 &lt;/h3&gt;&lt;p&gt;在 &lt;code&gt;src&lt;/code&gt; 文件夹中创建以下结构：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -13900,7 +14493,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    └── index.js
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-3-步配置路由&#34;&gt;第 3 步：配置路由
+&lt;/div&gt;&lt;h3 id=&#34;配置路由&#34;&gt;配置路由
 &lt;/h3&gt;&lt;p&gt;修改 &lt;code&gt;src/router/index.js&lt;/code&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;这里路由说的详细一点，方便理解这个整体架构&lt;/li&gt;
@@ -13997,7 +14590,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;default&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-4-步封装-api-请求&#34;&gt;第 4 步：封装 API 请求
+&lt;/div&gt;&lt;h3 id=&#34;封装-api-请求&#34;&gt;封装 API 请求
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;src/api/merchant.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -14133,7 +14726,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;default&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;orderAPI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-5-步开发商家管理页面&#34;&gt;第 5 步：开发商家管理页面
+&lt;/div&gt;&lt;h3 id=&#34;开发商家管理页面&#34;&gt;开发商家管理页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;src/views/Merchant/index.vue&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -14875,7 +15468,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-6-步修改-appvue&#34;&gt;第 6 步：修改 App.vue
+&lt;/div&gt;&lt;h3 id=&#34;修改-appvue&#34;&gt;修改 App.vue
 &lt;/h3&gt;&lt;p&gt;更新 &lt;code&gt;src/App.vue&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -15045,7 +15638,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-7-步开发服务管理页面&#34;&gt;第 7 步：开发服务管理页面
+&lt;/div&gt;&lt;h3 id=&#34;开发服务管理页面&#34;&gt;开发服务管理页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;src/views/Service/index.vue&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -15681,7 +16274,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-8-步开发订单管理页面&#34;&gt;第 8 步：开发订单管理页面
+&lt;/div&gt;&lt;h3 id=&#34;开发订单管理页面&#34;&gt;开发订单管理页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;src/views/Order/index.vue&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -16025,7 +16618,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-9-步启动-web-管理后台&#34;&gt;第 9 步：启动 Web 管理后台
+&lt;/div&gt;&lt;h3 id=&#34;启动-web-管理后台&#34;&gt;启动 Web 管理后台
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;注意此时，还有前后端跨域问题（用 cores 或者 nginx 代理解决）&lt;/li&gt;
 &lt;li&gt;PS（我会在后续的文章中解决）&lt;/li&gt;
@@ -16042,8 +16635,8 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;访问：http://localhost:8080&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-阶段四微信小程序开发3-4-天&#34;&gt;📱 阶段四：微信小程序开发（3-4 天）
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步创建小程序项目&#34;&gt;第 1 步：创建小程序项目
+&lt;h2 id=&#34;-微信小程序开发3-4-天&#34;&gt;📱 微信小程序开发（3-4 天）
+&lt;/h2&gt;&lt;h3 id=&#34;创建小程序项目&#34;&gt;创建小程序项目
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;打开微信开发者工具&lt;/li&gt;
 &lt;li&gt;点击&amp;quot;新建项目&amp;quot;&lt;/li&gt;
@@ -16057,7 +16650,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;点击&amp;quot;新建&amp;quot;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;第-2-步项目结构配置-1&#34;&gt;第 2 步：项目结构配置
+&lt;h3 id=&#34;项目结构配置-1&#34;&gt;项目结构配置
 &lt;/h3&gt;&lt;p&gt;在小程序项目中创建以下结构：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -16085,7 +16678,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── app.js（小程序入口）
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-3-步封装网络请求&#34;&gt;第 3 步：封装网络请求
+&lt;/div&gt;&lt;h3 id=&#34;封装网络请求&#34;&gt;封装网络请求
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;utils/request.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -16135,7 +16728,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;exports&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;request&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-4-步配置小程序页面&#34;&gt;第 4 步：配置小程序页面
+&lt;/div&gt;&lt;h3 id=&#34;配置小程序页面&#34;&gt;配置小程序页面
 &lt;/h3&gt;&lt;p&gt;修改 &lt;code&gt;app.json&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -16175,7 +16768,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-5-步开发首页&#34;&gt;第 5 步：开发首页
+&lt;/div&gt;&lt;h3 id=&#34;开发首页&#34;&gt;开发首页
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;pages/index/index.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -16751,7 +17344,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-6-步开发服务列表页面&#34;&gt;第 6 步：开发服务列表页面
+&lt;/div&gt;&lt;h3 id=&#34;开发服务列表页面&#34;&gt;开发服务列表页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;pages/serviceList/serviceList.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -17277,7 +17870,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-7-步开发创建订单页面&#34;&gt;第 7 步：开发创建订单页面
+&lt;/div&gt;&lt;h3 id=&#34;开发创建订单页面&#34;&gt;开发创建订单页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;pages/orderCreate/orderCreate.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -17867,7 +18460,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-8-步开发订单列表页面&#34;&gt;第 8 步：开发订单列表页面
+&lt;/div&gt;&lt;h3 id=&#34;开发订单列表页面&#34;&gt;开发订单列表页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;pages/orderList/orderList.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -18287,7 +18880,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-9-步配置小程序入口&#34;&gt;第 9 步：配置小程序入口
+&lt;/div&gt;&lt;h3 id=&#34;配置小程序入口&#34;&gt;配置小程序入口
 &lt;/h3&gt;&lt;p&gt;修改 &lt;code&gt;app.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -18314,8 +18907,8 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;-阶段五集成测试与上线&#34;&gt;🧪 阶段五：集成测试与上线
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步完整流程测试&#34;&gt;第 1 步：完整流程测试
+&lt;h2 id=&#34;-集成测试与上线&#34;&gt;🧪 集成测试与上线
+&lt;/h2&gt;&lt;h3 id=&#34;完整流程测试&#34;&gt;完整流程测试
 &lt;/h3&gt;&lt;h4 id=&#34;测试流程&#34;&gt;测试流程：
 &lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;
@@ -18357,7 +18950,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;第-2-步代码优化&#34;&gt;第 2 步：代码优化
+&lt;h3 id=&#34;代码优化&#34;&gt;代码优化
 &lt;/h3&gt;&lt;h4 id=&#34;后端优化&#34;&gt;后端优化：
 &lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;添加参数验证&lt;/li&gt;
@@ -18370,7 +18963,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;li&gt;错误边界处理&lt;/li&gt;
 &lt;li&gt;表单验证加强&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;第-3-步部署准备&#34;&gt;第 3 步：部署准备
+&lt;h3 id=&#34;部署准备&#34;&gt;部署准备
 &lt;/h3&gt;&lt;h4 id=&#34;整理项目文档&#34;&gt;整理项目文档：
 &lt;/h4&gt;&lt;p&gt;创建 &lt;code&gt;README.md&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -18445,7 +19038,7 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;2.&lt;/span&gt; 点击预览
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-4-步git-版本控制&#34;&gt;第 4 步：Git 版本控制
+&lt;/div&gt;&lt;h3 id=&#34;git-版本控制&#34;&gt;Git 版本控制
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1

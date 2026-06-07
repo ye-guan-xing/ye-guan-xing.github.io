@@ -26,7 +26,7 @@
 	
 	
 &gt;&lt;/p&gt;
-&lt;h2 id=&#34;一布局基础全局样式与容器搭建成果图整体框架&#34;&gt;一、布局基础：全局样式与容器搭建（成果图整体框架）
+&lt;h2 id=&#34;布局基础全局样式与容器搭建成果图整体框架&#34;&gt;布局基础：全局样式与容器搭建（成果图整体框架）
 &lt;/h2&gt;&lt;p&gt;任何布局的第一步都是打“地基”——成果图里的整个内容区域，就是通过以下代码实现的核心容器：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -73,9 +73,9 @@
 &lt;li&gt;成果图里的所有内容（左侧新闻+右侧热搜）都包裹在&lt;code&gt;big_box&lt;/code&gt;中，实现了&lt;strong&gt;水平居中+左右留白&lt;/strong&gt;，适配不同屏幕；&lt;/li&gt;
 &lt;li&gt;容器的渐变背景+圆角，让成果图里的内容区和外部橙色背景区分开，视觉更整洁。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;二核心布局flex-的灵活运用成果图主次分栏内容排列&#34;&gt;二、核心布局：Flex 的灵活运用（成果图主次分栏+内容排列）
+&lt;h2 id=&#34;核心布局flex-的灵活运用成果图主次分栏内容排列&#34;&gt;核心布局：Flex 的灵活运用（成果图主次分栏+内容排列）
 &lt;/h2&gt;&lt;p&gt;成果图的“左主新闻区+右热搜区”“单图/多图新闻”等结构，全靠 Flex 布局实现：&lt;/p&gt;
-&lt;h3 id=&#34;1-主次分栏布局成果图左右区域&#34;&gt;1. 主次分栏布局（成果图左+右区域）
+&lt;h3 id=&#34;主次分栏布局成果图左右区域&#34;&gt;主次分栏布局（成果图左+右区域）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -113,7 +113,7 @@
 &lt;li&gt;左侧主区（&lt;code&gt;left&lt;/code&gt;）自动占满剩余空间，呈现多条新闻；右侧热搜区（&lt;code&gt;right&lt;/code&gt;）固定宽度不收缩，保证榜单布局稳定（成果图右侧的热搜列表不会被挤压）；&lt;/li&gt;
 &lt;li&gt;两者顶部对齐（&lt;code&gt;align-items: flex-start&lt;/code&gt;），对应成果图里左、右区域的顶部是齐平的。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-单图新闻布局成果图2024-高考倒计时那条&#34;&gt;2. 单图新闻布局（成果图“2024 高考倒计时”那条）
+&lt;h3 id=&#34;单图新闻布局成果图2024-高考倒计时那条&#34;&gt;单图新闻布局（成果图“2024 高考倒计时”那条）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -157,7 +157,7 @@
 &lt;li&gt;成果图里“2024 高考倒计时”左侧的空白块，就是&lt;code&gt;img1&lt;/code&gt;（固定宽占比+比例），不会因文本长度变形；&lt;/li&gt;
 &lt;li&gt;右侧文本区上下分布（标题在上、时间/来源在下），对应成果图里这条新闻的文字区域布局均匀。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;3-多图新闻布局成果图第三条新闻的三个图&#34;&gt;3. 多图新闻布局（成果图第三条新闻的三个图）
+&lt;h3 id=&#34;多图新闻布局成果图第三条新闻的三个图&#34;&gt;多图新闻布局（成果图第三条新闻的三个图）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -186,7 +186,7 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;h3 id=&#34;对应成果图的效果-3&#34;&gt;对应成果图的效果：
 &lt;/h3&gt;&lt;p&gt;成果图第三条新闻下方的三个空白块，就是通过&lt;code&gt;flex: 1&lt;/code&gt;实现的&lt;strong&gt;均等分栏&lt;/strong&gt;，无需手动算宽度，保证三张图整齐排列。&lt;/p&gt;
-&lt;h3 id=&#34;4-热搜榜单布局成果图右侧列表&#34;&gt;4. 热搜榜单布局（成果图右侧列表）
+&lt;h3 id=&#34;热搜榜单布局成果图右侧列表&#34;&gt;热搜榜单布局（成果图右侧列表）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -228,7 +228,7 @@
 &lt;li&gt;成果图右侧的“1、2、3&amp;hellip;”排名，是&lt;code&gt;rank&lt;/code&gt;（固定宽度不位移）；&lt;/li&gt;
 &lt;li&gt;超长热搜标题自动省略（比如成果图里的第一条热搜），避免换行打乱布局。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;三布局设计的核心思路总结结合成果图&#34;&gt;三、布局设计的核心思路总结（结合成果图）
+&lt;h2 id=&#34;布局设计的核心思路总结结合成果图&#34;&gt;布局设计的核心思路总结（结合成果图）
 &lt;/h2&gt;&lt;p&gt;这个页面的布局之所以在成果图里呈现得清晰舒适，核心是“结构化+灵活性”的平衡：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;先骨架后内容&lt;/strong&gt;：先通过&lt;code&gt;big_box&lt;/code&gt;/&lt;code&gt;box&lt;/code&gt;定整体框架（成果图的大容器+分栏），再填内部组件；&lt;/li&gt;
@@ -248,7 +248,7 @@
 &lt;/h1&gt;&lt;h2 id=&#34;-迁移概览&#34;&gt;📋 迁移概览
 &lt;/h2&gt;&lt;p&gt;将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。&lt;/p&gt;
 &lt;h2 id=&#34;-迁移路线图&#34;&gt;🗺️ 迁移路线图
-&lt;/h2&gt;&lt;h3 id=&#34;步骤-1备份原有项目&#34;&gt;&lt;strong&gt;步骤 1：备份原有项目&lt;/strong&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;备份原有项目&#34;&gt;备份原有项目**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -259,7 +259,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cp -r my-project my-project-backup
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;步骤-2删除旧配置文件&#34;&gt;&lt;strong&gt;步骤 2：删除旧配置文件&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;删除旧配置文件&#34;&gt;删除旧配置文件**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -274,7 +274,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm .eslintrc.js     &lt;span class=&#34;c1&#34;&gt;# 如果使用单独的配置文件&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;步骤-3清理项目依赖&#34;&gt;&lt;strong&gt;步骤 3：清理项目依赖&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;清理项目依赖&#34;&gt;清理项目依赖**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -288,7 +288,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;-详细步骤说明&#34;&gt;📝 详细步骤说明
-&lt;/h2&gt;&lt;h3 id=&#34;1-修改-packagejson&#34;&gt;&lt;strong&gt;1. 修改 package.json&lt;/strong&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;修改-packagejson&#34;&gt;修改 package.json**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;主要变化：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -346,7 +346,7 @@
 &lt;li&gt;&lt;code&gt;type: &amp;quot;module&amp;quot;&lt;/code&gt; 让 Node.js 支持 ES6 模块语法&lt;/li&gt;
 &lt;li&gt;Vite 的命令更简洁直观&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-配置文件迁移&#34;&gt;&lt;strong&gt;2. 配置文件迁移&lt;/strong&gt;
+&lt;h3 id=&#34;配置文件迁移&#34;&gt;配置文件迁移**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;从 &lt;code&gt;vue.config.js&lt;/code&gt; 到 &lt;code&gt;vite.config.js&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -410,7 +410,7 @@
 &lt;li&gt;配置结构更扁平&lt;/li&gt;
 &lt;li&gt;热更新速度显著提升&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;3-环境变量处理&#34;&gt;&lt;strong&gt;3. 环境变量处理&lt;/strong&gt;
+&lt;h3 id=&#34;环境变量处理&#34;&gt;环境变量处理**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Vue CLI 方式：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -464,7 +464,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;meta&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;env&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VUE_APP_BASE_API&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;4-请求配置文件修改&#34;&gt;&lt;strong&gt;4. 请求配置文件修改&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;请求配置文件修改&#34;&gt;请求配置文件修改**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;修改 &lt;code&gt;src/utils/request.js&lt;/code&gt;（或类似文件）：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -500,7 +500,7 @@
 &lt;li&gt;只有以 &lt;code&gt;VITE_&lt;/code&gt; 或配置的前缀开头的变量才会被暴露&lt;/li&gt;
 &lt;li&gt;环境变量在构建时被替换&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;5-html-文件处理&#34;&gt;&lt;strong&gt;5. HTML 文件处理&lt;/strong&gt;
+&lt;h3 id=&#34;html-文件处理&#34;&gt;HTML 文件处理**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Vue CLI：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -572,7 +572,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;html&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;6-静态资源引用方式&#34;&gt;&lt;strong&gt;6. 静态资源引用方式&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;静态资源引用方式&#34;&gt;静态资源引用方式**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Vue CLI：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -615,7 +615,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;img&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;/logo.png&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&amp;gt;&lt;/span&gt;  &lt;span class=&#34;c1&#34;&gt;// 放在 public/logo.png
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;7-路径别名配置&#34;&gt;&lt;strong&gt;7. 路径别名配置&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;路径别名配置&#34;&gt;路径别名配置**
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;vite.config.js 中配置：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -646,7 +646,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;h2 id=&#34;-常见问题解决&#34;&gt;🔧 常见问题解决
-&lt;/h2&gt;&lt;h3 id=&#34;问题-1commonjs-模块报错&#34;&gt;&lt;strong&gt;问题 1：CommonJS 模块报错&lt;/strong&gt;
+&lt;/h2&gt;&lt;h3 id=&#34;commonjs-模块报错&#34;&gt;CommonJS 模块报错**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -663,7 +663,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;module&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;问题-2process-变量报错&#34;&gt;&lt;strong&gt;问题 2：process 变量报错&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;process-变量报错&#34;&gt;process 变量报错**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -684,7 +684,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;问题-3css-预处理器错误&#34;&gt;&lt;strong&gt;问题 3：CSS 预处理器错误&lt;/strong&gt;
+&lt;/div&gt;&lt;h3 id=&#34;css-预处理器错误&#34;&gt;CSS 预处理器错误**
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -781,32 +781,32 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;🚀 开始迁移 Vue CLI 到 Vite...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1. 备份&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 备份&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;📦 备份原项目...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cp -r ./ ./backup-&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date +%Y%m%d-%H%M%S&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 2. 删除旧文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 删除旧文件&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;🗑️  删除旧配置文件...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm -f vue.config.js
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm -f babel.config.js
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 3. 清理依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 清理依赖&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;🧹 清理 node_modules...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm -rf node_modules
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm -f package-lock.json
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 4. 移动 HTML 文件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 移动 HTML 文件&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;📄 移动 HTML 文件...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; -f &lt;span class=&#34;s2&#34;&gt;&amp;#34;public/index.html&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    mv public/index.html ./
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    rm -rf public
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 5. 更新 package.json&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 更新 package.json&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;📝 更新 package.json...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 这里可以编写 sed 命令或手动修改&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 6. 创建 vite.config.js&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 创建 vite.config.js&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;⚙️  创建 Vite 配置文件...&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat &amp;gt; vite.config.js &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt; &amp;#39;EOF&amp;#39;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s&#34;&gt;import { defineConfig } from &amp;#34;vite&amp;#34;;
@@ -904,16 +904,16 @@
 &lt;ul&gt;
 &lt;li&gt;注：后文会详细讲解 Nginx 反向代理（这是前端程序员的必备知识）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;一问题背景为什么会跨域&#34;&gt;一、问题背景：为什么会跨域？
+&lt;h2 id=&#34;问题背景为什么会跨域&#34;&gt;问题背景：为什么会跨域？
 &lt;/h2&gt;&lt;p&gt;先看我们的项目环境：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;前端（Vue）运行在 &lt;code&gt;http://localhost:8081&lt;/code&gt;（通过&lt;code&gt;vue.config.js&lt;/code&gt;配置）；&lt;/li&gt;
 &lt;li&gt;后端（Express）运行在 &lt;code&gt;http://localhost:8080&lt;/code&gt;（接口路径如&lt;code&gt;/api/merchant&lt;/code&gt;）。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;浏览器的同源策略要求“协议+域名+端口”完全一致，因此前端直接请求后端接口会触发跨域错误——比如控制台提示&lt;code&gt;No &#39;Access-Control-Allow-Origin&#39; header is present on the requested resource&lt;/code&gt;。&lt;/p&gt;
-&lt;h2 id=&#34;二cors后端主导的跨域解决方案&#34;&gt;二、CORS：后端主导的跨域解决方案
+&lt;h2 id=&#34;cors后端主导的跨域解决方案&#34;&gt;CORS：后端主导的跨域解决方案
 &lt;/h2&gt;&lt;p&gt;CORS 是 W3C 标准，通过后端设置响应头允许指定源的跨域请求，是最直接的跨域方案之一。以下是两种常见的 CORS 配置方式：&lt;/p&gt;
-&lt;h3 id=&#34;1-方案-1使用cors中间件便捷高效&#34;&gt;1. 方案 1：使用&lt;code&gt;cors&lt;/code&gt;中间件（便捷高效）
+&lt;h3 id=&#34;方案-1使用cors中间件便捷高效&#34;&gt;方案 1：使用&lt;code&gt;cors&lt;/code&gt;中间件（便捷高效）
 &lt;/h3&gt;&lt;p&gt;Express 生态提供了&lt;code&gt;cors&lt;/code&gt;包，可一键配置跨域规则，也是项目中最常用的方式：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -976,7 +976,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这种方式无需手动处理预检请求，&lt;code&gt;cors&lt;/code&gt;包会自动拦截&lt;code&gt;OPTIONS&lt;/code&gt;请求并返回正确响应头。&lt;/p&gt;
-&lt;h3 id=&#34;2-方案-2手动配置-cors深入原理&#34;&gt;2. 方案 2：手动配置 CORS（深入原理）
+&lt;h3 id=&#34;方案-2手动配置-cors深入原理&#34;&gt;方案 2：手动配置 CORS（深入原理）
 &lt;/h3&gt;&lt;p&gt;若不想依赖第三方包，可手动设置响应头并处理预检请求（适合理解 CORS 底层逻辑）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1052,15 +1052,15 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-cors-的关键细节&#34;&gt;3. CORS 的关键细节
+&lt;/div&gt;&lt;h3 id=&#34;cors-的关键细节&#34;&gt;CORS 的关键细节
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;预检请求（OPTIONS）&lt;/strong&gt;：前端发送&lt;code&gt;PUT/DELETE&lt;/code&gt;或带自定义头的请求时，浏览器会先发&lt;code&gt;OPTIONS&lt;/code&gt;请求“探路”，后端必须正确响应才能触发真实请求；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Access-Control-Allow-Origin&lt;/strong&gt;：生产环境需指定具体域名（如&lt;code&gt;https://your-domain.com&lt;/code&gt;），而非通配符&lt;code&gt;*&lt;/code&gt;（否则前端无法携带 Cookie/Token）；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;简单请求豁免预检&lt;/strong&gt;：&lt;code&gt;GET/POST/HEAD&lt;/code&gt;请求且请求头仅含&lt;code&gt;Accept&lt;/code&gt;/&lt;code&gt;Content-Type&lt;/code&gt;等基础字段时，无需预检。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;三devserver-反向代理前端开发环境的跨域捷径&#34;&gt;三、devServer 反向代理：前端开发环境的跨域捷径
+&lt;h2 id=&#34;devserver-反向代理前端开发环境的跨域捷径&#34;&gt;devServer 反向代理：前端开发环境的跨域捷径
 &lt;/h2&gt;&lt;p&gt;虽然 CORS 能解决跨域，但开发阶段频繁修改后端配置效率低。Vue CLI 的&lt;code&gt;devServer.proxy&lt;/code&gt;通过反向代理绕过浏览器跨域限制，是更优雅的开发方案。&lt;/p&gt;
-&lt;h3 id=&#34;1-反向代理的工作原理&#34;&gt;1. 反向代理的工作原理
+&lt;h3 id=&#34;反向代理的工作原理&#34;&gt;反向代理的工作原理
 &lt;/h3&gt;&lt;p&gt;&lt;code&gt;devServer.proxy&lt;/code&gt;让前端开发服务器充当“中间人”：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;前端请求&lt;strong&gt;同源的开发服务器&lt;/strong&gt;（如&lt;code&gt;http://localhost:8081/api/merchant&lt;/code&gt;）；&lt;/li&gt;
@@ -1068,7 +1068,7 @@
 &lt;li&gt;后端响应结果由开发服务器回传给前端。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;整个过程中浏览器仅与同源的&lt;code&gt;localhost:8081&lt;/code&gt;交互，自然不会触发跨域限制。&lt;/p&gt;
-&lt;h3 id=&#34;2-前端配置源码解析vueconfigjs&#34;&gt;2. 前端配置源码解析（vue.config.js）
+&lt;h3 id=&#34;前端配置源码解析vueconfigjs&#34;&gt;前端配置源码解析（vue.config.js）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -1103,16 +1103,16 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-关键配置说明&#34;&gt;3. 关键配置说明
+&lt;/div&gt;&lt;h3 id=&#34;关键配置说明&#34;&gt;关键配置说明
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;target&lt;/strong&gt;：后端接口的根地址；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;changeOrigin: true&lt;/strong&gt;：让后端误以为请求来自&lt;code&gt;localhost:8080&lt;/code&gt;（同源），避免后端的跨域拦截逻辑；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;pathRewrite&lt;/strong&gt;：示例中注释掉是因为后端接口带&lt;code&gt;/api&lt;/code&gt;前缀（如&lt;code&gt;/api/merchant&lt;/code&gt;），若后端接口无&lt;code&gt;/api&lt;/code&gt;，需通过此配置去掉前缀。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-踩坑实录为什么去掉-cors-仍报错&#34;&gt;4. 踩坑实录：为什么去掉 CORS 仍报错？
+&lt;h3 id=&#34;踩坑实录为什么去掉-cors-仍报错&#34;&gt;踩坑实录：为什么去掉 CORS 仍报错？
 &lt;/h3&gt;&lt;p&gt;很多开发者疑惑：“明明配了&lt;code&gt;devServer.proxy&lt;/code&gt;，为什么后端去掉 CORS 还是报跨域错？”&lt;br&gt;
 核心原因是&lt;strong&gt;非简单请求的&lt;code&gt;OPTIONS&lt;/code&gt;预检请求会被代理转发到后端，而后端未处理预检&lt;/strong&gt;——哪怕前端用了代理，浏览器收到后端非法的预检响应后，仍会判定跨域失败。&lt;/p&gt;
-&lt;h4 id=&#34;1预检请求的转发陷阱&#34;&gt;（1）预检请求的“转发陷阱”
+&lt;h4 id=&#34;预检请求的转发陷阱&#34;&gt;预检请求的“转发陷阱”
 &lt;/h4&gt;&lt;p&gt;前端&lt;code&gt;devServer.proxy&lt;/code&gt;会转发&lt;strong&gt;所有请求&lt;/strong&gt;（包括&lt;code&gt;OPTIONS&lt;/code&gt;预检请求）到后端。比如前端发送&lt;code&gt;POST /api/merchant&lt;/code&gt;（带 JSON 数据，属于非简单请求）：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;浏览器先发送&lt;code&gt;OPTIONS /api/merchant&lt;/code&gt;到前端开发服务器（&lt;code&gt;localhost:8081&lt;/code&gt;）；&lt;/li&gt;
@@ -1136,7 +1136,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;此时后端对&lt;code&gt;OPTIONS&lt;/code&gt;请求的响应里没有&lt;code&gt;Access-Control-Allow-Origin&lt;/code&gt;等头，浏览器自然判定跨域失败。&lt;/p&gt;
-&lt;h4 id=&#34;2开发环境最优解保留代理后端极简预检处理&#34;&gt;（2）开发环境最优解：保留代理+后端极简预检处理
+&lt;h4 id=&#34;开发环境最优解保留代理后端极简预检处理&#34;&gt;开发环境最优解：保留代理+后端极简预检处理
 &lt;/h4&gt;&lt;p&gt;所谓“后端无需配置 CORS”，并非完全不用处理跨域，而是&lt;strong&gt;不用依赖&lt;code&gt;cors&lt;/code&gt;包，但需手动处理预检请求&lt;/strong&gt;（仅需几行代码）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1199,22 +1199,22 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;这样后端能合法响应预检请求，前端代理就能正常工作——既不用装&lt;code&gt;cors&lt;/code&gt;包，也能避免跨域错误。&lt;/p&gt;
-&lt;h4 id=&#34;3简单请求的例外情况&#34;&gt;（3）简单请求的“例外情况”
+&lt;h4 id=&#34;简单请求的例外情况&#34;&gt;简单请求的“例外情况”
 &lt;/h4&gt;&lt;p&gt;如果前端只发&lt;strong&gt;简单请求&lt;/strong&gt;（比如&lt;code&gt;GET /api/merchant&lt;/code&gt;，无自定义头、无复杂数据），即使后端没处理预检，也可能成功：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;简单请求不会触发&lt;code&gt;OPTIONS&lt;/code&gt;预检，前端代理直接转发&lt;code&gt;GET&lt;/code&gt;请求到后端；&lt;/li&gt;
 &lt;li&gt;后端返回数据给前端服务器，前端服务器再返回给浏览器（浏览器只看前端服务器的同源响应，不会校验后端的跨域头）。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;但只要涉及&lt;code&gt;POST&lt;/code&gt;（JSON 数据）、&lt;code&gt;PUT/DELETE&lt;/code&gt;等非简单请求，必须处理预检，否则必报错。&lt;/p&gt;
-&lt;h2 id=&#34;四nginx-反向代理生产环境的终极方案&#34;&gt;四、Nginx 反向代理：生产环境的终极方案
+&lt;h2 id=&#34;nginx-反向代理生产环境的终极方案&#34;&gt;Nginx 反向代理：生产环境的终极方案
 &lt;/h2&gt;&lt;p&gt;&lt;code&gt;devServer.proxy&lt;/code&gt;仅适用于开发环境，生产环境需用 Nginx 反向代理——既能解决跨域，又能优化资源加载和接口转发，是前端部署的标配。&lt;/p&gt;
-&lt;h3 id=&#34;1-nginx-反向代理的优势&#34;&gt;1. Nginx 反向代理的优势
+&lt;h3 id=&#34;nginx-反向代理的优势&#34;&gt;Nginx 反向代理的优势
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;统一域名：将前端静态资源和后端接口代理到同一域名下（如&lt;code&gt;https://your-domain.com&lt;/code&gt;）；&lt;/li&gt;
 &lt;li&gt;性能优化：支持缓存、压缩、负载均衡；&lt;/li&gt;
 &lt;li&gt;安全防护：隐藏后端真实地址，降低攻击风险。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-nginx-配置示例&#34;&gt;2. Nginx 配置示例
+&lt;h3 id=&#34;nginx-配置示例&#34;&gt;Nginx 配置示例
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -1261,7 +1261,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-https-配置生产环境必加&#34;&gt;3. HTTPS 配置（生产环境必加）
+&lt;/div&gt;&lt;h3 id=&#34;https-配置生产环境必加&#34;&gt;HTTPS 配置（生产环境必加）
 &lt;/h3&gt;&lt;p&gt;若需支持 HTTPS，只需添加 SSL 证书配置：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1289,7 +1289,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;五总结&#34;&gt;五、总结
+&lt;/div&gt;&lt;h2 id=&#34;总结&#34;&gt;总结
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;开发环境&lt;/strong&gt;：优先使用&lt;code&gt;devServer.proxy&lt;/code&gt;反向代理，无需频繁修改后端配置；&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;生产环境&lt;/strong&gt;：推荐 Nginx 反向代理（统一域名+性能优化），或后端配置 CORS（不常用，这算黑魔法）；&lt;/li&gt;

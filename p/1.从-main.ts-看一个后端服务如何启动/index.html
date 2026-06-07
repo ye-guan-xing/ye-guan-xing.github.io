@@ -269,12 +269,12 @@
     <li><a href="#前端-vs-后端运行方式">前端 vs 后端：运行方式</a></li>
     <li><a href="#maints-做了什么">main.ts 做了什么</a>
       <ol>
-        <li><a href="#1-nestfactorycreateappmodule">1. NestFactory.create(AppModule)</a></li>
-        <li><a href="#2-enablecors">2. enableCors</a></li>
-        <li><a href="#3-useglobalpipesvalidationpipe">3. useGlobalPipes(ValidationPipe)</a></li>
-        <li><a href="#4-useglobalfiltersallexceptionsfilter">4. useGlobalFilters(AllExceptionsFilter)</a></li>
-        <li><a href="#5-useglobalinterceptors">5. useGlobalInterceptors</a></li>
-        <li><a href="#6-applisten8080">6. app.listen(8080)</a></li>
+        <li><a href="#nestfactorycreateappmodule">NestFactory.create(AppModule)</a></li>
+        <li><a href="#enablecors">enableCors</a></li>
+        <li><a href="#useglobalpipesvalidationpipe">useGlobalPipes(ValidationPipe)</a></li>
+        <li><a href="#useglobalfiltersallexceptionsfilter">useGlobalFilters(AllExceptionsFilter)</a></li>
+        <li><a href="#useglobalinterceptors">useGlobalInterceptors</a></li>
+        <li><a href="#applisten8080">app.listen(8080)</a></li>
       </ol>
     </li>
     <li><a href="#请求经过的全局管线">请求经过的全局管线</a></li>
@@ -463,14 +463,14 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>逐步拆解：</p>
-<h3 id="1-nestfactorycreateappmodule">1. NestFactory.create(AppModule)
+<h3 id="nestfactorycreateappmodule">NestFactory.create(AppModule)
 </h3><p>创建 Nest 应用实例，加载根模块 <code>AppModule</code>。类比 Vue 的 <code>createApp(App)</code> —— 从这里开始组装整个应用。</p>
 <blockquote>
 <p>知识点：<code>NestFactory</code> 是 Nest 应用的启动工厂，默认创建基于 Express 的 HTTP 应用，也可以切换 Fastify 等 HTTP adapter。</p>
 <p>前端类比：<code>createApp(App)</code> 只创建前端应用实例；<code>NestFactory.create(AppModule)</code> 创建的是一个长期监听端口的服务端应用实例。</p>
 <p>本项目落点：<code>main.ts</code> 把 <code>AppModule</code> 作为根模块传入，后续所有 Controller、Service、数据库、Redis、队列都从这里被装配进应用。</p>
 </blockquote>
-<h3 id="2-enablecors">2. enableCors
+<h3 id="enablecors">enableCors
 </h3><p>允许跨域。前端 <code>localhost:5173</code> 调后端 <code>localhost:8080</code> 属于跨域，不加 CORS 浏览器会拦。</p>
 <p><code>origin: '*'</code> 表示允许任意来源（生产环境应收紧）。</p>
 <blockquote>
@@ -478,7 +478,7 @@
 <p>前端类比：本地 Vite 代理可以绕开跨域；生产环境通常由后端 CORS 或网关统一处理。</p>
 <p>本项目落点：<code>app.enableCors({ origin: '*' })</code> 让前端开发环境可以直接请求 <code>8080</code> 端口。</p>
 </blockquote>
-<h3 id="3-useglobalpipesvalidationpipe">3. useGlobalPipes(ValidationPipe)
+<h3 id="useglobalpipesvalidationpipe">useGlobalPipes(ValidationPipe)
 </h3><p><strong>管道（Pipe）</strong>：请求进 Controller 之前，对入参做转换和校验。</p>
 <ul>
 <li><code>transform: true</code> — 把 query 字符串 <code>&quot;1&quot;</code> 转成数字 <code>1</code></li>
@@ -490,7 +490,7 @@
 <p>前端类比：前端 rules 是用户体验；后端 Pipe 是安全边界，因为请求可以绕过页面直接打接口。</p>
 <p>本项目落点：登录、注册、提交题目等 DTO 都会先过全局 <code>ValidationPipe</code>，不合法参数不会进入 Service。</p>
 </blockquote>
-<h3 id="4-useglobalfiltersallexceptionsfilter">4. useGlobalFilters(AllExceptionsFilter)
+<h3 id="useglobalfiltersallexceptionsfilter">useGlobalFilters(AllExceptionsFilter)
 </h3><p><strong>过滤器（Filter）</strong>：任何地方抛异常，统一 catch 成 JSON 返回。</p>
 <p>成功和失败格式不同，前端可以统一处理：</p>
 <div class="highlight"><div class="chroma">
@@ -509,7 +509,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="p">{</span> <span class="nt">&#34;code&#34;</span><span class="p">:</span> <span class="mi">401</span><span class="p">,</span> <span class="nt">&#34;message&#34;</span><span class="p">:</span> <span class="s2">&#34;Token无效或已过期&#34;</span><span class="p">,</span> <span class="nt">&#34;data&#34;</span><span class="p">:</span> <span class="kc">null</span> <span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="5-useglobalinterceptors">5. useGlobalInterceptors
+</div><h3 id="useglobalinterceptors">useGlobalInterceptors
 </h3><p><strong>拦截器（Interceptor）</strong>：包裹 Controller 返回值，做日志、格式包装。</p>
 <ul>
 <li><code>LoggingInterceptor</code> — 打日志：<code>GET /api/user/status 200 12ms</code></li>
@@ -521,7 +521,7 @@
 <p>前端类比：axios interceptor 统一处理请求和响应；Nest Interceptor 统一包装服务端返回值。</p>
 <p>本项目落点：<code>LoggingInterceptor</code> 记录请求耗时，<code>ResponseInterceptor</code> 把成功结果包装成统一 JSON，<code>AllExceptionsFilter</code> 把异常包装成统一错误 JSON。</p>
 </blockquote>
-<h3 id="6-applisten8080">6. app.listen(8080)
+<h3 id="applisten8080">app.listen(8080)
 </h3><p>开始监听端口。此后每个 HTTP 请求都会走 Nest 的路由分发。</p>
 <blockquote>
 <p>知识点：<code>listen</code> 之后 Node 进程不会退出，而是进入事件循环，持续等待新请求。</p>

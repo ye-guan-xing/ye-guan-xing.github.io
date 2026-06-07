@@ -23,9 +23,9 @@
 &lt;li&gt;&lt;strong&gt;数据库&lt;/strong&gt;：MySQL，使用 DataGrip 管理&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-阶段一项目准备与环境搭建&#34;&gt;🛠️ 阶段一：项目准备与环境搭建
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步安装必要软件&#34;&gt;第 1 步：安装必要软件
-&lt;/h3&gt;&lt;h4 id=&#34;11-安装-nodejs后端运行环境&#34;&gt;1.1 安装 Node.js（后端运行环境）
+&lt;h2 id=&#34;-项目准备与环境搭建&#34;&gt;🛠️ 项目准备与环境搭建
+&lt;/h2&gt;&lt;h3 id=&#34;安装必要软件&#34;&gt;安装必要软件
+&lt;/h3&gt;&lt;h4 id=&#34;安装-nodejs后端运行环境&#34;&gt;安装 Node.js（后端运行环境）
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;访问：&lt;a class=&#34;link&#34; href=&#34;https://nodejs.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Node.js&lt;/a&gt;&lt;/li&gt;
@@ -42,7 +42,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;显示版本号如 &lt;code&gt;v18.x.x&lt;/code&gt; 即成功！&lt;/p&gt;
-&lt;h4 id=&#34;12-安装-vue-cli网页管理后台工具&#34;&gt;1.2 安装 Vue CLI（网页管理后台工具）
+&lt;h4 id=&#34;安装-vue-cli网页管理后台工具&#34;&gt;安装 Vue CLI（网页管理后台工具）
 &lt;/h4&gt;&lt;p&gt;在 cmd 中继续输入：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -53,27 +53,27 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;等待安装完成（可能需要几分钟）&lt;/p&gt;
-&lt;h4 id=&#34;13-安装微信开发者工具小程序开发&#34;&gt;1.3 安装微信开发者工具（小程序开发）
+&lt;h4 id=&#34;安装微信开发者工具小程序开发&#34;&gt;安装微信开发者工具（小程序开发）
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;访问：&lt;a class=&#34;link&#34; href=&#34;https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;微信开发者工具&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;下载&amp;quot;稳定版&amp;quot;，安装后用微信扫码登录&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;14-安装-mysql数据库&#34;&gt;1.4 安装 MySQL（数据库）
+&lt;h4 id=&#34;安装-mysql数据库&#34;&gt;安装 MySQL（数据库）
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;访问：&lt;a class=&#34;link&#34; href=&#34;https://dev.mysql.com/downloads/mysql/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MySQL Community Server&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;下载 MySQL Community Server&lt;/li&gt;
 &lt;li&gt;安装时记住设置的&lt;strong&gt;root 密码&lt;/strong&gt;（建议设为 &lt;code&gt;123456&lt;/code&gt;）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&#34;15-安装-datagrip数据库可视化工具&#34;&gt;1.5 安装 DataGrip（数据库可视化工具）
+&lt;h4 id=&#34;安装-datagrip数据库可视化工具&#34;&gt;安装 DataGrip（数据库可视化工具）
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;访问：&lt;a class=&#34;link&#34; href=&#34;https://www.jetbrains.com/datagrip/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;DataGrip&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;下载安装，学生可免费使用（用教育邮箱注册）&lt;/li&gt;
 &lt;li&gt;或使用 30 天免费试用&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;第-2-步创建项目文件夹结构&#34;&gt;第 2 步：创建项目文件夹结构
+&lt;h3 id=&#34;创建项目文件夹结构&#34;&gt;创建项目文件夹结构
 &lt;/h3&gt;&lt;p&gt;在 D 盘创建项目文件夹：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -89,8 +89,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── mini-user/       （微信小程序）
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-3-步配置-datagrip-连接数据库&#34;&gt;第 3 步：配置 DataGrip 连接数据库
-&lt;/h3&gt;&lt;h4 id=&#34;31-连接-mysql&#34;&gt;3.1 连接 MySQL
+&lt;/div&gt;&lt;h3 id=&#34;配置-datagrip-连接数据库&#34;&gt;配置 DataGrip 连接数据库
+&lt;/h3&gt;&lt;h4 id=&#34;连接-mysql&#34;&gt;连接 MySQL
 &lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;打开 DataGrip，点击 &lt;strong&gt;&amp;ldquo;New Project&amp;rdquo;&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;项目名称：&lt;code&gt;life_service_platform&lt;/code&gt;&lt;/li&gt;
@@ -114,7 +114,7 @@
 &lt;li&gt;点击 &lt;strong&gt;&amp;ldquo;Test Connection&amp;rdquo;&lt;/strong&gt;，看到 ✅ &lt;strong&gt;Success&lt;/strong&gt; 表示成功&lt;/li&gt;
 &lt;li&gt;点击 &lt;strong&gt;&amp;ldquo;OK&amp;rdquo;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h4 id=&#34;32-创建数据库&#34;&gt;3.2 创建数据库
+&lt;h4 id=&#34;创建数据库&#34;&gt;创建数据库
 &lt;/h4&gt;&lt;p&gt;在 DataGrip 中执行 SQL 创建数据库：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;按 &lt;code&gt;Ctrl+Enter&lt;/code&gt; 打开新查询窗口&lt;/li&gt;
@@ -132,7 +132,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;DEFAULT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COLLATE&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;utf8mb4_unicode_ci&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;33-创建数据表&#34;&gt;3.3 创建数据表
+&lt;/div&gt;&lt;h4 id=&#34;创建数据表&#34;&gt;创建数据表
 &lt;/h4&gt;&lt;p&gt;在 DataGrip 中执行以下 SQL 创建表：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -208,7 +208,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;k&#34;&gt;COMMENT&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;订单表&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;34-插入测试数据&#34;&gt;3.4 插入测试数据
+&lt;/div&gt;&lt;h4 id=&#34;插入测试数据&#34;&gt;插入测试数据
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -240,8 +240,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;-阶段二后端-api-开发2-3-天&#34;&gt;💻 阶段二：后端 API 开发（2-3 天）
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步创建后端项目&#34;&gt;第 1 步：创建后端项目
+&lt;h2 id=&#34;-后端-api-开发2-3-天&#34;&gt;💻 后端 API 开发（2-3 天）
+&lt;/h2&gt;&lt;h3 id=&#34;创建后端项目&#34;&gt;创建后端项目
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;打开 cmd，进入 server 文件夹：&lt;/li&gt;
 &lt;/ol&gt;
@@ -275,7 +275,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;npm install express mysql2 cors nodemon
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-2-步创建项目文件结构&#34;&gt;第 2 步：创建项目文件结构
+&lt;/div&gt;&lt;h3 id=&#34;创建项目文件结构&#34;&gt;创建项目文件结构
 &lt;/h3&gt;&lt;p&gt;在 &lt;code&gt;server&lt;/code&gt; 文件夹中创建以下文件结构：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -307,8 +307,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    └── orderCtrl.js
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-3-步编写后端代码&#34;&gt;第 3 步：编写后端代码
-&lt;/h3&gt;&lt;h4 id=&#34;31-数据库连接配置-dbindexjs&#34;&gt;3.1 数据库连接配置 (db/index.js)
+&lt;/div&gt;&lt;h3 id=&#34;编写后端代码&#34;&gt;编写后端代码
+&lt;/h3&gt;&lt;h4 id=&#34;数据库连接配置-dbindexjs&#34;&gt;数据库连接配置 (db/index.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -374,7 +374,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// pool.end();
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;32-主入口文件-appjs&#34;&gt;3.2 主入口文件 (app.js)
+&lt;/div&gt;&lt;h4 id=&#34;主入口文件-appjs&#34;&gt;主入口文件 (app.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -427,7 +427,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;33-商家控制器-controllersmerchantctrljs&#34;&gt;3.3 商家控制器 (controllers/merchantCtrl.js)
+&lt;/div&gt;&lt;h4 id=&#34;商家控制器-controllersmerchantctrljs&#34;&gt;商家控制器 (controllers/merchantCtrl.js)
 &lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;控制器是实际干活的（像是餐厅的主厨）&lt;/li&gt;
 &lt;/ul&gt;
@@ -585,7 +585,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;34-商家路由-routesmerchantjs&#34;&gt;3.4 商家路由 (routes/merchant.js)
+&lt;/div&gt;&lt;h4 id=&#34;商家路由-routesmerchantjs&#34;&gt;商家路由 (routes/merchant.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -624,7 +624,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;exports&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;35-服务控制器-controllersservicectrljs&#34;&gt;3.5 服务控制器 (controllers/serviceCtrl.js)
+&lt;/div&gt;&lt;h4 id=&#34;服务控制器-controllersservicectrljs&#34;&gt;服务控制器 (controllers/serviceCtrl.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -819,7 +819,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;36-服务路由-routesservicejs&#34;&gt;3.6 服务路由 (routes/service.js)
+&lt;/div&gt;&lt;h4 id=&#34;服务路由-routesservicejs&#34;&gt;服务路由 (routes/service.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -858,7 +858,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;exports&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;37-订单控制器-controllersorderctrljs&#34;&gt;3.7 订单控制器 (controllers/orderCtrl.js)
+&lt;/div&gt;&lt;h4 id=&#34;订单控制器-controllersorderctrljs&#34;&gt;订单控制器 (controllers/orderCtrl.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -1001,7 +1001,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h4 id=&#34;38-订单路由-routesorderjs&#34;&gt;3.8 订单路由 (routes/order.js)
+&lt;/div&gt;&lt;h4 id=&#34;订单路由-routesorderjs&#34;&gt;订单路由 (routes/order.js)
 &lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -1030,7 +1030,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;exports&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-4-步配置-packagejson-脚本&#34;&gt;第 4 步：配置 package.json 脚本
+&lt;/div&gt;&lt;h3 id=&#34;配置-packagejson-脚本&#34;&gt;配置 package.json 脚本
 &lt;/h3&gt;&lt;p&gt;修改 &lt;code&gt;server/package.json&lt;/code&gt; 中的 &lt;code&gt;scripts&lt;/code&gt; 部分：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1050,7 +1050,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-5-步启动后端服务&#34;&gt;第 5 步：启动后端服务
+&lt;/div&gt;&lt;h3 id=&#34;启动后端服务&#34;&gt;启动后端服务
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -1062,15 +1062,15 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;看到 &lt;code&gt;✅ 后端服务启动成功！&lt;/code&gt; 表示后端正常运行。&lt;/p&gt;
-&lt;h3 id=&#34;第-6-步测试后端-api&#34;&gt;第 6 步：测试后端 API
+&lt;h3 id=&#34;测试后端-api&#34;&gt;测试后端 API
 &lt;/h3&gt;&lt;p&gt;使用 Postman 或浏览器测试接口：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;GET http://localhost:8080/api/merchant/list&lt;/code&gt; - 获取商家列表&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;POST http://localhost:8080/api/merchant/add&lt;/code&gt; - 新增商家&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-阶段三web-管理后台开发3-4-天&#34;&gt;🌐 阶段三：Web 管理后台开发（3-4 天）
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步创建-vue-项目&#34;&gt;第 1 步：创建 Vue 项目
+&lt;h2 id=&#34;-web-管理后台开发3-4-天&#34;&gt;🌐 Web 管理后台开发（3-4 天）
+&lt;/h2&gt;&lt;h3 id=&#34;创建-vue-项目&#34;&gt;创建 Vue 项目
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;打开新的 cmd 窗口：&lt;/li&gt;
 &lt;/ol&gt;
@@ -1108,7 +1108,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;npm install axios
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-2-步项目结构配置&#34;&gt;第 2 步：项目结构配置
+&lt;/div&gt;&lt;h3 id=&#34;项目结构配置&#34;&gt;项目结构配置
 &lt;/h3&gt;&lt;p&gt;在 &lt;code&gt;src&lt;/code&gt; 文件夹中创建以下结构：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1146,7 +1146,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    └── index.js
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-3-步配置路由&#34;&gt;第 3 步：配置路由
+&lt;/div&gt;&lt;h3 id=&#34;配置路由&#34;&gt;配置路由
 &lt;/h3&gt;&lt;p&gt;修改 &lt;code&gt;src/router/index.js&lt;/code&gt;：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;这里路由说的详细一点，方便理解这个整体架构&lt;/li&gt;
@@ -1243,7 +1243,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;default&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-4-步封装-api-请求&#34;&gt;第 4 步：封装 API 请求
+&lt;/div&gt;&lt;h3 id=&#34;封装-api-请求&#34;&gt;封装 API 请求
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;src/api/merchant.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1379,7 +1379,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;default&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;orderAPI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-5-步开发商家管理页面&#34;&gt;第 5 步：开发商家管理页面
+&lt;/div&gt;&lt;h3 id=&#34;开发商家管理页面&#34;&gt;开发商家管理页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;src/views/Merchant/index.vue&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2121,7 +2121,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-6-步修改-appvue&#34;&gt;第 6 步：修改 App.vue
+&lt;/div&gt;&lt;h3 id=&#34;修改-appvue&#34;&gt;修改 App.vue
 &lt;/h3&gt;&lt;p&gt;更新 &lt;code&gt;src/App.vue&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2291,7 +2291,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-7-步开发服务管理页面&#34;&gt;第 7 步：开发服务管理页面
+&lt;/div&gt;&lt;h3 id=&#34;开发服务管理页面&#34;&gt;开发服务管理页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;src/views/Service/index.vue&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2927,7 +2927,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-8-步开发订单管理页面&#34;&gt;第 8 步：开发订单管理页面
+&lt;/div&gt;&lt;h3 id=&#34;开发订单管理页面&#34;&gt;开发订单管理页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;src/views/Order/index.vue&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3271,7 +3271,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;style&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-9-步启动-web-管理后台&#34;&gt;第 9 步：启动 Web 管理后台
+&lt;/div&gt;&lt;h3 id=&#34;启动-web-管理后台&#34;&gt;启动 Web 管理后台
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;注意此时，还有前后端跨域问题（用 cores 或者 nginx 代理解决）&lt;/li&gt;
 &lt;li&gt;PS（我会在后续的文章中解决）&lt;/li&gt;
@@ -3288,8 +3288,8 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;访问：http://localhost:8080&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-阶段四微信小程序开发3-4-天&#34;&gt;📱 阶段四：微信小程序开发（3-4 天）
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步创建小程序项目&#34;&gt;第 1 步：创建小程序项目
+&lt;h2 id=&#34;-微信小程序开发3-4-天&#34;&gt;📱 微信小程序开发（3-4 天）
+&lt;/h2&gt;&lt;h3 id=&#34;创建小程序项目&#34;&gt;创建小程序项目
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;打开微信开发者工具&lt;/li&gt;
 &lt;li&gt;点击&amp;quot;新建项目&amp;quot;&lt;/li&gt;
@@ -3303,7 +3303,7 @@
 &lt;/li&gt;
 &lt;li&gt;点击&amp;quot;新建&amp;quot;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;第-2-步项目结构配置-1&#34;&gt;第 2 步：项目结构配置
+&lt;h3 id=&#34;项目结构配置-1&#34;&gt;项目结构配置
 &lt;/h3&gt;&lt;p&gt;在小程序项目中创建以下结构：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3331,7 +3331,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└── app.js（小程序入口）
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-3-步封装网络请求&#34;&gt;第 3 步：封装网络请求
+&lt;/div&gt;&lt;h3 id=&#34;封装网络请求&#34;&gt;封装网络请求
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;utils/request.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3381,7 +3381,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;exports&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;request&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-4-步配置小程序页面&#34;&gt;第 4 步：配置小程序页面
+&lt;/div&gt;&lt;h3 id=&#34;配置小程序页面&#34;&gt;配置小程序页面
 &lt;/h3&gt;&lt;p&gt;修改 &lt;code&gt;app.json&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3421,7 +3421,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-5-步开发首页&#34;&gt;第 5 步：开发首页
+&lt;/div&gt;&lt;h3 id=&#34;开发首页&#34;&gt;开发首页
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;pages/index/index.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -3997,7 +3997,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-6-步开发服务列表页面&#34;&gt;第 6 步：开发服务列表页面
+&lt;/div&gt;&lt;h3 id=&#34;开发服务列表页面&#34;&gt;开发服务列表页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;pages/serviceList/serviceList.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -4523,7 +4523,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-7-步开发创建订单页面&#34;&gt;第 7 步：开发创建订单页面
+&lt;/div&gt;&lt;h3 id=&#34;开发创建订单页面&#34;&gt;开发创建订单页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;pages/orderCreate/orderCreate.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -5113,7 +5113,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-8-步开发订单列表页面&#34;&gt;第 8 步：开发订单列表页面
+&lt;/div&gt;&lt;h3 id=&#34;开发订单列表页面&#34;&gt;开发订单列表页面
 &lt;/h3&gt;&lt;p&gt;创建 &lt;code&gt;pages/orderList/orderList.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -5533,7 +5533,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-9-步配置小程序入口&#34;&gt;第 9 步：配置小程序入口
+&lt;/div&gt;&lt;h3 id=&#34;配置小程序入口&#34;&gt;配置小程序入口
 &lt;/h3&gt;&lt;p&gt;修改 &lt;code&gt;app.js&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -5560,8 +5560,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;-阶段五集成测试与上线&#34;&gt;🧪 阶段五：集成测试与上线
-&lt;/h2&gt;&lt;h3 id=&#34;第-1-步完整流程测试&#34;&gt;第 1 步：完整流程测试
+&lt;h2 id=&#34;-集成测试与上线&#34;&gt;🧪 集成测试与上线
+&lt;/h2&gt;&lt;h3 id=&#34;完整流程测试&#34;&gt;完整流程测试
 &lt;/h3&gt;&lt;h4 id=&#34;测试流程&#34;&gt;测试流程：
 &lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;
@@ -5603,7 +5603,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;第-2-步代码优化&#34;&gt;第 2 步：代码优化
+&lt;h3 id=&#34;代码优化&#34;&gt;代码优化
 &lt;/h3&gt;&lt;h4 id=&#34;后端优化&#34;&gt;后端优化：
 &lt;/h4&gt;&lt;ol&gt;
 &lt;li&gt;添加参数验证&lt;/li&gt;
@@ -5616,7 +5616,7 @@
 &lt;li&gt;错误边界处理&lt;/li&gt;
 &lt;li&gt;表单验证加强&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;第-3-步部署准备&#34;&gt;第 3 步：部署准备
+&lt;h3 id=&#34;部署准备&#34;&gt;部署准备
 &lt;/h3&gt;&lt;h4 id=&#34;整理项目文档&#34;&gt;整理项目文档：
 &lt;/h4&gt;&lt;p&gt;创建 &lt;code&gt;README.md&lt;/code&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -5691,7 +5691,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;2.&lt;/span&gt; 点击预览
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;第-4-步git-版本控制&#34;&gt;第 4 步：Git 版本控制
+&lt;/div&gt;&lt;h3 id=&#34;git-版本控制&#34;&gt;Git 版本控制
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1

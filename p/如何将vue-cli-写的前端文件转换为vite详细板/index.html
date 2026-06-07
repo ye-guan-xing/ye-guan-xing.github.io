@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="从 Vue CLI 迁移到 Vite 的完整指南 📋 迁移概览 将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。\n🗺️ 迁移路线图 步骤 1：备份原有项目 1 2 # 在开始前一定要备份 cp -r my-project my-project-backup 步骤 2：删除旧配置文件 1 2 3 4 # 删除 Vue CLI 相关配置文件 rm vue.config.js rm babel.config.js # 如果存在 rm .eslintrc.js # 如果使用单独的配置文件 步骤 3：清理项目依赖 1 2 3 # 删除 node_modules 和锁文件 rm -rf node_modules rm package-lock.json # 或 rm yarn.lock 📝 详细步骤说明 1. 修改 package.json 主要变化：\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="从 Vue CLI 迁移到 Vite 的完整指南 📋 迁移概览 将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。\n🗺️ 迁移路线图 备份原有项目** 1 2 # 在开始前一定要备份 cp -r my-project my-project-backup 删除旧配置文件** 1 2 3 4 # 删除 Vue CLI 相关配置文件 rm vue.config.js rm babel.config.js # 如果存在 rm .eslintrc.js # 如果使用单独的配置文件 清理项目依赖** 1 2 3 # 删除 node_modules 和锁文件 rm -rf node_modules rm package-lock.json # 或 rm yarn.lock 📝 详细步骤说明 修改 package.json** 主要变化：\n">
 <title>如何将vue cli 写的前端文件转换为vite（详细板）</title>
 
 <link rel='canonical' href='https://ye-guan-xing.github.io/p/%E5%A6%82%E4%BD%95%E5%B0%86vue-cli-%E5%86%99%E7%9A%84%E5%89%8D%E7%AB%AF%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2%E4%B8%BAvite%E8%AF%A6%E7%BB%86%E6%9D%BF/'>
 
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="如何将vue cli 写的前端文件转换为vite（详细板）">
-<meta property='og:description' content="从 Vue CLI 迁移到 Vite 的完整指南 📋 迁移概览 将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。\n🗺️ 迁移路线图 步骤 1：备份原有项目 1 2 # 在开始前一定要备份 cp -r my-project my-project-backup 步骤 2：删除旧配置文件 1 2 3 4 # 删除 Vue CLI 相关配置文件 rm vue.config.js rm babel.config.js # 如果存在 rm .eslintrc.js # 如果使用单独的配置文件 步骤 3：清理项目依赖 1 2 3 # 删除 node_modules 和锁文件 rm -rf node_modules rm package-lock.json # 或 rm yarn.lock 📝 详细步骤说明 1. 修改 package.json 主要变化：\n">
+<meta property='og:description' content="从 Vue CLI 迁移到 Vite 的完整指南 📋 迁移概览 将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。\n🗺️ 迁移路线图 备份原有项目** 1 2 # 在开始前一定要备份 cp -r my-project my-project-backup 删除旧配置文件** 1 2 3 4 # 删除 Vue CLI 相关配置文件 rm vue.config.js rm babel.config.js # 如果存在 rm .eslintrc.js # 如果使用单独的配置文件 清理项目依赖** 1 2 3 # 删除 node_modules 和锁文件 rm -rf node_modules rm package-lock.json # 或 rm yarn.lock 📝 详细步骤说明 修改 package.json** 主要变化：\n">
 <meta property='og:url' content='https://ye-guan-xing.github.io/p/%E5%A6%82%E4%BD%95%E5%B0%86vue-cli-%E5%86%99%E7%9A%84%E5%89%8D%E7%AB%AF%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2%E4%B8%BAvite%E8%AF%A6%E7%BB%86%E6%9D%BF/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='项目开发' /><meta property='article:published_time' content='2025-12-14T22:36:00&#43;00:00'/><meta property='article:modified_time' content='2025-12-14T22:36:00&#43;00:00'/>
 <meta name="twitter:title" content="如何将vue cli 写的前端文件转换为vite（详细板）">
-<meta name="twitter:description" content="从 Vue CLI 迁移到 Vite 的完整指南 📋 迁移概览 将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。\n🗺️ 迁移路线图 步骤 1：备份原有项目 1 2 # 在开始前一定要备份 cp -r my-project my-project-backup 步骤 2：删除旧配置文件 1 2 3 4 # 删除 Vue CLI 相关配置文件 rm vue.config.js rm babel.config.js # 如果存在 rm .eslintrc.js # 如果使用单独的配置文件 步骤 3：清理项目依赖 1 2 3 # 删除 node_modules 和锁文件 rm -rf node_modules rm package-lock.json # 或 rm yarn.lock 📝 详细步骤说明 1. 修改 package.json 主要变化：\n">
+<meta name="twitter:description" content="从 Vue CLI 迁移到 Vite 的完整指南 📋 迁移概览 将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。\n🗺️ 迁移路线图 备份原有项目** 1 2 # 在开始前一定要备份 cp -r my-project my-project-backup 删除旧配置文件** 1 2 3 4 # 删除 Vue CLI 相关配置文件 rm vue.config.js rm babel.config.js # 如果存在 rm .eslintrc.js # 如果使用单独的配置文件 清理项目依赖** 1 2 3 # 删除 node_modules 和锁文件 rm -rf node_modules rm package-lock.json # 或 rm yarn.lock 📝 详细步骤说明 修改 package.json** 主要变化：\n">
     </head>
     <body class="
     article-page
@@ -268,27 +268,27 @@
     <li><a href="#-迁移概览">📋 迁移概览</a></li>
     <li><a href="#-迁移路线图">🗺️ 迁移路线图</a>
       <ol>
-        <li><a href="#步骤-1备份原有项目"><strong>步骤 1：备份原有项目</strong></a></li>
-        <li><a href="#步骤-2删除旧配置文件"><strong>步骤 2：删除旧配置文件</strong></a></li>
-        <li><a href="#步骤-3清理项目依赖"><strong>步骤 3：清理项目依赖</strong></a></li>
+        <li><a href="#备份原有项目">备份原有项目**</a></li>
+        <li><a href="#删除旧配置文件">删除旧配置文件**</a></li>
+        <li><a href="#清理项目依赖">清理项目依赖**</a></li>
       </ol>
     </li>
     <li><a href="#-详细步骤说明">📝 详细步骤说明</a>
       <ol>
-        <li><a href="#1-修改-packagejson"><strong>1. 修改 package.json</strong></a></li>
-        <li><a href="#2-配置文件迁移"><strong>2. 配置文件迁移</strong></a></li>
-        <li><a href="#3-环境变量处理"><strong>3. 环境变量处理</strong></a></li>
-        <li><a href="#4-请求配置文件修改"><strong>4. 请求配置文件修改</strong></a></li>
-        <li><a href="#5-html-文件处理"><strong>5. HTML 文件处理</strong></a></li>
-        <li><a href="#6-静态资源引用方式"><strong>6. 静态资源引用方式</strong></a></li>
-        <li><a href="#7-路径别名配置"><strong>7. 路径别名配置</strong></a></li>
+        <li><a href="#修改-packagejson">修改 package.json**</a></li>
+        <li><a href="#配置文件迁移">配置文件迁移**</a></li>
+        <li><a href="#环境变量处理">环境变量处理**</a></li>
+        <li><a href="#请求配置文件修改">请求配置文件修改**</a></li>
+        <li><a href="#html-文件处理">HTML 文件处理**</a></li>
+        <li><a href="#静态资源引用方式">静态资源引用方式**</a></li>
+        <li><a href="#路径别名配置">路径别名配置**</a></li>
       </ol>
     </li>
     <li><a href="#-常见问题解决">🔧 常见问题解决</a>
       <ol>
-        <li><a href="#问题-1commonjs-模块报错"><strong>问题 1：CommonJS 模块报错</strong></a></li>
-        <li><a href="#问题-2process-变量报错"><strong>问题 2：process 变量报错</strong></a></li>
-        <li><a href="#问题-3css-预处理器错误"><strong>问题 3：CSS 预处理器错误</strong></a></li>
+        <li><a href="#commonjs-模块报错">CommonJS 模块报错**</a></li>
+        <li><a href="#process-变量报错">process 变量报错**</a></li>
+        <li><a href="#css-预处理器错误">CSS 预处理器错误**</a></li>
       </ol>
     </li>
     <li><a href="#-完整迁移脚本">📦 完整迁移脚本</a></li>
@@ -319,14 +319,6 @@
       
     >
       web开发
-    </a>
-    
-    <a
-      href="/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/"
-      style="background-color: ZgotmplZ; color: #ffffff;"
-      
-    >
-      开发问题精讲
     </a>
     
   </header>
@@ -398,7 +390,7 @@
 </h1><h2 id="-迁移概览">📋 迁移概览
 </h2><p>将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。</p>
 <h2 id="-迁移路线图">🗺️ 迁移路线图
-</h2><h3 id="步骤-1备份原有项目"><strong>步骤 1：备份原有项目</strong>
+</h2><h3 id="备份原有项目">备份原有项目**
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -409,7 +401,7 @@
 </span></span><span class="line"><span class="cl">cp -r my-project my-project-backup
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="步骤-2删除旧配置文件"><strong>步骤 2：删除旧配置文件</strong>
+</div><h3 id="删除旧配置文件">删除旧配置文件**
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -424,7 +416,7 @@
 </span></span><span class="line"><span class="cl">rm .eslintrc.js     <span class="c1"># 如果使用单独的配置文件</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="步骤-3清理项目依赖"><strong>步骤 3：清理项目依赖</strong>
+</div><h3 id="清理项目依赖">清理项目依赖**
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -438,7 +430,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="-详细步骤说明">📝 详细步骤说明
-</h2><h3 id="1-修改-packagejson"><strong>1. 修改 package.json</strong>
+</h2><h3 id="修改-packagejson">修改 package.json**
 </h3><p><strong>主要变化：</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -496,7 +488,7 @@
 <li><code>type: &quot;module&quot;</code> 让 Node.js 支持 ES6 模块语法</li>
 <li>Vite 的命令更简洁直观</li>
 </ul>
-<h3 id="2-配置文件迁移"><strong>2. 配置文件迁移</strong>
+<h3 id="配置文件迁移">配置文件迁移**
 </h3><p><strong>从 <code>vue.config.js</code> 到 <code>vite.config.js</code></strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -560,7 +552,7 @@
 <li>配置结构更扁平</li>
 <li>热更新速度显著提升</li>
 </ul>
-<h3 id="3-环境变量处理"><strong>3. 环境变量处理</strong>
+<h3 id="环境变量处理">环境变量处理**
 </h3><p><strong>Vue CLI 方式：</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -614,7 +606,7 @@
 </span></span></span><span class="line"><span class="cl">  <span class="kr">import</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_BASE_API</span><span class="p">;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-请求配置文件修改"><strong>4. 请求配置文件修改</strong>
+</div><h3 id="请求配置文件修改">请求配置文件修改**
 </h3><p><strong>修改 <code>src/utils/request.js</code>（或类似文件）：</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -650,7 +642,7 @@
 <li>只有以 <code>VITE_</code> 或配置的前缀开头的变量才会被暴露</li>
 <li>环境变量在构建时被替换</li>
 </ul>
-<h3 id="5-html-文件处理"><strong>5. HTML 文件处理</strong>
+<h3 id="html-文件处理">HTML 文件处理**
 </h3><p><strong>Vue CLI：</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -722,7 +714,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="6-静态资源引用方式"><strong>6. 静态资源引用方式</strong>
+</div><h3 id="静态资源引用方式">静态资源引用方式**
 </h3><p><strong>Vue CLI：</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -765,7 +757,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;/logo.png&#34;</span> <span class="o">/&gt;</span>  <span class="c1">// 放在 public/logo.png
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="7-路径别名配置"><strong>7. 路径别名配置</strong>
+</div><h3 id="路径别名配置">路径别名配置**
 </h3><p><strong>vite.config.js 中配置：</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -796,7 +788,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="-常见问题解决">🔧 常见问题解决
-</h2><h3 id="问题-1commonjs-模块报错"><strong>问题 1：CommonJS 模块报错</strong>
+</h2><h3 id="commonjs-模块报错">CommonJS 模块报错**
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -813,7 +805,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">module</span> <span class="nx">from</span> <span class="s2">&#34;module&#34;</span><span class="p">;</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="问题-2process-变量报错"><strong>问题 2：process 变量报错</strong>
+</div><h3 id="process-变量报错">process 变量报错**
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -834,7 +826,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="问题-3css-预处理器错误"><strong>问题 3：CSS 预处理器错误</strong>
+</div><h3 id="css-预处理器错误">CSS 预处理器错误**
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -931,32 +923,32 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;🚀 开始迁移 Vue CLI 到 Vite...&#34;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 1. 备份</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份</span>
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;📦 备份原项目...&#34;</span>
 </span></span><span class="line"><span class="cl">cp -r ./ ./backup-<span class="k">$(</span>date +%Y%m%d-%H%M%S<span class="k">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 2. 删除旧文件</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除旧文件</span>
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;🗑️  删除旧配置文件...&#34;</span>
 </span></span><span class="line"><span class="cl">rm -f vue.config.js
 </span></span><span class="line"><span class="cl">rm -f babel.config.js
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 3. 清理依赖</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 清理依赖</span>
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;🧹 清理 node_modules...&#34;</span>
 </span></span><span class="line"><span class="cl">rm -rf node_modules
 </span></span><span class="line"><span class="cl">rm -f package-lock.json
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 4. 移动 HTML 文件</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 移动 HTML 文件</span>
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;📄 移动 HTML 文件...&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;public/index.html&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
 </span></span><span class="line"><span class="cl">    mv public/index.html ./
 </span></span><span class="line"><span class="cl">    rm -rf public
 </span></span><span class="line"><span class="cl"><span class="k">fi</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 5. 更新 package.json</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 更新 package.json</span>
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;📝 更新 package.json...&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 这里可以编写 sed 命令或手动修改</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 6. 创建 vite.config.js</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建 vite.config.js</span>
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;⚙️  创建 Vite 配置文件...&#34;</span>
 </span></span><span class="line"><span class="cl">cat &gt; vite.config.js <span class="s">&lt;&lt; &#39;EOF&#39;
 </span></span></span><span class="line"><span class="cl"><span class="s">import { defineConfig } from &#34;vite&#34;;
@@ -1071,12 +1063,12 @@
             
                 
 <article class="">
-    <a href="/p/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E8%AE%B2%E8%A7%A3/">
+    <a href="/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">跨域问题讲解</h2>
+            <h2 class="article-title">CSS小案例，讲布局（Flex&#43;Grid）</h2>
         </div>
     </a>
 </article>
@@ -1084,12 +1076,12 @@
             
                 
 <article class="">
-    <a href="/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/">
+    <a href="/p/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E8%AE%B2%E8%A7%A3/">
         
         
 
         <div class="article-details">
-            <h2 class="article-title">CSS小案例，讲布局（Flex&#43;Grid）</h2>
+            <h2 class="article-title">跨域问题讲解</h2>
         </div>
     </a>
 </article>

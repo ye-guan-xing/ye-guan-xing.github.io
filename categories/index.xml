@@ -7,7 +7,15 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>acye</copyright>
-        <lastBuildDate>Fri, 29 May 2026 01:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 05 Jun 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>AI Coding 思考和经验</title>
+        <link>https://ye-guan-xing.github.io/categories/ai-coding-%E6%80%9D%E8%80%83%E5%92%8C%E7%BB%8F%E9%AA%8C/</link>
+        <pubDate>Fri, 05 Jun 2026 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/categories/ai-coding-%E6%80%9D%E8%80%83%E5%92%8C%E7%BB%8F%E9%AA%8C/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>web开发</title>
         <link>https://ye-guan-xing.github.io/categories/web%E5%BC%80%E5%8F%91/</link>
         <pubDate>Fri, 29 May 2026 01:00:00 +0000</pubDate>
@@ -72,20 +80,20 @@
         <description>&lt;img src="https://ye-guan-xing.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/image.webp" alt="Featured image of post 学习路线" /&gt;</description>
         </item>
         <item>
-        <title>开发问题精讲</title>
-        <link>https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/</link>
-        <pubDate>Sun, 14 Dec 2025 22:36:00 +0000</pubDate>
-        
-        <guid>https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/</guid>
-        <description>&lt;img src="https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/image.jpg" alt="Featured image of post 开发问题精讲" /&gt;</description>
-        </item>
-        <item>
         <title>校园OJ开发</title>
         <link>https://ye-guan-xing.github.io/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/</link>
         <pubDate>Sat, 06 Dec 2025 12:36:00 +0800</pubDate>
         
         <guid>https://ye-guan-xing.github.io/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/</guid>
         <description>&lt;img src="https://ye-guan-xing.github.io/categories/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91/image.jpg" alt="Featured image of post 校园OJ开发" /&gt;</description>
+        </item>
+        <item>
+        <title>开发问题精讲</title>
+        <link>https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/</guid>
+        <description>&lt;img src="https://ye-guan-xing.github.io/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E7%B2%BE%E8%AE%B2/image.jpg" alt="Featured image of post 开发问题精讲" /&gt;</description>
         </item>
         
     </channel>

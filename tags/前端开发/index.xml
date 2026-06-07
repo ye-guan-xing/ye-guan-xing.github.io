@@ -76,7 +76,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;开发时，前端在&lt;code&gt;localhost:8081&lt;/code&gt;运行，后端可能在&lt;code&gt;localhost:8080&lt;/code&gt;或其他地方。配置代理后，前端访问&lt;code&gt;/api/user&lt;/code&gt;时，会自动转发到&lt;code&gt;http://real-backend.com/user&lt;/code&gt;，解决了跨域问题。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;二地基建设mainjs&#34;&gt;二、地基建设：main.js
+&lt;h2 id=&#34;地基建设mainjs&#34;&gt;地基建设：main.js
 &lt;/h2&gt;&lt;p&gt;这是整个应用的启动入口：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -137,7 +137,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;挂载路由/状态管理/UI库 → 渲染App.vue → 显示页面
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;三房子外壳appvue&#34;&gt;三、房子外壳：App.vue
+&lt;/div&gt;&lt;h2 id=&#34;房子外壳appvue&#34;&gt;房子外壳：App.vue
 &lt;/h2&gt;&lt;p&gt;这是最外层的容器，所有页面都装在这里：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -178,7 +178,7 @@
 &lt;li&gt;&lt;code&gt;&amp;lt;router-view /&amp;gt;&lt;/code&gt; 就像一个&lt;strong&gt;幻灯片投影仪&lt;/strong&gt;，URL 变化时，自动切换显示的内容&lt;/li&gt;
 &lt;li&gt;全局样式在这里引入，所有子页面都能用这些样式&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;四房间布局mainlayoutvue&#34;&gt;四、房间布局：MainLayout.vue
+&lt;h2 id=&#34;房间布局mainlayoutvue&#34;&gt;房间布局：MainLayout.vue
 &lt;/h2&gt;&lt;p&gt;这是页面的通用布局模板（像酒店的标准间装修）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -243,8 +243,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─────────────────────┘
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;五导航系统路由配置&#34;&gt;五、导航系统：路由配置
-&lt;/h2&gt;&lt;h3 id=&#34;1-路由规则routesjs&#34;&gt;1. 路由规则（routes.js）
+&lt;/div&gt;&lt;h2 id=&#34;导航系统路由配置&#34;&gt;导航系统：路由配置
+&lt;/h2&gt;&lt;h3 id=&#34;路由规则routesjs&#34;&gt;路由规则（routes.js）
 &lt;/h3&gt;&lt;p&gt;这是&lt;strong&gt;房间分布图&lt;/strong&gt;，告诉系统每个 URL 对应哪个页面：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -313,7 +313,7 @@
 &lt;li&gt;&lt;strong&gt;管理员路由&lt;/strong&gt;：需要管理员权限（题目管理）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;404 路由&lt;/strong&gt;：找不到页面时显示&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-路由守卫indexjs&#34;&gt;2. 路由守卫（index.js）
+&lt;h3 id=&#34;路由守卫indexjs&#34;&gt;路由守卫（index.js）
 &lt;/h3&gt;&lt;p&gt;这是&lt;strong&gt;门口的保安&lt;/strong&gt;，控制谁能进哪个房间：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -406,8 +406,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            → 想进其他页？→ 带到登录页（记住想去哪）
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;六权限控制逻辑&#34;&gt;六、权限控制逻辑
-&lt;/h2&gt;&lt;h3 id=&#34;1-路由元信息meta-字段&#34;&gt;1. 路由元信息（meta 字段）
+&lt;/div&gt;&lt;h2 id=&#34;权限控制逻辑&#34;&gt;权限控制逻辑
+&lt;/h2&gt;&lt;h3 id=&#34;路由元信息meta-字段&#34;&gt;路由元信息（meta 字段）
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -426,7 +426,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2-用户角色判断&#34;&gt;2. 用户角色判断
+&lt;/div&gt;&lt;h3 id=&#34;用户角色判断&#34;&gt;用户角色判断
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
@@ -453,34 +453,34 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;/el-menu&amp;gt;;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;七开发流程总结&#34;&gt;七、开发流程总结
-&lt;/h2&gt;&lt;h3 id=&#34;步骤-1环境配置&#34;&gt;步骤 1：环境配置
+&lt;/div&gt;&lt;h2 id=&#34;开发流程总结&#34;&gt;开发流程总结
+&lt;/h2&gt;&lt;h3 id=&#34;环境配置&#34;&gt;环境配置
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;配置&lt;code&gt;vue.config.js&lt;/code&gt;（代理、端口等）&lt;/li&gt;
 &lt;li&gt;配置环境变量（接口地址等）&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-2项目初始化&#34;&gt;步骤 2：项目初始化
+&lt;h3 id=&#34;项目初始化&#34;&gt;项目初始化
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;&lt;code&gt;main.js&lt;/code&gt;引入核心依赖&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;App.vue&lt;/code&gt;设置路由容器和全局样式&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-3布局设计&#34;&gt;步骤 3：布局设计
+&lt;h3 id=&#34;布局设计&#34;&gt;布局设计
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;创建&lt;code&gt;MainLayout.vue&lt;/code&gt;（通用布局）&lt;/li&gt;
 &lt;li&gt;设计导航栏、页脚等公共组件&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-4路由配置&#34;&gt;步骤 4：路由配置
+&lt;h3 id=&#34;路由配置&#34;&gt;路由配置
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;在&lt;code&gt;routes.js&lt;/code&gt;定义所有路由&lt;/li&gt;
 &lt;li&gt;按需设置权限（public、auth、admin）&lt;/li&gt;
 &lt;li&gt;在&lt;code&gt;router/index.js&lt;/code&gt;配置路由守卫&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-5页面开发&#34;&gt;步骤 5：页面开发
+&lt;h3 id=&#34;页面开发&#34;&gt;页面开发
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;在&lt;code&gt;views/&lt;/code&gt;目录创建页面组件&lt;/li&gt;
 &lt;li&gt;根据路由配置连接页面&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;步骤-6权限集成&#34;&gt;步骤 6：权限集成
+&lt;h3 id=&#34;权限集成&#34;&gt;权限集成
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;登录后保存 token 到 store&lt;/li&gt;
 &lt;li&gt;路由守卫根据 token 和角色控制访问&lt;/li&gt;
@@ -521,7 +521,7 @@
         
         <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/</guid>
         <description>&lt;h1 id=&#34;手把手教你理解校园-oj-登录系统从输入密码到进入首页&#34;&gt;手把手教你理解校园 OJ 登录系统：从输入密码到进入首页
-&lt;/h1&gt;&lt;h2 id=&#34;一前言登录系统的三件套&#34;&gt;一、前言：登录系统的“三件套”
+&lt;/h1&gt;&lt;h2 id=&#34;前言登录系统的三件套&#34;&gt;前言：登录系统的“三件套”
 &lt;/h2&gt;&lt;p&gt;想象一下你要进宿舍楼：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;门禁卡&lt;/strong&gt;（token） - 证明你是楼里的学生&lt;/li&gt;
@@ -529,8 +529,8 @@
 &lt;li&gt;&lt;strong&gt;楼长&lt;/strong&gt;（Vuex） - 登记你的入住信息&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;我们的登录系统就是这样的三级验证机制！&lt;/p&gt;
-&lt;h2 id=&#34;二核心模块详解&#34;&gt;二、核心模块详解
-&lt;/h2&gt;&lt;h3 id=&#34;1-token-管理系统---authjs你的电子门禁卡&#34;&gt;1. Token 管理系统 - &lt;code&gt;auth.js&lt;/code&gt;（你的电子门禁卡）
+&lt;h2 id=&#34;核心模块详解&#34;&gt;核心模块详解
+&lt;/h2&gt;&lt;h3 id=&#34;token-管理系统---authjs你的电子门禁卡&#34;&gt;Token 管理系统 - &lt;code&gt;auth.js&lt;/code&gt;（你的电子门禁卡）
 &lt;/h3&gt;&lt;p&gt;这个文件专门管理你的“门禁卡”（token）：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -588,7 +588,7 @@
 &lt;li&gt;&lt;code&gt;TOKEN_KEY&lt;/code&gt; = 卡包里的特定卡槽，只放门禁卡&lt;/li&gt;
 &lt;li&gt;每次进出，保安只看这个卡槽有没有卡&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-通信专员---requestjs你的专属信使&#34;&gt;2. 通信专员 - &lt;code&gt;request.js&lt;/code&gt;（你的专属信使）
+&lt;h3 id=&#34;通信专员---requestjs你的专属信使&#34;&gt;通信专员 - &lt;code&gt;request.js&lt;/code&gt;（你的专属信使）
 &lt;/h3&gt;&lt;p&gt;这个文件负责和&lt;strong&gt;后端服务器&lt;/strong&gt;对话，就像你有个专属信使：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -717,7 +717,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;服务器回信 → 信使回来后（拦截器）→ 检查信的内容 → 正常就给你，异常就广播
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-用户服务接口---userjs能办的四件事&#34;&gt;3. 用户服务接口 - &lt;code&gt;user.js&lt;/code&gt;（能办的四件事）
+&lt;/div&gt;&lt;h3 id=&#34;用户服务接口---userjs能办的四件事&#34;&gt;用户服务接口 - &lt;code&gt;user.js&lt;/code&gt;（能办的四件事）
 &lt;/h3&gt;&lt;p&gt;这个文件定义了你能让信使办的&lt;strong&gt;四件事&lt;/strong&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -819,7 +819,7 @@
 &lt;li&gt;&lt;code&gt;request()&lt;/code&gt;就是&lt;strong&gt;让信使按指南办事&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;返回值是一个&lt;strong&gt;Promise&lt;/strong&gt;（承诺书），承诺会给你结果&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-用户管理中心---userjs-storemodules楼长的登记簿&#34;&gt;4. 用户管理中心 - &lt;code&gt;user.js (store/modules)&lt;/code&gt;（楼长的登记簿）
+&lt;h3 id=&#34;用户管理中心---userjs-storemodules楼长的登记簿&#34;&gt;用户管理中心 - &lt;code&gt;user.js (store/modules)&lt;/code&gt;（楼长的登记簿）
 &lt;/h3&gt;&lt;p&gt;这里是 Vuex 的&lt;strong&gt;用户模块&lt;/strong&gt;，负责管理所有用户相关的全局状态：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -990,7 +990,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;你要改数据 → 调用action → action调用mutation → mutation修改state
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;5-快捷访问门---gettersjs快速查询通道&#34;&gt;5. 快捷访问门 - &lt;code&gt;getters.js&lt;/code&gt;（快速查询通道）
+&lt;/div&gt;&lt;h3 id=&#34;快捷访问门---gettersjs快速查询通道&#34;&gt;快捷访问门 - &lt;code&gt;getters.js&lt;/code&gt;（快速查询通道）
 &lt;/h3&gt;&lt;p&gt;这个文件提供&lt;strong&gt;快速查询&lt;/strong&gt;状态的方法：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1014,7 +1014,7 @@
 &lt;li&gt;统一的查询接口，避免拼写错误&lt;/li&gt;
 &lt;li&gt;可以计算衍生数据（如&lt;code&gt;isLogin&lt;/code&gt;）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;6-vuex-总仓库---indexjs所有登记簿的集合&#34;&gt;6. Vuex 总仓库 - &lt;code&gt;index.js&lt;/code&gt;（所有登记簿的集合）
+&lt;h3 id=&#34;vuex-总仓库---indexjs所有登记簿的集合&#34;&gt;Vuex 总仓库 - &lt;code&gt;index.js&lt;/code&gt;（所有登记簿的集合）
 &lt;/h3&gt;&lt;p&gt;这里是 Vuex 的&lt;strong&gt;入口文件&lt;/strong&gt;，整合所有模块：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1053,7 +1053,7 @@
 &lt;li&gt;提交记录放&lt;code&gt;submission&lt;/code&gt;模块&lt;/li&gt;
 &lt;li&gt;互不干扰，清晰明了&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;7-登录页面---apploginvue前台接待处&#34;&gt;7. 登录页面 - &lt;code&gt;AppLogin.vue&lt;/code&gt;（前台接待处）
+&lt;h3 id=&#34;登录页面---apploginvue前台接待处&#34;&gt;登录页面 - &lt;code&gt;AppLogin.vue&lt;/code&gt;（前台接待处）
 &lt;/h3&gt;&lt;p&gt;这是用户看到的&lt;strong&gt;登录界面&lt;/strong&gt;：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1202,7 +1202,7 @@
 &lt;li&gt;&lt;code&gt;store.dispatch()&lt;/code&gt; - 让楼长办事（异步操作）&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;router.push()&lt;/code&gt; - 让导航员带路&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;三完整登录流程故事版&#34;&gt;三、完整登录流程（故事版）
+&lt;h2 id=&#34;完整登录流程故事版&#34;&gt;完整登录流程（故事版）
 &lt;/h2&gt;&lt;p&gt;让我们跟着&amp;quot;小明&amp;quot;走一遍完整流程：&lt;/p&gt;
 &lt;h3 id=&#34;第一幕来到登录页面&#34;&gt;第一幕：来到登录页面
 &lt;/h3&gt;&lt;p&gt;小明打开浏览器，输入 OJ 平台网址，看到登录页面（&lt;code&gt;AppLogin.vue&lt;/code&gt;）。&lt;/p&gt;
@@ -1343,8 +1343,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;mf&#34;&gt;4.&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;保安验证有效&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;，&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;放行到首页&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;四关键概念精讲&#34;&gt;四、关键概念精讲
-&lt;/h2&gt;&lt;h3 id=&#34;1-什么是-token&#34;&gt;1. 什么是 Token？
+&lt;/div&gt;&lt;h2 id=&#34;关键概念精讲&#34;&gt;关键概念精讲
+&lt;/h2&gt;&lt;h3 id=&#34;什么是-token&#34;&gt;什么是 Token？
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;比喻&lt;/strong&gt;：Token 就像酒店的房卡。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;办入住时（登录）给你一张&lt;/li&gt;
@@ -1352,7 +1352,7 @@
 &lt;li&gt;退房时（退出登录）收回&lt;/li&gt;
 &lt;li&gt;过期了要重新办（token 过期）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;2-localstorage-vs-sessionstorage&#34;&gt;2. localStorage vs sessionStorage
+&lt;h3 id=&#34;localstorage-vs-sessionstorage&#34;&gt;localStorage vs sessionStorage
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -1377,7 +1377,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;- 同标签页共享
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-promise-异步处理&#34;&gt;3. Promise 异步处理
+&lt;/div&gt;&lt;h3 id=&#34;promise-异步处理&#34;&gt;Promise 异步处理
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;比喻&lt;/strong&gt;：叫外卖的过程&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1429,7 +1429,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;4-vuex-数据流&#34;&gt;4. Vuex 数据流
+&lt;/div&gt;&lt;h3 id=&#34;vuex-数据流&#34;&gt;Vuex 数据流
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -1442,7 +1442,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      （做什么事）       （怎么改）        （改哪里）    （看到变化）
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;五常见问题解答&#34;&gt;五、常见问题解答
+&lt;/div&gt;&lt;h2 id=&#34;常见问题解答&#34;&gt;常见问题解答
 &lt;/h2&gt;&lt;h3 id=&#34;q1为什么登录后页面刷新又变未登录了&#34;&gt;Q1：为什么登录后页面刷新，又变未登录了？
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;可能原因&lt;/strong&gt;：&lt;/p&gt;
 &lt;ol&gt;
@@ -1516,7 +1516,7 @@
 &lt;li&gt;重要操作需要二次验证&lt;/li&gt;
 &lt;li&gt;定期更换 token&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&#34;六登录系统架构总结&#34;&gt;六、登录系统架构总结
+&lt;h2 id=&#34;登录系统架构总结&#34;&gt;登录系统架构总结
 &lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -1557,7 +1557,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5. 界面模块（AppLogin.vue）- 管用户看到什么
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;七给新手的黄金法则&#34;&gt;七、给新手的黄金法则
+&lt;/div&gt;&lt;h2 id=&#34;给新手的黄金法则&#34;&gt;给新手的黄金法则
 &lt;/h2&gt;&lt;h3 id=&#34;法则-1先理解流程再写代码&#34;&gt;法则 1：先理解流程，再写代码
 &lt;/h3&gt;&lt;p&gt;画个流程图，搞清楚&amp;quot;点击登录&amp;quot;到&amp;quot;进入首页&amp;quot;中间发生了什么。&lt;/p&gt;
 &lt;h3 id=&#34;法则-2分层思考各司其职&#34;&gt;法则 2：分层思考，各司其职
@@ -1582,7 +1582,7 @@
 &lt;li&gt;成功后有反馈&lt;/li&gt;
 &lt;li&gt;记住用户上次操作&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;八下一步学习方向&#34;&gt;八、下一步学习方向
+&lt;h2 id=&#34;下一步学习方向&#34;&gt;下一步学习方向
 &lt;/h2&gt;&lt;p&gt;掌握了登录系统后，你可以继续学习：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;权限管理&lt;/strong&gt;：不同角色看到不同菜单&lt;/li&gt;
@@ -1919,7 +1919,7 @@
         
         <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8Badmin%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%BC%80%E5%8F%91/</guid>
         <description>&lt;p&gt;由于没有后端，我来为你添加前端模拟数据和模拟 API，并解释为什么不需要处理 token。&lt;/p&gt;
-&lt;h2 id=&#34;1-创建模拟数据存储&#34;&gt;1. 创建模拟数据存储
+&lt;h2 id=&#34;创建模拟数据存储&#34;&gt;创建模拟数据存储
 &lt;/h2&gt;&lt;p&gt;首先在 &lt;code&gt;src/utils/&lt;/code&gt; 下创建模拟数据管理工具：&lt;/p&gt;
 &lt;h3 id=&#34;srcutilsmockdatajs&#34;&gt;&lt;code&gt;src/utils/mockData.js&lt;/code&gt;
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2178,7 +2178,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;mockStorage&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;MockStorage&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;2-修改-api-文件支持模拟数据&#34;&gt;2. 修改 API 文件支持模拟数据
+&lt;/div&gt;&lt;h2 id=&#34;修改-api-文件支持模拟数据&#34;&gt;修改 API 文件支持模拟数据
 &lt;/h2&gt;&lt;h3 id=&#34;srcapiadminjs-更新版本&#34;&gt;&lt;code&gt;src/api/admin.js&lt;/code&gt; (更新版本)
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2434,7 +2434,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;3-更新组件处理模拟数据响应&#34;&gt;3. 更新组件处理模拟数据响应
+&lt;/div&gt;&lt;h2 id=&#34;更新组件处理模拟数据响应&#34;&gt;更新组件处理模拟数据响应
 &lt;/h2&gt;&lt;h3 id=&#34;srccomponentsadminproblemmanagementvue-关键部分更新&#34;&gt;&lt;code&gt;src/components/admin/ProblemManagement.vue&lt;/code&gt; (关键部分更新)
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2657,7 +2657,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;4-为什么不需要处理-token&#34;&gt;4. 为什么不需要处理 Token
+&lt;/div&gt;&lt;h2 id=&#34;为什么不需要处理-token&#34;&gt;为什么不需要处理 Token
 &lt;/h2&gt;&lt;h3 id=&#34;原因分析&#34;&gt;原因分析：
 &lt;/h3&gt;&lt;ol&gt;
 &lt;li&gt;

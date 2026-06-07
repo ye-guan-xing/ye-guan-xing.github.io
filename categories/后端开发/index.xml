@@ -664,7 +664,7 @@
   Ctrl-&amp;gt;&amp;gt;Int: 包装响应
   Int--&amp;gt;&amp;gt;FE: code=1 data=...&lt;/pre&gt;
 
-&lt;h2 id=&#34;step-1controller-接路由&#34;&gt;Step 1：Controller 接路由
+&lt;h2 id=&#34;controller-接路由&#34;&gt;Controller 接路由
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/user.controller.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -699,7 +699,7 @@
 &lt;p&gt;前端类比：Vue Router 负责匹配页面；Nest Controller 负责匹配接口。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;UserController.login&lt;/code&gt; 只负责接收 &lt;code&gt;LoginDto&lt;/code&gt; 并调用 &lt;code&gt;UserService.login&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-2dto-校验&#34;&gt;Step 2：DTO 校验
+&lt;h2 id=&#34;dto-校验&#34;&gt;DTO 校验
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/dto/user.dto.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -737,7 +737,7 @@
 &lt;p&gt;前端类比：前端表单 rules 提升体验，后端 DTO + Pipe 保证接口边界可靠。&lt;/p&gt;
 &lt;p&gt;本项目落点：全局 &lt;code&gt;ValidationPipe&lt;/code&gt; 会处理 &lt;code&gt;LoginDto&lt;/code&gt;、&lt;code&gt;RegisterDto&lt;/code&gt;、&lt;code&gt;SubmitTestQuestionDto&lt;/code&gt; 等输入对象。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-3service-执行业务&#34;&gt;Step 3：Service 执行业务
+&lt;h2 id=&#34;service-执行业务&#34;&gt;Service 执行业务
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/user.service.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -776,7 +776,7 @@
 &lt;p&gt;前端类比：把页面事件里的请求、状态计算、错误处理抽到 store action 或 composable。&lt;/p&gt;
 &lt;p&gt;本项目落点：登录流程里的查用户、比对密码、写 Redis token 都在 &lt;code&gt;UserService.login&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-4参数装饰器一览&#34;&gt;Step 4：参数装饰器一览
+&lt;h2 id=&#34;参数装饰器一览&#34;&gt;参数装饰器一览
 &lt;/h2&gt;&lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -809,7 +809,7 @@
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Query 参数默认是字符串，&lt;code&gt;ValidationPipe&lt;/code&gt; 的 &lt;code&gt;transform: true&lt;/code&gt; 可配合 DTO 里的 &lt;code&gt;@Type(() =&amp;gt; Number)&lt;/code&gt; 做类型转换。&lt;/p&gt;
-&lt;h2 id=&#34;step-5responseinterceptor-包装&#34;&gt;Step 5：ResponseInterceptor 包装
+&lt;h2 id=&#34;responseinterceptor-包装&#34;&gt;ResponseInterceptor 包装
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/interceptors/response.interceptor.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -852,7 +852,7 @@
 &lt;p&gt;前端类比：axios response interceptor 统一拆包；Nest response interceptor 统一装包。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;ResponseInterceptor&lt;/code&gt; 固定输出 &lt;code&gt;{ code, message, data }&lt;/code&gt;，前端只需要按一种结构取数据。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-6异常-filter&#34;&gt;Step 6：异常 Filter
+&lt;h2 id=&#34;异常-filter&#34;&gt;异常 Filter
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/filters/http-exception.filter.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -920,7 +920,7 @@
 &lt;p&gt;前端类比：axios error handler 统一弹错误提示；Nest Filter 统一返回错误 JSON。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;AllExceptionsFilter&lt;/code&gt; 让 &lt;code&gt;NotFoundException&lt;/code&gt;、&lt;code&gt;UnauthorizedException&lt;/code&gt; 等异常都变成前端可读的 &lt;code&gt;{ code, message, data: null }&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-7logginginterceptor&#34;&gt;Step 7：LoggingInterceptor
+&lt;h2 id=&#34;logginginterceptor&#34;&gt;LoggingInterceptor
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/interceptors/logging.interceptor.ts&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;每个请求打一行日志：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -1938,7 +1938,7 @@
   Ctrl-&amp;gt;&amp;gt;Int: 包装响应
   Int--&amp;gt;&amp;gt;FE: code=1 data=...&lt;/pre&gt;
 
-&lt;h2 id=&#34;step-1controller-接路由&#34;&gt;Step 1：Controller 接路由
+&lt;h2 id=&#34;controller-接路由&#34;&gt;Controller 接路由
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/user.controller.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -1973,7 +1973,7 @@
 &lt;p&gt;前端类比：Vue Router 负责匹配页面；Nest Controller 负责匹配接口。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;UserController.login&lt;/code&gt; 只负责接收 &lt;code&gt;LoginDto&lt;/code&gt; 并调用 &lt;code&gt;UserService.login&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-2dto-校验&#34;&gt;Step 2：DTO 校验
+&lt;h2 id=&#34;dto-校验&#34;&gt;DTO 校验
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/dto/user.dto.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2011,7 +2011,7 @@
 &lt;p&gt;前端类比：前端表单 rules 提升体验，后端 DTO + Pipe 保证接口边界可靠。&lt;/p&gt;
 &lt;p&gt;本项目落点：全局 &lt;code&gt;ValidationPipe&lt;/code&gt; 会处理 &lt;code&gt;LoginDto&lt;/code&gt;、&lt;code&gt;RegisterDto&lt;/code&gt;、&lt;code&gt;SubmitTestQuestionDto&lt;/code&gt; 等输入对象。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-3service-执行业务&#34;&gt;Step 3：Service 执行业务
+&lt;h2 id=&#34;service-执行业务&#34;&gt;Service 执行业务
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/modules/user/user.service.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2050,7 +2050,7 @@
 &lt;p&gt;前端类比：把页面事件里的请求、状态计算、错误处理抽到 store action 或 composable。&lt;/p&gt;
 &lt;p&gt;本项目落点：登录流程里的查用户、比对密码、写 Redis token 都在 &lt;code&gt;UserService.login&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-4参数装饰器一览&#34;&gt;Step 4：参数装饰器一览
+&lt;h2 id=&#34;参数装饰器一览&#34;&gt;参数装饰器一览
 &lt;/h2&gt;&lt;table&gt;
 	&lt;thead&gt;
 			&lt;tr&gt;
@@ -2083,7 +2083,7 @@
 	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Query 参数默认是字符串，&lt;code&gt;ValidationPipe&lt;/code&gt; 的 &lt;code&gt;transform: true&lt;/code&gt; 可配合 DTO 里的 &lt;code&gt;@Type(() =&amp;gt; Number)&lt;/code&gt; 做类型转换。&lt;/p&gt;
-&lt;h2 id=&#34;step-5responseinterceptor-包装&#34;&gt;Step 5：ResponseInterceptor 包装
+&lt;h2 id=&#34;responseinterceptor-包装&#34;&gt;ResponseInterceptor 包装
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/interceptors/response.interceptor.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2126,7 +2126,7 @@
 &lt;p&gt;前端类比：axios response interceptor 统一拆包；Nest response interceptor 统一装包。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;ResponseInterceptor&lt;/code&gt; 固定输出 &lt;code&gt;{ code, message, data }&lt;/code&gt;，前端只需要按一种结构取数据。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-6异常-filter&#34;&gt;Step 6：异常 Filter
+&lt;h2 id=&#34;异常-filter&#34;&gt;异常 Filter
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/filters/http-exception.filter.ts&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -2194,7 +2194,7 @@
 &lt;p&gt;前端类比：axios error handler 统一弹错误提示；Nest Filter 统一返回错误 JSON。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;AllExceptionsFilter&lt;/code&gt; 让 &lt;code&gt;NotFoundException&lt;/code&gt;、&lt;code&gt;UnauthorizedException&lt;/code&gt; 等异常都变成前端可读的 &lt;code&gt;{ code, message, data: null }&lt;/code&gt;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;step-7logginginterceptor&#34;&gt;Step 7：LoggingInterceptor
+&lt;h2 id=&#34;logginginterceptor&#34;&gt;LoggingInterceptor
 &lt;/h2&gt;&lt;p&gt;文件：&lt;code&gt;backend/oj-nest/src/common/interceptors/logging.interceptor.ts&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;每个请求打一行日志：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2715,14 +2715,14 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;逐步拆解：&lt;/p&gt;
-&lt;h3 id=&#34;1-nestfactorycreateappmodule&#34;&gt;1. NestFactory.create(AppModule)
+&lt;h3 id=&#34;nestfactorycreateappmodule&#34;&gt;NestFactory.create(AppModule)
 &lt;/h3&gt;&lt;p&gt;创建 Nest 应用实例，加载根模块 &lt;code&gt;AppModule&lt;/code&gt;。类比 Vue 的 &lt;code&gt;createApp(App)&lt;/code&gt; —— 从这里开始组装整个应用。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;知识点：&lt;code&gt;NestFactory&lt;/code&gt; 是 Nest 应用的启动工厂，默认创建基于 Express 的 HTTP 应用，也可以切换 Fastify 等 HTTP adapter。&lt;/p&gt;
 &lt;p&gt;前端类比：&lt;code&gt;createApp(App)&lt;/code&gt; 只创建前端应用实例；&lt;code&gt;NestFactory.create(AppModule)&lt;/code&gt; 创建的是一个长期监听端口的服务端应用实例。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;main.ts&lt;/code&gt; 把 &lt;code&gt;AppModule&lt;/code&gt; 作为根模块传入，后续所有 Controller、Service、数据库、Redis、队列都从这里被装配进应用。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;2-enablecors&#34;&gt;2. enableCors
+&lt;h3 id=&#34;enablecors&#34;&gt;enableCors
 &lt;/h3&gt;&lt;p&gt;允许跨域。前端 &lt;code&gt;localhost:5173&lt;/code&gt; 调后端 &lt;code&gt;localhost:8080&lt;/code&gt; 属于跨域，不加 CORS 浏览器会拦。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;origin: &#39;*&#39;&lt;/code&gt; 表示允许任意来源（生产环境应收紧）。&lt;/p&gt;
 &lt;blockquote&gt;
@@ -2730,7 +2730,7 @@
 &lt;p&gt;前端类比：本地 Vite 代理可以绕开跨域；生产环境通常由后端 CORS 或网关统一处理。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;app.enableCors({ origin: &#39;*&#39; })&lt;/code&gt; 让前端开发环境可以直接请求 &lt;code&gt;8080&lt;/code&gt; 端口。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;3-useglobalpipesvalidationpipe&#34;&gt;3. useGlobalPipes(ValidationPipe)
+&lt;h3 id=&#34;useglobalpipesvalidationpipe&#34;&gt;useGlobalPipes(ValidationPipe)
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;管道（Pipe）&lt;/strong&gt;：请求进 Controller 之前，对入参做转换和校验。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;transform: true&lt;/code&gt; — 把 query 字符串 &lt;code&gt;&amp;quot;1&amp;quot;&lt;/code&gt; 转成数字 &lt;code&gt;1&lt;/code&gt;&lt;/li&gt;
@@ -2742,7 +2742,7 @@
 &lt;p&gt;前端类比：前端 rules 是用户体验；后端 Pipe 是安全边界，因为请求可以绕过页面直接打接口。&lt;/p&gt;
 &lt;p&gt;本项目落点：登录、注册、提交题目等 DTO 都会先过全局 &lt;code&gt;ValidationPipe&lt;/code&gt;，不合法参数不会进入 Service。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;4-useglobalfiltersallexceptionsfilter&#34;&gt;4. useGlobalFilters(AllExceptionsFilter)
+&lt;h3 id=&#34;useglobalfiltersallexceptionsfilter&#34;&gt;useGlobalFilters(AllExceptionsFilter)
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;过滤器（Filter）&lt;/strong&gt;：任何地方抛异常，统一 catch 成 JSON 返回。&lt;/p&gt;
 &lt;p&gt;成功和失败格式不同，前端可以统一处理：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -2761,7 +2761,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;code&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;401&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Token无效或已过期&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;data&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;5-useglobalinterceptors&#34;&gt;5. useGlobalInterceptors
+&lt;/div&gt;&lt;h3 id=&#34;useglobalinterceptors&#34;&gt;useGlobalInterceptors
 &lt;/h3&gt;&lt;p&gt;&lt;strong&gt;拦截器（Interceptor）&lt;/strong&gt;：包裹 Controller 返回值，做日志、格式包装。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;LoggingInterceptor&lt;/code&gt; — 打日志：&lt;code&gt;GET /api/user/status 200 12ms&lt;/code&gt;&lt;/li&gt;
@@ -2773,7 +2773,7 @@
 &lt;p&gt;前端类比：axios interceptor 统一处理请求和响应；Nest Interceptor 统一包装服务端返回值。&lt;/p&gt;
 &lt;p&gt;本项目落点：&lt;code&gt;LoggingInterceptor&lt;/code&gt; 记录请求耗时，&lt;code&gt;ResponseInterceptor&lt;/code&gt; 把成功结果包装成统一 JSON，&lt;code&gt;AllExceptionsFilter&lt;/code&gt; 把异常包装成统一错误 JSON。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id=&#34;6-applisten8080&#34;&gt;6. app.listen(8080)
+&lt;h3 id=&#34;applisten8080&#34;&gt;app.listen(8080)
 &lt;/h3&gt;&lt;p&gt;开始监听端口。此后每个 HTTP 请求都会走 Nest 的路由分发。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;知识点：&lt;code&gt;listen&lt;/code&gt; 之后 Node 进程不会退出，而是进入事件循环，持续等待新请求。&lt;/p&gt;

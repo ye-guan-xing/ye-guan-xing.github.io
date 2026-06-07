@@ -265,20 +265,20 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#一nvmnpm-的核心痛点">一、NVM+npm 的核心痛点</a>
+    <li><a href="#nvmnpm-的核心痛点">NVM+npm 的核心痛点</a>
       <ol>
-        <li><a href="#1-nvm-的问题">1. NVM 的问题</a></li>
-        <li><a href="#2-npm-的致命问题从依赖臃肿到幽灵依赖">2. npm 的致命问题：从依赖臃肿到幽灵依赖</a></li>
+        <li><a href="#nvm-的问题">NVM 的问题</a></li>
+        <li><a href="#npm-的致命问题从依赖臃肿到幽灵依赖">npm 的致命问题：从依赖臃肿到幽灵依赖</a></li>
       </ol>
     </li>
-    <li><a href="#二volta更轻更稳的node版本管理">二、Volta：更轻更稳的Node版本管理</a>
+    <li><a href="#volta更轻更稳的node版本管理">Volta：更轻更稳的Node版本管理</a>
       <ol>
         <li><a href="#volta-vs-nvm-核心优势">Volta vs NVM 核心优势</a></li>
         <li><a href="#volta-工作原理">Volta 工作原理</a></li>
         <li><a href="#volta-常用命令">Volta 常用命令</a></li>
       </ol>
     </li>
-    <li><a href="#三pnpm彻底解决npm的依赖问题">三、pnpm：彻底解决npm的依赖问题</a>
+    <li><a href="#pnpm彻底解决npm的依赖问题">pnpm：彻底解决npm的依赖问题</a>
       <ol>
         <li><a href="#什么是幽灵依赖">什么是幽灵依赖？</a></li>
         <li><a href="#pnpm-如何解决幽灵依赖">pnpm 如何解决幽灵依赖？</a></li>
@@ -287,24 +287,24 @@
         <li><a href="#配置npm-run别名一键替换">配置npm run别名（一键替换）</a></li>
       </ol>
     </li>
-    <li><a href="#四voltapnpm-全栈项目启动流程">四、Volta+pnpm 全栈项目启动流程</a>
+    <li><a href="#voltapnpm-全栈项目启动流程">Volta+pnpm 全栈项目启动流程</a>
       <ol>
         <li><a href="#前置准备">前置准备</a></li>
-        <li><a href="#1-nestjs企业级后端">1. Nest.js（企业级后端）</a></li>
-        <li><a href="#2-express轻量后端">2. Express（轻量后端）</a></li>
-        <li><a href="#3-vue-3前端">3. Vue 3（前端）</a></li>
-        <li><a href="#4-nextjsreact-ssr">4. Next.js（React SSR）</a></li>
-        <li><a href="#5-reactvite">5. React（Vite）</a></li>
+        <li><a href="#nestjs企业级后端">Nest.js（企业级后端）</a></li>
+        <li><a href="#express轻量后端">Express（轻量后端）</a></li>
+        <li><a href="#vue-3前端">Vue 3（前端）</a></li>
+        <li><a href="#nextjsreact-ssr">Next.js（React SSR）</a></li>
+        <li><a href="#reactvite">React（Vite）</a></li>
       </ol>
     </li>
-    <li><a href="#五最佳实践与常见问题">五、最佳实践与常见问题</a>
+    <li><a href="#最佳实践与常见问题">最佳实践与常见问题</a>
       <ol>
-        <li><a href="#1-配置国内镜像源">1. 配置国内镜像源</a></li>
-        <li><a href="#2-从npmyarn迁移到pnpm">2. 从npm/yarn迁移到pnpm</a></li>
-        <li><a href="#3-常见问题解决">3. 常见问题解决</a></li>
+        <li><a href="#配置国内镜像源">配置国内镜像源</a></li>
+        <li><a href="#从npmyarn迁移到pnpm">从npm/yarn迁移到pnpm</a></li>
+        <li><a href="#常见问题解决">常见问题解决</a></li>
       </ol>
     </li>
-    <li><a href="#六总结">六、总结</a></li>
+    <li><a href="#总结">总结</a></li>
   </ol>
 </nav>
         </div>
@@ -396,8 +396,8 @@
     
     
     <p>Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是前端/全栈开发的常见痛点。本文对比NVM、npm的核心缺点，详解Volta和pnpm的优势，并整理常用命令、全栈项目标准化启动流程及最佳实践。</p>
-<h2 id="一nvmnpm-的核心痛点">一、NVM+npm 的核心痛点
-</h2><h3 id="1-nvm-的问题">1. NVM 的问题
+<h2 id="nvmnpm-的核心痛点">NVM+npm 的核心痛点
+</h2><h3 id="nvm-的问题">NVM 的问题
 </h3><ul>
 <li><strong>跨平台差</strong>：仅原生支持Linux/macOS，Windows需用非官方的NVM-windows，且存在兼容性问题</li>
 <li><strong>全局CLI失效</strong>：切换Node版本后，已安装的全局工具需重新安装，浪费时间</li>
@@ -405,7 +405,7 @@
 <li><strong>速度慢</strong>：虽有缓存但机制不完善，每次安装/切换仍需较长时间</li>
 <li><strong>项目锁定不智能</strong>：需手动创建.nvmrc文件，且不会自动切换版本</li>
 </ul>
-<h3 id="2-npm-的致命问题从依赖臃肿到幽灵依赖">2. npm 的致命问题：从依赖臃肿到幽灵依赖
+<h3 id="npm-的致命问题从依赖臃肿到幽灵依赖">npm 的致命问题：从依赖臃肿到幽灵依赖
 </h3><p>npm的扁平化依赖设计虽然解决了早期的嵌套地狱问题，但引入了更严重的隐患：</p>
 <ul>
 <li><strong>安装慢</strong>：扁平化依赖树导致重复下载，大型项目安装动辄几分钟</li>
@@ -414,7 +414,7 @@
 <li><strong>权限问题</strong>：macOS/Linux下全局安装需sudo，易导致权限混乱</li>
 <li><strong>幽灵依赖</strong>：这是npm最隐蔽也最危险的问题</li>
 </ul>
-<h2 id="二volta更轻更稳的node版本管理">二、Volta：更轻更稳的Node版本管理
+<h2 id="volta更轻更稳的node版本管理">Volta：更轻更稳的Node版本管理
 </h2><p>Volta是LinkedIn推出的跨平台Node版本管理器，主打&quot;无痛版本切换+全局CLI持久化&quot;。</p>
 <h3 id="volta-vs-nvm-核心优势">Volta vs NVM 核心优势
 </h3><div class="table-wrapper"><table>
@@ -517,7 +517,7 @@
 </span></span><span class="line"><span class="cl">volta uninstall @nestjs/cli
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="三pnpm彻底解决npm的依赖问题">三、pnpm：彻底解决npm的依赖问题
+</div><h2 id="pnpm彻底解决npm的依赖问题">pnpm：彻底解决npm的依赖问题
 </h2><p>pnpm通过&quot;内容寻址存储&quot;和&quot;非扁平化依赖树&quot;，不仅解决了npm的&quot;慢、臃肿&quot;问题，更是<strong>唯一从根本上解决幽灵依赖</strong>的主流包管理器。</p>
 <h3 id="什么是幽灵依赖">什么是幽灵依赖？
 </h3><p>幽灵依赖（Phantom Dependencies）指的是：<strong>项目代码中直接使用了没有在package.json中声明的依赖包</strong>。</p>
@@ -599,7 +599,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>这样，你输入<code>npm run dev</code>时，实际执行的是<code>pnpm dev</code>，无需改变原有习惯。</p>
-<h2 id="四voltapnpm-全栈项目启动流程">四、Volta+pnpm 全栈项目启动流程
+<h2 id="voltapnpm-全栈项目启动流程">Volta+pnpm 全栈项目启动流程
 </h2><h3 id="前置准备">前置准备
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -617,7 +617,7 @@
 </span></span><span class="line"><span class="cl">volta install pnpm
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="1-nestjs企业级后端">1. Nest.js（企业级后端）
+</div><h3 id="nestjs企业级后端">Nest.js（企业级后端）
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -646,7 +646,7 @@
 </span></span><span class="line"><span class="cl">volta pin node@20
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-express轻量后端">2. Express（轻量后端）
+</div><h3 id="express轻量后端">Express（轻量后端）
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -679,7 +679,7 @@
 </span></span><span class="line"><span class="cl">volta pin node@20
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-vue-3前端">3. Vue 3（前端）
+</div><h3 id="vue-3前端">Vue 3（前端）
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -696,7 +696,7 @@
 </span></span><span class="line"><span class="cl">volta pin node@20
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-nextjsreact-ssr">4. Next.js（React SSR）
+</div><h3 id="nextjsreact-ssr">Next.js（React SSR）
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -713,7 +713,7 @@
 </span></span><span class="line"><span class="cl">volta pin node@20
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="5-reactvite">5. React（Vite）
+</div><h3 id="reactvite">React（Vite）
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -730,8 +730,8 @@
 </span></span><span class="line"><span class="cl">volta pin node@20
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="五最佳实践与常见问题">五、最佳实践与常见问题
-</h2><h3 id="1-配置国内镜像源">1. 配置国内镜像源
+</div><h2 id="最佳实践与常见问题">最佳实践与常见问题
+</h2><h3 id="配置国内镜像源">配置国内镜像源
 </h3><p>为了提升下载速度，建议配置国内镜像源：</p>
 <p><strong>Volta镜像</strong>：
 在~/.bashrc或~/.zshrc中添加：</p>
@@ -754,7 +754,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pnpm config <span class="nb">set</span> registry https://registry.npmmirror.com
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="2-从npmyarn迁移到pnpm">2. 从npm/yarn迁移到pnpm
+</div><h3 id="从npmyarn迁移到pnpm">从npm/yarn迁移到pnpm
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -773,7 +773,7 @@
 </span></span><span class="line"><span class="cl">pnpm dev
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-常见问题解决">3. 常见问题解决
+</div><h3 id="常见问题解决">常见问题解决
 </h3><p><strong>问题1：Volta安装后版本不生效</strong></p>
 <ul>
 <li>重启终端</li>
@@ -790,7 +790,7 @@
 <li>确保使用<code>volta install</code>而不是<code>pnpm install -g</code>安装全局工具</li>
 <li>运行<code>volta list</code>查看已安装的全局工具</li>
 </ul>
-<h2 id="六总结">六、总结
+<h2 id="总结">总结
 </h2><p>Volta+pnpm组合能解决开发中80%的环境和依赖问题：</p>
 <ul>
 <li><strong>高效</strong>：秒级切换Node版本，秒级安装依赖</li>

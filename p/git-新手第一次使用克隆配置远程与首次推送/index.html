@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Git 新手第一次使用：克隆、配置远程与首次推送 1. 克隆仓库到本地 1 2 git clone https://github.com/username/repo.git cd repo 2. 查看当前远程仓库地址 1 git remote -v 你会看到类似：\norigin https://github.com/username/repo.git (fetch) origin https://github.com/username/repo.git (push) 3. 设置或修改远程仓库地址 场景 A：已经有 origin，只想修改地址 1 git remote set-url origin https://github.com/yourname/new-repo.git 场景 B：没有 origin，第一次添加远程地址 1 git remote add origin https://github.com/yourname/new-repo.git 修改后再次检查：\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Git 新手第一次使用：克隆、配置远程与首次推送 克隆仓库到本地 1 2 git clone https://github.com/username/repo.git cd repo 查看当前远程仓库地址 1 git remote -v 你会看到类似：\norigin https://github.com/username/repo.git (fetch) origin https://github.com/username/repo.git (push) 设置或修改远程仓库地址 场景 A：已经有 origin，只想修改地址 1 git remote set-url origin https://github.com/yourname/new-repo.git 场景 B：没有 origin，第一次添加远程地址 1 git remote add origin https://github.com/yourname/new-repo.git 修改后再次检查：\n">
 <title>Git 新手第一次使用：克隆、配置远程与首次推送</title>
 
 <link rel='canonical' href='https://ye-guan-xing.github.io/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/'>
 
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Git 新手第一次使用：克隆、配置远程与首次推送">
-<meta property='og:description' content="Git 新手第一次使用：克隆、配置远程与首次推送 1. 克隆仓库到本地 1 2 git clone https://github.com/username/repo.git cd repo 2. 查看当前远程仓库地址 1 git remote -v 你会看到类似：\norigin https://github.com/username/repo.git (fetch) origin https://github.com/username/repo.git (push) 3. 设置或修改远程仓库地址 场景 A：已经有 origin，只想修改地址 1 git remote set-url origin https://github.com/yourname/new-repo.git 场景 B：没有 origin，第一次添加远程地址 1 git remote add origin https://github.com/yourname/new-repo.git 修改后再次检查：\n">
+<meta property='og:description' content="Git 新手第一次使用：克隆、配置远程与首次推送 克隆仓库到本地 1 2 git clone https://github.com/username/repo.git cd repo 查看当前远程仓库地址 1 git remote -v 你会看到类似：\norigin https://github.com/username/repo.git (fetch) origin https://github.com/username/repo.git (push) 设置或修改远程仓库地址 场景 A：已经有 origin，只想修改地址 1 git remote set-url origin https://github.com/yourname/new-repo.git 场景 B：没有 origin，第一次添加远程地址 1 git remote add origin https://github.com/yourname/new-repo.git 修改后再次检查：\n">
 <meta property='og:url' content='https://ye-guan-xing.github.io/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-04-01T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-04-01T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="Git 新手第一次使用：克隆、配置远程与首次推送">
-<meta name="twitter:description" content="Git 新手第一次使用：克隆、配置远程与首次推送 1. 克隆仓库到本地 1 2 git clone https://github.com/username/repo.git cd repo 2. 查看当前远程仓库地址 1 git remote -v 你会看到类似：\norigin https://github.com/username/repo.git (fetch) origin https://github.com/username/repo.git (push) 3. 设置或修改远程仓库地址 场景 A：已经有 origin，只想修改地址 1 git remote set-url origin https://github.com/yourname/new-repo.git 场景 B：没有 origin，第一次添加远程地址 1 git remote add origin https://github.com/yourname/new-repo.git 修改后再次检查：\n">
+<meta name="twitter:description" content="Git 新手第一次使用：克隆、配置远程与首次推送 克隆仓库到本地 1 2 git clone https://github.com/username/repo.git cd repo 查看当前远程仓库地址 1 git remote -v 你会看到类似：\norigin https://github.com/username/repo.git (fetch) origin https://github.com/username/repo.git (push) 设置或修改远程仓库地址 场景 A：已经有 origin，只想修改地址 1 git remote set-url origin https://github.com/yourname/new-repo.git 场景 B：没有 origin，第一次添加远程地址 1 git remote add origin https://github.com/yourname/new-repo.git 修改后再次检查：\n">
     </head>
     <body class="
     article-page
@@ -265,16 +265,16 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#1-克隆仓库到本地">1. 克隆仓库到本地</a></li>
-    <li><a href="#2-查看当前远程仓库地址">2. 查看当前远程仓库地址</a></li>
-    <li><a href="#3-设置或修改远程仓库地址">3. 设置或修改远程仓库地址</a>
+    <li><a href="#克隆仓库到本地">克隆仓库到本地</a></li>
+    <li><a href="#查看当前远程仓库地址">查看当前远程仓库地址</a></li>
+    <li><a href="#设置或修改远程仓库地址">设置或修改远程仓库地址</a>
       <ol>
         <li><a href="#场景-a已经有-origin只想修改地址">场景 A：已经有 <code>origin</code>，只想修改地址</a></li>
         <li><a href="#场景-b没有-origin第一次添加远程地址">场景 B：没有 <code>origin</code>，第一次添加远程地址</a></li>
       </ol>
     </li>
-    <li><a href="#4-首次提交并推送">4. 首次提交并推送</a></li>
-    <li><a href="#5-常见检查命令">5. 常见检查命令</a></li>
+    <li><a href="#首次提交并推送">首次提交并推送</a></li>
+    <li><a href="#常见检查命令">常见检查命令</a></li>
   </ol>
 </nav>
         </div>
@@ -366,7 +366,7 @@
     
     
     <h1 id="git-新手第一次使用克隆配置远程与首次推送">Git 新手第一次使用：克隆、配置远程与首次推送
-</h1><h2 id="1-克隆仓库到本地">1. 克隆仓库到本地
+</h1><h2 id="克隆仓库到本地">克隆仓库到本地
 </h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -377,7 +377,7 @@
 </span></span><span class="line"><span class="cl"><span class="nb">cd</span> repo
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="2-查看当前远程仓库地址">2. 查看当前远程仓库地址
+</div><h2 id="查看当前远程仓库地址">查看当前远程仓库地址
 </h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -391,7 +391,7 @@
 <li><code>origin  https://github.com/username/repo.git (fetch)</code></li>
 <li><code>origin  https://github.com/username/repo.git (push)</code></li>
 </ul>
-<h2 id="3-设置或修改远程仓库地址">3. 设置或修改远程仓库地址
+<h2 id="设置或修改远程仓库地址">设置或修改远程仓库地址
 </h2><h3 id="场景-a已经有-origin只想修改地址">场景 A：已经有 <code>origin</code>，只想修改地址
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -419,7 +419,7 @@
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git remote -v
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="4-首次提交并推送">4. 首次提交并推送
+</div><h2 id="首次提交并推送">首次提交并推送
 </h2><p>先把改动提交到本地仓库：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -460,7 +460,7 @@
 </span></span><span class="line"><span class="cl">git pull
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="5-常见检查命令">5. 常见检查命令
+</div><h2 id="常见检查命令">常见检查命令
 </h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1

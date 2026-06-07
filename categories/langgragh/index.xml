@@ -21,7 +21,7 @@
     &gt;项目代码&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;一我们要解决什么问题通俗版&#34;&gt;一、我们要解决什么问题？（通俗版）
+&lt;h2 id=&#34;我们要解决什么问题通俗版&#34;&gt;我们要解决什么问题？（通俗版）
 &lt;/h2&gt;&lt;p&gt;先说说我们原本的数据库GUI工具能干啥：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -78,7 +78,7 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;二整体架构讲解大白话版&#34;&gt;二、整体架构讲解（大白话版）
+&lt;h2 id=&#34;整体架构讲解大白话版&#34;&gt;整体架构讲解（大白话版）
 &lt;/h2&gt;&lt;p&gt;整个项目分为 &lt;strong&gt;前端Vue + 后端NestJS + Python AI服务&lt;/strong&gt; 三层，很多新手疑惑：&lt;strong&gt;为什么要拆成两个后端？&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;这里通俗解释：&lt;/p&gt;
 &lt;ul&gt;
@@ -105,7 +105,7 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;三项目目录结构新手必看&#34;&gt;三、项目目录结构（新手必看）
+&lt;h2 id=&#34;项目目录结构新手必看&#34;&gt;项目目录结构（新手必看）
 &lt;/h2&gt;&lt;p&gt;不用乱建文件，直接对照这个结构搭建即可：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -136,8 +136,8 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;四python-ai服务搭建核心功能&#34;&gt;四、Python AI服务搭建（核心功能）
-&lt;/h2&gt;&lt;h3 id=&#34;1-安装依赖包&#34;&gt;1. 安装依赖包
+&lt;h2 id=&#34;python-ai服务搭建核心功能&#34;&gt;Python AI服务搭建（核心功能）
+&lt;/h2&gt;&lt;h3 id=&#34;安装依赖包&#34;&gt;安装依赖包
 &lt;/h3&gt;&lt;p&gt;在 &lt;code&gt;agent\-service/requirements\.txt&lt;/code&gt; 写入需要的依赖：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -172,7 +172,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;uv pip install -r requirements.txt
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;2-配置环境变量&#34;&gt;2. 配置环境变量
+&lt;/div&gt;&lt;h3 id=&#34;配置环境变量&#34;&gt;配置环境变量
 &lt;/h3&gt;&lt;p&gt;新建 &lt;code&gt;\.env&lt;/code&gt; 文件，填入自己的大模型密钥：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -186,7 +186,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;OPENAI_BASE_URL=  # 可选，第三方模型地址可填空
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-启动python服务&#34;&gt;3. 启动Python服务
+&lt;/div&gt;&lt;h3 id=&#34;启动python服务&#34;&gt;启动Python服务
 &lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -197,8 +197,8 @@
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;启动成功后，Python服务会跑在 &lt;strong&gt;8000端口&lt;/strong&gt;&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;五python核心代码逐句通俗讲解&#34;&gt;五、Python核心代码逐句通俗讲解
-&lt;/h2&gt;&lt;h3 id=&#34;1-状态定义ai的记事本&#34;&gt;1. 状态定义：AI的“记事本”
+&lt;h2 id=&#34;python核心代码逐句通俗讲解&#34;&gt;Python核心代码逐句通俗讲解
+&lt;/h2&gt;&lt;h3 id=&#34;状态定义ai的记事本&#34;&gt;状态定义：AI的“记事本”
 &lt;/h3&gt;&lt;p&gt;LangGraph的核心就是&lt;strong&gt;全局状态&lt;/strong&gt;，相当于一个共享记事本，所有AI功能都能读写这里的数据：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -217,7 +217,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;简单理解：存用户问题、页面信息、AI结果的公共容器。&lt;/p&gt;
-&lt;h3 id=&#34;2-请求参数校验防止乱传数据&#34;&gt;2. 请求参数校验：防止乱传数据
+&lt;h3 id=&#34;请求参数校验防止乱传数据&#34;&gt;请求参数校验：防止乱传数据
 &lt;/h3&gt;&lt;p&gt;限制用户只能用我们预设的3个功能，避免报错：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -233,7 +233,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    context: Optional[Dict[str, Any]] = None
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-连接大模型&#34;&gt;3. 连接大模型
+&lt;/div&gt;&lt;h3 id=&#34;连接大模型&#34;&gt;连接大模型
 &lt;/h3&gt;&lt;p&gt;读取配置文件，自动连接OpenAI（或兼容的第三方模型），参数做了容错，不会轻易崩溃：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -246,7 +246,7 @@
 &lt;p&gt;温度值0.2，&lt;strong&gt;回答更稳定、少胡说&lt;/strong&gt;，适合SQL场景&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-智能提示词切换一个模型干三件事&#34;&gt;4. 智能提示词切换：一个模型干三件事
+&lt;h3 id=&#34;智能提示词切换一个模型干三件事&#34;&gt;智能提示词切换：一个模型干三件事
 &lt;/h3&gt;&lt;p&gt;我们不用写三个AI接口，&lt;strong&gt;同一个大模型，切换不同身份&lt;/strong&gt;，实现三种功能：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -260,11 +260,11 @@
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;再把用户问题、当前数据表信息传给AI，就能精准输出对应答案。&lt;/p&gt;
-&lt;h3 id=&#34;5-langgraph核心流程图极简版&#34;&gt;5. LangGraph核心流程图（极简版）
+&lt;h3 id=&#34;langgraph核心流程图极简版&#34;&gt;LangGraph核心流程图（极简版）
 &lt;/h3&gt;&lt;p&gt;目前的逻辑非常简单，新手无压力：&lt;/p&gt;
 &lt;p&gt;程序启动 → 读取状态 → 调用大模型 → 生成答案 → 结束&lt;/p&gt;
 &lt;p&gt;后续想加功能（比如SQL风险检测、上下文优化），直接新增节点即可，不用重构代码。&lt;/p&gt;
-&lt;h3 id=&#34;6-两个核心接口&#34;&gt;6. 两个核心接口
+&lt;h3 id=&#34;两个核心接口&#34;&gt;两个核心接口
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;GET /health&lt;/strong&gt;：健康检查，判断AI服务是否正常启动&lt;/p&gt;
@@ -297,7 +297,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;六nestjs后端适配转发层超简单&#34;&gt;六、NestJS后端适配（转发层，超简单）
+&lt;h2 id=&#34;nestjs后端适配转发层超简单&#34;&gt;NestJS后端适配（转发层，超简单）
 &lt;/h2&gt;&lt;p&gt;NestJS这一层&lt;strong&gt;不写任何AI逻辑&lt;/strong&gt;，只做两件事：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -307,9 +307,9 @@
 &lt;p&gt;转发给Python AI服务，接收结果后统一返回给前端&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id=&#34;1-模块注册&#34;&gt;1. 模块注册
+&lt;h3 id=&#34;模块注册&#34;&gt;模块注册
 &lt;/h3&gt;&lt;p&gt;新建agent模块、控制器、服务文件，在全局模块中注册即可，属于Nest基础操作。&lt;/p&gt;
-&lt;h3 id=&#34;2-配置服务地址&#34;&gt;2. 配置服务地址
+&lt;h3 id=&#34;配置服务地址&#34;&gt;配置服务地址
 &lt;/h3&gt;&lt;p&gt;在backend的.env文件中配置Python服务地址：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -319,7 +319,7 @@
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-Plain&#34; data-lang=&#34;Plain&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;LANGGRAPH_SERVICE_URL=http://127.0.0.1:8000
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;h3 id=&#34;3-接口统一规范&#34;&gt;3. 接口统一规范
+&lt;/div&gt;&lt;h3 id=&#34;接口统一规范&#34;&gt;接口统一规范
 &lt;/h3&gt;&lt;p&gt;对外统一暴露两个接口，前端不用关心后端分层：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -329,10 +329,10 @@
 &lt;p&gt;&lt;code&gt;POST /api/agent/run&lt;/code&gt;：调用AI智能功能&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;4-错误统一处理&#34;&gt;4. 错误统一处理
+&lt;h3 id=&#34;错误统一处理&#34;&gt;错误统一处理
 &lt;/h3&gt;&lt;p&gt;如果Python服务挂了、请求超时、参数错误，Nest都会返回统一格式的报错，&lt;strong&gt;前端不用单独处理各种异常&lt;/strong&gt;，体验更友好。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;七完整请求流程从头到尾&#34;&gt;七、完整请求流程（从头到尾）
+&lt;h2 id=&#34;完整请求流程从头到尾&#34;&gt;完整请求流程（从头到尾）
 &lt;/h2&gt;&lt;p&gt;1. 用户在前端选择功能、输入问题
 2. 前端自动组装当前数据库、数据表信息
 3. 前端请求NestJS接口
@@ -342,7 +342,7 @@
 7. Nest统一封装结果，返回给前端
 8. 前端展示AI回答&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;八本地调试命令直接复制即用&#34;&gt;八、本地调试命令（直接复制即用）
+&lt;h2 id=&#34;本地调试命令直接复制即用&#34;&gt;本地调试命令（直接复制即用）
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;启动Python AI服务&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
@@ -383,7 +383,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;九新手总结核心重点&#34;&gt;九、新手总结（核心重点）
+&lt;h2 id=&#34;新手总结核心重点&#34;&gt;新手总结（核心重点）
 &lt;/h2&gt;&lt;p&gt;1. &lt;strong&gt;分层思想&lt;/strong&gt;：Nest负责业务转发，Python负责AI计算，各司其职，好维护、好扩展
 2. &lt;strong&gt;LangGraph作用&lt;/strong&gt;：提供统一的状态管理，让AI逻辑结构化，后续新增功能不用重构
 3. &lt;strong&gt;安全设计&lt;/strong&gt;：AI只做文字分析和代码生成，不操作真实数据库，零风险

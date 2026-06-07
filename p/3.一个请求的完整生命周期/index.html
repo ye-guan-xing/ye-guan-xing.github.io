@@ -268,13 +268,13 @@
     <li><a href="#本篇学习入口">本篇学习入口</a></li>
     <li><a href="#案例用户登录">案例：用户登录</a></li>
     <li><a href="#全链路时序">全链路时序</a></li>
-    <li><a href="#step-1controller-接路由">Step 1：Controller 接路由</a></li>
-    <li><a href="#step-2dto-校验">Step 2：DTO 校验</a></li>
-    <li><a href="#step-3service-执行业务">Step 3：Service 执行业务</a></li>
-    <li><a href="#step-4参数装饰器一览">Step 4：参数装饰器一览</a></li>
-    <li><a href="#step-5responseinterceptor-包装">Step 5：ResponseInterceptor 包装</a></li>
-    <li><a href="#step-6异常-filter">Step 6：异常 Filter</a></li>
-    <li><a href="#step-7logginginterceptor">Step 7：LoggingInterceptor</a></li>
+    <li><a href="#controller-接路由">Controller 接路由</a></li>
+    <li><a href="#dto-校验">DTO 校验</a></li>
+    <li><a href="#service-执行业务">Service 执行业务</a></li>
+    <li><a href="#参数装饰器一览">参数装饰器一览</a></li>
+    <li><a href="#responseinterceptor-包装">ResponseInterceptor 包装</a></li>
+    <li><a href="#异常-filter">异常 Filter</a></li>
+    <li><a href="#logginginterceptor">LoggingInterceptor</a></li>
     <li><a href="#带-guard-的请求">带 Guard 的请求</a></li>
     <li><a href="#前端对接要点">前端对接要点</a></li>
     <li><a href="#本篇小结">本篇小结</a></li>
@@ -466,7 +466,7 @@
   Ctrl-&gt;&gt;Int: 包装响应
   Int--&gt;&gt;FE: code=1 data=...</pre>
 
-<h2 id="step-1controller-接路由">Step 1：Controller 接路由
+<h2 id="controller-接路由">Controller 接路由
 </h2><p>文件：<code>backend/oj-nest/src/modules/user/user.controller.ts</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -501,7 +501,7 @@
 <p>前端类比：Vue Router 负责匹配页面；Nest Controller 负责匹配接口。</p>
 <p>本项目落点：<code>UserController.login</code> 只负责接收 <code>LoginDto</code> 并调用 <code>UserService.login</code>。</p>
 </blockquote>
-<h2 id="step-2dto-校验">Step 2：DTO 校验
+<h2 id="dto-校验">DTO 校验
 </h2><p>文件：<code>backend/oj-nest/src/modules/user/dto/user.dto.ts</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -539,7 +539,7 @@
 <p>前端类比：前端表单 rules 提升体验，后端 DTO + Pipe 保证接口边界可靠。</p>
 <p>本项目落点：全局 <code>ValidationPipe</code> 会处理 <code>LoginDto</code>、<code>RegisterDto</code>、<code>SubmitTestQuestionDto</code> 等输入对象。</p>
 </blockquote>
-<h2 id="step-3service-执行业务">Step 3：Service 执行业务
+<h2 id="service-执行业务">Service 执行业务
 </h2><p>文件：<code>backend/oj-nest/src/modules/user/user.service.ts</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -578,7 +578,7 @@
 <p>前端类比：把页面事件里的请求、状态计算、错误处理抽到 store action 或 composable。</p>
 <p>本项目落点：登录流程里的查用户、比对密码、写 Redis token 都在 <code>UserService.login</code>。</p>
 </blockquote>
-<h2 id="step-4参数装饰器一览">Step 4：参数装饰器一览
+<h2 id="参数装饰器一览">参数装饰器一览
 </h2><div class="table-wrapper"><table>
 	<thead>
 			<tr>
@@ -611,7 +611,7 @@
 	</tbody>
 </table></div>
 <p>Query 参数默认是字符串，<code>ValidationPipe</code> 的 <code>transform: true</code> 可配合 DTO 里的 <code>@Type(() =&gt; Number)</code> 做类型转换。</p>
-<h2 id="step-5responseinterceptor-包装">Step 5：ResponseInterceptor 包装
+<h2 id="responseinterceptor-包装">ResponseInterceptor 包装
 </h2><p>文件：<code>backend/oj-nest/src/common/interceptors/response.interceptor.ts</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -654,7 +654,7 @@
 <p>前端类比：axios response interceptor 统一拆包；Nest response interceptor 统一装包。</p>
 <p>本项目落点：<code>ResponseInterceptor</code> 固定输出 <code>{ code, message, data }</code>，前端只需要按一种结构取数据。</p>
 </blockquote>
-<h2 id="step-6异常-filter">Step 6：异常 Filter
+<h2 id="异常-filter">异常 Filter
 </h2><p>文件：<code>backend/oj-nest/src/common/filters/http-exception.filter.ts</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -722,7 +722,7 @@
 <p>前端类比：axios error handler 统一弹错误提示；Nest Filter 统一返回错误 JSON。</p>
 <p>本项目落点：<code>AllExceptionsFilter</code> 让 <code>NotFoundException</code>、<code>UnauthorizedException</code> 等异常都变成前端可读的 <code>{ code, message, data: null }</code>。</p>
 </blockquote>
-<h2 id="step-7logginginterceptor">Step 7：LoggingInterceptor
+<h2 id="logginginterceptor">LoggingInterceptor
 </h2><p>文件：<code>backend/oj-nest/src/common/interceptors/logging.interceptor.ts</code></p>
 <p>每个请求打一行日志：</p>
 <div class="highlight"><div class="chroma">

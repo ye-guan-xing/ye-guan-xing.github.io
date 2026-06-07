@@ -265,40 +265,40 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#一先搞懂js异步的核心本质">一、先搞懂：JS异步的核心本质</a></li>
-    <li><a href="#二异步初代回调函数噩梦开端">二、异步初代：回调函数（噩梦开端）</a>
+    <li><a href="#先搞懂js异步的核心本质">先搞懂：JS异步的核心本质</a></li>
+    <li><a href="#异步初代回调函数噩梦开端">异步初代：回调函数（噩梦开端）</a>
       <ol>
-        <li><a href="#1-什么是回调函数">1. 什么是回调函数？</a></li>
-        <li><a href="#2-基础示例">2. 基础示例</a></li>
-        <li><a href="#3-致命缺陷回调地狱">3. 致命缺陷：回调地狱</a></li>
-        <li><a href="#4-回调地狱五大痛点">4. 回调地狱五大痛点</a></li>
+        <li><a href="#什么是回调函数">什么是回调函数？</a></li>
+        <li><a href="#基础示例">基础示例</a></li>
+        <li><a href="#致命缺陷回调地狱">致命缺陷：回调地狱</a></li>
+        <li><a href="#回调地狱五大痛点">回调地狱五大痛点</a></li>
       </ol>
     </li>
-    <li><a href="#三异步二代promise规范化解决方案">三、异步二代：Promise（规范化解决方案）</a>
+    <li><a href="#异步二代promise规范化解决方案">异步二代：Promise（规范化解决方案）</a>
       <ol>
-        <li><a href="#1-promise核心规则">1. Promise核心规则</a></li>
-        <li><a href="#2-promise改造回调地狱">2. Promise改造回调地狱</a></li>
-        <li><a href="#3-promise四大并发工具开发高频用">3. Promise四大并发工具（开发高频用）</a></li>
+        <li><a href="#promise核心规则">Promise核心规则</a></li>
+        <li><a href="#promise改造回调地狱">Promise改造回调地狱</a></li>
+        <li><a href="#promise四大并发工具开发高频用">Promise四大并发工具（开发高频用）</a></li>
       </ol>
     </li>
-    <li><a href="#四异步终极版asyncawait同步写法写异步">四、异步终极版：async/await（同步写法写异步）</a>
+    <li><a href="#异步终极版asyncawait同步写法写异步">异步终极版：async/await（同步写法写异步）</a>
       <ol>
-        <li><a href="#1-核心语法规则">1. 核心语法规则</a></li>
-        <li><a href="#2-终极简洁实现">2. 终极简洁实现</a></li>
-        <li><a href="#3-标准错误处理">3. 标准错误处理</a></li>
-        <li><a href="#4-新手必踩陷阱">4. 新手必踩陷阱</a></li>
+        <li><a href="#核心语法规则">核心语法规则</a></li>
+        <li><a href="#终极简洁实现">终极简洁实现</a></li>
+        <li><a href="#标准错误处理">标准错误处理</a></li>
+        <li><a href="#新手必踩陷阱">新手必踩陷阱</a></li>
       </ol>
     </li>
-    <li><a href="#五异步底层核心事件循环彻底搞定执行顺序">五、异步底层核心：事件循环（彻底搞定执行顺序）</a>
+    <li><a href="#异步底层核心事件循环彻底搞定执行顺序">异步底层核心：事件循环（彻底搞定执行顺序）</a>
       <ol>
-        <li><a href="#1-事件循环核心执行铁律">1. 事件循环核心执行铁律</a></li>
-        <li><a href="#2-宏任务--微任务分类优先级重点">2. 宏任务 &amp; 微任务分类（优先级重点）</a></li>
-        <li><a href="#3-硬核知识点then回调的真实执行逻辑">3. 硬核知识点：.then回调的真实执行逻辑</a></li>
-        <li><a href="#4-开发高危坑点微任务饥饿">4. 开发高危坑点：微任务饥饿</a></li>
+        <li><a href="#事件循环核心执行铁律">事件循环核心执行铁律</a></li>
+        <li><a href="#宏任务--微任务分类优先级重点">宏任务 &amp; 微任务分类（优先级重点）</a></li>
+        <li><a href="#硬核知识点then回调的真实执行逻辑">硬核知识点：.then回调的真实执行逻辑</a></li>
+        <li><a href="#开发高危坑点微任务饥饿">开发高危坑点：微任务饥饿</a></li>
       </ol>
     </li>
-    <li><a href="#六全篇核心总结新手必背">六、全篇核心总结（新手必背）</a></li>
-    <li><a href="#七写在最后">七、写在最后</a></li>
+    <li><a href="#全篇核心总结新手必背">全篇核心总结（新手必背）</a></li>
+    <li><a href="#写在最后">写在最后</a></li>
   </ol>
 </nav>
         </div>
@@ -393,18 +393,18 @@
 写代码搞不懂执行顺序、定时器不准、Promise 和 async/await 混用出错、面试被问懵，本质都是没吃透JS异步的进化逻辑和底层事件循环机制。</p>
 <p>本文从零开始，循序渐进带大家吃透JS异步全套知识：从最原始的回调地狱，到Promise规范化，再到终极async/await写法，最后直击底层事件循环、宏任务与微任务核心逻辑，看完彻底告别异步代码混乱问题。</p>
 <hr>
-<h2 id="一先搞懂js异步的核心本质">一、先搞懂：JS异步的核心本质
+<h2 id="先搞懂js异步的核心本质">先搞懂：JS异步的核心本质
 </h2><p>JavaScript是<strong>单线程语言</strong>，同一时间只能执行一段代码，为了避免耗时任务（定时器、网络请求、用户交互）阻塞主线程，就诞生了异步编程。</p>
 <p>异步的核心精髓：把后续要执行的逻辑交给函数托管，等异步任务就绪后，自动回调执行，主线程无需等待，可以继续执行其他代码。</p>
 <p>JS异步编程经历了<strong>三次重大进化</strong>，完成了从混乱到优雅的蜕变：
 <code>回调函数 → Promise → async/await</code>
 而支撑这一切运行的底层核心，就是<strong>事件循环</strong>。</p>
 <hr>
-<h2 id="二异步初代回调函数噩梦开端">二、异步初代：回调函数（噩梦开端）
-</h2><h3 id="1-什么是回调函数">1. 什么是回调函数？
+<h2 id="异步初代回调函数噩梦开端">异步初代：回调函数（噩梦开端）
+</h2><h3 id="什么是回调函数">什么是回调函数？
 </h3><p>JS中函数是「一等公民」，可以作为参数传递给其他函数。简单来说：把函数A传给函数B，让B在合适的时机回过头调用A，A就是回调函数。</p>
 <p>日常开发中定时器、接口请求、点击事件，最基础的实现方式都是回调函数。</p>
-<h3 id="2-基础示例">2. 基础示例
+<h3 id="基础示例">基础示例
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -421,7 +421,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-致命缺陷回调地狱">3. 致命缺陷：回调地狱
+</div><h3 id="致命缺陷回调地狱">致命缺陷：回调地狱
 </h3><p>当多个异步任务存在<strong>顺序依赖</strong>（必须上一个执行完，再执行下一个）时，回调函数会无限嵌套，形成让人崩溃的回调地狱。</p>
 <p>需求：延时1秒打印a → 再延时1秒打印b → 再延时1秒打印c</p>
 <div class="highlight"><div class="chroma">
@@ -448,7 +448,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-回调地狱五大痛点">4. 回调地狱五大痛点
+</div><h3 id="回调地狱五大痛点">回调地狱五大痛点
 </h3><ul>
 <li>可读性极差：代码无限缩进，层级混乱，一眼看不懂逻辑</li>
 <li>业务耦合严重：核心业务被嵌套结构淹没，难以维护</li>
@@ -458,20 +458,20 @@
 </ul>
 <p>为了解决回调地狱的问题，<strong>Promise</strong> 应运而生。</p>
 <hr>
-<h2 id="三异步二代promise规范化解决方案">三、异步二代：Promise（规范化解决方案）
+<h2 id="异步二代promise规范化解决方案">异步二代：Promise（规范化解决方案）
 </h2><blockquote>
 <p><a class="link" href="https://www.jiangxu.net/blog/promiseTutorial"  target="_blank" rel="noopener"
     >推荐的手撕过程</a></p>
 </blockquote>
 <p>如果说回调函数是「口头约定」，那 Promise 就是标准化的异步凭证，可以通俗理解为「取餐号」。</p>
 <p>异步任务开始后，不会直接返回结果，而是返回一个Promise凭证，任务成功/失败后，再通过凭证获取结果，彻底消灭嵌套回调。</p>
-<h3 id="1-promise核心规则">1. Promise核心规则
+<h3 id="promise核心规则">Promise核心规则
 </h3><ul>
 <li>三种状态：<code>pending</code>（进行中）、<code>fulfilled</code>（成功）、<code>rejected</code>（失败）</li>
 <li>状态不可逆：一旦从进行中变为成功/失败，就永远不会改变</li>
 <li>支持链式调用：通过 <code>.then()</code> 处理成功、<code>.catch()</code> 捕获错误</li>
 </ul>
-<h3 id="2-promise改造回调地狱">2. Promise改造回调地狱
+<h3 id="promise改造回调地狱">Promise改造回调地狱
 </h3><p>同样的顺序执行需求，用Promise实现，彻底告别嵌套，代码线性整洁：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -513,7 +513,7 @@
 </span></span><span class="line"><span class="cl">  <span class="p">.</span><span class="nx">then</span><span class="p">((</span><span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">));</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-promise四大并发工具开发高频用">3. Promise四大并发工具（开发高频用）
+</div><h3 id="promise四大并发工具开发高频用">Promise四大并发工具（开发高频用）
 </h3><p>针对多异步任务并发场景，Promise提供四个核心方法，按需选择即可：</p>
 <ul>
 <li><code>Promise.all</code>：全部任务成功才成功，任意一个失败直接失败（一败全败）</li>
@@ -522,14 +522,14 @@
 <li><code>Promise.any</code>：任意一个任务成功就结束，全部失败才会失败</li>
 </ul>
 <hr>
-<h2 id="四异步终极版asyncawait同步写法写异步">四、异步终极版：async/await（同步写法写异步）
+<h2 id="异步终极版asyncawait同步写法写异步">异步终极版：async/await（同步写法写异步）
 </h2><p>async/await 是 <strong>Promise 的语法糖</strong>，底层完全基于Promise实现，没有新增功能，但彻底解决了Promise链式调用的冗长问题，让异步代码写起来和同步代码一模一样，是目前前端开发的最佳实践。</p>
-<h3 id="1-核心语法规则">1. 核心语法规则
+<h3 id="核心语法规则">核心语法规则
 </h3><ul>
 <li><code>async</code>：修饰函数，被修饰的函数永远返回一个Promise对象</li>
 <li><code>await</code>：暂停当前async函数的执行，等待Promise执行完成，直接取出最终结果，无需.then链式调用</li>
 </ul>
-<h3 id="2-终极简洁实现">2. 终极简洁实现
+<h3 id="终极简洁实现">终极简洁实现
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -558,7 +558,7 @@
 </span></span><span class="line"><span class="cl"><span class="nx">print</span><span class="p">();</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-标准错误处理">3. 标准错误处理
+</div><h3 id="标准错误处理">标准错误处理
 </h3><p>async/await 不再用 <code>.catch()</code> 捕获错误，统一使用 <code>try/catch</code>，异常处理更规整：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -584,15 +584,15 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-新手必踩陷阱">4. 新手必踩陷阱
+</div><h3 id="新手必踩陷阱">新手必踩陷阱
 </h3><ul>
 <li>循环中的await默认<strong>顺序执行</strong>：每次等待上一个任务完成，再执行下一个，速度慢</li>
 <li>并行执行方案：需要同时执行多个异步任务时，必须搭配 <code>Promise.all</code></li>
 </ul>
 <hr>
-<h2 id="五异步底层核心事件循环彻底搞定执行顺序">五、异步底层核心：事件循环（彻底搞定执行顺序）
+<h2 id="异步底层核心事件循环彻底搞定执行顺序">异步底层核心：事件循环（彻底搞定执行顺序）
 </h2><p>学会用法只是入门，想要彻底弄懂代码执行先后顺序、解决所有异步bug、应对面试，必须掌握<strong>事件循环机制</strong>，这是JS异步的底层调度核心。</p>
-<h3 id="1-事件循环核心执行铁律">1. 事件循环核心执行铁律
+<h3 id="事件循环核心执行铁律">事件循环核心执行铁律
 </h3><p>JS单线程执行，所有代码遵循固定优先级顺序，事件循环只在调用栈清空后轮转：</p>
 <ol>
 <li>优先执行主线程调用栈：只要调用栈有代码执行，事件循环暂停</li>
@@ -600,7 +600,7 @@
 <li>执行一个宏任务：微任务清空后，从宏任务队列取出一个任务执行</li>
 <li>循环往复：一个宏任务执行完毕，再次清空所有微任务，无限轮转</li>
 </ol>
-<h3 id="2-宏任务--微任务分类优先级重点">2. 宏任务 &amp; 微任务分类（优先级重点）
+<h3 id="宏任务--微任务分类优先级重点">宏任务 &amp; 微任务分类（优先级重点）
 </h3><p><strong>微任务（高优先级）</strong>：优先执行，全部清空再走宏任务</p>
 <ul>
 <li>Promise.then / catch / finally</li>
@@ -614,7 +614,7 @@
 <li>页面点击、滚动等用户交互事件</li>
 </ul>
 <p>✅ 经典结论：所有场景下，<code>Promise.then</code> 永远早于 <code>setTimeout(0)</code> 执行</p>
-<h3 id="3-硬核知识点then回调的真实执行逻辑">3. 硬核知识点：.then回调的真实执行逻辑
+<h3 id="硬核知识点then回调的真实执行逻辑">硬核知识点：.then回调的真实执行逻辑
 </h3><p>90%初学者都会误解：以为.then回调一执行就进入微任务队列，真实逻辑完全不同：</p>
 <ol>
 <li>.then回调不会进入浏览器Web APIs（仅定时器、网络请求存放此处）</li>
@@ -622,7 +622,7 @@
 <li>真实位置：挂载在Promise内部的reactions回调列表中</li>
 <li>执行时机：只有Promise状态敲定（成功/失败）的瞬间，才会把回调批量推入微任务队列</li>
 </ol>
-<h3 id="4-开发高危坑点微任务饥饿">4. 开发高危坑点：微任务饥饿
+<h3 id="开发高危坑点微任务饥饿">开发高危坑点：微任务饥饿
 </h3><p>这是生产环境高频隐形bug，新手极易忽略！</p>
 <ul>
 <li>现象：在微任务内部递归生成新微任务，导致微任务队列永远无法清空，事件循环一直卡在微任务阶段，宏任务永久无法执行</li>
@@ -649,7 +649,7 @@
 <li>避坑原则：<strong>绝对禁止</strong>在微任务中无限递归注册新微任务</li>
 </ul>
 <hr>
-<h2 id="六全篇核心总结新手必背">六、全篇核心总结（新手必背）
+<h2 id="全篇核心总结新手必背">全篇核心总结（新手必背）
 </h2><ol>
 <li>
 <p><strong>异步进化路径</strong>
@@ -671,7 +671,7 @@
 <li>警惕微任务无限递归导致的页面卡死问题</li>
 </ul>
 <hr>
-<h2 id="七写在最后">七、写在最后
+<h2 id="写在最后">写在最后
 </h2><p>JS异步是前端进阶的分水岭，看懂语法只是基础，理解事件循环的调度逻辑，才能真正掌控异步代码的执行顺序，彻底解决开发中的异步bug，同时轻松应对面试高频考点。</p>
 <p>后续所有复杂异步逻辑（接口并发、轮询、延时操作、异步串行），都离不开本文的基础知识点。</p>
 

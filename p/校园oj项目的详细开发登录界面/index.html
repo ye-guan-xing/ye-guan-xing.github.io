@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 一、前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
 <title>校园OJ项目的详细开发(登录界面)</title>
 
 <link rel='canonical' href='https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/'>
 
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="校园OJ项目的详细开发(登录界面)">
-<meta property='og:description' content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 一、前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
+<meta property='og:description' content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
 <meta property='og:url' content='https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='前端开发' /><meta property='article:published_time' content='2025-12-05T18:36:00&#43;08:00'/><meta property='article:modified_time' content='2025-12-05T18:36:00&#43;08:00'/>
 <meta name="twitter:title" content="校园OJ项目的详细开发(登录界面)">
-<meta name="twitter:description" content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 一、前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
+<meta name="twitter:description" content="手把手教你理解校园 OJ 登录系统：从输入密码到进入首页 前言：登录系统的“三件套” 想象一下你要进宿舍楼：\n门禁卡（token） - 证明你是楼里的学生 保安（路由守卫） - 检查你有没有门禁卡 楼长（Vuex） - 登记你的入住信息 我们的登录系统就是这样的三级验证机制！\n">
     </head>
     <body class="
     article-page
@@ -265,19 +265,19 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ol>
-    <li><a href="#一前言登录系统的三件套">一、前言：登录系统的“三件套”</a></li>
-    <li><a href="#二核心模块详解">二、核心模块详解</a>
+    <li><a href="#前言登录系统的三件套">前言：登录系统的“三件套”</a></li>
+    <li><a href="#核心模块详解">核心模块详解</a>
       <ol>
-        <li><a href="#1-token-管理系统---authjs你的电子门禁卡">1. Token 管理系统 - <code>auth.js</code>（你的电子门禁卡）</a></li>
-        <li><a href="#2-通信专员---requestjs你的专属信使">2. 通信专员 - <code>request.js</code>（你的专属信使）</a></li>
-        <li><a href="#3-用户服务接口---userjs能办的四件事">3. 用户服务接口 - <code>user.js</code>（能办的四件事）</a></li>
-        <li><a href="#4-用户管理中心---userjs-storemodules楼长的登记簿">4. 用户管理中心 - <code>user.js (store/modules)</code>（楼长的登记簿）</a></li>
-        <li><a href="#5-快捷访问门---gettersjs快速查询通道">5. 快捷访问门 - <code>getters.js</code>（快速查询通道）</a></li>
-        <li><a href="#6-vuex-总仓库---indexjs所有登记簿的集合">6. Vuex 总仓库 - <code>index.js</code>（所有登记簿的集合）</a></li>
-        <li><a href="#7-登录页面---apploginvue前台接待处">7. 登录页面 - <code>AppLogin.vue</code>（前台接待处）</a></li>
+        <li><a href="#token-管理系统---authjs你的电子门禁卡">Token 管理系统 - <code>auth.js</code>（你的电子门禁卡）</a></li>
+        <li><a href="#通信专员---requestjs你的专属信使">通信专员 - <code>request.js</code>（你的专属信使）</a></li>
+        <li><a href="#用户服务接口---userjs能办的四件事">用户服务接口 - <code>user.js</code>（能办的四件事）</a></li>
+        <li><a href="#用户管理中心---userjs-storemodules楼长的登记簿">用户管理中心 - <code>user.js (store/modules)</code>（楼长的登记簿）</a></li>
+        <li><a href="#快捷访问门---gettersjs快速查询通道">快捷访问门 - <code>getters.js</code>（快速查询通道）</a></li>
+        <li><a href="#vuex-总仓库---indexjs所有登记簿的集合">Vuex 总仓库 - <code>index.js</code>（所有登记簿的集合）</a></li>
+        <li><a href="#登录页面---apploginvue前台接待处">登录页面 - <code>AppLogin.vue</code>（前台接待处）</a></li>
       </ol>
     </li>
-    <li><a href="#三完整登录流程故事版">三、完整登录流程（故事版）</a>
+    <li><a href="#完整登录流程故事版">完整登录流程（故事版）</a>
       <ol>
         <li><a href="#第一幕来到登录页面">第一幕：来到登录页面</a></li>
         <li><a href="#第二幕填写信息">第二幕：填写信息</a></li>
@@ -291,15 +291,15 @@
         <li><a href="#第十幕后续访问">第十幕：后续访问</a></li>
       </ol>
     </li>
-    <li><a href="#四关键概念精讲">四、关键概念精讲</a>
+    <li><a href="#关键概念精讲">关键概念精讲</a>
       <ol>
-        <li><a href="#1-什么是-token">1. 什么是 Token？</a></li>
-        <li><a href="#2-localstorage-vs-sessionstorage">2. localStorage vs sessionStorage</a></li>
-        <li><a href="#3-promise-异步处理">3. Promise 异步处理</a></li>
-        <li><a href="#4-vuex-数据流">4. Vuex 数据流</a></li>
+        <li><a href="#什么是-token">什么是 Token？</a></li>
+        <li><a href="#localstorage-vs-sessionstorage">localStorage vs sessionStorage</a></li>
+        <li><a href="#promise-异步处理">Promise 异步处理</a></li>
+        <li><a href="#vuex-数据流">Vuex 数据流</a></li>
       </ol>
     </li>
-    <li><a href="#五常见问题解答">五、常见问题解答</a>
+    <li><a href="#常见问题解答">常见问题解答</a>
       <ol>
         <li><a href="#q1为什么登录后页面刷新又变未登录了">Q1：为什么登录后页面刷新，又变未登录了？</a></li>
         <li><a href="#q2如何实现记住我功能">Q2：如何实现&quot;记住我&quot;功能？</a></li>
@@ -307,8 +307,8 @@
         <li><a href="#q4如何防止-xss-攻击盗取-token">Q4：如何防止 XSS 攻击盗取 token？</a></li>
       </ol>
     </li>
-    <li><a href="#六登录系统架构总结">六、登录系统架构总结</a></li>
-    <li><a href="#七给新手的黄金法则">七、给新手的黄金法则</a>
+    <li><a href="#登录系统架构总结">登录系统架构总结</a></li>
+    <li><a href="#给新手的黄金法则">给新手的黄金法则</a>
       <ol>
         <li><a href="#法则-1先理解流程再写代码">法则 1：先理解流程，再写代码</a></li>
         <li><a href="#法则-2分层思考各司其职">法则 2：分层思考，各司其职</a></li>
@@ -316,7 +316,7 @@
         <li><a href="#法则-4用户体验要友好">法则 4：用户体验要友好</a></li>
       </ol>
     </li>
-    <li><a href="#八下一步学习方向">八、下一步学习方向</a></li>
+    <li><a href="#下一步学习方向">下一步学习方向</a></li>
   </ol>
 </nav>
         </div>
@@ -417,7 +417,7 @@
     
     
     <h1 id="手把手教你理解校园-oj-登录系统从输入密码到进入首页">手把手教你理解校园 OJ 登录系统：从输入密码到进入首页
-</h1><h2 id="一前言登录系统的三件套">一、前言：登录系统的“三件套”
+</h1><h2 id="前言登录系统的三件套">前言：登录系统的“三件套”
 </h2><p>想象一下你要进宿舍楼：</p>
 <ol>
 <li><strong>门禁卡</strong>（token） - 证明你是楼里的学生</li>
@@ -425,8 +425,8 @@
 <li><strong>楼长</strong>（Vuex） - 登记你的入住信息</li>
 </ol>
 <p>我们的登录系统就是这样的三级验证机制！</p>
-<h2 id="二核心模块详解">二、核心模块详解
-</h2><h3 id="1-token-管理系统---authjs你的电子门禁卡">1. Token 管理系统 - <code>auth.js</code>（你的电子门禁卡）
+<h2 id="核心模块详解">核心模块详解
+</h2><h3 id="token-管理系统---authjs你的电子门禁卡">Token 管理系统 - <code>auth.js</code>（你的电子门禁卡）
 </h3><p>这个文件专门管理你的“门禁卡”（token）：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -484,7 +484,7 @@
 <li><code>TOKEN_KEY</code> = 卡包里的特定卡槽，只放门禁卡</li>
 <li>每次进出，保安只看这个卡槽有没有卡</li>
 </ul>
-<h3 id="2-通信专员---requestjs你的专属信使">2. 通信专员 - <code>request.js</code>（你的专属信使）
+<h3 id="通信专员---requestjs你的专属信使">通信专员 - <code>request.js</code>（你的专属信使）
 </h3><p>这个文件负责和<strong>后端服务器</strong>对话，就像你有个专属信使：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -613,7 +613,7 @@
 </span></span><span class="line"><span class="cl">服务器回信 → 信使回来后（拦截器）→ 检查信的内容 → 正常就给你，异常就广播
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-用户服务接口---userjs能办的四件事">3. 用户服务接口 - <code>user.js</code>（能办的四件事）
+</div><h3 id="用户服务接口---userjs能办的四件事">用户服务接口 - <code>user.js</code>（能办的四件事）
 </h3><p>这个文件定义了你能让信使办的<strong>四件事</strong>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -715,7 +715,7 @@
 <li><code>request()</code>就是<strong>让信使按指南办事</strong></li>
 <li>返回值是一个<strong>Promise</strong>（承诺书），承诺会给你结果</li>
 </ul>
-<h3 id="4-用户管理中心---userjs-storemodules楼长的登记簿">4. 用户管理中心 - <code>user.js (store/modules)</code>（楼长的登记簿）
+<h3 id="用户管理中心---userjs-storemodules楼长的登记簿">用户管理中心 - <code>user.js (store/modules)</code>（楼长的登记簿）
 </h3><p>这里是 Vuex 的<strong>用户模块</strong>，负责管理所有用户相关的全局状态：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -886,7 +886,7 @@
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">你要改数据 → 调用action → action调用mutation → mutation修改state
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="5-快捷访问门---gettersjs快速查询通道">5. 快捷访问门 - <code>getters.js</code>（快速查询通道）
+</div><h3 id="快捷访问门---gettersjs快速查询通道">快捷访问门 - <code>getters.js</code>（快速查询通道）
 </h3><p>这个文件提供<strong>快速查询</strong>状态的方法：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -910,7 +910,7 @@
 <li>统一的查询接口，避免拼写错误</li>
 <li>可以计算衍生数据（如<code>isLogin</code>）</li>
 </ul>
-<h3 id="6-vuex-总仓库---indexjs所有登记簿的集合">6. Vuex 总仓库 - <code>index.js</code>（所有登记簿的集合）
+<h3 id="vuex-总仓库---indexjs所有登记簿的集合">Vuex 总仓库 - <code>index.js</code>（所有登记簿的集合）
 </h3><p>这里是 Vuex 的<strong>入口文件</strong>，整合所有模块：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -949,7 +949,7 @@
 <li>提交记录放<code>submission</code>模块</li>
 <li>互不干扰，清晰明了</li>
 </ul>
-<h3 id="7-登录页面---apploginvue前台接待处">7. 登录页面 - <code>AppLogin.vue</code>（前台接待处）
+<h3 id="登录页面---apploginvue前台接待处">登录页面 - <code>AppLogin.vue</code>（前台接待处）
 </h3><p>这是用户看到的<strong>登录界面</strong>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1098,7 +1098,7 @@
 <li><code>store.dispatch()</code> - 让楼长办事（异步操作）</li>
 <li><code>router.push()</code> - 让导航员带路</li>
 </ul>
-<h2 id="三完整登录流程故事版">三、完整登录流程（故事版）
+<h2 id="完整登录流程故事版">完整登录流程（故事版）
 </h2><p>让我们跟着&quot;小明&quot;走一遍完整流程：</p>
 <h3 id="第一幕来到登录页面">第一幕：来到登录页面
 </h3><p>小明打开浏览器，输入 OJ 平台网址，看到登录页面（<code>AppLogin.vue</code>）。</p>
@@ -1239,8 +1239,8 @@
 </span></span><span class="line"><span class="cl"><span class="mf">4.</span> <span class="nx">保安验证有效</span><span class="err">，</span><span class="nx">放行到首页</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="四关键概念精讲">四、关键概念精讲
-</h2><h3 id="1-什么是-token">1. 什么是 Token？
+</div><h2 id="关键概念精讲">关键概念精讲
+</h2><h3 id="什么是-token">什么是 Token？
 </h3><p><strong>比喻</strong>：Token 就像酒店的房卡。</p>
 <ul>
 <li>办入住时（登录）给你一张</li>
@@ -1248,7 +1248,7 @@
 <li>退房时（退出登录）收回</li>
 <li>过期了要重新办（token 过期）</li>
 </ul>
-<h3 id="2-localstorage-vs-sessionstorage">2. localStorage vs sessionStorage
+<h3 id="localstorage-vs-sessionstorage">localStorage vs sessionStorage
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1273,7 +1273,7 @@
 </span></span><span class="line"><span class="cl">- 同标签页共享
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="3-promise-异步处理">3. Promise 异步处理
+</div><h3 id="promise-异步处理">Promise 异步处理
 </h3><p><strong>比喻</strong>：叫外卖的过程</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1325,7 +1325,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h3 id="4-vuex-数据流">4. Vuex 数据流
+</div><h3 id="vuex-数据流">Vuex 数据流
 </h3><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1338,7 +1338,7 @@
 </span></span><span class="line"><span class="cl">      （做什么事）       （怎么改）        （改哪里）    （看到变化）
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="五常见问题解答">五、常见问题解答
+</div><h2 id="常见问题解答">常见问题解答
 </h2><h3 id="q1为什么登录后页面刷新又变未登录了">Q1：为什么登录后页面刷新，又变未登录了？
 </h3><p><strong>可能原因</strong>：</p>
 <ol>
@@ -1412,7 +1412,7 @@
 <li>重要操作需要二次验证</li>
 <li>定期更换 token</li>
 </ol>
-<h2 id="六登录系统架构总结">六、登录系统架构总结
+<h2 id="登录系统架构总结">登录系统架构总结
 </h2><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -1453,7 +1453,7 @@
 </span></span><span class="line"><span class="cl">5. 界面模块（AppLogin.vue）- 管用户看到什么
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="七给新手的黄金法则">七、给新手的黄金法则
+</div><h2 id="给新手的黄金法则">给新手的黄金法则
 </h2><h3 id="法则-1先理解流程再写代码">法则 1：先理解流程，再写代码
 </h3><p>画个流程图，搞清楚&quot;点击登录&quot;到&quot;进入首页&quot;中间发生了什么。</p>
 <h3 id="法则-2分层思考各司其职">法则 2：分层思考，各司其职
@@ -1478,7 +1478,7 @@
 <li>成功后有反馈</li>
 <li>记住用户上次操作</li>
 </ul>
-<h2 id="八下一步学习方向">八、下一步学习方向
+<h2 id="下一步学习方向">下一步学习方向
 </h2><p>掌握了登录系统后，你可以继续学习：</p>
 <ol>
 <li><strong>权限管理</strong>：不同角色看到不同菜单</li>
