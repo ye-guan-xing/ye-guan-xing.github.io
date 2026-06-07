@@ -2909,6 +2909,10 @@
         <description>&lt;blockquote&gt;
 &lt;p&gt;本系列基于 Campus-OJ 项目的真实后端代码 &lt;code&gt;backend/oj-nest&lt;/code&gt;，用前端熟悉的概念帮你建立服务端开发心智模型。&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/ye-guan-xing/AI-Full-Stack-OJ-System/tree/main/backend/oj-nest&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;项目代码&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2 id=&#34;讲什么&#34;&gt;讲什么
 &lt;/h2&gt;&lt;p&gt;&lt;code&gt;oj-nest&lt;/code&gt; 是一个 &lt;strong&gt;NestJS 11&lt;/strong&gt; 写的在线判题（OJ）后端。本文档不是单纯讲项目代码，而是把这个项目当成练习场，帮有 Vue / TypeScript 基础的前端开发者补齐后端核心能力：&lt;/p&gt;
 &lt;ul&gt;
