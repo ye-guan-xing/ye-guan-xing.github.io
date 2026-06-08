@@ -394,7 +394,7 @@
 <h2 id="大模型的核心本质自回归token概率预测器">大模型的核心本质：自回归Token概率预测器
 </h2><p>所有主流大语言模型（LLM）的终极目标只有一个：<strong>根据上文，预测下一个词元（Token）</strong>。</p>
 <p>用概率论公式表达为：</p>
-<p>$P(w_n \mid w_1,w_2,&hellip;,w_{n-1})$</p>
+<p>$P(w_n \mid w_1,w_2,...,w_{n-1})$</p>
 <p>简单理解：给定一段前文，模型计算词表中每一个字词出现的条件概率，再按照概率随机采样输出内容，循环往复就形成了完整句子、段落甚至长篇文本。</p>
 <p>它和手机输入法联想、文本补全属于同一类逻辑，区别仅在于模型规模、参数量、上下文理解能力呈指数级提升。<strong>大模型不存在主观理解、情绪与意识，全程是纯数学运算</strong>。</p>
 <h3 id="两大数学基石">两大数学基石
@@ -523,7 +523,42 @@
 
 
     
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const mainArticleElement = document.querySelector(".main-article");
+
+        if (!mainArticleElement || typeof renderMathInElement !== "function") {
+            return;
+        }
+
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"],
+            ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+            throwOnError: false
+        });
+    });
+</script>
+
+    
 </article>
+
 
     
 
