@@ -9,10 +9,10 @@
         <copyright>acye</copyright>
         <lastBuildDate>Wed, 01 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/git-%E6%96%B0%E6%89%8B%E9%80%9A%E5%85%B3%E6%8C%87%E5%8D%97/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Git 新手第一次使用：克隆、配置远程与首次推送</title>
-        <link>https://ye-guan-xing.github.io/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/</link>
+        <link>https://ye-guan-xing.github.io/p/git-clone-remote-push/</link>
         <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/</guid>
+        <guid>https://ye-guan-xing.github.io/p/git-clone-remote-push/</guid>
         <description>&lt;h1 id=&#34;git-新手第一次使用克隆配置远程与首次推送&#34;&gt;Git 新手第一次使用：克隆、配置远程与首次推送
 &lt;/h1&gt;&lt;h2 id=&#34;克隆仓库到本地&#34;&gt;克隆仓库到本地
 &lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -125,10 +125,10 @@
         </item>
         <item>
         <title>Git 工作流程与基本操作图解</title>
-        <link>https://ye-guan-xing.github.io/p/git-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E5%9B%BE%E8%A7%A3/</link>
+        <link>https://ye-guan-xing.github.io/p/git-workflow-basic-operations/</link>
         <pubDate>Tue, 31 Mar 2026 10:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/git-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E5%9B%BE%E8%A7%A3/</guid>
+        <guid>https://ye-guan-xing.github.io/p/git-workflow-basic-operations/</guid>
         <description>&lt;h1 id=&#34;git-工作流程与基本操作图解&#34;&gt;Git 工作流程与基本操作图解
 &lt;/h1&gt;&lt;p&gt;我们可以把 Git 的工作流程想象成一个写作业并交给老师的过程。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://ye-guan-xing.github.io/images/git/git.svg&#34;
@@ -277,10 +277,10 @@
         </item>
         <item>
         <title>解决master与开发分支代码不一致,手把手教你同步分支</title>
-        <link>https://ye-guan-xing.github.io/p/%E8%A7%A3%E5%86%B3master%E4%B8%8E%E5%BC%80%E5%8F%91%E5%88%86%E6%94%AF%E4%BB%A3%E7%A0%81%E4%B8%8D%E4%B8%80%E8%87%B4%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%90%8C%E6%AD%A5%E5%88%86%E6%94%AF/</link>
+        <link>https://ye-guan-xing.github.io/p/git-branch-sync/</link>
         <pubDate>Tue, 13 Jan 2026 10:30:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E8%A7%A3%E5%86%B3master%E4%B8%8E%E5%BC%80%E5%8F%91%E5%88%86%E6%94%AF%E4%BB%A3%E7%A0%81%E4%B8%8D%E4%B8%80%E8%87%B4%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%90%8C%E6%AD%A5%E5%88%86%E6%94%AF/</guid>
+        <guid>https://ye-guan-xing.github.io/p/git-branch-sync/</guid>
         <description>&lt;h1 id=&#34;git-新手通关指南解决-master-与开发分支代码不一致手把手教你同步分支&#34;&gt;【Git 新手通关指南】解决 master 与开发分支代码不一致，手把手教你同步分支
 &lt;/h1&gt;&lt;p&gt;作为 Git 新手，刚接触分支管理时大概率会遇到这个问题：本地&lt;code&gt;master&lt;/code&gt;主分支和自己创建的&lt;code&gt;z1&lt;/code&gt;开发分支代码不一样了，该怎么同步？为什么不能直接在&lt;code&gt;master&lt;/code&gt;分支改代码？这篇文章用最通俗的话+一步步实操，帮你彻底搞懂！&lt;/p&gt;
 &lt;h2 id=&#34;先搞懂master-和开发分支的分工新手先记牢&#34;&gt;先搞懂：master 和开发分支的“分工”（新手先记牢）

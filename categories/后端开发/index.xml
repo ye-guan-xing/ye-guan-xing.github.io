@@ -9,10 +9,10 @@
         <copyright>acye</copyright>
         <lastBuildDate>Thu, 28 May 2026 01:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>7.配置与部署-环境变量与Docker</title>
-        <link>https://ye-guan-xing.github.io/p/7.%E9%85%8D%E7%BD%AE%E4%B8%8E%E9%83%A8%E7%BD%B2-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Edocker/</link>
+        <link>https://ye-guan-xing.github.io/p/docker-deployment-config/</link>
         <pubDate>Thu, 28 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/7.%E9%85%8D%E7%BD%AE%E4%B8%8E%E9%83%A8%E7%BD%B2-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Edocker/</guid>
+        <guid>https://ye-guan-xing.github.io/p/docker-deployment-config/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./06-%e5%bc%82%e6%ad%a5%e4%bb%bb%e5%8a%a1%e4%b8%8e%e6%b6%88%e6%81%af%e9%98%9f%e5%88%97-Bull%e5%88%a4%e9%a2%98%e7%b3%bb%e7%bb%9f.md&#34; &gt;06 异步任务与判题队列&lt;/a&gt; | 回到：&lt;a class=&#34;link&#34; href=&#34;./00-%e5%ba%8f%e8%a8%80-%e5%89%8d%e7%ab%af%e5%a6%82%e4%bd%95%e5%bf%ab%e8%bf%9b%e5%90%8e%e7%ab%af.md&#34; &gt;00 序言&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -562,10 +562,10 @@
         </item>
         <item>
         <title>6.异步任务与消息队列-Bull判题系统</title>
-        <link>https://ye-guan-xing.github.io/p/6.%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-bull%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F/</link>
+        <link>https://ye-guan-xing.github.io/p/bull-async-task-queue/</link>
         <pubDate>Wed, 27 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/6.%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-bull%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F/</guid>
+        <guid>https://ye-guan-xing.github.io/p/bull-async-task-queue/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./02-%e6%a8%a1%e5%9d%97%e4%b8%8e%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5-NestJS%e7%9a%84%e5%bf%83%e6%99%ba%e6%a8%a1%e5%9e%8b.md&#34; &gt;02 模块与依赖注入&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./04-%e6%95%b0%e6%8d%ae%e5%ba%93%e4%b8%8eORM-TypeORM%e5%ae%9e%e6%88%98.md&#34; &gt;04 数据库与 ORM&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -962,10 +962,10 @@
         </item>
         <item>
         <title>5.认证与会话-Token和Redis</title>
-        <link>https://ye-guan-xing.github.io/p/5.%E8%AE%A4%E8%AF%81%E4%B8%8E%E4%BC%9A%E8%AF%9D-token%E5%92%8Credis/</link>
+        <link>https://ye-guan-xing.github.io/p/auth-token-redis/</link>
         <pubDate>Tue, 26 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/5.%E8%AE%A4%E8%AF%81%E4%B8%8E%E4%BC%9A%E8%AF%9D-token%E5%92%8Credis/</guid>
+        <guid>https://ye-guan-xing.github.io/p/auth-token-redis/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./04-%e6%95%b0%e6%8d%ae%e5%ba%93%e4%b8%8eORM-TypeORM%e5%ae%9e%e6%88%98.md&#34; &gt;04 数据库与 ORM&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./06-%e5%bc%82%e6%ad%a5%e4%bb%bb%e5%8a%a1%e4%b8%8e%e6%b6%88%e6%81%af%e9%98%9f%e5%88%97-Bull%e5%88%a4%e9%a2%98%e7%b3%bb%e7%bb%9f.md&#34; &gt;06 异步任务与判题队列&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1343,10 +1343,10 @@
         </item>
         <item>
         <title>4.数据库与 ORM：TypeORM 实战</title>
-        <link>https://ye-guan-xing.github.io/p/4.%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E-ormtypeorm-%E5%AE%9E%E6%88%98/</link>
+        <link>https://ye-guan-xing.github.io/p/typeorm-database-orm/</link>
         <pubDate>Mon, 25 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/4.%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E-ormtypeorm-%E5%AE%9E%E6%88%98/</guid>
+        <guid>https://ye-guan-xing.github.io/p/typeorm-database-orm/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./03-%e4%b8%80%e4%b8%aa%e8%af%b7%e6%b1%82%e7%9a%84%e5%ae%8c%e6%95%b4%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f.md&#34; &gt;03 一个请求的完整生命周期&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./05-%e8%ae%a4%e8%af%81%e4%b8%8e%e4%bc%9a%e8%af%9d-Token%e5%92%8cRedis.md&#34; &gt;05 认证与会话&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1836,10 +1836,10 @@
         </item>
         <item>
         <title>3.一个请求的完整生命周期</title>
-        <link>https://ye-guan-xing.github.io/p/3.%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</link>
+        <link>https://ye-guan-xing.github.io/p/request-lifecycle/</link>
         <pubDate>Sun, 24 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/3.%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</guid>
+        <guid>https://ye-guan-xing.github.io/p/request-lifecycle/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./02-%e6%a8%a1%e5%9d%97%e4%b8%8e%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5-NestJS%e7%9a%84%e5%bf%83%e6%99%ba%e6%a8%a1%e5%9e%8b.md&#34; &gt;02 模块与依赖注入&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./04-%e6%95%b0%e6%8d%ae%e5%ba%93%e4%b8%8eORM-TypeORM%e5%ae%9e%e6%88%98.md&#34; &gt;04 数据库与 ORM&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2236,10 +2236,10 @@
         </item>
         <item>
         <title>2.模块与依赖注入：NestJS 的心智模型</title>
-        <link>https://ye-guan-xing.github.io/p/2.%E6%A8%A1%E5%9D%97%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5nestjs-%E7%9A%84%E5%BF%83%E6%99%BA%E6%A8%A1%E5%9E%8B/</link>
+        <link>https://ye-guan-xing.github.io/p/nestjs-dependency-injection/</link>
         <pubDate>Sat, 23 May 2026 02:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/2.%E6%A8%A1%E5%9D%97%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5nestjs-%E7%9A%84%E5%BF%83%E6%99%BA%E6%A8%A1%E5%9E%8B/</guid>
+        <guid>https://ye-guan-xing.github.io/p/nestjs-dependency-injection/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./01-%e4%bb%8emain.ts%e7%9c%8b%e4%b8%80%e4%b8%aa%e5%90%8e%e7%ab%af%e6%9c%8d%e5%8a%a1%e5%a6%82%e4%bd%95%e5%90%af%e5%8a%a8.md&#34; &gt;01 从 main.ts 看服务如何启动&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./03-%e4%b8%80%e4%b8%aa%e8%af%b7%e6%b1%82%e7%9a%84%e5%ae%8c%e6%95%b4%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f.md&#34; &gt;03 一个请求的完整生命周期&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2619,10 +2619,10 @@
         </item>
         <item>
         <title>1.从 main.ts 看一个后端服务如何启动</title>
-        <link>https://ye-guan-xing.github.io/p/1.%E4%BB%8E-main.ts-%E7%9C%8B%E4%B8%80%E4%B8%AA%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8/</link>
+        <link>https://ye-guan-xing.github.io/p/backend-service-startup/</link>
         <pubDate>Fri, 22 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/1.%E4%BB%8E-main.ts-%E7%9C%8B%E4%B8%80%E4%B8%AA%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8/</guid>
+        <guid>https://ye-guan-xing.github.io/p/backend-service-startup/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./00-%e5%ba%8f%e8%a8%80-%e5%89%8d%e7%ab%af%e5%a6%82%e4%bd%95%e5%bf%ab%e8%bf%9b%e5%90%8e%e7%ab%af.md&#34; &gt;00 序言&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./02-%e6%a8%a1%e5%9d%97%e4%b8%8e%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5-NestJS%e7%9a%84%e5%bf%83%e6%99%ba%e6%a8%a1%e5%9e%8b.md&#34; &gt;02 模块与依赖注入&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2902,10 +2902,10 @@
         </item>
         <item>
         <title>前端如何快进后端</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E5%BF%AB%E8%BF%9B%E5%90%8E%E7%AB%AF/</link>
+        <link>https://ye-guan-xing.github.io/p/frontend-to-backend/</link>
         <pubDate>Thu, 21 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E5%BF%AB%E8%BF%9B%E5%90%8E%E7%AB%AF/</guid>
+        <guid>https://ye-guan-xing.github.io/p/frontend-to-backend/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;本系列基于 Campus-OJ 项目的真实后端代码 &lt;code&gt;backend/oj-nest&lt;/code&gt;，用前端熟悉的概念帮你建立服务端开发心智模型。&lt;a class=&#34;link&#34; href=&#34;https://github.com/ye-guan-xing/AI-Full-Stack-OJ-System/tree/main/backend/oj-nest&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;项目代码&lt;/a&gt;&lt;/p&gt;

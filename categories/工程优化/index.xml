@@ -9,10 +9,10 @@
         <copyright>acye</copyright>
         <lastBuildDate>Fri, 15 May 2026 17:00:00 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/%E5%B7%A5%E7%A8%8B%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>从 10 分钟到 10 秒：Volta&#43;pnpm 如何重构你的开发流程</title>
-        <link>https://ye-guan-xing.github.io/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</link>
+        <link>https://ye-guan-xing.github.io/p/volta-pnpm-development-workflow/</link>
         <pubDate>Fri, 15 May 2026 17:00:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</guid>
+        <guid>https://ye-guan-xing.github.io/p/volta-pnpm-development-workflow/</guid>
         <description>&lt;p&gt;Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是前端/全栈开发的常见痛点。本文对比NVM、npm的核心缺点，详解Volta和pnpm的优势，并整理常用命令、全栈项目标准化启动流程及最佳实践。&lt;/p&gt;
 &lt;h2 id=&#34;nvmnpm-的核心痛点&#34;&gt;NVM+npm 的核心痛点
 &lt;/h2&gt;&lt;h3 id=&#34;nvm-的问题&#34;&gt;NVM 的问题

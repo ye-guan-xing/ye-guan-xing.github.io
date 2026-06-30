@@ -9,10 +9,10 @@
         <copyright>acye</copyright>
         <lastBuildDate>Fri, 10 Apr 2026 01:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>力扣hot100(精讲三)</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%B8%89/</link>
+        <link>https://ye-guan-xing.github.io/p/leetcode-hot100-part3/</link>
         <pubDate>Fri, 10 Apr 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%B8%89/</guid>
+        <guid>https://ye-guan-xing.github.io/p/leetcode-hot100-part3/</guid>
         <description>&lt;h2 id=&#34;说明&#34;&gt;说明
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;我这里写个是为了做一下整理&lt;/li&gt;
@@ -147,10 +147,10 @@
         </item>
         <item>
         <title>力扣hot100(精讲二)</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%BA%8C/</link>
+        <link>https://ye-guan-xing.github.io/p/leetcode-hot100-part2/</link>
         <pubDate>Mon, 06 Apr 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%BA%8C/</guid>
+        <guid>https://ye-guan-xing.github.io/p/leetcode-hot100-part2/</guid>
         <description>&lt;h2 id=&#34;说明&#34;&gt;说明
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;我这里写个是为了做一下整理&lt;/li&gt;
@@ -1296,10 +1296,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>dfs和bfs的讲解(新手向)</title>
-        <link>https://ye-guan-xing.github.io/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/</link>
+        <link>https://ye-guan-xing.github.io/p/dfs-bfs/</link>
         <pubDate>Sun, 05 Apr 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/</guid>
+        <guid>https://ye-guan-xing.github.io/p/dfs-bfs/</guid>
         <description>&lt;p&gt;DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础&lt;/p&gt;
 &lt;p&gt;本文用&lt;strong&gt;9道经典洛谷题&lt;/strong&gt;，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂&lt;/p&gt;
 &lt;h2 id=&#34;先搞懂什么是-dfs&#34;&gt;先搞懂：什么是 DFS？
@@ -1478,10 +1478,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>力扣hot100(精讲一)</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%B8%80/</link>
+        <link>https://ye-guan-xing.github.io/p/leetcode-hot100-part1/</link>
         <pubDate>Wed, 01 Apr 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%B8%80/</guid>
+        <guid>https://ye-guan-xing.github.io/p/leetcode-hot100-part1/</guid>
         <description>&lt;h2 id=&#34;说明&#34;&gt;说明
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;我这里写个是为了做一下整理&lt;/li&gt;
@@ -2654,10 +2654,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>力扣hot150(精讲)</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/</link>
+        <link>https://ye-guan-xing.github.io/p/leetcode-hot150/</link>
         <pubDate>Fri, 28 Nov 2025 08:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/</guid>
+        <guid>https://ye-guan-xing.github.io/p/leetcode-hot150/</guid>
         <description>&lt;h2 id=&#34;说明&#34;&gt;说明
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;我这里写个是为了做一下整理&lt;/li&gt;

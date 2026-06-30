@@ -9,10 +9,10 @@
         <copyright>acye</copyright>
         <lastBuildDate>Fri, 13 Feb 2026 16:36:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>前端学习路线：从入门到进阶</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/</link>
+        <link>https://ye-guan-xing.github.io/p/frontend-learning-path/</link>
         <pubDate>Fri, 13 Feb 2026 16:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/</guid>
+        <guid>https://ye-guan-xing.github.io/p/frontend-learning-path/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;这份前端学习路线源自 &lt;a class=&#34;link&#34; href=&#34;http://roadmap.sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;roadmap.sh&lt;/a&gt;，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）&lt;/p&gt;
@@ -353,10 +353,10 @@
         </item>
         <item>
         <title>后端学习路线：从基础到架构</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</link>
+        <link>https://ye-guan-xing.github.io/p/backend-learning-path/</link>
         <pubDate>Fri, 13 Feb 2026 17:00:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</guid>
+        <guid>https://ye-guan-xing.github.io/p/backend-learning-path/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;这份后端学习路线源自 &lt;a class=&#34;link&#34; href=&#34;http://roadmap.sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;roadmap.sh&lt;/a&gt;，是全球开发者广泛参考的后端技术学习指南。它清晰梳理了从基础原理到架构设计的核心知识点，并标注了学习优先级，帮助你在后端技术体系中高效构建知识体系，避免盲目学习。（参考图见尾部）&lt;/p&gt;
@@ -645,10 +645,10 @@
         </item>
         <item>
         <title>大一的学习路径（软件篇）</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%A4%A7%E4%B8%80%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E8%BD%AF%E4%BB%B6%E7%AF%87/</link>
+        <link>https://ye-guan-xing.github.io/p/freshman-learning-path-software/</link>
         <pubDate>Mon, 20 Oct 2025 16:36:32 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%A4%A7%E4%B8%80%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E8%BD%AF%E4%BB%B6%E7%AF%87/</guid>
+        <guid>https://ye-guan-xing.github.io/p/freshman-learning-path-software/</guid>
         <description>&lt;h1 id=&#34;大一新生-it-学习路线指南&#34;&gt;大一新生 IT 学习路线指南
 &lt;/h1&gt;&lt;p&gt;亲爱的大一新生，刚踏入大学，面对丰富多彩的 IT 领域或许会有些迷茫，这里学长给一些路径建议：&lt;/p&gt;
 &lt;h2 id=&#34;算法竞赛&#34;&gt;算法竞赛

@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="前言 这份前端学习路线源自 roadmap.sh，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）\n">
+<title>前端学习路线：从入门到进阶</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/frontend-learning-path/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="前端学习路线：从入门到进阶">
+<meta property='og:description' content="前言 这份前端学习路线源自 roadmap.sh，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/frontend-learning-path/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-02-13T16:36:00&#43;00:00'/><meta property='article:modified_time' content='2026-02-13T16:36:00&#43;00:00'/>
+<meta name="twitter:title" content="前端学习路线：从入门到进阶">
+<meta name="twitter:description" content="前言 这份前端学习路线源自 roadmap.sh，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#图例说明">图例说明</a></li>
+    <li><a href="#互联网基础-">互联网基础 🌐</a></li>
+    <li><a href="#html-">HTML 🏗️</a></li>
+    <li><a href="#css-">CSS 🎨</a></li>
+    <li><a href="#javascript-">JavaScript 💻</a></li>
+    <li><a href="#工具与工程化-">工具与工程化 🛠️</a>
+      <ol>
+        <li><a href="#版本控制系统-vcs">版本控制系统 (VCS)</a></li>
+        <li><a href="#包管理系统">包管理系统</a></li>
+        <li><a href="#网络安全知识">网络安全知识</a></li>
+        <li><a href="#css-架构-architecture">CSS 架构 (Architecture)</a></li>
+        <li><a href="#css-预处理器-preprocessor">CSS 预处理器 (Preprocessor)</a></li>
+        <li><a href="#任务执行器-task-runner">任务执行器 (Task Runner)</a></li>
+        <li><a href="#模块打包工具-module-bundler">模块打包工具 (Module Bundler)</a></li>
+        <li><a href="#代码检查与格式化工具">代码检查与格式化工具</a></li>
+      </ol>
+    </li>
+    <li><a href="#前端框架与库-">前端框架与库 📚</a>
+      <ol>
+        <li><a href="#选择一款框架-framework">选择一款框架 (Framework)</a></li>
+        <li><a href="#现代-css-方案">现代 CSS 方案</a></li>
+        <li><a href="#web-组件-web-component">Web 组件 (Web Component)</a></li>
+        <li><a href="#css-框架-framework">CSS 框架 (Framework)</a></li>
+      </ol>
+    </li>
+    <li><a href="#测试与质量保障-">测试与质量保障 ✅</a></li>
+    <li><a href="#进阶与拓展-">进阶与拓展 🚀</a>
+      <ol>
+        <li><a href="#渐进式网页应用程序-pwa">渐进式网页应用程序 (PWA*)</a></li>
+        <li><a href="#性能优化">性能优化</a></li>
+        <li><a href="#类型检查工具-type-checker">类型检查工具 (Type Checker)</a></li>
+        <li><a href="#服务器端渲染-server-side-rendering-ssr">服务器端渲染 (Server Side Rendering, SSR)</a></li>
+        <li><a href="#graphql">GraphQL</a></li>
+        <li><a href="#移动端应用开发">移动端应用开发</a></li>
+        <li><a href="#桌面端应用开发">桌面端应用开发</a></li>
+        <li><a href="#静态网站生成器-static-site-generator">静态网站生成器 (Static Site Generator)</a></li>
+        <li><a href="#web-assembly">Web Assembly</a></li>
+      </ol>
+    </li>
+    <li><a href="#持续学习-">持续学习 📖</a></li>
+    <li><a href="#图">图</a></li>
+    <li><a href="#信息来源">信息来源</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"
+      style="background-color: ZgotmplZ; color: #ffffff;"
+      
+    >
+      学习路线
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/frontend-learning-path/">前端学习路线：从入门到进阶</a>
+    </h2>
+
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-02-13 16:36</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview">
+        <span class="waline-pageview-count" data-path="/p/frontend-learning-path/"
+          >0</span
+        >
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment">
+        <span class="waline-comment-count" data-path="/p/frontend-learning-path/"
+          >0</span
+        >
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="前言">前言
+</h2><p>这份前端学习路线源自 <a class="link" href="http://roadmap.sh"  target="_blank" rel="noopener"
+    >roadmap.sh</a>，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）</p>
+<hr>
+<h2 id="图例说明">图例说明
+</h2><p>在开始之前，请先了解图中标记的含义，这将帮助你判断学习的优先级：</p>
+<ul>
+<li><strong>❤️ 个人推荐 / 意见</strong>：<strong>核心必学内容</strong>，是前端开发的基石，必须掌握。</li>
+<li><strong>✅ 替代选项 — 选择此项或是紫色项目</strong>）：<strong>选其一深入即可</strong>，通常是不同的技术方案或框架，无需全部学习。</li>
+<li><strong>☑ 不必严格按照路线图的顺序（随时可学）</strong>：<strong>可灵活安排学习顺序</strong>，属于进阶或补充性知识。</li>
+<li><strong>⚫ 我不推荐</strong>：<strong>优先级较低或可跳过</strong>，在当前技术环境下必要性不高。</li>
+</ul>
+<hr>
+<h2 id="互联网基础-">互联网基础 🌐
+</h2><p>在学习具体的前端技术之前，理解互联网的工作原理至关重要，这能帮你建立起坚实的知识根基。</p>
+<ul>
+<li>❤️ 互联网是如何运作的？</li>
+<li>❤️ 什么是 HTTP？</li>
+<li>❤️ 浏览器及其工作原理？</li>
+<li>❤️ DNS 及其工作原理？</li>
+<li>❤️ 什么是域名 (Domain Name)？</li>
+<li>❤️ 什么是主机托管 (Hosting)？</li>
+</ul>
+<hr>
+<h2 id="html-">HTML 🏗️
+</h2><p>HTML 是网页的骨架，负责定义内容的结构和语义。</p>
+<ul>
+<li>✅ 学习基础知识</li>
+<li>❤️ 撰写语义化 (Semantic) HTML</li>
+<li>❤️ 表单 (Form) 和验证 (Validation)</li>
+<li>❤️ 惯例和最佳实践 (Best Practice)</li>
+<li>☑ 无障碍 (Accessibility)</li>
+<li>☑ 基础的搜索引擎优化 (SEO)</li>
+</ul>
+<hr>
+<h2 id="css-">CSS 🎨
+</h2><p>CSS 负责网页的视觉呈现，让你的页面变得美观和响应式。</p>
+<ul>
+<li>✅ 学习基础知识</li>
+<li>✅ 制作页面布局 (Layout)</li>
+<li>✅ 响应式设计* 和 媒体查询**
+<ul>
+<li>❤️ 浮动 (Float)</li>
+<li>❤️ 定位 (Positioning)</li>
+<li>❤️ 显示属性 (Display)</li>
+<li>❤️ 盒模型 (Box Model)</li>
+<li>❤️ CSS 网格 (Grid)</li>
+<li>❤️ 弹性盒子 (Flex Box)</li>
+<li>Responsive Design，也译作“响应式网页设计”</li>
+<li>*Media Query，媒体查询是实现响应式设计的核心技术</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="javascript-">JavaScript 💻
+</h2><p>JavaScript 是前端的灵魂，赋予网页交互和动态能力。</p>
+<ul>
+<li>❤️ 语法和基本结构</li>
+<li>❤️ 学习 DOM 操作</li>
+<li>❤️ 了解 Fetch API / Ajax (XHR)</li>
+<li>❤️ ES6+ 及模块化 JavaScript</li>
+<li>❤️ 理解提升 (Hoisting)、事件冒泡 (Event Bubbling)、作用域 (Scope)、原型 (Prototype)、影子 (Shadow) DOM、严格模式 (Strict) 等核心概念
+<ul>
+<li>“作用域 (Scope)”也有译作“范畴”的情况，前端领域通用译法为“作用域”</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="工具与工程化-">工具与工程化 🛠️
+</h2><p>现代前端开发离不开各种工具，它们能极大地提升你的开发效率和代码质量。</p>
+<h3 id="版本控制系统-vcs">版本控制系统 (VCS)
+</h3><ul>
+<li>☑ 版本控制系统的定义及使用价值</li>
+<li>❤️ Git 基本用法</li>
+<li>☑ 代码仓库托管 (Repo Hosting) 服务
+<ul>
+<li>✅ 注册账号并学习使用 GitHub</li>
+<li>❤️ GitHub</li>
+<li>☑ GitLab</li>
+<li>☑ Bitbucket</li>
+</ul>
+</li>
+</ul>
+<h3 id="包管理系统">包管理系统
+</h3><ul>
+<li>❤️ npm</li>
+<li>❤️ yarn</li>
+<li>☑ 补充说明：npm 和 yarn 功能相近，选择其一或两者都学均可，无本质差异</li>
+</ul>
+<h3 id="网络安全知识">网络安全知识
+</h3><ul>
+<li>☑ 至少掌握以下内容的基础概念
+<ul>
+<li>☑ HTTPS</li>
+<li>☑ 内容安全政策 (CSP)</li>
+<li>☑ 跨域资源共享 (CORS)</li>
+<li>☑ OWASP 安全风险（Web 应用程序常见安全漏洞）</li>
+</ul>
+</li>
+</ul>
+<h3 id="css-架构-architecture">CSS 架构 (Architecture)
+</h3><ul>
+<li>☑ 补充说明：现代框架和 CSS-in-JS 普及后，无需深入钻研这类架构，但熟悉 BEM 仍有价值
+<ul>
+<li>✅ BEM（Block-Element-Modifier，一种 CSS 命名规范）</li>
+<li>⚫ OOCSS（面向对象的 CSS）</li>
+<li>⚫ SMACSS（可扩展的模块化 CSS）</li>
+</ul>
+</li>
+</ul>
+<h3 id="css-预处理器-preprocessor">CSS 预处理器 (Preprocessor)
+</h3><ul>
+<li>☑ 补充说明：随着现代框架发展，CSS-in-JS 逐渐成为主流，这类预处理器非必需，但熟悉基础仍有帮助
+<ul>
+<li>❤️ Sass（含 SCSS 语法）</li>
+<li>☑ PostCSS</li>
+<li>⚫ Less</li>
+</ul>
+</li>
+</ul>
+<h3 id="任务执行器-task-runner">任务执行器 (Task Runner)
+</h3><ul>
+<li>❤️ npm scripts</li>
+<li>⚫ Gulp</li>
+</ul>
+<h3 id="模块打包工具-module-bundler">模块打包工具 (Module Bundler)
+</h3><ul>
+<li>❤️ Webpack</li>
+<li>☑ Rollup</li>
+<li>☑ Parcel</li>
+</ul>
+<h3 id="代码检查与格式化工具">代码检查与格式化工具
+</h3><ul>
+<li>一种静态代码分析工具，用于检测代码语法错误、规范问题
+<ul>
+<li>❤️ ESLint</li>
+</ul>
+</li>
+<li>❤️ Prettier</li>
+<li>⚫ StandardJS</li>
+</ul>
+<hr>
+<h2 id="前端框架与库-">前端框架与库 📚
+</h2><p>框架和库能帮你快速构建复杂的单页应用 (SPA)，选择一个深入学习是进阶的关键。</p>
+<h3 id="选择一款框架-framework">选择一款框架 (Framework)
+</h3><ul>
+<li>❤️ React.js
+<ul>
+<li>❤️ Redux（状态管理库）</li>
+<li>❤️ MobX（替代 Redux 的状态管理库）</li>
+</ul>
+</li>
+<li>✅ Angular
+<ul>
+<li>❤️ RxJS（响应式编程库）</li>
+<li>❤️ NgRx（Angular 生态的状态管理库）</li>
+</ul>
+</li>
+<li>✅ Vue.js
+<ul>
+<li>❤️ VueX（Vue 生态的状态管理库）</li>
+</ul>
+</li>
+</ul>
+<h3 id="现代-css-方案">现代 CSS 方案
+</h3><ul>
+<li>❤️ Styled Components</li>
+<li>❤️ CSS Modules</li>
+<li>❤️ Styled JSX</li>
+<li>❤️ Emotion</li>
+<li>⚫ Radium</li>
+<li>⚫ Glamorous</li>
+</ul>
+<h3 id="web-组件-web-component">Web 组件 (Web Component)
+</h3><ul>
+<li>☑ HTML 模板 (Template)</li>
+<li>☑ 自定义元素 (Custom Elements)</li>
+<li>☑ 影子 (Shadow) DOM</li>
+</ul>
+<h3 id="css-框架-framework">CSS 框架 (Framework)
+</h3><ul>
+<li>基于 JS 的 CSS 框架（适配 JS 应用程序）：
+<ul>
+<li>❤️ Reactstrap（适配 React 的 Bootstrap 组件）</li>
+<li>❤️ Material UI</li>
+<li>❤️ Tailwind CSS</li>
+<li>❤️ Chakra UI</li>
+</ul>
+</li>
+<li>纯 CSS 优先的框架（默认不含 JS 组件）：
+<ul>
+<li>❤️ Bootstrap</li>
+<li>❤️ Materialize CSS</li>
+<li>❤️ Bulma</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="测试与质量保障-">测试与质量保障 ✅
+</h2><p>写出高质量、可维护的代码，测试是必不可少的一环。</p>
+<ul>
+<li>☑ 理解单元测试 (Unit Test)、集成测试 (Integration Test)、功能测试 (Functional Test) 的区别，并学习使用以下工具编写测试：
+<ul>
+<li>❤️ Jest</li>
+<li>❤️ react-testing-library</li>
+<li>❤️ Cypress</li>
+<li>❤️ Enzyme</li>
+<li>☑ Mocha</li>
+<li>☑ Chai</li>
+<li>☑ Ava</li>
+<li>☑ Jasmine</li>
+</ul>
+</li>
+<li>☑ 补充说明：以上工具可满足各类测试需求，无需全部掌握，按需选择即可</li>
+</ul>
+<hr>
+<h2 id="进阶与拓展-">进阶与拓展 🚀
+</h2><p>当你掌握了基础和框架后，可以向更广阔的领域拓展。</p>
+<h3 id="渐进式网页应用程序-pwa">渐进式网页应用程序 (PWA*)
+</h3><ul>
+<li>Progressive Web App，渐进式网页应用，可实现类原生应用的体验
+<ul>
+<li>❤️ Storage（存储 API）</li>
+<li>❤️ Web Sockets（网络通信 API）</li>
+<li>❤️ Service Workers（离线缓存核心）</li>
+<li>❤️ Location（地理位置 API）</li>
+<li>❤️ Notifications（通知 API）</li>
+<li>❤️ Device Orientation（设备方向 API）</li>
+<li>❤️ Payments（支付 API）</li>
+<li>❤️ Credentials（凭证 API）</li>
+</ul>
+</li>
+<li>☑ 补充说明：需了解 PWA 中涉及的各类 Web API 基础用法</li>
+</ul>
+<h3 id="性能优化">性能优化
+</h3><ul>
+<li>☑ PRPL 模式 (Pattern)（前端加载性能优化模式）</li>
+<li>☑ RAIL 模型 (Model)（以用户体验为核心的性能评估模型）</li>
+<li>☑ 性能指标* (Performance Metric)
+<ul>
+<li>如 LCP、FID、CLS 等核心 Web 性能指标</li>
+</ul>
+</li>
+<li>☑ 使用 Lighthouse（Chrome 内置性能检测工具）</li>
+<li>☑ 使用浏览器开发者工具 (DevTool)</li>
+<li>☑ 计算、测量并优化应用性能</li>
+</ul>
+<h3 id="类型检查工具-type-checker">类型检查工具 (Type Checker)
+</h3><ul>
+<li>❤️ TypeScript</li>
+<li>⚫ Flow</li>
+</ul>
+<h3 id="服务器端渲染-server-side-rendering-ssr">服务器端渲染 (Server Side Rendering, SSR)
+</h3><ul>
+<li>❤️ React.js 生态：
+<ul>
+<li>❤️ Next.js</li>
+<li>⚫ After.js</li>
+</ul>
+</li>
+<li>✅ Angular 生态：
+<ul>
+<li>☑ Universal</li>
+</ul>
+</li>
+<li>✅ Vue.js 生态：
+<ul>
+<li>❤️ Nuxt.js</li>
+</ul>
+</li>
+</ul>
+<h3 id="graphql">GraphQL
+</h3><ul>
+<li>❤️ Apollo（GraphQL 客户端/服务端框架）</li>
+<li>❤️ Relay Modern（React 生态的 GraphQL 框架）</li>
+</ul>
+<h3 id="移动端应用开发">移动端应用开发
+</h3><ul>
+<li>❤️ React Native（基于 React 的跨平台原生应用框架）</li>
+<li>☑ NativeScript（跨平台原生应用框架）</li>
+<li>☑ Flutter（Google 推出的跨平台 UI 框架）</li>
+<li>☑ Ionic（基于 Web 技术的混合应用框架）</li>
+</ul>
+<h3 id="桌面端应用开发">桌面端应用开发
+</h3><ul>
+<li>❤️ Electron（基于 Web 技术的跨平台桌面应用框架）</li>
+<li>⚫ Carlo（轻量级桌面应用框架）</li>
+<li>⚫ Proton Native（类 React Native 的桌面应用框架）</li>
+</ul>
+<h3 id="静态网站生成器-static-site-generator">静态网站生成器 (Static Site Generator)
+</h3><ul>
+<li>☑ Next.js</li>
+<li>☑ GatsbyJS（React 生态）</li>
+<li>☑ Nuxt.js（Vue 生态）</li>
+<li>☑ Vuepress（Vue 生态文档生成工具）</li>
+<li>☑ Jekyll（Ruby 开发的静态生成器）</li>
+<li>☑ Hugo（Go 开发的高性能静态生成器）</li>
+<li>☑ Gridsome（Vue 生态，类似 Gatsby）</li>
+</ul>
+<h3 id="web-assembly">Web Assembly
+</h3><ul>
+<li>☑ 补充说明：Web Assembly（简称 WASM）是由高级语言（如 Go、C、C++、Rust）编译生成的二进制指令集，运行速度远超 JavaScript。WASM 1.0 已被主流浏览器支持，W3C 于 2019 年底将其列为官方标准，但距离全面普及仍需时间。</li>
+</ul>
+<hr>
+<h2 id="持续学习-">持续学习 📖
+</h2><p>前端技术日新月异，这份路线图只是一个起点。保持好奇心，持续学习新的特性、工具和最佳实践，才能在这个领域不断进步。</p>
+<hr>
+<h2 id="图">图
+</h2><ul>
+<li><img src="/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/intro.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="前后端通用"
+	
+	
+></li>
+<li><img src="/images/%e5%89%8d%e5%90%8e%e7%ab%af%e5%ad%a6%e4%b9%a0%e8%b7%af%e7%ba%bf/frontend.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="前端"
+	
+	
+></li>
+</ul>
+<h2 id="信息来源">信息来源
+</h2><ul>
+<li>台湾正体中文翻译原作者：goodjack/developer-roadmap-chinese / littlegoodjack</li>
+<li>路线图完整版及更多资源：<a class="link" href="http://roadmap.sh"  target="_blank" rel="noopener"
+    >http://roadmap.sh</a></li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/backend-learning-path/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">后端学习路线：从基础到架构</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/freshman-learning-path-software/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大一的学习路径（软件篇）</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
+</style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>

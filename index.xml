@@ -9,10 +9,10 @@
         <copyright>acye</copyright>
         <lastBuildDate>Mon, 15 Jun 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Cursor 进阶实战：核心高级能力全解 &#43; 配套标准化AI开发范式体系</title>
-        <link>https://ye-guan-xing.github.io/p/cursor-%E8%BF%9B%E9%98%B6%E5%AE%9E%E6%88%98%E6%A0%B8%E5%BF%83%E9%AB%98%E7%BA%A7%E8%83%BD%E5%8A%9B%E5%85%A8%E8%A7%A3--%E9%85%8D%E5%A5%97%E6%A0%87%E5%87%86%E5%8C%96ai%E5%BC%80%E5%8F%91%E8%8C%83%E5%BC%8F%E4%BD%93%E7%B3%BB/</link>
+        <link>https://ye-guan-xing.github.io/p/cursor-advanced-practice/</link>
         <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/cursor-%E8%BF%9B%E9%98%B6%E5%AE%9E%E6%88%98%E6%A0%B8%E5%BF%83%E9%AB%98%E7%BA%A7%E8%83%BD%E5%8A%9B%E5%85%A8%E8%A7%A3--%E9%85%8D%E5%A5%97%E6%A0%87%E5%87%86%E5%8C%96ai%E5%BC%80%E5%8F%91%E8%8C%83%E5%BC%8F%E4%BD%93%E7%B3%BB/</guid>
+        <guid>https://ye-guan-xing.github.io/p/cursor-advanced-practice/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;长期深度使用 Cursor 进行日常开发后，我发现绝大多数使用者仅停留在基础对话、代码补全的浅层用法，完全忽略了 Cursor 内置的工程化高级特性：Composer、@上下文引用、生命周期 Hook、SubAgent 多智能体调度。&lt;/p&gt;
 &lt;p&gt;同时，Cursor 本身仅作为 AI 代码编辑器载体，想要实现稳定、可约束、低幻觉的 AI 开发流程，必须配套成熟的开源 AI 开发范式规范。本文将拆分两大独立模块：&lt;strong&gt;Cursor 进阶功能详解&lt;/strong&gt;、&lt;strong&gt;三套主流AI工程开发范式解析&lt;/strong&gt;，二者分开阐述，不做跨工具横向对比。&lt;/p&gt;
@@ -311,10 +311,10 @@
         </item>
         <item>
         <title>拆解Claude内部“思考”机制：可解释性研究揭开大模型的真相</title>
-        <link>https://ye-guan-xing.github.io/p/%E6%8B%86%E8%A7%A3claude%E5%86%85%E9%83%A8%E6%80%9D%E8%80%83%E6%9C%BA%E5%88%B6%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E7%A0%94%E7%A9%B6%E6%8F%AD%E5%BC%80%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%9C%9F%E7%9B%B8/</link>
+        <link>https://ye-guan-xing.github.io/p/claude-thought-mechanism/</link>
         <pubDate>Fri, 05 Jun 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E6%8B%86%E8%A7%A3claude%E5%86%85%E9%83%A8%E6%80%9D%E8%80%83%E6%9C%BA%E5%88%B6%E5%8F%AF%E8%A7%A3%E9%87%8A%E6%80%A7%E7%A0%94%E7%A9%B6%E6%8F%AD%E5%BC%80%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%9C%9F%E7%9B%B8/</guid>
+        <guid>https://ye-guan-xing.github.io/p/claude-thought-mechanism/</guid>
         <description>&lt;h1 id=&#34;引言&#34;&gt;引言
 &lt;/h1&gt;&lt;p&gt;当我们习惯用CoT思维链看模型的推理过程、依赖它完成复杂创作与计算时，一个核心问题始终存在：&lt;strong&gt;大模型内部真的是像人类一样思考吗？&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Anthropic 研究员借助&lt;strong&gt;电路追踪（Circuit Tracing）&lt;strong&gt;技术，对Claude大模型做“内部扫描”，追踪神经元、计算回路与概念激活状态，揭开了大模型黑箱的一角。本文结合访谈与实验结论，区分模型能力、思维假象、固有缺陷，并&lt;/strong&gt;深度拆解CoT思维链的底层真相、造假风险与局限性&lt;/strong&gt;，给到最真实的AI使用逻辑。&lt;/p&gt;
@@ -387,10 +387,10 @@
         </item>
         <item>
         <title>从数学与工程底层看懂大语言模型：它为何能对话、执行任务</title>
-        <link>https://ye-guan-xing.github.io/p/%E4%BB%8E%E6%95%B0%E5%AD%A6%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%BA%95%E5%B1%82%E7%9C%8B%E6%87%82%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%AE%83%E4%B8%BA%E4%BD%95%E8%83%BD%E5%AF%B9%E8%AF%9D%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1/</link>
+        <link>https://ye-guan-xing.github.io/p/llm-math-engineering/</link>
         <pubDate>Thu, 04 Jun 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E4%BB%8E%E6%95%B0%E5%AD%A6%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%BA%95%E5%B1%82%E7%9C%8B%E6%87%82%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E5%AE%83%E4%B8%BA%E4%BD%95%E8%83%BD%E5%AF%B9%E8%AF%9D%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1/</guid>
+        <guid>https://ye-guan-xing.github.io/p/llm-math-engineering/</guid>
         <description>&lt;h2 id=&#34;引言&#34;&gt;引言
 &lt;/h2&gt;&lt;p&gt;当下大模型早已融入日常聊天、代码开发、逻辑解题等各类场景。很多人将其视作“拥有智慧的人工智能”，也有人简单定义为“高级输入法”。本文抛开表象，从&lt;strong&gt;概率论、线性代数、神经网络&lt;/strong&gt;三大数理根基出发，讲清大模型的本质、运行逻辑，以及提示词（Prompt）之所以生效的底层原因，并完整收录核心Prompt技术——CoT思维链的原理、分类与实战用法。&lt;/p&gt;
 &lt;h2 id=&#34;大模型的核心本质自回归token概率预测器&#34;&gt;大模型的核心本质：自回归Token概率预测器
@@ -518,10 +518,10 @@
         </item>
         <item>
         <title>轻量化 AI 能力扩展：Agent Skill 生态、痛点与落地指南</title>
-        <link>https://ye-guan-xing.github.io/p/%E8%BD%BB%E9%87%8F%E5%8C%96-ai-%E8%83%BD%E5%8A%9B%E6%89%A9%E5%B1%95agent-skill-%E7%94%9F%E6%80%81%E7%97%9B%E7%82%B9%E4%B8%8E%E8%90%BD%E5%9C%B0%E6%8C%87%E5%8D%97/</link>
+        <link>https://ye-guan-xing.github.io/p/agent-skill-guide/</link>
         <pubDate>Wed, 03 Jun 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E8%BD%BB%E9%87%8F%E5%8C%96-ai-%E8%83%BD%E5%8A%9B%E6%89%A9%E5%B1%95agent-skill-%E7%94%9F%E6%80%81%E7%97%9B%E7%82%B9%E4%B8%8E%E8%90%BD%E5%9C%B0%E6%8C%87%E5%8D%97/</guid>
+        <guid>https://ye-guan-xing.github.io/p/agent-skill-guide/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;很多人在日常用 AI 编码、办公时，都会遇到一个最直观的痛点：&lt;strong&gt;大模型本身不缺能力，缺的是「专属记忆」和「固定规矩」&lt;/strong&gt;。模型天生懂代码、懂语法、能生成文本，但它永远不知道你的团队规范、项目约定、固定工作流程。&lt;/p&gt;
 &lt;p&gt;在 Agent Skill 概念出现之前，我们的解法非常原始：每次对话都要反复复述提示词、手动指定参考文件、逐条强调规范要求、重复告知任务步骤。本质上，这种「每次手动叮嘱、重复约束」的操作，就是最朴素的 Skill 雏形——只是它没有标准化、不能沉淀、无法复用。我们只能靠人力反复填充上下文，最终导致&lt;strong&gt;上下文空间严重不足、对话臃肿、效率极低、换项目换会话全部重置&lt;/strong&gt;。&lt;/p&gt;
@@ -765,10 +765,10 @@
         </item>
         <item>
         <title>规范先行：我的 Vibe Coding 落地方案</title>
-        <link>https://ye-guan-xing.github.io/p/%E8%A7%84%E8%8C%83%E5%85%88%E8%A1%8C%E6%88%91%E7%9A%84-vibe-coding-%E8%90%BD%E5%9C%B0%E6%96%B9%E6%A1%88/</link>
+        <link>https://ye-guan-xing.github.io/p/vibe-coding/</link>
         <pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E8%A7%84%E8%8C%83%E5%85%88%E8%A1%8C%E6%88%91%E7%9A%84-vibe-coding-%E8%90%BD%E5%9C%B0%E6%96%B9%E6%A1%88/</guid>
+        <guid>https://ye-guan-xing.github.io/p/vibe-coding/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;Vibe Coding 已经从尝鲜玩法，变成我日常全栈开发的核心范式。依托 AI 编码工具、自研 Skills 规范体系与 MCP 工具链，研发效率实现了大幅跃升。但落地过程中我发现，&lt;strong&gt;无约束的 AI 编码必然导致工程失控&lt;/strong&gt;：代码风格割裂、逻辑碎片化、技术债务堆积、迭代不可持续，这也是多数开发者用不好 AI 编程的核心痛点。&lt;/p&gt;
 &lt;p&gt;真正高效的 Vibe Coding，不靠模型堆砌、不靠即兴提示词，而是靠&lt;strong&gt;标准化底座、固定工作流、代码治理机制、开发者核心能力&lt;/strong&gt;四重支撑。本文结合长期落地经验，完整公开可复用的 AI 开发全流程，重点拆解 AI 代码混乱治理方案，并深度剖析决定 Vibe Coding 上限的核心本质，为开发者标准化落地 AI 辅助开发提供参考。&lt;/p&gt;
@@ -904,10 +904,10 @@
         </item>
         <item>
         <title>Hugo 博客集成 Mermaid 流程图（客户端渲染方案)</title>
-        <link>https://ye-guan-xing.github.io/p/hugo-%E5%8D%9A%E5%AE%A2%E9%9B%86%E6%88%90-mermaid-%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%B2%E6%9F%93%E6%96%B9%E6%A1%88/</link>
+        <link>https://ye-guan-xing.github.io/p/hugo-mermaid-client-side/</link>
         <pubDate>Fri, 29 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/hugo-%E5%8D%9A%E5%AE%A2%E9%9B%86%E6%88%90-mermaid-%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%B2%E6%9F%93%E6%96%B9%E6%A1%88/</guid>
+        <guid>https://ye-guan-xing.github.io/p/hugo-mermaid-client-side/</guid>
         <description>&lt;p&gt;本文记录 Hugo 博客接入 Mermaid 图表的完整配置、原理、代码及优化方案，采用&lt;strong&gt;客户端动态渲染&lt;/strong&gt;，部署简单、适配主流主题。&lt;/p&gt;
 &lt;h2 id=&#34;实现思路&#34;&gt;实现思路
 &lt;/h2&gt;&lt;p&gt;Hugo 内置语法高亮工具 Chroma 仅能给代码上色，无法解析 Mermaid 绘图语法，因此采用「构建层改造代码块 + 浏览器端 JS 渲染」两步方案：&lt;/p&gt;
@@ -1121,10 +1121,10 @@
         </item>
         <item>
         <title>7.配置与部署-环境变量与Docker</title>
-        <link>https://ye-guan-xing.github.io/p/7.%E9%85%8D%E7%BD%AE%E4%B8%8E%E9%83%A8%E7%BD%B2-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Edocker/</link>
+        <link>https://ye-guan-xing.github.io/p/docker-deployment-config/</link>
         <pubDate>Thu, 28 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/7.%E9%85%8D%E7%BD%AE%E4%B8%8E%E9%83%A8%E7%BD%B2-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8Edocker/</guid>
+        <guid>https://ye-guan-xing.github.io/p/docker-deployment-config/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./06-%e5%bc%82%e6%ad%a5%e4%bb%bb%e5%8a%a1%e4%b8%8e%e6%b6%88%e6%81%af%e9%98%9f%e5%88%97-Bull%e5%88%a4%e9%a2%98%e7%b3%bb%e7%bb%9f.md&#34; &gt;06 异步任务与判题队列&lt;/a&gt; | 回到：&lt;a class=&#34;link&#34; href=&#34;./00-%e5%ba%8f%e8%a8%80-%e5%89%8d%e7%ab%af%e5%a6%82%e4%bd%95%e5%bf%ab%e8%bf%9b%e5%90%8e%e7%ab%af.md&#34; &gt;00 序言&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1674,10 +1674,10 @@
         </item>
         <item>
         <title>6.异步任务与消息队列-Bull判题系统</title>
-        <link>https://ye-guan-xing.github.io/p/6.%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-bull%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F/</link>
+        <link>https://ye-guan-xing.github.io/p/bull-async-task-queue/</link>
         <pubDate>Wed, 27 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/6.%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E4%B8%8E%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97-bull%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F/</guid>
+        <guid>https://ye-guan-xing.github.io/p/bull-async-task-queue/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./02-%e6%a8%a1%e5%9d%97%e4%b8%8e%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5-NestJS%e7%9a%84%e5%bf%83%e6%99%ba%e6%a8%a1%e5%9e%8b.md&#34; &gt;02 模块与依赖注入&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./04-%e6%95%b0%e6%8d%ae%e5%ba%93%e4%b8%8eORM-TypeORM%e5%ae%9e%e6%88%98.md&#34; &gt;04 数据库与 ORM&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2074,10 +2074,10 @@
         </item>
         <item>
         <title>5.认证与会话-Token和Redis</title>
-        <link>https://ye-guan-xing.github.io/p/5.%E8%AE%A4%E8%AF%81%E4%B8%8E%E4%BC%9A%E8%AF%9D-token%E5%92%8Credis/</link>
+        <link>https://ye-guan-xing.github.io/p/auth-token-redis/</link>
         <pubDate>Tue, 26 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/5.%E8%AE%A4%E8%AF%81%E4%B8%8E%E4%BC%9A%E8%AF%9D-token%E5%92%8Credis/</guid>
+        <guid>https://ye-guan-xing.github.io/p/auth-token-redis/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./04-%e6%95%b0%e6%8d%ae%e5%ba%93%e4%b8%8eORM-TypeORM%e5%ae%9e%e6%88%98.md&#34; &gt;04 数据库与 ORM&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./06-%e5%bc%82%e6%ad%a5%e4%bb%bb%e5%8a%a1%e4%b8%8e%e6%b6%88%e6%81%af%e9%98%9f%e5%88%97-Bull%e5%88%a4%e9%a2%98%e7%b3%bb%e7%bb%9f.md&#34; &gt;06 异步任务与判题队列&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2455,10 +2455,10 @@
         </item>
         <item>
         <title>4.数据库与 ORM：TypeORM 实战</title>
-        <link>https://ye-guan-xing.github.io/p/4.%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E-ormtypeorm-%E5%AE%9E%E6%88%98/</link>
+        <link>https://ye-guan-xing.github.io/p/typeorm-database-orm/</link>
         <pubDate>Mon, 25 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/4.%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8E-ormtypeorm-%E5%AE%9E%E6%88%98/</guid>
+        <guid>https://ye-guan-xing.github.io/p/typeorm-database-orm/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./03-%e4%b8%80%e4%b8%aa%e8%af%b7%e6%b1%82%e7%9a%84%e5%ae%8c%e6%95%b4%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f.md&#34; &gt;03 一个请求的完整生命周期&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./05-%e8%ae%a4%e8%af%81%e4%b8%8e%e4%bc%9a%e8%af%9d-Token%e5%92%8cRedis.md&#34; &gt;05 认证与会话&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -2948,10 +2948,10 @@
         </item>
         <item>
         <title>3.一个请求的完整生命周期</title>
-        <link>https://ye-guan-xing.github.io/p/3.%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</link>
+        <link>https://ye-guan-xing.github.io/p/request-lifecycle/</link>
         <pubDate>Sun, 24 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/3.%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82%E7%9A%84%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</guid>
+        <guid>https://ye-guan-xing.github.io/p/request-lifecycle/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./02-%e6%a8%a1%e5%9d%97%e4%b8%8e%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5-NestJS%e7%9a%84%e5%bf%83%e6%99%ba%e6%a8%a1%e5%9e%8b.md&#34; &gt;02 模块与依赖注入&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./04-%e6%95%b0%e6%8d%ae%e5%ba%93%e4%b8%8eORM-TypeORM%e5%ae%9e%e6%88%98.md&#34; &gt;04 数据库与 ORM&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -3348,10 +3348,10 @@
         </item>
         <item>
         <title>2.模块与依赖注入：NestJS 的心智模型</title>
-        <link>https://ye-guan-xing.github.io/p/2.%E6%A8%A1%E5%9D%97%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5nestjs-%E7%9A%84%E5%BF%83%E6%99%BA%E6%A8%A1%E5%9E%8B/</link>
+        <link>https://ye-guan-xing.github.io/p/nestjs-dependency-injection/</link>
         <pubDate>Sat, 23 May 2026 02:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/2.%E6%A8%A1%E5%9D%97%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5nestjs-%E7%9A%84%E5%BF%83%E6%99%BA%E6%A8%A1%E5%9E%8B/</guid>
+        <guid>https://ye-guan-xing.github.io/p/nestjs-dependency-injection/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./01-%e4%bb%8emain.ts%e7%9c%8b%e4%b8%80%e4%b8%aa%e5%90%8e%e7%ab%af%e6%9c%8d%e5%8a%a1%e5%a6%82%e4%bd%95%e5%90%af%e5%8a%a8.md&#34; &gt;01 从 main.ts 看服务如何启动&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./03-%e4%b8%80%e4%b8%aa%e8%af%b7%e6%b1%82%e7%9a%84%e5%ae%8c%e6%95%b4%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f.md&#34; &gt;03 一个请求的完整生命周期&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -3731,10 +3731,10 @@
         </item>
         <item>
         <title>1.从 main.ts 看一个后端服务如何启动</title>
-        <link>https://ye-guan-xing.github.io/p/1.%E4%BB%8E-main.ts-%E7%9C%8B%E4%B8%80%E4%B8%AA%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8/</link>
+        <link>https://ye-guan-xing.github.io/p/backend-service-startup/</link>
         <pubDate>Fri, 22 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/1.%E4%BB%8E-main.ts-%E7%9C%8B%E4%B8%80%E4%B8%AA%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E5%90%AF%E5%8A%A8/</guid>
+        <guid>https://ye-guan-xing.github.io/p/backend-service-startup/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;上一篇：&lt;a class=&#34;link&#34; href=&#34;./00-%e5%ba%8f%e8%a8%80-%e5%89%8d%e7%ab%af%e5%a6%82%e4%bd%95%e5%bf%ab%e8%bf%9b%e5%90%8e%e7%ab%af.md&#34; &gt;00 序言&lt;/a&gt; | 下一篇：&lt;a class=&#34;link&#34; href=&#34;./02-%e6%a8%a1%e5%9d%97%e4%b8%8e%e4%be%9d%e8%b5%96%e6%b3%a8%e5%85%a5-NestJS%e7%9a%84%e5%bf%83%e6%99%ba%e6%a8%a1%e5%9e%8b.md&#34; &gt;02 模块与依赖注入&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -4014,10 +4014,10 @@
         </item>
         <item>
         <title>前端如何快进后端</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E5%BF%AB%E8%BF%9B%E5%90%8E%E7%AB%AF/</link>
+        <link>https://ye-guan-xing.github.io/p/frontend-to-backend/</link>
         <pubDate>Thu, 21 May 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E5%BF%AB%E8%BF%9B%E5%90%8E%E7%AB%AF/</guid>
+        <guid>https://ye-guan-xing.github.io/p/frontend-to-backend/</guid>
         <description>&lt;blockquote&gt;
 &lt;p&gt;本系列基于 Campus-OJ 项目的真实后端代码 &lt;code&gt;backend/oj-nest&lt;/code&gt;，用前端熟悉的概念帮你建立服务端开发心智模型。&lt;a class=&#34;link&#34; href=&#34;https://github.com/ye-guan-xing/AI-Full-Stack-OJ-System/tree/main/backend/oj-nest&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;项目代码&lt;/a&gt;&lt;/p&gt;
@@ -4328,10 +4328,10 @@
         </item>
         <item>
         <title>小白易懂！LangGraph 接入数据库可视化项目 完整实战教程</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%B0%8F%E7%99%BD%E6%98%93%E6%87%82langgraph-%E6%8E%A5%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%AF%E8%A7%86%E5%8C%96%E9%A1%B9%E7%9B%AE-%E5%AE%8C%E6%95%B4%E5%AE%9E%E6%88%98%E6%95%99%E7%A8%8B/</link>
+        <link>https://ye-guan-xing.github.io/p/langgraph-database-tutorial/</link>
         <pubDate>Wed, 20 May 2026 16:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%B0%8F%E7%99%BD%E6%98%93%E6%87%82langgraph-%E6%8E%A5%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%AF%E8%A7%86%E5%8C%96%E9%A1%B9%E7%9B%AE-%E5%AE%8C%E6%95%B4%E5%AE%9E%E6%88%98%E6%95%99%E7%A8%8B/</guid>
+        <guid>https://ye-guan-xing.github.io/p/langgraph-database-tutorial/</guid>
         <description>&lt;p&gt;很多小伙伴做数据库可视化工具时，都会遇到一个痛点：&lt;strong&gt;工具能看表、写SQL、查数据，但没人帮忙解读、改bug、写语句&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;今天手把手带大家用 &lt;strong&gt;LangGraph&lt;/strong&gt; 给数据库工具接入AI智能助手，不用懂高深算法，纯工程实战，从零搭建「AI解释表、AI写SQL、AI排错SQL」功能。&lt;/p&gt;
 &lt;p&gt;全程拆解：架构逻辑、代码作用、部署调试、接口调用，新手也能一次看懂！&lt;/p&gt;
@@ -4712,10 +4712,10 @@
         </item>
         <item>
         <title>JS异步从入门到精通</title>
-        <link>https://ye-guan-xing.github.io/p/js%E5%BC%82%E6%AD%A5%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/</link>
+        <link>https://ye-guan-xing.github.io/p/javascript-async/</link>
         <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/js%E5%BC%82%E6%AD%A5%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/</guid>
+        <guid>https://ye-guan-xing.github.io/p/javascript-async/</guid>
         <description>&lt;p&gt;很多前端初学者最头疼的知识点，一定包含JavaScript异步编程。
 写代码搞不懂执行顺序、定时器不准、Promise 和 async/await 混用出错、面试被问懵，本质都是没吃透JS异步的进化逻辑和底层事件循环机制。&lt;/p&gt;
 &lt;p&gt;本文从零开始，循序渐进带大家吃透JS异步全套知识：从最原始的回调地狱，到Promise规范化，再到终极async/await写法，最后直击底层事件循环、宏任务与微任务核心逻辑，看完彻底告别异步代码混乱问题。&lt;/p&gt;
@@ -5005,10 +5005,10 @@
         </item>
         <item>
         <title>从 10 分钟到 10 秒：Volta&#43;pnpm 如何重构你的开发流程</title>
-        <link>https://ye-guan-xing.github.io/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</link>
+        <link>https://ye-guan-xing.github.io/p/volta-pnpm-development-workflow/</link>
         <pubDate>Fri, 15 May 2026 17:00:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E4%BB%8E-10-%E5%88%86%E9%92%9F%E5%88%B0-10-%E7%A7%92volta-pnpm-%E5%A6%82%E4%BD%95%E9%87%8D%E6%9E%84%E4%BD%A0%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</guid>
+        <guid>https://ye-guan-xing.github.io/p/volta-pnpm-development-workflow/</guid>
         <description>&lt;p&gt;Node版本切换、依赖安装慢、node_modules臃肿、跨平台兼容差是前端/全栈开发的常见痛点。本文对比NVM、npm的核心缺点，详解Volta和pnpm的优势，并整理常用命令、全栈项目标准化启动流程及最佳实践。&lt;/p&gt;
 &lt;h2 id=&#34;nvmnpm-的核心痛点&#34;&gt;NVM+npm 的核心痛点
 &lt;/h2&gt;&lt;h3 id=&#34;nvm-的问题&#34;&gt;NVM 的问题
@@ -5417,10 +5417,10 @@
         </item>
         <item>
         <title>力扣hot100(精讲三)</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%B8%89/</link>
+        <link>https://ye-guan-xing.github.io/p/leetcode-hot100-part3/</link>
         <pubDate>Fri, 10 Apr 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%B8%89/</guid>
+        <guid>https://ye-guan-xing.github.io/p/leetcode-hot100-part3/</guid>
         <description>&lt;h2 id=&#34;说明&#34;&gt;说明
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;我这里写个是为了做一下整理&lt;/li&gt;
@@ -5555,10 +5555,10 @@
         </item>
         <item>
         <title>力扣hot100(精讲二)</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%BA%8C/</link>
+        <link>https://ye-guan-xing.github.io/p/leetcode-hot100-part2/</link>
         <pubDate>Mon, 06 Apr 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%BA%8C/</guid>
+        <guid>https://ye-guan-xing.github.io/p/leetcode-hot100-part2/</guid>
         <description>&lt;h2 id=&#34;说明&#34;&gt;说明
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;我这里写个是为了做一下整理&lt;/li&gt;
@@ -6704,10 +6704,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>dfs和bfs的讲解(新手向)</title>
-        <link>https://ye-guan-xing.github.io/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/</link>
+        <link>https://ye-guan-xing.github.io/p/dfs-bfs/</link>
         <pubDate>Sun, 05 Apr 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/dfs%E5%92%8Cbfs%E7%9A%84%E8%AE%B2%E8%A7%A3%E6%96%B0%E6%89%8B%E5%90%91/</guid>
+        <guid>https://ye-guan-xing.github.io/p/dfs-bfs/</guid>
         <description>&lt;p&gt;DFS（深度优先搜索）和 BFS（广度优先搜索）是新手必掌握的基础&lt;/p&gt;
 &lt;p&gt;本文用&lt;strong&gt;9道经典洛谷题&lt;/strong&gt;，把 DFS、BFS 讲得明明白白，纯新手也能直接看懂&lt;/p&gt;
 &lt;h2 id=&#34;先搞懂什么是-dfs&#34;&gt;先搞懂：什么是 DFS？
@@ -6886,10 +6886,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>力扣hot100(精讲一)</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%B8%80/</link>
+        <link>https://ye-guan-xing.github.io/p/leetcode-hot100-part1/</link>
         <pubDate>Wed, 01 Apr 2026 01:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot100%E7%B2%BE%E8%AE%B2%E4%B8%80/</guid>
+        <guid>https://ye-guan-xing.github.io/p/leetcode-hot100-part1/</guid>
         <description>&lt;h2 id=&#34;说明&#34;&gt;说明
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;我这里写个是为了做一下整理&lt;/li&gt;
@@ -8062,10 +8062,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>Git 新手第一次使用：克隆、配置远程与首次推送</title>
-        <link>https://ye-guan-xing.github.io/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/</link>
+        <link>https://ye-guan-xing.github.io/p/git-clone-remote-push/</link>
         <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/git-%E6%96%B0%E6%89%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%85%8B%E9%9A%86%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%B8%8E%E9%A6%96%E6%AC%A1%E6%8E%A8%E9%80%81/</guid>
+        <guid>https://ye-guan-xing.github.io/p/git-clone-remote-push/</guid>
         <description>&lt;h1 id=&#34;git-新手第一次使用克隆配置远程与首次推送&#34;&gt;Git 新手第一次使用：克隆、配置远程与首次推送
 &lt;/h1&gt;&lt;h2 id=&#34;克隆仓库到本地&#34;&gt;克隆仓库到本地
 &lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
@@ -8178,10 +8178,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>Git 工作流程与基本操作图解</title>
-        <link>https://ye-guan-xing.github.io/p/git-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E5%9B%BE%E8%A7%A3/</link>
+        <link>https://ye-guan-xing.github.io/p/git-workflow-basic-operations/</link>
         <pubDate>Tue, 31 Mar 2026 10:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/git-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E5%9B%BE%E8%A7%A3/</guid>
+        <guid>https://ye-guan-xing.github.io/p/git-workflow-basic-operations/</guid>
         <description>&lt;h1 id=&#34;git-工作流程与基本操作图解&#34;&gt;Git 工作流程与基本操作图解
 &lt;/h1&gt;&lt;p&gt;我们可以把 Git 的工作流程想象成一个写作业并交给老师的过程。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://ye-guan-xing.github.io/images/git/git.svg&#34;
@@ -8330,10 +8330,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>前端学习路线：从入门到进阶</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/</link>
+        <link>https://ye-guan-xing.github.io/p/frontend-learning-path/</link>
         <pubDate>Fri, 13 Feb 2026 16:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6/</guid>
+        <guid>https://ye-guan-xing.github.io/p/frontend-learning-path/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;这份前端学习路线源自 &lt;a class=&#34;link&#34; href=&#34;http://roadmap.sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;roadmap.sh&lt;/a&gt;，是一份被全球开发者广泛参考的学习指南。它清晰地梳理了从基础到进阶的所有核心知识点，并标注了每个内容的学习优先级，帮助你在浩瀚的前端知识海洋中找准方向，高效学习。（参考图见尾部）&lt;/p&gt;
@@ -8674,10 +8674,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>后端学习路线：从基础到架构</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</link>
+        <link>https://ye-guan-xing.github.io/p/backend-learning-path/</link>
         <pubDate>Fri, 13 Feb 2026 17:00:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E6%9E%B6%E6%9E%84/</guid>
+        <guid>https://ye-guan-xing.github.io/p/backend-learning-path/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;这份后端学习路线源自 &lt;a class=&#34;link&#34; href=&#34;http://roadmap.sh&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;roadmap.sh&lt;/a&gt;，是全球开发者广泛参考的后端技术学习指南。它清晰梳理了从基础原理到架构设计的核心知识点，并标注了学习优先级，帮助你在后端技术体系中高效构建知识体系，避免盲目学习。（参考图见尾部）&lt;/p&gt;
@@ -8966,10 +8966,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>解决master与开发分支代码不一致,手把手教你同步分支</title>
-        <link>https://ye-guan-xing.github.io/p/%E8%A7%A3%E5%86%B3master%E4%B8%8E%E5%BC%80%E5%8F%91%E5%88%86%E6%94%AF%E4%BB%A3%E7%A0%81%E4%B8%8D%E4%B8%80%E8%87%B4%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%90%8C%E6%AD%A5%E5%88%86%E6%94%AF/</link>
+        <link>https://ye-guan-xing.github.io/p/git-branch-sync/</link>
         <pubDate>Tue, 13 Jan 2026 10:30:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E8%A7%A3%E5%86%B3master%E4%B8%8E%E5%BC%80%E5%8F%91%E5%88%86%E6%94%AF%E4%BB%A3%E7%A0%81%E4%B8%8D%E4%B8%80%E8%87%B4%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%90%8C%E6%AD%A5%E5%88%86%E6%94%AF/</guid>
+        <guid>https://ye-guan-xing.github.io/p/git-branch-sync/</guid>
         <description>&lt;h1 id=&#34;git-新手通关指南解决-master-与开发分支代码不一致手把手教你同步分支&#34;&gt;【Git 新手通关指南】解决 master 与开发分支代码不一致，手把手教你同步分支
 &lt;/h1&gt;&lt;p&gt;作为 Git 新手，刚接触分支管理时大概率会遇到这个问题：本地&lt;code&gt;master&lt;/code&gt;主分支和自己创建的&lt;code&gt;z1&lt;/code&gt;开发分支代码不一样了，该怎么同步？为什么不能直接在&lt;code&gt;master&lt;/code&gt;分支改代码？这篇文章用最通俗的话+一步步实操，帮你彻底搞懂！&lt;/p&gt;
 &lt;h2 id=&#34;先搞懂master-和开发分支的分工新手先记牢&#34;&gt;先搞懂：master 和开发分支的“分工”（新手先记牢）
@@ -9113,10 +9113,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>CSS小案例，讲布局（Flex&#43;Grid）</title>
-        <link>https://ye-guan-xing.github.io/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/</link>
+        <link>https://ye-guan-xing.github.io/p/css-layout-flex-grid/</link>
         <pubDate>Sun, 14 Dec 2025 22:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/css%E5%B0%8F%E6%A1%88%E4%BE%8B%E8%AE%B2%E5%B8%83%E5%B1%80flex-grid/</guid>
+        <guid>https://ye-guan-xing.github.io/p/css-layout-flex-grid/</guid>
         <description>&lt;h1 id=&#34;从新闻页面-css成果图看布局设计实用-flex-与结构化布局技巧&#34;&gt;从新闻页面 CSS+成果图看布局设计：实用 Flex 与结构化布局技巧
 &lt;/h1&gt;&lt;p&gt;在前端开发中，布局是页面的骨架，直接决定了内容呈现的逻辑性和视觉舒适度。最近落地了一个新闻列表页面（如下成果图所示），其布局设计简洁高效，尤其适合信息密集型页面（如新闻、资讯类），今天就结合&lt;strong&gt;成果图+对应 CSS 代码&lt;/strong&gt;，拆解其中的布局思路和实用技巧。&lt;/p&gt;
 &lt;p&gt;（注：下图即为本次分析对应的页面成果，后续会一一对应布局模块）
@@ -9344,10 +9344,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>如何将vue cli 写的前端文件转换为vite（详细板）</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%A6%82%E4%BD%95%E5%B0%86vue-cli-%E5%86%99%E7%9A%84%E5%89%8D%E7%AB%AF%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2%E4%B8%BAvite%E8%AF%A6%E7%BB%86%E6%9D%BF/</link>
+        <link>https://ye-guan-xing.github.io/p/vue-cli-to-vite-migration/</link>
         <pubDate>Sun, 14 Dec 2025 22:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%A6%82%E4%BD%95%E5%B0%86vue-cli-%E5%86%99%E7%9A%84%E5%89%8D%E7%AB%AF%E6%96%87%E4%BB%B6%E8%BD%AC%E6%8D%A2%E4%B8%BAvite%E8%AF%A6%E7%BB%86%E6%9D%BF/</guid>
+        <guid>https://ye-guan-xing.github.io/p/vue-cli-to-vite-migration/</guid>
         <description>&lt;h1 id=&#34;从-vue-cli-迁移到-vite-的完整指南&#34;&gt;从 Vue CLI 迁移到 Vite 的完整指南
 &lt;/h1&gt;&lt;h2 id=&#34;-迁移概览&#34;&gt;📋 迁移概览
 &lt;/h2&gt;&lt;p&gt;将项目从 Vue CLI 迁移到 Vite 确实如你所说，主要包括以下几个核心步骤。&lt;/p&gt;
@@ -9999,10 +9999,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>校园OJ开发之布局逻辑</title>
-        <link>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E9%80%BB%E8%BE%91/</link>
+        <link>https://ye-guan-xing.github.io/p/campus-oj-layout/</link>
         <pubDate>Sat, 06 Dec 2025 12:36:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E9%80%BB%E8%BE%91/</guid>
+        <guid>https://ye-guan-xing.github.io/p/campus-oj-layout/</guid>
         <description>&lt;h1 id=&#34;写给小白的校园-oj-开发详解&#34;&gt;写给小白的校园 OJ 开发详解
 &lt;/h1&gt;&lt;h2 id=&#34;前言为什么需要这些配置&#34;&gt;前言：为什么需要这些配置？
 &lt;/h2&gt;&lt;p&gt;想象一下你要建一座房子 🏠：&lt;/p&gt;
@@ -10506,10 +10506,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>校园OJ项目的详细开发(登录界面)</title>
-        <link>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/</link>
+        <link>https://ye-guan-xing.github.io/p/campus-oj-login/</link>
         <pubDate>Fri, 05 Dec 2025 18:36:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/</guid>
+        <guid>https://ye-guan-xing.github.io/p/campus-oj-login/</guid>
         <description>&lt;h1 id=&#34;手把手教你理解校园-oj-登录系统从输入密码到进入首页&#34;&gt;手把手教你理解校园 OJ 登录系统：从输入密码到进入首页
 &lt;/h1&gt;&lt;h2 id=&#34;前言登录系统的三件套&#34;&gt;前言：登录系统的“三件套”
 &lt;/h2&gt;&lt;p&gt;想象一下你要进宿舍楼：&lt;/p&gt;
@@ -11587,10 +11587,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>校园OJ项目的整体结构</title>
-        <link>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84/</link>
+        <link>https://ye-guan-xing.github.io/p/campus-oj-structure/</link>
         <pubDate>Fri, 05 Dec 2025 17:36:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84/</guid>
+        <guid>https://ye-guan-xing.github.io/p/campus-oj-structure/</guid>
         <description>&lt;h2 id=&#34;引言为什么写这个&#34;&gt;引言（为什么写这个?）
 &lt;/h2&gt;&lt;p&gt;在完成全域生活服务平台后，我对前后端协同开发的流程有了更深入的理解。但一直想挑战一个更贴近编程学习场景的项目——在线判题系统（OJ，Online Judge）。这类平台不仅需要清晰的用户交互设计，还涉及代码提交、实时判题、数据统计等复杂业务逻辑，非常适合用来巩固前端工程化思想。&lt;/p&gt;
 &lt;p&gt;本次分享将聚焦前端开发细节，包括项目架构设计、核心功能实现及业务流程梳理。后端部分由好友 shuimo 负责搭建，后续若有机会会邀请他补充后端架构细节。&lt;/p&gt;
@@ -11904,10 +11904,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>校园OJ开发之admin页面的开发</title>
-        <link>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8Badmin%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%BC%80%E5%8F%91/</link>
+        <link>https://ye-guan-xing.github.io/p/campus-oj-admin/</link>
         <pubDate>Sun, 30 Nov 2025 12:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8Badmin%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%BC%80%E5%8F%91/</guid>
+        <guid>https://ye-guan-xing.github.io/p/campus-oj-admin/</guid>
         <description>&lt;p&gt;由于没有后端，我来为你添加前端模拟数据和模拟 API，并解释为什么不需要处理 token。&lt;/p&gt;
 &lt;h2 id=&#34;创建模拟数据存储&#34;&gt;创建模拟数据存储
 &lt;/h2&gt;&lt;p&gt;首先在 &lt;code&gt;src/utils/&lt;/code&gt; 下创建模拟数据管理工具：&lt;/p&gt;
@@ -12731,10 +12731,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>跨域问题讲解</title>
-        <link>https://ye-guan-xing.github.io/p/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E8%AE%B2%E8%A7%A3/</link>
+        <link>https://ye-guan-xing.github.io/p/cors-issue/</link>
         <pubDate>Sat, 29 Nov 2025 22:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98%E8%AE%B2%E8%A7%A3/</guid>
+        <guid>https://ye-guan-xing.github.io/p/cors-issue/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;在前后端分离开发模式下，&lt;strong&gt;跨域&lt;/strong&gt;是前端开发者绕不开的问题。浏览器的同源策略限制了不同域名/端口间的资源请求，而解决跨域的核心方案主要有两种：&lt;strong&gt;CORS（跨域资源共享）&lt;/strong&gt; 和&lt;strong&gt;反向代理&lt;/strong&gt;。本文结合全域生活平台的示例，详解这两种方案的原理、应用场景及踩坑要点。&lt;/p&gt;
 &lt;ul&gt;
@@ -13137,10 +13137,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>力扣hot150(精讲)</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/</link>
+        <link>https://ye-guan-xing.github.io/p/leetcode-hot150/</link>
         <pubDate>Fri, 28 Nov 2025 08:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%8A%9B%E6%89%A3hot150%E7%B2%BE%E8%AE%B2/</guid>
+        <guid>https://ye-guan-xing.github.io/p/leetcode-hot150/</guid>
         <description>&lt;h2 id=&#34;说明&#34;&gt;说明
 &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;我这里写个是为了做一下整理&lt;/li&gt;
@@ -13666,10 +13666,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>全域生活服务平台开发流程详解</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%85%A8%E5%9F%9F%E7%94%9F%E6%B4%BB%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/</link>
+        <link>https://ye-guan-xing.github.io/p/lifestyle-platform-development/</link>
         <pubDate>Mon, 20 Oct 2025 16:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%85%A8%E5%9F%9F%E7%94%9F%E6%B4%BB%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/</guid>
+        <guid>https://ye-guan-xing.github.io/p/lifestyle-platform-development/</guid>
         <description>&lt;h1 id=&#34;全域生活服务平台---从零开始完整开发指南&#34;&gt;全域生活服务平台 - 从零开始完整开发指南
 &lt;/h1&gt;&lt;h2 id=&#34;-项目概述&#34;&gt;🎯 项目概述
 &lt;/h2&gt;&lt;p&gt;我们将构建一个完整的全域生活服务平台，包含：&lt;/p&gt;
@@ -19422,10 +19422,10 @@ l/r：每个节点一个独立范围 → 必须传值&lt;/p&gt;
         </item>
         <item>
         <title>大一的学习路径（软件篇）</title>
-        <link>https://ye-guan-xing.github.io/p/%E5%A4%A7%E4%B8%80%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E8%BD%AF%E4%BB%B6%E7%AF%87/</link>
+        <link>https://ye-guan-xing.github.io/p/freshman-learning-path-software/</link>
         <pubDate>Mon, 20 Oct 2025 16:36:32 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E5%A4%A7%E4%B8%80%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E8%BD%AF%E4%BB%B6%E7%AF%87/</guid>
+        <guid>https://ye-guan-xing.github.io/p/freshman-learning-path-software/</guid>
         <description>&lt;h1 id=&#34;大一新生-it-学习路线指南&#34;&gt;大一新生 IT 学习路线指南
 &lt;/h1&gt;&lt;p&gt;亲爱的大一新生，刚踏入大学，面对丰富多彩的 IT 领域或许会有些迷茫，这里学长给一些路径建议：&lt;/p&gt;
 &lt;h2 id=&#34;算法竞赛&#34;&gt;算法竞赛

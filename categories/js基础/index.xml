@@ -9,10 +9,10 @@
         <copyright>acye</copyright>
         <lastBuildDate>Tue, 19 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/categories/js%E5%9F%BA%E7%A1%80/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>JS异步从入门到精通</title>
-        <link>https://ye-guan-xing.github.io/p/js%E5%BC%82%E6%AD%A5%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/</link>
+        <link>https://ye-guan-xing.github.io/p/javascript-async/</link>
         <pubDate>Tue, 19 May 2026 00:00:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/js%E5%BC%82%E6%AD%A5%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A/</guid>
+        <guid>https://ye-guan-xing.github.io/p/javascript-async/</guid>
         <description>&lt;p&gt;很多前端初学者最头疼的知识点，一定包含JavaScript异步编程。
 写代码搞不懂执行顺序、定时器不准、Promise 和 async/await 混用出错、面试被问懵，本质都是没吃透JS异步的进化逻辑和底层事件循环机制。&lt;/p&gt;
 &lt;p&gt;本文从零开始，循序渐进带大家吃透JS异步全套知识：从最原始的回调地狱，到Promise规范化，再到终极async/await写法，最后直击底层事件循环、宏任务与微任务核心逻辑，看完彻底告别异步代码混乱问题。&lt;/p&gt;

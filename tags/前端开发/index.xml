@@ -9,10 +9,10 @@
         <copyright>acye</copyright>
         <lastBuildDate>Sat, 06 Dec 2025 12:36:00 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/tags/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>校园OJ开发之布局逻辑</title>
-        <link>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E9%80%BB%E8%BE%91/</link>
+        <link>https://ye-guan-xing.github.io/p/campus-oj-layout/</link>
         <pubDate>Sat, 06 Dec 2025 12:36:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8B%E5%B8%83%E5%B1%80%E9%80%BB%E8%BE%91/</guid>
+        <guid>https://ye-guan-xing.github.io/p/campus-oj-layout/</guid>
         <description>&lt;h1 id=&#34;写给小白的校园-oj-开发详解&#34;&gt;写给小白的校园 OJ 开发详解
 &lt;/h1&gt;&lt;h2 id=&#34;前言为什么需要这些配置&#34;&gt;前言：为什么需要这些配置？
 &lt;/h2&gt;&lt;p&gt;想象一下你要建一座房子 🏠：&lt;/p&gt;
@@ -516,10 +516,10 @@
         </item>
         <item>
         <title>校园OJ项目的详细开发(登录界面)</title>
-        <link>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/</link>
+        <link>https://ye-guan-xing.github.io/p/campus-oj-login/</link>
         <pubDate>Fri, 05 Dec 2025 18:36:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AF%A6%E7%BB%86%E5%BC%80%E5%8F%91%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2/</guid>
+        <guid>https://ye-guan-xing.github.io/p/campus-oj-login/</guid>
         <description>&lt;h1 id=&#34;手把手教你理解校园-oj-登录系统从输入密码到进入首页&#34;&gt;手把手教你理解校园 OJ 登录系统：从输入密码到进入首页
 &lt;/h1&gt;&lt;h2 id=&#34;前言登录系统的三件套&#34;&gt;前言：登录系统的“三件套”
 &lt;/h2&gt;&lt;p&gt;想象一下你要进宿舍楼：&lt;/p&gt;
@@ -1597,10 +1597,10 @@
         </item>
         <item>
         <title>校园OJ项目的整体结构</title>
-        <link>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84/</link>
+        <link>https://ye-guan-xing.github.io/p/campus-oj-structure/</link>
         <pubDate>Fri, 05 Dec 2025 17:36:00 +0800</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84/</guid>
+        <guid>https://ye-guan-xing.github.io/p/campus-oj-structure/</guid>
         <description>&lt;h2 id=&#34;引言为什么写这个&#34;&gt;引言（为什么写这个?）
 &lt;/h2&gt;&lt;p&gt;在完成全域生活服务平台后，我对前后端协同开发的流程有了更深入的理解。但一直想挑战一个更贴近编程学习场景的项目——在线判题系统（OJ，Online Judge）。这类平台不仅需要清晰的用户交互设计，还涉及代码提交、实时判题、数据统计等复杂业务逻辑，非常适合用来巩固前端工程化思想。&lt;/p&gt;
 &lt;p&gt;本次分享将聚焦前端开发细节，包括项目架构设计、核心功能实现及业务流程梳理。后端部分由好友 shuimo 负责搭建，后续若有机会会邀请他补充后端架构细节。&lt;/p&gt;
@@ -1914,10 +1914,10 @@
         </item>
         <item>
         <title>校园OJ开发之admin页面的开发</title>
-        <link>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8Badmin%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%BC%80%E5%8F%91/</link>
+        <link>https://ye-guan-xing.github.io/p/campus-oj-admin/</link>
         <pubDate>Sun, 30 Nov 2025 12:36:00 +0000</pubDate>
         
-        <guid>https://ye-guan-xing.github.io/p/%E6%A0%A1%E5%9B%ADoj%E5%BC%80%E5%8F%91%E4%B9%8Badmin%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%BC%80%E5%8F%91/</guid>
+        <guid>https://ye-guan-xing.github.io/p/campus-oj-admin/</guid>
         <description>&lt;p&gt;由于没有后端，我来为你添加前端模拟数据和模拟 API，并解释为什么不需要处理 token。&lt;/p&gt;
 &lt;h2 id=&#34;创建模拟数据存储&#34;&gt;创建模拟数据存储
 &lt;/h2&gt;&lt;p&gt;首先在 &lt;code&gt;src/utils/&lt;/code&gt; 下创建模拟数据管理工具：&lt;/p&gt;
