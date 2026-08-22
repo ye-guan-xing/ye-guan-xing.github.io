@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="字段口径与 key1 规约 目标：搞清 LogTrack.track 的字段都什么意思、key1 为什么要 JSON.stringify、新老两套口径差在哪。这是新手最容易填错字段的地方。\nLogTrack 标准字段表 一条 LogTrack.track(obj, 'click') 的 obj 用这些字段。前 4 个几乎每条都要填，后面按场景填。\n">
+<title>字段口径与 key1 规约</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/tracking-fields/'>
+
+<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="字段口径与 key1 规约">
+<meta property='og:description' content="字段口径与 key1 规约 目标：搞清 LogTrack.track 的字段都什么意思、key1 为什么要 JSON.stringify、新老两套口径差在哪。这是新手最容易填错字段的地方。\nLogTrack 标准字段表 一条 LogTrack.track(obj, 'click') 的 obj 用这些字段。前 4 个几乎每条都要填，后面按场景填。\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/tracking-fields/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='前端工程' /><meta property='article:published_time' content='2026-08-22T14:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-08-22T14:00:00&#43;00:00'/>
+<meta name="twitter:title" content="字段口径与 key1 规约">
+<meta name="twitter:description" content="字段口径与 key1 规约 目标：搞清 LogTrack.track 的字段都什么意思、key1 为什么要 JSON.stringify、新老两套口径差在哪。这是新手最容易填错字段的地方。\nLogTrack 标准字段表 一条 LogTrack.track(obj, 'click') 的 obj 用这些字段。前 4 个几乎每条都要填，后面按场景填。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#logtrack-标准字段表">LogTrack 标准字段表</a>
+      <ol>
+        <li><a href="#哪些字段属于哪类">哪些字段属于哪类</a></li>
+      </ol>
+    </li>
+    <li><a href="#key1-规约最重要">key1 规约（最重要）</a>
+      <ol>
+        <li><a href="#规则">规则</a></li>
+        <li><a href="#为什么这么做">为什么这么做</a></li>
+        <li><a href="#正确写法">正确写法</a></li>
+        <li><a href="#错误写法别这样">错误写法（别这样）</a></li>
+        <li><a href="#常见-key1-内部字段">常见 key1 内部字段</a></li>
+      </ol>
+    </li>
+    <li><a href="#事件类型怎么选">事件类型怎么选</a></li>
+    <li><a href="#新老两套口径双系统并行时">新老两套口径（双系统并行时）</a>
+      <ol>
+        <li><a href="#对照例子来自阅读诊断报告页">对照例子（来自阅读诊断报告页）</a></li>
+      </ol>
+    </li>
+    <li><a href="#page_name--page_type-约定已知">page_name / page_type 约定（已知）</a></li>
+    <li><a href="#停留时长单位">停留时长单位</a></li>
+    <li><a href="#自检清单提交前过一遍">自检清单（提交前过一遍）</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96-%E5%9F%8B%E7%82%B9/"
+      
+    >
+      前端工程化-埋点
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/tracking-fields/">字段口径与 key1 规约</a>
+    </h2>
+
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-08-22 14:00</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview">
+        <span class="waline-pageview-count" data-path="/p/tracking-fields/"
+          >0</span
+        >
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment">
+        <span class="waline-comment-count" data-path="/p/tracking-fields/"
+          >0</span
+        >
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="字段口径与-key1-规约">字段口径与 key1 规约
+</h1><blockquote>
+<p>目标：搞清 <code>LogTrack.track</code> 的字段都什么意思、<code>key1</code> 为什么要 <code>JSON.stringify</code>、新老两套口径差在哪。这是新手最容易填错字段的地方。</p>
+</blockquote>
+<h2 id="logtrack-标准字段表">LogTrack 标准字段表
+</h2><p>一条 <code>LogTrack.track(obj, 'click')</code> 的 <code>obj</code> 用这些字段。<strong>前 4 个几乎每条都要填，后面按场景填</strong>。</p>
+<div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>字段</th>
+					<th>类型</th>
+					<th>含义</th>
+					<th>示例</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>page_name</code></td>
+					<td>string</td>
+					<td>页面中文名（业务定，全局唯一）</td>
+					<td><code>少年闻天下</code></td>
+			</tr>
+			<tr>
+					<td><code>page_type</code></td>
+					<td>number</td>
+					<td>页面类型，本项目活动页统一 <code>2</code></td>
+					<td><code>2</code></td>
+			</tr>
+			<tr>
+					<td><code>page_title</code></td>
+					<td>string</td>
+					<td>页面标题，一般同 page_name</td>
+					<td><code>少年闻天下</code></td>
+			</tr>
+			<tr>
+					<td><code>url</code></td>
+					<td>string</td>
+					<td>当前页面地址</td>
+					<td><code>window.location.href</code></td>
+			</tr>
+			<tr>
+					<td><code>main_item_id</code></td>
+					<td>string</td>
+					<td>主对象 id（点的是哪个课程 / 卡片）</td>
+					<td><code>item.chapterId</code></td>
+			</tr>
+			<tr>
+					<td><code>module_name</code></td>
+					<td>string</td>
+					<td>页面内模块名</td>
+					<td><code>课程列表</code>、<code>导航栏</code></td>
+			</tr>
+			<tr>
+					<td><code>item_name</code></td>
+					<td>string</td>
+					<td>模块内项名</td>
+					<td><code>列表项</code>、<code>返回按钮</code></td>
+			</tr>
+			<tr>
+					<td><code>btn_name</code></td>
+					<td>string</td>
+					<td>按钮文案</td>
+					<td><code>立即订阅</code>、<code>返回</code></td>
+			</tr>
+			<tr>
+					<td><code>key1</code></td>
+					<td>string</td>
+					<td><strong>所有扩展细节，JSON 字符串</strong></td>
+					<td><code>JSON.stringify({user_status, ...})</code></td>
+			</tr>
+	</tbody>
+</table></div>
+<h3 id="哪些字段属于哪类">哪些字段属于哪类
+</h3><pre class="mermaid">flowchart LR
+    subgraph 固定[&#34;每条必填 / 页面级固定&#34;]
+        F1[&#34;page_name&#34;]
+        F2[&#34;page_type&#34;]
+        F3[&#34;page_title&#34;]
+        F4[&#34;url&#34;]
+    end
+    subgraph 定位[&#34;定位到具体元素&#34;]
+        L1[&#34;module_name 模块&#34;]
+        L2[&#34;item_name 项&#34;]
+        L3[&#34;btn_name 按钮&#34;]
+        L4[&#34;main_item_id 对象id&#34;]
+    end
+    subgraph 扩展[&#34;扩展细节&#34;]
+        E1[&#34;key1 = JSON.stringify(...)&#34;]
+    end
+    style 固定 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style 定位 fill:#3a5a3a,color:#fff,stroke:#5cb85c
+    style 扩展 fill:#5a4a6b,color:#fff,stroke:#9a7acc</pre>
+
+<hr>
+<h2 id="key1-规约最重要">key1 规约（最重要）
+</h2><h3 id="规则">规则
+</h3><p><strong>所有扩展字段，统一合并进 <code>key1</code> 一个字段，用 <code>JSON.stringify</code> 包成字符串。不再用 key2、key3。</strong></p>
+<p>这是项目维护者定的硬规约（见项目埋点规格文档开头）。</p>
+<h3 id="为什么这么做">为什么这么做
+</h3><p>后台只认 <code>key1</code> 一个扩展位，多个字段挤进去比开 key2/key3 更统一、更好解析。</p>
+<h3 id="正确写法">正确写法
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">key1</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user_status</span><span class="o">:</span> <span class="s1">&#39;member&#39;</span><span class="p">,</span>          <span class="c1">// 用户状态
+</span></span></span><span class="line"><span class="cl">  <span class="nx">chapter_id</span><span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">chapterId</span><span class="p">,</span>     <span class="c1">// 章节 id
+</span></span></span><span class="line"><span class="cl">  <span class="nx">is_free</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>                  <span class="c1">// 是否免费
+</span></span></span><span class="line"><span class="cl">  <span class="nx">list_type</span><span class="o">:</span> <span class="s1">&#39;free&#39;</span><span class="p">,</span>              <span class="c1">// 列表类型
+</span></span></span><span class="line"><span class="cl">  <span class="nx">current_month</span><span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">jump_url</span><span class="o">:</span> <span class="nx">jumpUrl</span>               <span class="c1">// 跳转地址
+</span></span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="错误写法别这样">错误写法（别这样）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// ❌ 用 key2、key3
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span> <span class="nx">key1</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="nx">user_status</span><span class="o">:</span><span class="s1">&#39;member&#39;</span><span class="p">}),</span> <span class="nx">key2</span><span class="o">:</span> <span class="nx">chapter_id</span><span class="p">,</span> <span class="nx">key3</span><span class="o">:</span> <span class="nx">is_free</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ❌ key1 不 stringify
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span> <span class="nx">key1</span><span class="o">:</span> <span class="p">{</span> <span class="nx">user_status</span><span class="o">:</span> <span class="s1">&#39;member&#39;</span> <span class="p">}</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ❌ 把扩展字段平铺到 obj 顶层
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span> <span class="nx">user_status</span><span class="o">:</span> <span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="nx">chapter_id</span><span class="o">:</span> <span class="mi">123</span><span class="p">,</span> <span class="nx">module_name</span><span class="o">:</span> <span class="s1">&#39;课程列表&#39;</span> <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="常见-key1-内部字段">常见 key1 内部字段
+</h3><div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>字段</th>
+					<th>含义</th>
+					<th>常见值</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>user_status</code></td>
+					<td>用户状态</td>
+					<td><code>normal</code> / <code>expired_member</code> / <code>member</code></td>
+			</tr>
+			<tr>
+					<td><code>current_tab</code></td>
+					<td>当前 tab</td>
+					<td><code>knowledge</code> / <code>material</code> / <code>essay</code></td>
+			</tr>
+			<tr>
+					<td><code>list_type</code></td>
+					<td>列表类型</td>
+					<td><code>free</code> / <code>all</code> / <code>member</code></td>
+			</tr>
+			<tr>
+					<td><code>chapter_id</code> / <code>course_id</code></td>
+					<td>内容 id</td>
+					<td>-</td>
+			</tr>
+			<tr>
+					<td><code>is_free</code> / <code>is_locked</code></td>
+					<td>是否免费 / 锁定</td>
+					<td><code>true</code> / <code>false</code></td>
+			</tr>
+			<tr>
+					<td><code>current_month</code> / <code>current_year</code></td>
+					<td>月份 / 年份</td>
+					<td><code>8</code> / <code>2026</code></td>
+			</tr>
+			<tr>
+					<td><code>jump_url</code></td>
+					<td>跳转地址</td>
+					<td>-</td>
+			</tr>
+			<tr>
+					<td><code>duration</code></td>
+					<td>停留时长（毫秒）</td>
+					<td><code>pageStayDuration</code></td>
+			</tr>
+			<tr>
+					<td><code>list_data</code></td>
+					<td>列表批量数据</td>
+					<td><code>[{id,title,publishTime}]</code></td>
+			</tr>
+			<tr>
+					<td><code>list_count</code> / <code>page_index</code></td>
+					<td>列表条数 / 页码</td>
+					<td>-</td>
+			</tr>
+	</tbody>
+</table></div>
+<hr>
+<h2 id="事件类型怎么选">事件类型怎么选
+</h2><pre class="mermaid">flowchart TD
+    E[&#34;发生了什么&#34;] --&gt; E1{&#34;用户点了?&#34;}
+    E1 -- 是 --&gt; C[&#34;click&lt;br/&gt;module_name / item_name / btn_name&#34;]
+    E1 -- 否 --&gt; E2{&#34;东西展示出来了?&#34;}
+    E2 -- 是 --&gt; S[&#34;show&lt;br/&gt;module_name / item_name&#34;]
+    E2 -- 否 --&gt; E3{&#34;进页面 / 停留?&#34;}
+    E3 -- 是 --&gt; P[&#34;page&lt;br/&gt;通常只填 page_* 和 key1&#34;]
+    style C fill:#6b3a2d,color:#fff,stroke:#d9774a
+    style S fill:#3a5a3a,color:#fff,stroke:#5cb85c
+    style P fill:#2d4a6b,color:#fff,stroke:#4a90d9</pre>
+
+<div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>事件类型</th>
+					<th>何时触发</th>
+					<th>关键字段</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>page</code></td>
+					<td>mounted / created 后 / 停留心跳</td>
+					<td>page_* + key1(duration)</td>
+			</tr>
+			<tr>
+					<td><code>show</code></td>
+					<td>列表加载完 / 弹窗打开 / Banner 有数据</td>
+					<td>module_name + item_name + key1</td>
+			</tr>
+			<tr>
+					<td><code>click</code></td>
+					<td>用户点击</td>
+					<td>module_name + item_name + btn_name + key1</td>
+			</tr>
+	</tbody>
+</table></div>
+<blockquote>
+<p><code>page</code> 和 <code>show</code> 时 <code>btn_name</code> 一般填 <code>-</code> 或空。</p>
+</blockquote>
+<hr>
+<h2 id="新老两套口径双系统并行时">新老两套口径（双系统并行时）
+</h2><p>在 <a class="link" href="/p/tracking-patterns/" >写法 C 双系统</a> 的 <code>commLog</code> 场景里，同一条数据要发两套，<strong>字段名不一样</strong>，新手填错就串台。</p>
+<div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th></th>
+					<th>② $tracker（火山，新口径）</th>
+					<th>① LogTrack（神策+自研，老口径）</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>调用</td>
+					<td><code>this.$tracker('sndd_hs_xxx', payload)</code></td>
+					<td><code>LogTrack.track(payload, 'page')</code></td>
+			</tr>
+			<tr>
+					<td>事件标识</td>
+					<td>事件名 <code>sndd_hs_page</code> / <code>sndd_hs_show</code> / <code>sndd_hs_click</code></td>
+					<td>事件类型 <code>page</code> / <code>show</code> / <code>click</code></td>
+			</tr>
+			<tr>
+					<td>页面停留时长字段</td>
+					<td><code>duration_ms</code></td>
+					<td><code>duration</code></td>
+			</tr>
+			<tr>
+					<td>模块曝光时长字段</td>
+					<td><code>duration_ms</code></td>
+					<td><code>expose_duration</code></td>
+			</tr>
+			<tr>
+					<td>页面名字段</td>
+					<td><code>page_name</code></td>
+					<td><code>page_name</code> + <code>page_title</code> + <code>page_type</code></td>
+			</tr>
+			<tr>
+					<td>是否带 url</td>
+					<td>自动补 <code>window.location.href</code></td>
+					<td>需手填 <code>url</code></td>
+			</tr>
+	</tbody>
+</table></div>
+<h3 id="对照例子来自阅读诊断报告页">对照例子（来自阅读诊断报告页）
+</h3><p>页面离开时双发：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// ② 新口径：火山
+</span></span></span><span class="line"><span class="cl"><span class="k">this</span><span class="p">.</span><span class="nx">$tracker</span><span class="p">(</span><span class="s1">&#39;sndd_hs_page&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">page_name</span><span class="o">:</span> <span class="s1">&#39;阅读能力诊断和成长规划报告&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">page_id</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">userEvaluationId</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">duration_ms</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageStayDuration</span>        <span class="c1">// ← 注意是 duration_ms
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// ① 老口径：神策+自研
+</span></span></span><span class="line"><span class="cl"><span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">page_name</span><span class="o">:</span> <span class="s1">&#39;阅读能力诊断和成长规划报告&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">page_title</span><span class="o">:</span> <span class="s1">&#39;...&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">page_type</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">url</span><span class="o">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">page_id</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">userEvaluationId</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">duration</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">pageStayDuration</span>           <span class="c1">// ← 注意是 duration
+</span></span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="s1">&#39;page&#39;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="page_name--page_type-约定已知">page_name / page_type 约定（已知）
+</h2><div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>page_name</th>
+					<th>page_type</th>
+					<th>出处</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>少年闻天下</td>
+					<td>2</td>
+					<td>newsSubscription</td>
+			</tr>
+			<tr>
+					<td>知识卡</td>
+					<td>2</td>
+					<td>knowledgeCard/index</td>
+			</tr>
+			<tr>
+					<td>知识卡详情</td>
+					<td>2</td>
+					<td>knowledgeCard/detail</td>
+			</tr>
+			<tr>
+					<td>阅读营给孩子的一封信</td>
+					<td>2</td>
+					<td>emailReport</td>
+			</tr>
+			<tr>
+					<td>阅读能力诊断和成长规划报告</td>
+					<td>-</td>
+					<td>readingDiagnosisReport</td>
+			</tr>
+			<tr>
+					<td>测评报告</td>
+					<td>-</td>
+					<td>stageEvaluationReport</td>
+			</tr>
+			<tr>
+					<td>专题详情页</td>
+					<td>2</td>
+					<td>EventComponent（运营活动）</td>
+			</tr>
+	</tbody>
+</table></div>
+<blockquote>
+<p>新增页面时，<code>page_name</code> 跟产品对齐、全局唯一；活动类页面 <code>page_type</code> 统一填 <code>2</code>。</p>
+</blockquote>
+<hr>
+<h2 id="停留时长单位">停留时长单位
+</h2><ul>
+<li><code>LogTrack</code> 的 <code>duration</code> / <code>expose_duration</code>：<strong>毫秒</strong>（来自 <code>Date.now()</code> 差值）</li>
+<li><code>$tracker</code> 的 <code>duration_ms</code>：<strong>毫秒</strong>（名字里带 <code>_ms</code> 提醒）</li>
+<li><code>AudioSquare</code> 的 <code>play_duration</code>：<strong>秒</strong>（<code>audio.currentTime</code>，注意不是毫秒）</li>
+</ul>
+<blockquote>
+<p>填时长字段先确认单位，别把秒当毫秒报。</p>
+</blockquote>
+<hr>
+<h2 id="自检清单提交前过一遍">自检清单（提交前过一遍）
+</h2><ul>
+<li><input disabled="" type="checkbox"> <code>key1</code> 用了 <code>JSON.stringify</code>，没用 key2/key3</li>
+<li><input disabled="" type="checkbox"> <code>page_name</code> / <code>page_type</code> / <code>page_title</code> / <code>url</code> 都填了</li>
+<li><input disabled="" type="checkbox"> <code>click</code> 事件有 <code>module_name</code> + <code>item_name</code> + <code>btn_name</code></li>
+<li><input disabled="" type="checkbox"> <code>page</code> / <code>show</code> 的 <code>btn_name</code> 填 <code>-</code> 或空</li>
+<li><input disabled="" type="checkbox"> 双发场景 <code>duration_ms</code> / <code>duration</code> 别填反</li>
+<li><input disabled="" type="checkbox"> 埋点代码在业务动作<strong>之前</strong>，互不影响</li>
+<li><input disabled="" type="checkbox"> <code>$tracker</code> 事件名带 <code>sndd_hs_</code> 前缀</li>
+<li><input disabled="" type="checkbox"> 时长单位确认（毫秒 / 秒）</li>
+</ul>
+<hr>
+<p>← 上一篇 <a class="link" href="/p/tracking-points-map/" >埋点点位地图</a> ｜ 系列完</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/">前端工程</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/tracking-production/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">生产环境推荐实践</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-points-map/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">埋点点位地图</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-patterns/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">埋点的七种写法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-systems/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">三大埋点系统详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-intro/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">埋点入门：先搞懂埋点是什么</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
+</style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>

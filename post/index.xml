@@ -7,7 +7,2147 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>acye</copyright>
-        <lastBuildDate>Mon, 15 Jun 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 22 Aug 2026 15:00:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>生产环境推荐实践</title>
+        <link>https://ye-guan-xing.github.io/p/tracking-production/</link>
+        <pubDate>Sat, 22 Aug 2026 15:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/tracking-production/</guid>
+        <description>&lt;h1 id=&#34;生产环境推荐实践&#34;&gt;生产环境推荐实践
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;目标：教学 demo 用本地 console 模拟就够了，但&lt;strong&gt;真要上线&lt;/strong&gt;，研发该怎么做。这篇讲清楚：生产为什么接真实 SDK、好处是什么、前端和后端各自的责任、前后端怎么对齐口径。&lt;/p&gt;
+&lt;p&gt;面向：要把埋点从&amp;quot;能跑&amp;quot;推到&amp;quot;能分析、能信&amp;quot;的研发同学。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;教学模拟-vs-生产差在哪&#34;&gt;教学模拟 vs 生产，差在哪
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;维度&lt;/th&gt;
+					&lt;th&gt;本地 console 模拟（demo）&lt;/th&gt;
+					&lt;th&gt;生产真实接入&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;数据去哪&lt;/td&gt;
+					&lt;td&gt;控制台 / 页面面板&lt;/td&gt;
+					&lt;td&gt;埋点后台（神策 / 火山 / 自建）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;能分析吗&lt;/td&gt;
+					&lt;td&gt;不能，只是看一眼&lt;/td&gt;
+					&lt;td&gt;能出看板、漏斗、留存、路径&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;用户身份&lt;/td&gt;
+					&lt;td&gt;无&lt;/td&gt;
+					&lt;td&gt;uuid / user_pid，跨端跨会话识别&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;离开页送达&lt;/td&gt;
+					&lt;td&gt;模拟 flush&lt;/td&gt;
+					&lt;td&gt;真实网络，可能丢 → 要 &lt;code&gt;sendBeacon&lt;/code&gt; 兜底&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;环境隔离&lt;/td&gt;
+					&lt;td&gt;开关切换&lt;/td&gt;
+					&lt;td&gt;多套 appId / 域名 / 密钥&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;采样/限流&lt;/td&gt;
+					&lt;td&gt;无&lt;/td&gt;
+					&lt;td&gt;高流量场景必须&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;结论&lt;/strong&gt;：模拟只验证&amp;quot;机制对不对&amp;quot;；生产要解决&amp;quot;数据准不准、全不全、能不能用&amp;quot;。&lt;/p&gt;
+&lt;h2 id=&#34;生产为什么要接真实-sdk好处&#34;&gt;生产为什么要接真实 SDK（好处）
+&lt;/h2&gt;&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR
+    subgraph SDK能力[&amp;#34;成熟埋点 SDK 白送的能力&amp;#34;]
+        A1[&amp;#34;全埋点 PV&amp;lt;br/&amp;gt;路由切换自动记&amp;#34;]
+        A2[&amp;#34;用户唯一标识&amp;lt;br/&amp;gt;uuid 跨端跨会话&amp;#34;]
+        A3[&amp;#34;会话 &amp;amp; 来源链路&amp;lt;br/&amp;gt;refer_page_name&amp;#34;]
+        A4[&amp;#34;热力图 / 圈选&amp;lt;br/&amp;gt;运营自己圈元素分析&amp;#34;]
+        A5[&amp;#34;AB 实验&amp;lt;br/&amp;gt;分桶联动&amp;#34;]
+        A6[&amp;#34;设备/环境采集&amp;lt;br/&amp;gt;机型/版本/网络&amp;#34;]
+        A7[&amp;#34;离开页送达&amp;lt;br/&amp;gt;sendBeacon/beacon API&amp;#34;]
+        A8[&amp;#34;采样 &amp;amp; 限流&amp;lt;br/&amp;gt;扛高并发&amp;#34;]
+    end
+    SDK能力 --&amp;gt; B[&amp;#34;业务收益&amp;#34;]
+    B --&amp;gt; B1[&amp;#34;产品看漏斗/留存决策&amp;#34;]
+    B --&amp;gt; B2[&amp;#34;运营圈选优化布局&amp;#34;]
+    B --&amp;gt; B3[&amp;#34;数据团队建模分析&amp;#34;]
+
+    style SDK能力 fill:#1e2a3a,color:#fff,stroke:#4a90d9
+    style B fill:#2d4a6b,color:#fff,stroke:#4a90d9&lt;/pre&gt;
+
+&lt;p&gt;一句话：&lt;strong&gt;自研上报容易，但&amp;quot;用户是谁、从哪来、看了多久、丢没丢&amp;quot;这些工程问题，成熟 SDK 已经踩过坑&lt;/strong&gt;。生产接 SDK 是站在它肩膀上，不是重复造轮子。&lt;/p&gt;
+&lt;h2 id=&#34;生产数据流前端--后端--看板&#34;&gt;生产数据流（前端 → 后端 → 看板）
+&lt;/h2&gt;&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR
+    F[&amp;#34;前端 H5&amp;#34;] --&amp;gt;|&amp;#34;1 SDK 自动/手动上报&amp;#34;| G[&amp;#34;埋点网关&amp;lt;br/&amp;gt;(网关层)&amp;#34;]
+    G --&amp;gt;|&amp;#34;2 字段清洗/补全&amp;#34;| Q[&amp;#34;消息队列 Kafka&amp;#34;]
+    Q --&amp;gt;|&amp;#34;3 落库&amp;#34;| S[&amp;#34;数仓 / OLAP&amp;#34;]
+    S --&amp;gt; B1[&amp;#34;神策/火山看板&amp;#34;]
+    S --&amp;gt; B2[&amp;#34;BI 报表&amp;#34;]
+    S --&amp;gt; B3[&amp;#34;数据建模&amp;#34;]
+    F -.-&amp;gt;|&amp;#34;sendBeacon 兜底&amp;lt;br/&amp;gt;关页面/切后台&amp;#34;| G
+    style F fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style G fill:#3a5a3a,color:#fff,stroke:#5cb85c
+    style Q fill:#5a4a6b,color:#fff,stroke:#9a7acc
+    style S fill:#6b3a2d,color:#fff,stroke:#d9774a&lt;/pre&gt;
+
+&lt;h2 id=&#34;前端研发职责&#34;&gt;前端研发职责
+&lt;/h2&gt;&lt;h3 id=&#34;sdk-接入与初始化&#34;&gt;SDK 接入与初始化
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在入口文件创建实例、传入 appId / 上报域名 / 环境开关&lt;/li&gt;
+&lt;li&gt;环境隔离：生产 / 测试 / sim 用不同 appId，别把测试数据灌进生产&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;enableOutAPP&lt;/code&gt; 之类开关按需配，明确&amp;quot;App 内外行为差异&amp;quot;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;公共字段与开关统一管理&#34;&gt;公共字段与开关统一管理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;page_name&lt;/code&gt; / &lt;code&gt;page_type&lt;/code&gt; / &lt;code&gt;url&lt;/code&gt; 等公共字段抽成常量或封装函数，别散落各页面&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;key1&lt;/code&gt; 一律 &lt;code&gt;JSON.stringify&lt;/code&gt;，不开 key2/key3（见 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-fields/&#34; &gt;字段口径&lt;/a&gt;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;停留时长与离开页兜底&#34;&gt;停留时长与离开页兜底
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;心跳定时上报 + &lt;code&gt;visibilitychange&lt;/code&gt; 暂停/恢复 + &lt;code&gt;beforeDestroy&lt;/code&gt; flush（见 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-patterns/&#34; &gt;写法 G 心跳&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;生产关键&lt;/strong&gt;：离开页上报优先用 &lt;code&gt;navigator.sendBeacon()&lt;/code&gt;，比普通 XHR 更能在页面关闭时送达&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hidden&lt;/code&gt; 与 &lt;code&gt;pagehide&lt;/code&gt; 监听注意去重，避免同一次离开报两遍&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;不阻断业务&#34;&gt;不阻断业务
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;埋点调用排在业务动作之前，且 &lt;code&gt;try/catch&lt;/code&gt; 包裹或 SDK 内部吞异常&lt;/li&gt;
+&lt;li&gt;埋点挂了，用户操作必须照常&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;密钥与脱敏开源公开仓库时&#34;&gt;密钥与脱敏（开源/公开仓库时）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;appId、上报域名、密钥走环境变量（&lt;code&gt;.env.*&lt;/code&gt;），不硬编码进源码&lt;/li&gt;
+&lt;li&gt;开源仓库用占位值 + 文档说明，真实密钥只在 CI/部署注入&lt;/li&gt;
+&lt;li&gt;用户敏感信息（手机号、token）&lt;strong&gt;绝不&lt;/strong&gt;进埋点字段，&lt;code&gt;key1&lt;/code&gt; 里只放分析需要的业务 id&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;灰度与采样&#34;&gt;灰度与采样
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;新埋点先灰度小流量验证数据是否符合预期，再全量&lt;/li&gt;
+&lt;li&gt;高频事件（滚动、播放进度）考虑采样，别把网关打爆&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;自测&#34;&gt;自测
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;开 debug 开关，控制台确认每条事件字段完整、单位正确&lt;/li&gt;
+&lt;li&gt;对照需求文档逐条核对&amp;quot;该报的场景都报了&amp;quot;&lt;/li&gt;
+&lt;li&gt;新老口径双发时，确认 &lt;code&gt;duration_ms&lt;/code&gt; / &lt;code&gt;duration&lt;/code&gt; 没填反&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;后端研发职责&#34;&gt;后端研发职责
+&lt;/h2&gt;&lt;h3 id=&#34;接收网关&#34;&gt;接收网关
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;提供稳定上报接口，支持高并发；前端 SDK 直连或经业务网关转发&lt;/li&gt;
+&lt;li&gt;鉴权：校验来源合法性，防伪造刷量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;字段清洗与补全&#34;&gt;字段清洗与补全
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;前端缺的公共字段（IP、UA、地域、时间戳）在网关/消费侧补全&lt;/li&gt;
+&lt;li&gt;异常字段过滤：&lt;code&gt;page_name&lt;/code&gt; 为空、&lt;code&gt;key1&lt;/code&gt; 非法 JSON 等落&amp;quot;脏数据表&amp;quot;告警，别污染主表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;新老口径映射&#34;&gt;新老口径映射
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;前端双发（&lt;code&gt;$tracker&lt;/code&gt; 的 &lt;code&gt;duration_ms&lt;/code&gt; vs &lt;code&gt;LogTrack&lt;/code&gt; 的 &lt;code&gt;duration&lt;/code&gt;）在后端做归一映射，落库统一字段名&lt;/li&gt;
+&lt;li&gt;维护一份&amp;quot;事件名 → 业务含义&amp;quot;字典表，供数据同学查&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;去重与幂等&#34;&gt;去重与幂等
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;同一次离开可能因 &lt;code&gt;hidden&lt;/code&gt; + &lt;code&gt;pagehide&lt;/code&gt; 重复上报 → 后端按 &lt;code&gt;(session_id, event, timestamp 窗口)&lt;/code&gt; 去重&lt;/li&gt;
+&lt;li&gt;上报请求支持幂等键，防网络重试导致重复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;监控与告警&#34;&gt;监控与告警
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;上报量突增/突降告警（可能是 SDK 加载失败或页面白屏）&lt;/li&gt;
+&lt;li&gt;字段缺失率、脏数据率纳入监控&lt;/li&gt;
+&lt;li&gt;离开页事件送达率单独看（&lt;code&gt;sendBeacon&lt;/code&gt; 失败兜底统计）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;数据落库与查询&#34;&gt;数据落库与查询
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;落数仓 / OLAP，供神策、火山、自建 BI 查询&lt;/li&gt;
+&lt;li&gt;大表分区按天，冷热分层&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;前后端协作口径&#34;&gt;前后端协作口径
+&lt;/h2&gt;&lt;pre class=&#34;mermaid&#34;&gt;sequenceDiagram
+    participant FE as 前端
+    participant BE as 后端
+    participant DA as 数据/产品
+    DA-&amp;gt;&amp;gt;FE: 提埋点需求表(事件&amp;#43;字段)
+    FE-&amp;gt;&amp;gt;FE: 按口径实现&amp;#43;自测(debug)
+    FE-&amp;gt;&amp;gt;BE: 确认事件名/字段/单位
+    BE-&amp;gt;&amp;gt;BE: 网关接收&amp;#43;清洗&amp;#43;落库
+    FE-&amp;gt;&amp;gt;BE: 灰度验证数据
+    BE-&amp;gt;&amp;gt;DA: 看板/漏斗可用
+    DA-&amp;gt;&amp;gt;FE: 反馈口径问题/补埋&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;统一字典&lt;/strong&gt;：事件名、字段名、单位、枚举值前后端共用一份文档（项目对应埋点规格文档 / 报告页埋点规格文档）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;单位先行&lt;/strong&gt;：时长是毫秒还是秒，需求阶段就定死，别等数据对不上才查&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;变更走流程&lt;/strong&gt;：改字段名 / 加字段要同步更新字典 + 通知后端做映射，别前端单方面改&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;生产自检清单&#34;&gt;生产自检清单
+&lt;/h2&gt;&lt;p&gt;前端：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; appId / 密钥走 env，未硬编码&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 公共字段抽封装，&lt;code&gt;key1&lt;/code&gt; 已 stringify&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 离开页用 &lt;code&gt;sendBeacon&lt;/code&gt;，&lt;code&gt;hidden&lt;/code&gt;/&lt;code&gt;pagehide&lt;/code&gt; 去重&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 埋点 &lt;code&gt;try/catch&lt;/code&gt;，不阻断业务&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; debug 自测字段完整、单位正确&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 新埋点灰度后再全量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;后端：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 网关鉴权 + 限流&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 字段补全 + 脏数据过滤&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 新老口径归一映射&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 去重 / 幂等&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 上报量 / 送达率 / 脏数据率监控告警&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 事件字典表维护&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;← &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-fields/&#34; &gt;字段口径与 key1 规约&lt;/a&gt; ｜ 系列完 · demo 见 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/tracking-demo/&#34; &gt;demo&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>字段口径与 key1 规约</title>
+        <link>https://ye-guan-xing.github.io/p/tracking-fields/</link>
+        <pubDate>Sat, 22 Aug 2026 14:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/tracking-fields/</guid>
+        <description>&lt;h1 id=&#34;字段口径与-key1-规约&#34;&gt;字段口径与 key1 规约
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;目标：搞清 &lt;code&gt;LogTrack.track&lt;/code&gt; 的字段都什么意思、&lt;code&gt;key1&lt;/code&gt; 为什么要 &lt;code&gt;JSON.stringify&lt;/code&gt;、新老两套口径差在哪。这是新手最容易填错字段的地方。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;logtrack-标准字段表&#34;&gt;LogTrack 标准字段表
+&lt;/h2&gt;&lt;p&gt;一条 &lt;code&gt;LogTrack.track(obj, &#39;click&#39;)&lt;/code&gt; 的 &lt;code&gt;obj&lt;/code&gt; 用这些字段。&lt;strong&gt;前 4 个几乎每条都要填，后面按场景填&lt;/strong&gt;。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;字段&lt;/th&gt;
+					&lt;th&gt;类型&lt;/th&gt;
+					&lt;th&gt;含义&lt;/th&gt;
+					&lt;th&gt;示例&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;page_name&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;string&lt;/td&gt;
+					&lt;td&gt;页面中文名（业务定，全局唯一）&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;少年闻天下&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;page_type&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;number&lt;/td&gt;
+					&lt;td&gt;页面类型，本项目活动页统一 &lt;code&gt;2&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;2&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;page_title&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;string&lt;/td&gt;
+					&lt;td&gt;页面标题，一般同 page_name&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;少年闻天下&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;url&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;string&lt;/td&gt;
+					&lt;td&gt;当前页面地址&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;window.location.href&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;main_item_id&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;string&lt;/td&gt;
+					&lt;td&gt;主对象 id（点的是哪个课程 / 卡片）&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;item.chapterId&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;module_name&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;string&lt;/td&gt;
+					&lt;td&gt;页面内模块名&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;课程列表&lt;/code&gt;、&lt;code&gt;导航栏&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;item_name&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;string&lt;/td&gt;
+					&lt;td&gt;模块内项名&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;列表项&lt;/code&gt;、&lt;code&gt;返回按钮&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;btn_name&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;string&lt;/td&gt;
+					&lt;td&gt;按钮文案&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;立即订阅&lt;/code&gt;、&lt;code&gt;返回&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;key1&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;string&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;所有扩展细节，JSON 字符串&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;JSON.stringify({user_status, ...})&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;哪些字段属于哪类&#34;&gt;哪些字段属于哪类
+&lt;/h3&gt;&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR
+    subgraph 固定[&amp;#34;每条必填 / 页面级固定&amp;#34;]
+        F1[&amp;#34;page_name&amp;#34;]
+        F2[&amp;#34;page_type&amp;#34;]
+        F3[&amp;#34;page_title&amp;#34;]
+        F4[&amp;#34;url&amp;#34;]
+    end
+    subgraph 定位[&amp;#34;定位到具体元素&amp;#34;]
+        L1[&amp;#34;module_name 模块&amp;#34;]
+        L2[&amp;#34;item_name 项&amp;#34;]
+        L3[&amp;#34;btn_name 按钮&amp;#34;]
+        L4[&amp;#34;main_item_id 对象id&amp;#34;]
+    end
+    subgraph 扩展[&amp;#34;扩展细节&amp;#34;]
+        E1[&amp;#34;key1 = JSON.stringify(...)&amp;#34;]
+    end
+    style 固定 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style 定位 fill:#3a5a3a,color:#fff,stroke:#5cb85c
+    style 扩展 fill:#5a4a6b,color:#fff,stroke:#9a7acc&lt;/pre&gt;
+
+&lt;hr&gt;
+&lt;h2 id=&#34;key1-规约最重要&#34;&gt;key1 规约（最重要）
+&lt;/h2&gt;&lt;h3 id=&#34;规则&#34;&gt;规则
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;所有扩展字段，统一合并进 &lt;code&gt;key1&lt;/code&gt; 一个字段，用 &lt;code&gt;JSON.stringify&lt;/code&gt; 包成字符串。不再用 key2、key3。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这是项目维护者定的硬规约（见项目埋点规格文档开头）。&lt;/p&gt;
+&lt;h3 id=&#34;为什么这么做&#34;&gt;为什么这么做
+&lt;/h3&gt;&lt;p&gt;后台只认 &lt;code&gt;key1&lt;/code&gt; 一个扩展位，多个字段挤进去比开 key2/key3 更统一、更好解析。&lt;/p&gt;
+&lt;h3 id=&#34;正确写法&#34;&gt;正确写法
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;key1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;JSON&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;stringify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;user_status&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;member&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;// 用户状态
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;chapter_id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;item&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;chapterId&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;     &lt;span class=&#34;c1&#34;&gt;// 章节 id
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;is_free&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;                  &lt;span class=&#34;c1&#34;&gt;// 是否免费
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;list_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;free&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;              &lt;span class=&#34;c1&#34;&gt;// 列表类型
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;current_month&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;jump_url&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;jumpUrl&lt;/span&gt;               &lt;span class=&#34;c1&#34;&gt;// 跳转地址
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;错误写法别这样&#34;&gt;错误写法（别这样）
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// ❌ 用 key2、key3
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;key1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;JSON&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;stringify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;user_status&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;member&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}),&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;key2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;chapter_id&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;key3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;is_free&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// ❌ key1 不 stringify
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;key1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;user_status&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;member&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// ❌ 把扩展字段平铺到 obj 顶层
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;user_status&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;member&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;chapter_id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;123&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;module_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;课程列表&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;常见-key1-内部字段&#34;&gt;常见 key1 内部字段
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;字段&lt;/th&gt;
+					&lt;th&gt;含义&lt;/th&gt;
+					&lt;th&gt;常见值&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;user_status&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;用户状态&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;normal&lt;/code&gt; / &lt;code&gt;expired_member&lt;/code&gt; / &lt;code&gt;member&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;current_tab&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;当前 tab&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;knowledge&lt;/code&gt; / &lt;code&gt;material&lt;/code&gt; / &lt;code&gt;essay&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;list_type&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;列表类型&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;free&lt;/code&gt; / &lt;code&gt;all&lt;/code&gt; / &lt;code&gt;member&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;chapter_id&lt;/code&gt; / &lt;code&gt;course_id&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;内容 id&lt;/td&gt;
+					&lt;td&gt;-&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;is_free&lt;/code&gt; / &lt;code&gt;is_locked&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;是否免费 / 锁定&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;true&lt;/code&gt; / &lt;code&gt;false&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;current_month&lt;/code&gt; / &lt;code&gt;current_year&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;月份 / 年份&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;8&lt;/code&gt; / &lt;code&gt;2026&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;jump_url&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;跳转地址&lt;/td&gt;
+					&lt;td&gt;-&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;duration&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;停留时长（毫秒）&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;pageStayDuration&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;list_data&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;列表批量数据&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;[{id,title,publishTime}]&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;list_count&lt;/code&gt; / &lt;code&gt;page_index&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;列表条数 / 页码&lt;/td&gt;
+					&lt;td&gt;-&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;事件类型怎么选&#34;&gt;事件类型怎么选
+&lt;/h2&gt;&lt;pre class=&#34;mermaid&#34;&gt;flowchart TD
+    E[&amp;#34;发生了什么&amp;#34;] --&amp;gt; E1{&amp;#34;用户点了?&amp;#34;}
+    E1 -- 是 --&amp;gt; C[&amp;#34;click&amp;lt;br/&amp;gt;module_name / item_name / btn_name&amp;#34;]
+    E1 -- 否 --&amp;gt; E2{&amp;#34;东西展示出来了?&amp;#34;}
+    E2 -- 是 --&amp;gt; S[&amp;#34;show&amp;lt;br/&amp;gt;module_name / item_name&amp;#34;]
+    E2 -- 否 --&amp;gt; E3{&amp;#34;进页面 / 停留?&amp;#34;}
+    E3 -- 是 --&amp;gt; P[&amp;#34;page&amp;lt;br/&amp;gt;通常只填 page_* 和 key1&amp;#34;]
+    style C fill:#6b3a2d,color:#fff,stroke:#d9774a
+    style S fill:#3a5a3a,color:#fff,stroke:#5cb85c
+    style P fill:#2d4a6b,color:#fff,stroke:#4a90d9&lt;/pre&gt;
+
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;事件类型&lt;/th&gt;
+					&lt;th&gt;何时触发&lt;/th&gt;
+					&lt;th&gt;关键字段&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;page&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;mounted / created 后 / 停留心跳&lt;/td&gt;
+					&lt;td&gt;page_* + key1(duration)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;show&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;列表加载完 / 弹窗打开 / Banner 有数据&lt;/td&gt;
+					&lt;td&gt;module_name + item_name + key1&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;click&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;用户点击&lt;/td&gt;
+					&lt;td&gt;module_name + item_name + btn_name + key1&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;page&lt;/code&gt; 和 &lt;code&gt;show&lt;/code&gt; 时 &lt;code&gt;btn_name&lt;/code&gt; 一般填 &lt;code&gt;-&lt;/code&gt; 或空。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;新老两套口径双系统并行时&#34;&gt;新老两套口径（双系统并行时）
+&lt;/h2&gt;&lt;p&gt;在 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-patterns/&#34; &gt;写法 C 双系统&lt;/a&gt; 的 &lt;code&gt;commLog&lt;/code&gt; 场景里，同一条数据要发两套，&lt;strong&gt;字段名不一样&lt;/strong&gt;，新手填错就串台。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;&lt;/th&gt;
+					&lt;th&gt;② $tracker（火山，新口径）&lt;/th&gt;
+					&lt;th&gt;① LogTrack（神策+自研，老口径）&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;调用&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;this.$tracker(&#39;sndd_hs_xxx&#39;, payload)&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;LogTrack.track(payload, &#39;page&#39;)&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;事件标识&lt;/td&gt;
+					&lt;td&gt;事件名 &lt;code&gt;sndd_hs_page&lt;/code&gt; / &lt;code&gt;sndd_hs_show&lt;/code&gt; / &lt;code&gt;sndd_hs_click&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;事件类型 &lt;code&gt;page&lt;/code&gt; / &lt;code&gt;show&lt;/code&gt; / &lt;code&gt;click&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;页面停留时长字段&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;duration_ms&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;duration&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;模块曝光时长字段&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;duration_ms&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;expose_duration&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;页面名字段&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;page_name&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;page_name&lt;/code&gt; + &lt;code&gt;page_title&lt;/code&gt; + &lt;code&gt;page_type&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;是否带 url&lt;/td&gt;
+					&lt;td&gt;自动补 &lt;code&gt;window.location.href&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;需手填 &lt;code&gt;url&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;对照例子来自阅读诊断报告页&#34;&gt;对照例子（来自阅读诊断报告页）
+&lt;/h3&gt;&lt;p&gt;页面离开时双发：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// ② 新口径：火山
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$tracker&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;sndd_hs_page&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;阅读能力诊断和成长规划报告&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;userEvaluationId&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;duration_ms&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pageStayDuration&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// ← 注意是 duration_ms
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// ① 老口径：神策+自研
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;阅读能力诊断和成长规划报告&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_title&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;...&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;location&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;userEvaluationId&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;duration&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pageStayDuration&lt;/span&gt;           &lt;span class=&#34;c1&#34;&gt;// ← 注意是 duration
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;page&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;page_name--page_type-约定已知&#34;&gt;page_name / page_type 约定（已知）
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;page_name&lt;/th&gt;
+					&lt;th&gt;page_type&lt;/th&gt;
+					&lt;th&gt;出处&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;少年闻天下&lt;/td&gt;
+					&lt;td&gt;2&lt;/td&gt;
+					&lt;td&gt;newsSubscription&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;知识卡&lt;/td&gt;
+					&lt;td&gt;2&lt;/td&gt;
+					&lt;td&gt;knowledgeCard/index&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;知识卡详情&lt;/td&gt;
+					&lt;td&gt;2&lt;/td&gt;
+					&lt;td&gt;knowledgeCard/detail&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;阅读营给孩子的一封信&lt;/td&gt;
+					&lt;td&gt;2&lt;/td&gt;
+					&lt;td&gt;emailReport&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;阅读能力诊断和成长规划报告&lt;/td&gt;
+					&lt;td&gt;-&lt;/td&gt;
+					&lt;td&gt;readingDiagnosisReport&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;测评报告&lt;/td&gt;
+					&lt;td&gt;-&lt;/td&gt;
+					&lt;td&gt;stageEvaluationReport&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;专题详情页&lt;/td&gt;
+					&lt;td&gt;2&lt;/td&gt;
+					&lt;td&gt;EventComponent（运营活动）&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;新增页面时，&lt;code&gt;page_name&lt;/code&gt; 跟产品对齐、全局唯一；活动类页面 &lt;code&gt;page_type&lt;/code&gt; 统一填 &lt;code&gt;2&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;停留时长单位&#34;&gt;停留时长单位
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;LogTrack&lt;/code&gt; 的 &lt;code&gt;duration&lt;/code&gt; / &lt;code&gt;expose_duration&lt;/code&gt;：&lt;strong&gt;毫秒&lt;/strong&gt;（来自 &lt;code&gt;Date.now()&lt;/code&gt; 差值）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$tracker&lt;/code&gt; 的 &lt;code&gt;duration_ms&lt;/code&gt;：&lt;strong&gt;毫秒&lt;/strong&gt;（名字里带 &lt;code&gt;_ms&lt;/code&gt; 提醒）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;AudioSquare&lt;/code&gt; 的 &lt;code&gt;play_duration&lt;/code&gt;：&lt;strong&gt;秒&lt;/strong&gt;（&lt;code&gt;audio.currentTime&lt;/code&gt;，注意不是毫秒）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;填时长字段先确认单位，别把秒当毫秒报。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;自检清单提交前过一遍&#34;&gt;自检清单（提交前过一遍）
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;code&gt;key1&lt;/code&gt; 用了 &lt;code&gt;JSON.stringify&lt;/code&gt;，没用 key2/key3&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;code&gt;page_name&lt;/code&gt; / &lt;code&gt;page_type&lt;/code&gt; / &lt;code&gt;page_title&lt;/code&gt; / &lt;code&gt;url&lt;/code&gt; 都填了&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;code&gt;click&lt;/code&gt; 事件有 &lt;code&gt;module_name&lt;/code&gt; + &lt;code&gt;item_name&lt;/code&gt; + &lt;code&gt;btn_name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;code&gt;page&lt;/code&gt; / &lt;code&gt;show&lt;/code&gt; 的 &lt;code&gt;btn_name&lt;/code&gt; 填 &lt;code&gt;-&lt;/code&gt; 或空&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 双发场景 &lt;code&gt;duration_ms&lt;/code&gt; / &lt;code&gt;duration&lt;/code&gt; 别填反&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 埋点代码在业务动作&lt;strong&gt;之前&lt;/strong&gt;，互不影响&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; &lt;code&gt;$tracker&lt;/code&gt; 事件名带 &lt;code&gt;sndd_hs_&lt;/code&gt; 前缀&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; 时长单位确认（毫秒 / 秒）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;← 上一篇 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-points-map/&#34; &gt;埋点点位地图&lt;/a&gt; ｜ 系列完&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>埋点点位地图</title>
+        <link>https://ye-guan-xing.github.io/p/tracking-points-map/</link>
+        <pubDate>Sat, 22 Aug 2026 13:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/tracking-points-map/</guid>
+        <description>&lt;h1 id=&#34;埋点点位地图&#34;&gt;埋点点位地图
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;目标：&amp;ldquo;哪些地方埋了点&amp;rdquo;。按业务模块整理，给新手一张寻宝图。&lt;/p&gt;
+&lt;p&gt;统计口径：&lt;code&gt;LogTrack.track&lt;/code&gt; 调用点 ~40 个文件、&lt;code&gt;$tracker&lt;/code&gt; 调用点 ~20 个文件、&lt;code&gt;v-log&lt;/code&gt; 指令 ~13 个组件、&lt;code&gt;$timeTrack&lt;/code&gt; 2 处。下面按模块归类。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;模块全景&#34;&gt;模块全景
+&lt;/h2&gt;&lt;pre class=&#34;mermaid&#34;&gt;flowchart TB
+    subgraph 内容消费[&amp;#34;内容 / 课程消费&amp;#34;]
+        M1[&amp;#34;课程详情&amp;lt;br/&amp;gt;courseDetail&amp;lt;br/&amp;gt;newCourseDetail&amp;#34;]
+        M2[&amp;#34;课程视频&amp;lt;br/&amp;gt;courseVideo&amp;#34;]
+        M3[&amp;#34;音频播放&amp;lt;br/&amp;gt;AudioSquare&amp;#34;]
+        M4[&amp;#34;读书 newBook&amp;#34;]
+    end
+    subgraph 报告页[&amp;#34;报告页（埋点最复杂）&amp;#34;]
+        R1[&amp;#34;阅读信件&amp;lt;br/&amp;gt;emailReport&amp;#34;]
+        R2[&amp;#34;阅读能力诊断&amp;lt;br/&amp;gt;readingDiagnosisReport&amp;#34;]
+        R3[&amp;#34;阶段测评报告&amp;lt;br/&amp;gt;stageEvaluationReport&amp;#34;]
+    end
+    subgraph 运营活动[&amp;#34;运营活动&amp;#34;]
+        A1[&amp;#34;活动页框架&amp;lt;br/&amp;gt;_H5ActivityView&amp;#34;]
+        A2[&amp;#34;operateActivityV2&amp;#34;]
+        A3[&amp;#34;homeActivity&amp;#34;]
+    end
+    subgraph 新闻知识[&amp;#34;少年闻天下 / 知识卡&amp;#34;]
+        N1[&amp;#34;newsSubscription&amp;#34;]
+        N2[&amp;#34;knowledgeCard&amp;#34;]
+    end
+    subgraph 用户增长[&amp;#34;用户增长&amp;#34;]
+        U1[&amp;#34;signinActivity 签到&amp;#34;]
+        U2[&amp;#34;fission 裂变&amp;#34;]
+        U3[&amp;#34;inviteCoupon 邀请券&amp;#34;]
+        U4[&amp;#34;medalShare 勋章&amp;#34;]
+    end
+    subgraph 其它[&amp;#34;其它&amp;#34;]
+        O1[&amp;#34;App.vue 全局&amp;#34;]
+        O2[&amp;#34;h5Reg 注册&amp;#34;]
+        O3[&amp;#34;telCodeInput 验证码&amp;#34;]
+    end
+
+    style 报告页 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style 运营活动 fill:#3a5a3a,color:#fff,stroke:#5cb85c
+    style 新闻知识 fill:#5a4a6b,color:#fff,stroke:#9a7acc&lt;/pre&gt;
+
+&lt;hr&gt;
+&lt;h2 id=&#34;全局入口&#34;&gt;全局入口
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;位置&lt;/th&gt;
+					&lt;th&gt;写法&lt;/th&gt;
+					&lt;th&gt;点位&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;App 根组件&lt;/td&gt;
+					&lt;td&gt;F autoTrack&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;LogTrack.track({}, &#39;autoTrack&#39;, true, routes)&lt;/code&gt; 全路由自动曝光&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;App 根组件&lt;/td&gt;
+					&lt;td&gt;$timeTrack&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;appCreated&lt;/code&gt;、&lt;code&gt;appMounted&lt;/code&gt; 性能计时&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;入口 main.js&lt;/td&gt;
+					&lt;td&gt;初始化&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;logTrackFactory&lt;/code&gt; → &lt;code&gt;$tracker&lt;/code&gt;（火山实例）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;公共导入模块&lt;/td&gt;
+					&lt;td&gt;初始化&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;LogTrack.config().init()&lt;/code&gt;、&lt;code&gt;$timeTrack&lt;/code&gt; 注册&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;报告页模块埋点最复杂&#34;&gt;报告页模块（埋点最复杂）
+&lt;/h2&gt;&lt;p&gt;这三个页面是全项目埋点最重的，都用了 &lt;strong&gt;C 双系统并行 + G 停留时长心跳&lt;/strong&gt;，部分还带模块曝光时长。&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;页面&lt;/th&gt;
+					&lt;th&gt;写法&lt;/th&gt;
+					&lt;th&gt;事件&lt;/th&gt;
+					&lt;th&gt;说明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;阅读信件报告页&lt;/td&gt;
+					&lt;td&gt;C + G&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_page&lt;/code&gt;、&lt;code&gt;sndd_hs_bottom_show&lt;/code&gt;、&lt;code&gt;page&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;心跳 3s、&lt;code&gt;visibilitychange&lt;/code&gt;、滚动到底上报&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;阅读诊断报告页&lt;/td&gt;
+					&lt;td&gt;C + G&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_page/show&lt;/code&gt;、&lt;code&gt;page/show&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;11 个模块曝光时长，详见报告页埋点规格文档&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;阶段测评报告页&lt;/td&gt;
+					&lt;td&gt;C + G&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_page/show/click&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;4 模块曝光，见报告页埋点规格文档&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;简化版报告页&lt;/td&gt;
+					&lt;td&gt;C&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_*&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;简化版报告&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;已有规格文档：报告页埋点规格文档（讲透时长 / 曝光 / 离开时机，强烈推荐先读）。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;少年闻天下--知识卡模块&#34;&gt;少年闻天下 / 知识卡模块
+&lt;/h2&gt;&lt;p&gt;已有规格文档：项目埋点规格文档。落地代码：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;页面&lt;/th&gt;
+					&lt;th&gt;写法&lt;/th&gt;
+					&lt;th&gt;调用点数&lt;/th&gt;
+					&lt;th&gt;事件&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;少年闻天下订阅页&lt;/td&gt;
+					&lt;td&gt;A 直接调&lt;/td&gt;
+					&lt;td&gt;23&lt;/td&gt;
+					&lt;td&gt;page / show / click 全覆盖&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;知识卡页面&lt;/td&gt;
+					&lt;td&gt;B this.track 封装&lt;/td&gt;
+					&lt;td&gt;~9&lt;/td&gt;
+					&lt;td&gt;page / show / click&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;知识卡详情页&lt;/td&gt;
+					&lt;td&gt;B this.track 封装&lt;/td&gt;
+					&lt;td&gt;~3&lt;/td&gt;
+					&lt;td&gt;page / click&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;事件覆盖：页面曝光、课程列表批量曝光、返回、Tab 切换、订阅 / 续费、课程项点击、月份 / 年份筛选、百宝箱、推荐课程、续费弹窗、Banner 等。详见项目埋点规格文档。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;课程--内容消费模块&#34;&gt;课程 / 内容消费模块
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;页面&lt;/th&gt;
+					&lt;th&gt;写法&lt;/th&gt;
+					&lt;th&gt;点位&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;课程详情页&lt;/td&gt;
+					&lt;td&gt;A + D v-log&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;ev__course_detail_play&lt;/code&gt; 播放点击&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;新版课程详情页&lt;/td&gt;
+					&lt;td&gt;A + D evLogTrack&lt;/td&gt;
+					&lt;td&gt;课程详情曝光 / 播放&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;课程视频页&lt;/td&gt;
+					&lt;td&gt;A + D evLogTrack&lt;/td&gt;
+					&lt;td&gt;视频页曝光 / 播放&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;课程计划页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;课程计划&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;音频广场组件&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_knowledge_publishing_course_play&lt;/code&gt; 音频播放时长&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;视频组件&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;LogTrack.track(this.evLogTrack, &#39;page&#39;)&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;音频组件&lt;/td&gt;
+					&lt;td&gt;D v-log&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;v-log:click.ev__click&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;读书页&lt;/td&gt;
+					&lt;td&gt;A + D evLogTrack&lt;/td&gt;
+					&lt;td&gt;读书页&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;免费音频课页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;免费音频课&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;音频 / 视频播放时长统一走 &lt;strong&gt;② $tracker&lt;/strong&gt;（火山），因为要和 App 原生播放埋点对齐。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;运营活动模块&#34;&gt;运营活动模块
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;页面&lt;/th&gt;
+					&lt;th&gt;写法&lt;/th&gt;
+					&lt;th&gt;点位&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;活动页事件组件&lt;/td&gt;
+					&lt;td&gt;E 配置驱动&lt;/td&gt;
+					&lt;td&gt;按后台配置 &lt;code&gt;eventType&lt;/code&gt; 自动 &lt;code&gt;LogTrack.track&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;运营活动页&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_h5_campaign_view&lt;/code&gt;、&lt;code&gt;sndd_hs_sy_page_view&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;活动宣传组件&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_h5_info_click&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;底部活动按钮组件&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_h5_campaign_click&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;弹窗组件&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;弹窗点击&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;订阅广场组件&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;订阅广场&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;订阅包组件&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;订阅包&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;首页活动页&lt;/td&gt;
+					&lt;td&gt;A + $timeTrack&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;homeActivityMounted&lt;/code&gt;、&lt;code&gt;homeActivityPageDataLoad&lt;/code&gt; 性能&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;运营活动大量用 &lt;strong&gt;② $tracker&lt;/strong&gt;，事件名带 &lt;code&gt;h5_campaign&lt;/code&gt; / &lt;code&gt;h5_info&lt;/code&gt; 前缀。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;用户增长模块&#34;&gt;用户增长模块
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;页面&lt;/th&gt;
+					&lt;th&gt;写法&lt;/th&gt;
+					&lt;th&gt;点位&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;签到活动页&lt;/td&gt;
+					&lt;td&gt;A + ② $tracker&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_click&lt;/code&gt; 签到点击&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;签到视频列表组件&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_click&lt;/code&gt;、&lt;code&gt;sndd_hs_show&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;签到成功组件&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_show&lt;/code&gt; 签到成功&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;裂变页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;裂变页&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;兑换课程页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;12 处 click&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;领礼物页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;领礼物&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;券成功页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;券成功&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;好友助力页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;好友助力&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;勋章分享页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;勋章分享&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;邀请吃饭页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;4 处&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;邀请有礼页（含分享/任务栏组件）&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;邀请有礼&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;新签到任务页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;新签到任务&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;训练营--实体勋章模块&#34;&gt;训练营 / 实体勋章模块
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;页面&lt;/th&gt;
+					&lt;th&gt;写法&lt;/th&gt;
+					&lt;th&gt;点位&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;训练营消息群页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;3 处&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;训练营新群提示页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;2 处&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;训练营群提示页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;1 处&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;训练营简化结果页&lt;/td&gt;
+					&lt;td&gt;A + classKey&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;camp_config&lt;/code&gt; 远程配置&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;训练营简化阅读报告页&lt;/td&gt;
+					&lt;td&gt;A + classKey&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;camp_config&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;训练营短信二维码页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;3 处&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;实体勋章页系列（首页/详情/成功/好友/营地）&lt;/td&gt;
+					&lt;td&gt;A + ② $tracker&lt;/td&gt;
+					&lt;td&gt;勋章页系列&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;classKey: &#39;camp_config&#39;&lt;/code&gt; 是远程配置开关，控制是否开全埋点 / 热力图圈选（详见 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-systems/&#34; &gt;三大埋点系统 ②&lt;/a&gt;）。其它 classKey：&lt;code&gt;h5_exhibition_config&lt;/code&gt;、&lt;code&gt;LISTENING_CARD&lt;/code&gt;、&lt;code&gt;mall&lt;/code&gt;、&lt;code&gt;h5_review&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;其它组件&#34;&gt;其它组件
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;组件&lt;/th&gt;
+					&lt;th&gt;写法&lt;/th&gt;
+					&lt;th&gt;点位&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;注册组件&lt;/td&gt;
+					&lt;td&gt;A + D v-log&lt;/td&gt;
+					&lt;td&gt;注册流程&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;验证码输入组件&lt;/td&gt;
+					&lt;td&gt;A + D v-log&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;获取验证码&lt;/code&gt;、&lt;code&gt;立即领取&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;留言项组件&lt;/td&gt;
+					&lt;td&gt;D v-log&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;点赞&lt;/code&gt;、&lt;code&gt;取消点赞&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;留言组件&lt;/td&gt;
+					&lt;td&gt;D v-log&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;写留言&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;答题组件（含弹窗）&lt;/td&gt;
+					&lt;td&gt;D v-log&lt;/td&gt;
+					&lt;td&gt;答题&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;抢音频组件&lt;/td&gt;
+					&lt;td&gt;D v-log&lt;/td&gt;
+					&lt;td&gt;抢音频&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;标签页组件&lt;/td&gt;
+					&lt;td&gt;D v-log&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;ev__course_detail_view&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;领礼物按钮组件&lt;/td&gt;
+					&lt;td&gt;D v-log&lt;/td&gt;
+					&lt;td&gt;领礼物按钮&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;课程按钮组件&lt;/td&gt;
+					&lt;td&gt;D v-log&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;ev__course_detail_play&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;每日问答页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;12 处（每日问答）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;免费券页&lt;/td&gt;
+					&lt;td&gt;A&lt;/td&gt;
+					&lt;td&gt;免费券&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;AI 挑战页（含图片组件）&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;AI 挑战&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;AI 工具页（含课程列表等）&lt;/td&gt;
+					&lt;td&gt;② $tracker + A&lt;/td&gt;
+					&lt;td&gt;AI 工具页&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;新报告页&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;新报告&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;自动召回课程页&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;自动召回课程&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;对话 bot 混入&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;对话 bot&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;会员卡逻辑&lt;/td&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;会员卡 &lt;code&gt;sndd_hs_${event}&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;已有埋点文档清单&#34;&gt;已有埋点文档清单
+&lt;/h2&gt;&lt;p&gt;接手前，先读这两份既有规格文档（项目维护者写的，比本系列更细）：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;文档&lt;/th&gt;
+					&lt;th&gt;内容&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;项目埋点规格文档&lt;/td&gt;
+					&lt;td&gt;少年闻天下 + 知识卡 列表 / 详情页全量埋点字段表&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;报告页埋点规格文档&lt;/td&gt;
+					&lt;td&gt;报告页时长 / 模块曝光 / 离开时机 / 新老口径差异 / 注意点&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;p&gt;下一篇 → &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-fields/&#34; &gt;字段口径与 key1 规约&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>埋点的七种写法</title>
+        <link>https://ye-guan-xing.github.io/p/tracking-patterns/</link>
+        <pubDate>Sat, 22 Aug 2026 12:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/tracking-patterns/</guid>
+        <description>&lt;h1 id=&#34;埋点的七种写法&#34;&gt;埋点的七种写法
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;目标：项目里&amp;quot;埋点代码&amp;quot;有七种不同写法。读完这篇你能认出每一种，知道它解决什么问题、照着抄就行。&lt;/p&gt;
+&lt;p&gt;先记一句话：&lt;strong&gt;七种写法只是&amp;quot;怎么调&amp;quot;的不同，背后最终都落到 ① LogTrack 或 ② $tracker 上&lt;/strong&gt;（见 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-systems/&#34; &gt;三大埋点系统&lt;/a&gt;）。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;flowchart TB
+    ROOT[&amp;#34;业务页面要埋点&amp;#34;] --&amp;gt; P1[&amp;#34;A 直接调 LogTrack.track&amp;#34;]
+    ROOT --&amp;gt; P2[&amp;#34;B 组件内封一层 this.track&amp;#34;]
+    ROOT --&amp;gt; P3[&amp;#34;C 双系统并行 commLog&amp;#34;]
+    ROOT --&amp;gt; P4[&amp;#34;D v-log 指令声明式&amp;#34;]
+    ROOT --&amp;gt; P5[&amp;#34;E EventComponent 配置驱动&amp;#34;]
+    ROOT --&amp;gt; P6[&amp;#34;F autoTrack 路由自动&amp;#34;]
+    ROOT --&amp;gt; P7[&amp;#34;G 停留时长心跳&amp;#34;]
+    P1 --&amp;gt; S1[&amp;#34;LogTrack&amp;#34;]
+    P2 --&amp;gt; S1
+    P3 --&amp;gt; S1
+    P3 --&amp;gt; S2[&amp;#34;$tracker&amp;#34;]
+    P4 --&amp;gt; S1
+    P5 --&amp;gt; S1
+    P6 --&amp;gt; S1
+    P7 --&amp;gt; S1
+    P7 --&amp;gt; S2
+    style S1 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style S2 fill:#6b3a2d,color:#fff,stroke:#d9774a
+    style ROOT fill:#1e2a3a,color:#fff,stroke:#4a90d9&lt;/pre&gt;
+
+&lt;hr&gt;
+&lt;h2 id=&#34;a--直接调-logtracktrack&#34;&gt;A · 直接调 &lt;code&gt;LogTrack.track&lt;/code&gt;
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;最常见&lt;/strong&gt;，90% 的页面就用这一种。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;@/utils&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 点击返回
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;少年闻天下&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;page_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;page_title&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;少年闻天下&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;location&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;module_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;导航栏&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;item_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;返回按钮&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;btn_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;返回&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;key1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;JSON&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;stringify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;user_status&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;member&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;click&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;特征&lt;/strong&gt;：每次埋点手写完整字段，调 &lt;code&gt;LogTrack.track(obj, eventType)&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;代表文件&lt;/strong&gt;：少年闻天下订阅页（一个文件 23 处）、兑换课程页（12 处）、每日问答页（12 处）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适用&lt;/strong&gt;：埋点不多的页面，直接写最清楚。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;b--组件内封一层-thistrack&#34;&gt;B · 组件内封一层 &lt;code&gt;this.track&lt;/code&gt;
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;：一个页面有十几个埋点，每次都写 &lt;code&gt;page_name/page_type/page_title/url&lt;/code&gt; 太啰嗦，改一处要改十几处。
+&lt;strong&gt;解法&lt;/strong&gt;：在组件里封一个 &lt;code&gt;track&lt;/code&gt; 方法，把公共字段固定下来，只传变化的部分。&lt;/p&gt;
+&lt;p&gt;知识卡页面组件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;methods&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;// 通用埋点：公共字段写死，扩展数据合并进 key1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;extra&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{},&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;eventType&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;click&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nx&#34;&gt;page_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;知识卡&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nx&#34;&gt;page_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nx&#34;&gt;page_title&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;知识卡&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nx&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;location&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nx&#34;&gt;main_item_id&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nx&#34;&gt;key1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;JSON&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;stringify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nx&#34;&gt;user_status&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;userStatus&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;normal&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;extra&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;key1Data&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// 变化的细节塞这
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;p&#34;&gt;}),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;extra&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;other&lt;/span&gt;              &lt;span class=&#34;c1&#34;&gt;// module_name/item_name/btn_name 塞这
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;eventType&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;goToBack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nx&#34;&gt;other&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;module_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;导航栏&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;item_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;返回按钮&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;btn_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;返回&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;特征&lt;/strong&gt;：&lt;code&gt;this.track({ other: {...}, key1Data: {...} }, &#39;click&#39;)&lt;/code&gt;，把字段拆成&amp;quot;固定的&amp;quot;和&amp;quot;变化的&amp;quot;两层。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适用&lt;/strong&gt;：单页面埋点 ≥ 5 处，字段重复多。知识卡列表页、知识卡详情页都用这种。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;c--双系统并行-commlog&#34;&gt;C · 双系统并行 &lt;code&gt;commLog&lt;/code&gt;
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;：同一个行为，业务方要求&lt;strong&gt;同时&lt;/strong&gt;进神策/自研（老口径）和火山（新口径）两套后台。
+&lt;strong&gt;解法&lt;/strong&gt;：封一个方法，里面同时调 &lt;code&gt;LogTrack.track&lt;/code&gt; 和 &lt;code&gt;$tracker&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;阅读信件报告页：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;commLog&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;event&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;options&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;config&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;options&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;// ① 发火山（新口径，事件名 sndd_hs_xxx）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$tracker&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;sndd_hs_&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;event&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getTrackerBaseData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;config&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;trackerData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;// ② 发神策+自研（老口径，事件类型 page/show/click）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;Object&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;assign&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({},&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;getLogTrackBaseData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;config&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;logData&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;key1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;JSON&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;stringify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;cm&#34;&gt;/* ... */&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}),&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;event&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;特征&lt;/strong&gt;：一个方法里两行上报，&lt;code&gt;$tracker&lt;/code&gt; + &lt;code&gt;LogTrack.track&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：两套口径字段名可能不同（详见 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-fields/&#34; &gt;字段口径&lt;/a&gt;），比如时长在 &lt;code&gt;$tracker&lt;/code&gt; 里叫 &lt;code&gt;duration_ms&lt;/code&gt;，在 &lt;code&gt;LogTrack&lt;/code&gt; 里叫 &lt;code&gt;duration&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;代表文件&lt;/strong&gt;：阅读信件报告页、阅读诊断报告页、阶段测评报告页。这三个是本项目埋点最复杂的页面。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;d--v-log-指令声明式埋点&#34;&gt;D · &lt;code&gt;v-log&lt;/code&gt; 指令声明式埋点
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;：按钮太多，每个 &lt;code&gt;@click&lt;/code&gt; 里写 &lt;code&gt;LogTrack.track&lt;/code&gt; 太烦，还容易和业务逻辑混在一起。
+&lt;strong&gt;解法&lt;/strong&gt;：用 &lt;code&gt;v-log&lt;/code&gt; 指令，写在模板上，点一下自动埋点。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;&amp;lt;!-- 点这个按钮自动上报 click --&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;button&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;v-fastclick&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;sendCode&amp;#34;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;v-log:click&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;{ ...log, name: &amp;#39;获取验证码&amp;#39; }&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;获取验证码&lt;span class=&#34;p&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;button&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;带 &lt;code&gt;ev__&lt;/code&gt; 修饰符可指定事件名：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;div&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;v-log:click&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;na&#34;&gt;ev__course_detail_play&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;evLogTrack&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;div&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;它怎么工作的&#34;&gt;它怎么工作的
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;v-log&lt;/code&gt; 由基础组件库的 &lt;code&gt;vueExtends/log.js&lt;/code&gt; 注册。原理：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR
+    A[&amp;#34;v-log:click={...} 写在模板&amp;#34;] --&amp;gt; B[&amp;#34;指令把数据存到 dom.dataset.igc_log&amp;#34;]
+    B --&amp;gt; C[&amp;#34;document.body 监听 click 冒泡&amp;#34;]
+    C --&amp;gt; D[&amp;#34;点击时找到带 igc_log 的元素&amp;#34;]
+    D --&amp;gt; E[&amp;#34;内部调 LogTrack.track()&amp;#34;]
+    style E fill:#2d4a6b,color:#fff,stroke:#4a90d9&lt;/pre&gt;
+
+&lt;p&gt;即：&lt;strong&gt;v-log 最终也是调 LogTrack&lt;/strong&gt;，只是把埋点从 JS 搬到了模板上。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;代表文件&lt;/strong&gt;：验证码输入组件、留言项组件、课程按钮组件、音频组件、课程详情页、注册组件、领礼物按钮组件。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适用&lt;/strong&gt;：纯点击埋点、不想污染业务方法。注意它依赖 &lt;code&gt;v-fastclick&lt;/code&gt;，且 &lt;code&gt;&amp;lt;a&amp;gt;/&amp;lt;input&amp;gt;/&amp;lt;button&amp;gt;&lt;/code&gt; 标签会被自动识别。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;e--eventcomponent-配置驱动埋点&#34;&gt;E · EventComponent 配置驱动埋点
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;：运营活动页的组件是&lt;strong&gt;后台配置出来的&lt;/strong&gt;（按钮文案、跳转、事件都由接口返回），写死埋点不现实。
+&lt;strong&gt;解法&lt;/strong&gt;：用一个通用 &lt;code&gt;EventComponent&lt;/code&gt;，根据配置里的 &lt;code&gt;eventType&lt;/code&gt; 自动埋点。&lt;/p&gt;
+&lt;p&gt;活动页事件组件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;trackEvent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;eventType&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;trackObj&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;page_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;专题详情页&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;page_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;page_title&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$parent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;activityName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;item_index&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$parent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;main_item_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;活动&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;componentType&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;===&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;button&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;trackObj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;btn_name&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$parent&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;btnTxt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;trackObj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// ← 配置驱动，自动上报
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;特征&lt;/strong&gt;：埋点字段从 &lt;code&gt;this.$parent&lt;/code&gt;（父组件 = 后台配置）取，不写死。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适用&lt;/strong&gt;：运营活动体系，组件由配置渲染的场景。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;f--autotrack-路由自动曝光&#34;&gt;F · &lt;code&gt;autoTrack&lt;/code&gt; 路由自动曝光
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;：每个页面进都手动写一次 &lt;code&gt;page&lt;/code&gt; 曝光太容易漏。
+&lt;strong&gt;解法&lt;/strong&gt;：App 启动时一次性把所有路由注册进自动曝光。&lt;/p&gt;
+&lt;p&gt;App 根组件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;created&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;routes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;options&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;routes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({},&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;autoTrack&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;routes&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// ← 全路由自动 page 曝光
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$timeTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;appCreated&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;特征&lt;/strong&gt;：&lt;code&gt;LogTrack.track({}, &#39;autoTrack&#39;, true, routes)&lt;/code&gt;，第 3、4 个参数是 autoTrack 专用。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;背后&lt;/strong&gt;：神策全埋点，事件 &lt;code&gt;sndd_sensor_autoTrack&lt;/code&gt;，切路由自动发页面访问日志，还带 &lt;code&gt;refer_page_name&lt;/code&gt;（来源页）链路。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：&lt;strong&gt;只在 App 根组件调一次&lt;/strong&gt;，业务页面不要重复调。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;g--停留时长心跳&#34;&gt;G · 停留时长心跳
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;：想知道用户在页面待了多久，但用户可能切后台、可能直接关页面，单一时机抓不准。
+&lt;strong&gt;解法&lt;/strong&gt;：定时心跳 + 可见性监听 + 离开兜底。&lt;/p&gt;
+&lt;p&gt;阅读信件报告页是参考实现，核心三个方法：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;flowchart TB
+    M[&amp;#34;mounted → initStayTrack()&amp;#34;] --&amp;gt; H[&amp;#34;启动 3 秒心跳定时器&amp;#34;]
+    H --&amp;gt; F[&amp;#34;flushStayTrack() 每 3 秒上报一次 duration 并重置&amp;#34;]
+    V[&amp;#34;visibilitychange&amp;#34;] --&amp;gt; Hid{&amp;#34;页面隐藏?&amp;#34;}
+    Hid -- 是 --&amp;gt; P[&amp;#34;暂停计时 &amp;#43; 立即上报一轮&amp;#34;]
+    Hid -- 否 --&amp;gt; R[&amp;#34;恢复计时 &amp;#43; 重启心跳&amp;#34;]
+    D[&amp;#34;beforeDestroy&amp;#34;] --&amp;gt; F2[&amp;#34;最后一次 flushStayTrack 上报&amp;#34;]
+    style F fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style P fill:#5a3a3a,color:#fff,stroke:#d9534f
+    style F2 fill:#3a5a3a,color:#fff,stroke:#5cb85c&lt;/pre&gt;
+
+&lt;p&gt;关键代码骨架：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;data&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;pageStayDuration&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;// 累计停留毫秒
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;pageVisibleStartTime&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;      &lt;span class=&#34;c1&#34;&gt;// 本轮可见开始时间
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;stayTrackHeartbeatTimer&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;null&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 心跳定时器
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;mounted&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;cm&#34;&gt;/* ... */&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$nextTick&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;initStayTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;());&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;beforeDestroy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;flushStayTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;cm&#34;&gt;/* 最后一次上报 */&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;methods&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;initStayTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;restartStayTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;addEventListener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;visibilitychange&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;handleTrackVisibilityChange&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;startStayTrackHeartbeat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;stayTrackHeartbeatTimer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;setTimeout&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;flushStayTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;resetAfterFlush&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;continueHeartbeat&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;                     &lt;span class=&#34;c1&#34;&gt;// ← 每 3 秒
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;flushStayTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;options&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pausePageDuration&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;     &lt;span class=&#34;c1&#34;&gt;// 把当前可见段累加进 pageStayDuration
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;pageStayDuration&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;c1&#34;&gt;// 双系统上报时长
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$tracker&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;sndd_hs_page&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;cm&#34;&gt;/* ..., duration_ms */&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;cm&#34;&gt;/* ..., key1: {duration} */&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;page&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;options&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;resetAfterFlush&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;resetStayTrackState&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;options&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;continueHeartbeat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;startStayTrackHeartbeat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;handleTrackVisibilityChange&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;hidden&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;stopStayTrackHeartbeat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;flushStayTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;resetAfterFlush&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;});&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;resumePageDuration&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;startStayTrackHeartbeat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;特征&lt;/strong&gt;：&lt;code&gt;pageStayDuration&lt;/code&gt; + &lt;code&gt;pageVisibleStartTime&lt;/code&gt; 两个变量管计时，&lt;code&gt;visibilitychange&lt;/code&gt; 管切后台，&lt;code&gt;beforeDestroy&lt;/code&gt; 兜底。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;代表文件&lt;/strong&gt;：阅读信件报告页、阅读诊断报告页、阶段测评报告页。后两个还多了&lt;strong&gt;模块曝光时长&lt;/strong&gt;（每个模块进视口开始计时、离开累加）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适用&lt;/strong&gt;：需要统计&amp;quot;用户看了多久&amp;quot;的报告页 / 内容页。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;速查我该用哪种&#34;&gt;速查：我该用哪种？
+&lt;/h2&gt;&lt;pre class=&#34;mermaid&#34;&gt;flowchart TD
+    Q[&amp;#34;要埋点&amp;#34;] --&amp;gt; Q1{&amp;#34;纯点击按钮?&amp;#34;}
+    Q1 -- 是 --&amp;gt; D[&amp;#34;D · v-log 指令&amp;#34;]
+    Q1 -- 否 --&amp;gt; Q2{&amp;#34;运营活动配置页?&amp;#34;}
+    Q2 -- 是 --&amp;gt; E[&amp;#34;E · EventComponent&amp;#34;]
+    Q2 -- 否 --&amp;gt; Q3{&amp;#34;要统计停留时长?&amp;#34;}
+    Q3 -- 是 --&amp;gt; G[&amp;#34;G · 心跳&amp;#34;]
+    Q3 -- 否 --&amp;gt; Q4{&amp;#34;需求点名要 sndd_hs_xxx?&amp;#34;}
+    Q4 -- 是 --&amp;gt; Q5{&amp;#34;同时要老口径?&amp;#34;}
+    Q5 -- 是 --&amp;gt; C[&amp;#34;C · commLog 双发&amp;#34;]
+    Q5 -- 否 --&amp;gt; T2[&amp;#34;② $tracker&amp;#34;]
+    Q4 -- 否 --&amp;gt; Q6{&amp;#34;页面埋点 ≥5 处?&amp;#34;}
+    Q6 -- 是 --&amp;gt; B[&amp;#34;B · this.track 封装&amp;#34;]
+    Q6 -- 否 --&amp;gt; A[&amp;#34;A · 直接 LogTrack.track&amp;#34;]
+    style A fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style B fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style D fill:#2d4a6b,color:#fff,stroke:#4a90d9&lt;/pre&gt;
+
+&lt;hr&gt;
+&lt;p&gt;下一篇 → &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-points-map/&#34; &gt;埋点点位地图&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>三大埋点系统详解</title>
+        <link>https://ye-guan-xing.github.io/p/tracking-systems/</link>
+        <pubDate>Sat, 22 Aug 2026 11:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/tracking-systems/</guid>
+        <description>&lt;h1 id=&#34;三大埋点系统详解&#34;&gt;三大埋点系统详解
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;目标：搞清每套系统的来源、初始化位置、调用 API、在什么环境生效、什么时候该用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;全景图&#34;&gt;全景图
+&lt;/h2&gt;&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR
+    subgraph 初始化[&amp;#34;初始化位置&amp;#34;]
+        C1[&amp;#34;公共导入模块&amp;lt;br/&amp;gt;LogTrack.config().init()&amp;lt;br/&amp;gt;$timeTrack = logTimeTrack&amp;#34;]
+        C2[&amp;#34;入口 main.js&amp;lt;br/&amp;gt;logTrackFactory() → $tracker&amp;#34;]
+    end
+    subgraph SDK[&amp;#34;三套系统&amp;#34;]
+        S1[&amp;#34;① LogTrack&amp;lt;br/&amp;gt;基础组件库&amp;#34;]
+        S2[&amp;#34;② log-track 实例&amp;lt;br/&amp;gt;log-track-sdk → $tracker&amp;#34;]
+        S3[&amp;#34;③ logTimeTrack&amp;lt;br/&amp;gt;基础组件库 → $timeTrack&amp;#34;]
+    end
+    C1 --&amp;gt; S1
+    C1 --&amp;gt; S3
+    C2 --&amp;gt; S2
+    S1 --&amp;gt; R1[&amp;#34;神策 Sensors &amp;#43; 自研日志&amp;#34;]
+    S2 --&amp;gt; R2[&amp;#34;火山引擎 Rangers DataFinder&amp;#34;]
+    S3 --&amp;gt; R3[&amp;#34;性能计时&amp;#34;]
+
+    style S1 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style S2 fill:#6b3a2d,color:#fff,stroke:#d9774a
+    style S3 fill:#5a4a3a,color:#fff,stroke:#c9a04a&lt;/pre&gt;
+
+&lt;hr&gt;
+&lt;h2 id=&#34;logtrack--主埋点系统&#34;&gt;LogTrack —— 主埋点系统
+&lt;/h2&gt;&lt;h3 id=&#34;来源&#34;&gt;来源
+&lt;/h3&gt;&lt;p&gt;来自基础组件库，在工具模块里 re-export，业务页面 &lt;code&gt;import { LogTrack } from &#39;@/utils&#39;&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;初始化&#34;&gt;初始化
+&lt;/h3&gt;&lt;p&gt;公共导入模块：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;Log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;httpRequest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;logTimeTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;./utils&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;process&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;env&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VUE_APP_ENVIRONMENT&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!==&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;PRODUCTION&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;// 非生产：开 debug、同时发自研日志 + 神策日志
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;config&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;debug&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;debugLog&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;customLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;sensorsLog&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}).&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// 生产
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;config&lt;/code&gt; 三个开关：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;参数&lt;/th&gt;
+					&lt;th&gt;含义&lt;/th&gt;
+					&lt;th&gt;默认&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;debug&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;神策 debug 日志，控制台打印&lt;/td&gt;
+					&lt;td&gt;false&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;customLog&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;是否发&lt;strong&gt;自研日志&lt;/strong&gt;（&lt;code&gt;window._la&lt;/code&gt; → &lt;code&gt;logserver.example.com&lt;/code&gt;）&lt;/td&gt;
+					&lt;td&gt;true&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;sensorsLog&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;是否发&lt;strong&gt;神策 Sensors&lt;/strong&gt; 日志&lt;/td&gt;
+					&lt;td&gt;true&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;即：一条 &lt;code&gt;LogTrack.track()&lt;/code&gt; 默认会同时发到&lt;strong&gt;神策&lt;/strong&gt;和&lt;strong&gt;自研日志&lt;/strong&gt;两个后台。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;调用-api&#34;&gt;调用 API
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;trackObj&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;eventType&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;trackObj&lt;/code&gt;：参数对象（&lt;code&gt;page_name&lt;/code&gt;、&lt;code&gt;module_name&lt;/code&gt;、&lt;code&gt;key1&lt;/code&gt; 等，详见 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-fields/&#34; &gt;字段口径&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;eventType&lt;/code&gt;：事件类型，四选一&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;eventType&lt;/th&gt;
+					&lt;th&gt;含义&lt;/th&gt;
+					&lt;th&gt;何时用&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;&#39;page&#39;&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;页面曝光 / 页面时长&lt;/td&gt;
+					&lt;td&gt;进页面、停留心跳&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;&#39;show&#39;&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;元素 / 列表展示&lt;/td&gt;
+					&lt;td&gt;列表加载完、弹窗打开&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;&#39;click&#39;&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;点击交互&lt;/td&gt;
+					&lt;td&gt;用户点按钮、点列表项&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;&#39;autoTrack&#39;&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;路由自动曝光&lt;/td&gt;
+					&lt;td&gt;仅 App 根组件自动调用，业务别用&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;调用样例&#34;&gt;调用样例
+&lt;/h3&gt;&lt;p&gt;知识卡页面组件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;@/utils&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// ...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;LogTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;知识卡&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;page_title&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;知识卡&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;window&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;location&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;href&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;module_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;导航栏&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;item_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;返回按钮&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;btn_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;返回&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;key1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;JSON&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;stringify&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;user_status&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;normal&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;})&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;},&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;click&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;什么时候用&#34;&gt;什么时候用
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;绝大多数业务埋点都用它&lt;/strong&gt;：页面曝光、列表曝光、按钮点击、弹窗展示、停留时长。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;tracker--火山引擎-rangersapp-内专用&#34;&gt;$tracker —— 火山引擎 Rangers（App 内专用）
+&lt;/h2&gt;&lt;h3 id=&#34;来源-1&#34;&gt;来源
+&lt;/h3&gt;&lt;p&gt;来自 &lt;code&gt;log-track-sdk&lt;/code&gt;，在入口 &lt;code&gt;main.js&lt;/code&gt; 里用工厂函数创建实例并挂到 Vue 原型：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;logTrackFactory&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;log-track-sdk&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kr&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;logTrackInstance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;logTrackFactory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;process&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;env&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;VUE_APP_ENVIRONMENT&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;PRODUCTION&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;prod&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;qa&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;initConfig&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;enable_native&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;enableOutAPP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;                                   &lt;span class=&#34;c1&#34;&gt;// ← 关键：浏览器 H5 不跑
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;requestAutoTrackParams&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;classKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;web_auto_track&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;itemKey&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;project_H5&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;logTrackInstance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;Vue&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;prototype&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$tracker&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;eventName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;logTrackInstance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;logTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;eventName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;它背后到底是谁&#34;&gt;它背后到底是谁
+&lt;/h3&gt;&lt;p&gt;读 &lt;code&gt;log-track-sdk&lt;/code&gt; 源码，它的 SDK 脚本是：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;https://lf3-data.volccdn.com/obj/data-static/log-sdk/collect/5.0/collect-rangers-v5.1.6.js
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;即&lt;strong&gt;火山引擎 Rangers / DataFinder&lt;/strong&gt; SDK，上报地址 &lt;code&gt;https://gator.volces.com&lt;/code&gt;，生产 / 测试 各一套 appId。&lt;/p&gt;
+&lt;h3 id=&#34;-生效环境重要&#34;&gt;⚠️ 生效环境（重要）
+&lt;/h3&gt;&lt;p&gt;源码里 &lt;code&gt;init()&lt;/code&gt; 只在 &lt;code&gt;平台 === APP || enableOutAPP&lt;/code&gt; 时才加载 SDK。本项目 &lt;code&gt;enableOutAPP: false&lt;/code&gt;，所以：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR
+    A[&amp;#34;调用 this.$tracker()&amp;#34;] --&amp;gt; B{&amp;#34;在 App 内?&amp;#34;}
+    B -- 是 --&amp;gt; C[&amp;#34;正常上报火山&amp;#34;]
+    B -- 否/纯浏览器 --&amp;gt; D[&amp;#34;静默 no-op&amp;lt;br/&amp;gt;什么都不发&amp;#34;]
+    style C fill:#3a5a3a,color:#fff,stroke:#5cb85c
+    style D fill:#5a3a3a,color:#fff,stroke:#d9534f&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;纯浏览器里调 &lt;code&gt;$tracker&lt;/code&gt; 不会报错，但也不会发任何数据。本地调试时别指望在浏览器 Network 里看到它的请求。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;调用-api-1&#34;&gt;调用 API
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$tracker&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;eventName&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;eventName&lt;/code&gt;：自定义事件名，统一加 &lt;code&gt;sndd_hs_&lt;/code&gt; 前缀&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;params&lt;/code&gt;：参数对象&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;常见事件名来自真实代码&#34;&gt;常见事件名（来自真实代码）
+&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;事件名&lt;/th&gt;
+					&lt;th&gt;含义&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_page&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;页面曝光 / 时长&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_show&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;元素展示&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_click&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;点击&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_knowledge_publishing_course_play&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;音频播放时长&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_h5_campaign_view&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;活动页曝光&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;code&gt;sndd_hs_h5_info_click&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;活动信息点击&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;什么时候用-1&#34;&gt;什么时候用
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;业务方明确要求事件进&lt;strong&gt;火山 / DataFinder&lt;/strong&gt; 后台时&lt;/li&gt;
+&lt;li&gt;需要和 App 原生埋点对齐口径的自定义事件&lt;/li&gt;
+&lt;li&gt;音频 / 视频播放时长这类特殊采集&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;日常页面埋点&lt;strong&gt;不要&lt;/strong&gt;随手用 &lt;code&gt;$tracker&lt;/code&gt;，优先用 ① LogTrack。只有需求文档点名要 &lt;code&gt;sndd_hs_xxx&lt;/code&gt; 事件时才用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;timetrack--性能计时点&#34;&gt;$timeTrack —— 性能计时点
+&lt;/h2&gt;&lt;h3 id=&#34;来源-2&#34;&gt;来源
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;logTimeTrack&lt;/code&gt; 来自基础组件库，在公共导入模块挂到原型：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;Vue&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;prototype&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$timeTrack&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;logTimeTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;调用-api-2&#34;&gt;调用 API
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$timeTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;label&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;传一个标签名，记录&amp;quot;从启动到现在过了多久&amp;quot;。&lt;/p&gt;
+&lt;h3 id=&#34;调用样例-1&#34;&gt;调用样例
+&lt;/h3&gt;&lt;p&gt;App 根组件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;created&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$timeTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;appCreated&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// Vue 创建时刻
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;// ...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;mounted&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$timeTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;appMounted&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// 挂载时刻
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;首页活动页：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$timeTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;homeActivityMounted&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;// 首页挂载
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$timeTrack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;homeActivityPageDataLoad&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;     &lt;span class=&#34;c1&#34;&gt;// 首页数据加载完
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;什么时候用-2&#34;&gt;什么时候用
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;只用来测性能耗时&lt;/strong&gt;（启动、首屏、数据加载），跟用户行为无关。业务埋点不要用这个。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;三套对比一表&#34;&gt;三套对比一表
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;&lt;/th&gt;
+					&lt;th&gt;① LogTrack&lt;/th&gt;
+					&lt;th&gt;② $tracker&lt;/th&gt;
+					&lt;th&gt;③ $timeTrack&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;来源&lt;/td&gt;
+					&lt;td&gt;基础组件库&lt;/td&gt;
+					&lt;td&gt;log-track-sdk&lt;/td&gt;
+					&lt;td&gt;基础组件库&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;后台&lt;/td&gt;
+					&lt;td&gt;神策 + 自研日志&lt;/td&gt;
+					&lt;td&gt;火山 Rangers&lt;/td&gt;
+					&lt;td&gt;性能后台&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;生效环境&lt;/td&gt;
+					&lt;td&gt;全环境&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;仅 App 内&lt;/strong&gt;&lt;/td&gt;
+					&lt;td&gt;全环境&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;调用&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;LogTrack.track(obj, type)&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;this.$tracker(name, params)&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;this.$timeTrack(label)&lt;/code&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;事件类型&lt;/td&gt;
+					&lt;td&gt;page/show/click/autoTrack&lt;/td&gt;
+					&lt;td&gt;自定义 &lt;code&gt;sndd_hs_*&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;计时标签&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;用途&lt;/td&gt;
+					&lt;td&gt;业务埋点（主力）&lt;/td&gt;
+					&lt;td&gt;自定义事件 / 播放时长&lt;/td&gt;
+					&lt;td&gt;性能监控&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;占比&lt;/td&gt;
+					&lt;td&gt;~90%&lt;/td&gt;
+					&lt;td&gt;~9%&lt;/td&gt;
+					&lt;td&gt;~1%&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;p&gt;下一篇 → &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-patterns/&#34; &gt;埋点的七种写法&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>埋点入门：先搞懂埋点是什么</title>
+        <link>https://ye-guan-xing.github.io/p/tracking-intro/</link>
+        <pubDate>Sat, 22 Aug 2026 10:00:00 +0000</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/p/tracking-intro/</guid>
+        <description>&lt;h1 id=&#34;埋点入门先搞懂埋点是什么&#34;&gt;埋点入门：先搞懂&amp;quot;埋点&amp;quot;是什么
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;目标：读完这篇，你能用自己的话讲清楚&amp;quot;埋点在干嘛&amp;quot;，并知道一套典型前端项目用了哪几套埋点系统。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;用一句话理解埋点&#34;&gt;用一句话理解埋点
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;埋点 = 在代码里&amp;quot;埋&amp;quot;下记号，把用户做过的事，变成一条条数据，发给后台统计。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;打个比方：你开了一家超市，想知道&amp;quot;顾客进门了吗&amp;quot;&amp;ldquo;拿了哪瓶水&amp;quot;&amp;ldquo;走到收银台了吗&amp;rdquo;。你就在门口、货架、收银台各安排一个保安，每发生一件事就记一笔。代码里的&amp;quot;保安&amp;quot;就是埋点代码。&lt;/p&gt;
+&lt;h2 id=&#34;埋点的本质事件--参数&#34;&gt;埋点的本质：事件 + 参数
+&lt;/h2&gt;&lt;p&gt;每一条埋点数据，本质就两部分：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;flowchart LR
+    A[&amp;#34;事件 event&amp;lt;br/&amp;gt;发生了什么事&amp;#34;] --- B[&amp;#34;参数 params&amp;lt;br/&amp;gt;这件事的细节&amp;#34;]
+    style A fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style B fill:#3a5a3a,color:#fff,stroke:#5cb85c&lt;/pre&gt;
+
+&lt;p&gt;举个例子（真实写法）：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;事件：click               ← 用户点了&amp;#34;立即订阅&amp;#34;按钮
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;参数：
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  page_name   = 少年闻天下   ← 在哪个页面
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  module_name = 底部购买栏   ← 页面哪个模块
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  btn_name    = 立即订阅     ← 具体哪个按钮
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  key1        = {&amp;#34;user_status&amp;#34;:&amp;#34;member&amp;#34;,&amp;#34;price&amp;#34;:99}  ← 其它细节，打包成 JSON
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;后台拿到这条数据，就能回答：&amp;ldquo;有多少人点了立即订阅？会员和非会员各点多少？&amp;rdquo;&lt;/p&gt;
+&lt;h2 id=&#34;什么时候需要埋点&#34;&gt;什么时候需要埋点
+&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;场景&lt;/th&gt;
+					&lt;th&gt;例子&lt;/th&gt;
+					&lt;th&gt;事件类型&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;用户打开一个页面&lt;/td&gt;
+					&lt;td&gt;进了&amp;quot;少年闻天下&amp;quot;页&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;page&lt;/code&gt; 页面曝光&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;页面上某个东西展示出来了&lt;/td&gt;
+					&lt;td&gt;课程列表加载出来了&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;show&lt;/code&gt; 元素展示&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;用户点了一下&lt;/td&gt;
+					&lt;td&gt;点了返回、点了课程项&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;click&lt;/code&gt; 点击&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;用户停在这个页面多久&lt;/td&gt;
+					&lt;td&gt;看了 30 秒新闻&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;page&lt;/code&gt; + duration 时长&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;页面性能&lt;/td&gt;
+					&lt;td&gt;App 启动到可交互花多久&lt;/td&gt;
+					&lt;td&gt;计时点&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;埋点的几个重要性质&#34;&gt;埋点的几个重要性质
+&lt;/h2&gt;&lt;p&gt;埋点不是随便写一行上报就完事。它有几个性质，决定了&amp;quot;埋得好不好&amp;rdquo;。新手先记住这六条：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;flowchart TB
+    P1[&amp;#34;1 不阻断业务&amp;lt;br/&amp;gt;埋点挂了，用户操作照常&amp;#34;]
+    P2[&amp;#34;2 离开页要保住&amp;lt;br/&amp;gt;关页面/切后台时数据别丢&amp;#34;]
+    P3[&amp;#34;3 口径一致&amp;lt;br/&amp;gt;字段名、单位、事件类型全局统一&amp;#34;]
+    P4[&amp;#34;4 环境开关&amp;lt;br/&amp;gt;不同环境行为不同&amp;#34;]
+    P5[&amp;#34;5 可追溯&amp;lt;br/&amp;gt;带来源页链路，能还原路径&amp;#34;]
+    P6[&amp;#34;6 不重不漏&amp;lt;br/&amp;gt;该报的报，别重复报&amp;#34;]
+
+    style P1 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style P2 fill:#3a5a3a,color:#fff,stroke:#5cb85c
+    style P3 fill:#5a4a6b,color:#fff,stroke:#9a7acc
+    style P4 fill:#6b3a2d,color:#fff,stroke:#d9774a
+    style P5 fill:#2d5a4a,color:#fff,stroke:#4ab89a
+    style P6 fill:#5a3a3a,color:#fff,stroke:#d9534f&lt;/pre&gt;
+
+&lt;h3 id=&#34;不阻断业务&#34;&gt;不阻断业务
+&lt;/h3&gt;&lt;p&gt;埋点是&amp;quot;附加动作&amp;quot;，永远排在业务动作之前调用，且不能让它的异常影响用户。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;goToBack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;// 先埋点
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;back&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;          &lt;span class=&#34;c1&#34;&gt;// 再做业务；埋点报错不该影响返回
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;离开页要保住&#34;&gt;离开页要保住
+&lt;/h3&gt;&lt;p&gt;用户关页面、切后台的瞬间，请求可能还没发出去就断了。所以停留时长类埋点要用&lt;strong&gt;心跳定时上报&lt;/strong&gt; + &lt;code&gt;visibilitychange&lt;/code&gt; 兜底，而不是只等离开那一下才报。（详见 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-patterns/&#34; &gt;写法 G 心跳&lt;/a&gt;）&lt;/p&gt;
+&lt;h3 id=&#34;口径一致&#34;&gt;口径一致
+&lt;/h3&gt;&lt;p&gt;同一个概念，全项目字段名、单位必须统一。比如停留时长：&lt;code&gt;LogTrack&lt;/code&gt; 里叫 &lt;code&gt;duration&lt;/code&gt;、&lt;code&gt;$tracker&lt;/code&gt; 里叫 &lt;code&gt;duration_ms&lt;/code&gt;，单位都是毫秒——填反或单位错，后台就对不上。（详见 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-fields/&#34; &gt;字段口径&lt;/a&gt;）&lt;/p&gt;
+&lt;h3 id=&#34;环境开关&#34;&gt;环境开关
+&lt;/h3&gt;&lt;p&gt;埋点在不同环境表现不同：生产关 debug、测试开 debug；火山 &lt;code&gt;$tracker&lt;/code&gt; 仅 App 内生效、纯浏览器静默不报。改环境要记得核对开关。&lt;/p&gt;
+&lt;h3 id=&#34;可追溯&#34;&gt;可追溯
+&lt;/h3&gt;&lt;p&gt;一条埋点最好能回答&amp;quot;用户从哪来&amp;quot;。&lt;code&gt;autoTrack&lt;/code&gt; 自动带 &lt;code&gt;refer_page_name&lt;/code&gt;（来源页），能还原用户的浏览路径，不只是孤立的事件。&lt;/p&gt;
+&lt;h3 id=&#34;不重不漏&#34;&gt;不重不漏
+&lt;/h3&gt;&lt;p&gt;该报的场景一个不能少（进页、展示、点击、时长），不该重复的别多报。比如 &lt;code&gt;hidden&lt;/code&gt; 和 &lt;code&gt;pagehide&lt;/code&gt; 都监听时，同一次离开可能报两遍——这是已知风险，要有去重意识。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这六条会在后续每篇里反复出现，带着它们读代码就能看出&amp;quot;为什么这么写&amp;quot;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;一套典型项目用了哪几套埋点系统&#34;&gt;一套典型项目用了哪几套埋点系统
+&lt;/h2&gt;&lt;p&gt;这是最关键的一张图。一个 App 内的 H5 项目常常&lt;strong&gt;同时跑着三套独立的埋点系统&lt;/strong&gt;，新手最容易在这里绕晕：&lt;/p&gt;
+&lt;pre class=&#34;mermaid&#34;&gt;flowchart TB
+    subgraph 项目[&amp;#34;H5 项目&amp;#34;]
+        T1[&amp;#34;① LogTrack&amp;lt;br/&amp;gt;神策 &amp;#43; 自研日志&amp;lt;br/&amp;gt;主埋点系统&amp;#34;]
+        T2[&amp;#34;② $tracker&amp;lt;br/&amp;gt;火山引擎 Rangers&amp;lt;br/&amp;gt;App 内自定义事件&amp;#34;]
+        T3[&amp;#34;③ $timeTrack&amp;lt;br/&amp;gt;性能计时点&amp;#34;]
+    end
+    T1 --&amp;gt; B1[&amp;#34;神策 Sensors&amp;#34;]
+    T1 --&amp;gt; B2[&amp;#34;自研日志 logserver&amp;#34;]
+    T2 --&amp;gt; B3[&amp;#34;火山 DataFinder&amp;lt;br/&amp;gt;gator.volces.com&amp;#34;]
+    T3 --&amp;gt; B4[&amp;#34;性能监控后台&amp;#34;]
+
+    style T1 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style T2 fill:#6b3a2d,color:#fff,stroke:#d9774a
+    style T3 fill:#5a4a6b,color:#fff,stroke:#9a7acc
+    style 项目 fill:#1e2a3a,color:#fff,stroke:#4a90d9&lt;/pre&gt;
+
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;系统&lt;/th&gt;
+					&lt;th&gt;调用样子&lt;/th&gt;
+					&lt;th&gt;发给谁&lt;/th&gt;
+					&lt;th&gt;一句话定位&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;① LogTrack&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;LogTrack.track({...}, &#39;click&#39;)&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;神策 + 自研日志&lt;/td&gt;
+					&lt;td&gt;&lt;strong&gt;主系统&lt;/strong&gt;，绝大多数埋点用它&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;② $tracker&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;this.$tracker(&#39;sndd_hs_xxx&#39;, {...})&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;火山引擎 Rangers&lt;/td&gt;
+					&lt;td&gt;仅 App 内生效，自定义事件名&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;③ $timeTrack&lt;/td&gt;
+					&lt;td&gt;&lt;code&gt;this.$timeTrack(&#39;appCreated&#39;)&lt;/code&gt;&lt;/td&gt;
+					&lt;td&gt;性能后台&lt;/td&gt;
+					&lt;td&gt;测启动 / 加载耗时，不是业务埋点&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;新手记住：&lt;strong&gt;90% 的业务埋点用的是 ① LogTrack&lt;/strong&gt;。② ③ 是特殊场景才用。下一篇详细讲这三套。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;埋点代码长什么样先看个直观例子&#34;&gt;埋点代码长什么样（先看个直观例子）
+&lt;/h2&gt;&lt;p&gt;知识卡页面组件里点&amp;quot;返回按钮&amp;quot;的埋点：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nx&#34;&gt;goToBack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;track&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt;                              &lt;span class=&#34;c1&#34;&gt;// 调埋点
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;other&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;module_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;导航栏&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;item_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;返回按钮&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;btn_name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;返回&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;env&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;isApp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nx&#34;&gt;JS2Native&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;({&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;closeWindow&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;});&lt;/span&gt;     &lt;span class=&#34;c1&#34;&gt;// 真正的业务动作：关 webview
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;$router&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;back&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;注意一个&lt;strong&gt;新手最容易踩的坑&lt;/strong&gt;：埋点代码和业务动作是分开的两步。先埋点、再做业务，互不干扰。埋点出错不该影响用户操作。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;配套-demo亲手玩一遍&#34;&gt;配套 Demo：亲手玩一遍
+&lt;/h2&gt;&lt;p&gt;光看代码不够直观，我做了个纯本地的 Demo 把这套机制跑给你看——&lt;strong&gt;不接任何真实 SDK、不用装依赖&lt;/strong&gt;，打开就能玩。&lt;/p&gt;
+&lt;p&gt;👉 &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/tracking-demo/&#34; &gt;打开 Demo&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Demo 长这样：左边是一个迷你业务页（列表 / 详情），右边是「埋点事件流」面板，你每做一个动作，面板里就实时冒出对应的上报记录，和后端真正收到的数据一模一样。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;怎么玩：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开页面，右侧已经有 &lt;code&gt;appCreated&lt;/code&gt;、&lt;code&gt;autoTrack&lt;/code&gt;、列表 &lt;code&gt;show&lt;/code&gt; 三条——对应进页自动曝光。&lt;/li&gt;
+&lt;li&gt;点列表里任意课程项 → 看 &lt;code&gt;click&lt;/code&gt; 事件，自动跳进详情页。&lt;/li&gt;
+&lt;li&gt;在列表页停留 3 秒 → 心跳触发，多一条带 &lt;code&gt;duration&lt;/code&gt; 的 &lt;code&gt;page&lt;/code&gt;（这就是写法 G）。&lt;/li&gt;
+&lt;li&gt;点底部「双发演示」按钮 → 同一次点击同时冒出火山和神策+自研两条（写法 C 双系统并行）。&lt;/li&gt;
+&lt;li&gt;顶部勾选「App 内」→ 火山从「静默」变成真上报；不勾就是纯浏览器静默 no-op。&lt;/li&gt;
+&lt;li&gt;关掉「神策」或「自研日志」开关 → 对应后端的事件流立刻消失，直观看到环境开关的作用。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;把 Demo 和上面讲的六条性质对着看：不阻断业务、离开页保住、环境开关、不重不漏，都能在面板里直接观察到。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;下一篇 → &lt;a class=&#34;link&#34; href=&#34;https://ye-guan-xing.github.io/p/tracking-systems/&#34; &gt;三大埋点系统详解&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Cursor 进阶实战：核心高级能力全解 &#43; 配套标准化AI开发范式体系</title>
         <link>https://ye-guan-xing.github.io/p/cursor-advanced-practice/</link>
         <pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>

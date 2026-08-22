@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="埋点的七种写法 目标：项目里&quot;埋点代码&quot;有七种不同写法。读完这篇你能认出每一种，知道它解决什么问题、照着抄就行。\n先记一句话：七种写法只是&quot;怎么调&quot;的不同，背后最终都落到 ① LogTrack 或 ② $tracker 上（见 三大埋点系统）。\n">
+<title>埋点的七种写法</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/tracking-patterns/'>
+
+<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="埋点的七种写法">
+<meta property='og:description' content="埋点的七种写法 目标：项目里&quot;埋点代码&quot;有七种不同写法。读完这篇你能认出每一种，知道它解决什么问题、照着抄就行。\n先记一句话：七种写法只是&quot;怎么调&quot;的不同，背后最终都落到 ① LogTrack 或 ② $tracker 上（见 三大埋点系统）。\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/tracking-patterns/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='前端工程' /><meta property='article:published_time' content='2026-08-22T12:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-08-22T12:00:00&#43;00:00'/>
+<meta name="twitter:title" content="埋点的七种写法">
+<meta name="twitter:description" content="埋点的七种写法 目标：项目里&quot;埋点代码&quot;有七种不同写法。读完这篇你能认出每一种，知道它解决什么问题、照着抄就行。\n先记一句话：七种写法只是&quot;怎么调&quot;的不同，背后最终都落到 ① LogTrack 或 ② $tracker 上（见 三大埋点系统）。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#a--直接调-logtracktrack">A · 直接调 <code>LogTrack.track</code></a></li>
+    <li><a href="#b--组件内封一层-thistrack">B · 组件内封一层 <code>this.track</code></a></li>
+    <li><a href="#c--双系统并行-commlog">C · 双系统并行 <code>commLog</code></a></li>
+    <li><a href="#d--v-log-指令声明式埋点">D · <code>v-log</code> 指令声明式埋点</a>
+      <ol>
+        <li><a href="#它怎么工作的">它怎么工作的</a></li>
+      </ol>
+    </li>
+    <li><a href="#e--eventcomponent-配置驱动埋点">E · EventComponent 配置驱动埋点</a></li>
+    <li><a href="#f--autotrack-路由自动曝光">F · <code>autoTrack</code> 路由自动曝光</a></li>
+    <li><a href="#g--停留时长心跳">G · 停留时长心跳</a></li>
+    <li><a href="#速查我该用哪种">速查：我该用哪种？</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96-%E5%9F%8B%E7%82%B9/"
+      
+    >
+      前端工程化-埋点
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/tracking-patterns/">埋点的七种写法</a>
+    </h2>
+
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-08-22 12:00</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview">
+        <span class="waline-pageview-count" data-path="/p/tracking-patterns/"
+          >0</span
+        >
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment">
+        <span class="waline-comment-count" data-path="/p/tracking-patterns/"
+          >0</span
+        >
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="埋点的七种写法">埋点的七种写法
+</h1><blockquote>
+<p>目标：项目里&quot;埋点代码&quot;有七种不同写法。读完这篇你能认出每一种，知道它解决什么问题、照着抄就行。</p>
+<p>先记一句话：<strong>七种写法只是&quot;怎么调&quot;的不同，背后最终都落到 ① LogTrack 或 ② $tracker 上</strong>（见 <a class="link" href="/p/tracking-systems/" >三大埋点系统</a>）。</p>
+</blockquote>
+<pre class="mermaid">flowchart TB
+    ROOT[&#34;业务页面要埋点&#34;] --&gt; P1[&#34;A 直接调 LogTrack.track&#34;]
+    ROOT --&gt; P2[&#34;B 组件内封一层 this.track&#34;]
+    ROOT --&gt; P3[&#34;C 双系统并行 commLog&#34;]
+    ROOT --&gt; P4[&#34;D v-log 指令声明式&#34;]
+    ROOT --&gt; P5[&#34;E EventComponent 配置驱动&#34;]
+    ROOT --&gt; P6[&#34;F autoTrack 路由自动&#34;]
+    ROOT --&gt; P7[&#34;G 停留时长心跳&#34;]
+    P1 --&gt; S1[&#34;LogTrack&#34;]
+    P2 --&gt; S1
+    P3 --&gt; S1
+    P3 --&gt; S2[&#34;$tracker&#34;]
+    P4 --&gt; S1
+    P5 --&gt; S1
+    P6 --&gt; S1
+    P7 --&gt; S1
+    P7 --&gt; S2
+    style S1 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style S2 fill:#6b3a2d,color:#fff,stroke:#d9774a
+    style ROOT fill:#1e2a3a,color:#fff,stroke:#4a90d9</pre>
+
+<hr>
+<h2 id="a--直接调-logtracktrack">A · 直接调 <code>LogTrack.track</code>
+</h2><p><strong>最常见</strong>，90% 的页面就用这一种。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">LogTrack</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@/utils&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 点击返回
+</span></span></span><span class="line"><span class="cl"><span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">page_name</span><span class="o">:</span> <span class="s1">&#39;少年闻天下&#39;</span><span class="p">,</span> <span class="nx">page_type</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">page_title</span><span class="o">:</span> <span class="s1">&#39;少年闻天下&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">url</span><span class="o">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">module_name</span><span class="o">:</span> <span class="s1">&#39;导航栏&#39;</span><span class="p">,</span> <span class="nx">item_name</span><span class="o">:</span> <span class="s1">&#39;返回按钮&#39;</span><span class="p">,</span> <span class="nx">btn_name</span><span class="o">:</span> <span class="s1">&#39;返回&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">key1</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span> <span class="nx">user_status</span><span class="o">:</span> <span class="s1">&#39;member&#39;</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="s1">&#39;click&#39;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>特征</strong>：每次埋点手写完整字段，调 <code>LogTrack.track(obj, eventType)</code>。</p>
+<p><strong>代表文件</strong>：少年闻天下订阅页（一个文件 23 处）、兑换课程页（12 处）、每日问答页（12 处）。</p>
+<p><strong>适用</strong>：埋点不多的页面，直接写最清楚。</p>
+<hr>
+<h2 id="b--组件内封一层-thistrack">B · 组件内封一层 <code>this.track</code>
+</h2><p><strong>问题</strong>：一个页面有十几个埋点，每次都写 <code>page_name/page_type/page_title/url</code> 太啰嗦，改一处要改十几处。
+<strong>解法</strong>：在组件里封一个 <code>track</code> 方法，把公共字段固定下来，只传变化的部分。</p>
+<p>知识卡页面组件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 通用埋点：公共字段写死，扩展数据合并进 key1
+</span></span></span><span class="line"><span class="cl">  <span class="nx">track</span><span class="p">(</span><span class="nx">extra</span> <span class="o">=</span> <span class="p">{},</span> <span class="nx">eventType</span> <span class="o">=</span> <span class="s1">&#39;click&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">page_name</span><span class="o">:</span> <span class="s1">&#39;知识卡&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">page_type</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">page_title</span><span class="o">:</span> <span class="s1">&#39;知识卡&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">main_item_id</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">key1</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">user_status</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">userStatus</span> <span class="o">||</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">...</span><span class="nx">extra</span><span class="p">.</span><span class="nx">key1Data</span>        <span class="c1">// 变化的细节塞这
+</span></span></span><span class="line"><span class="cl">      <span class="p">}),</span>
+</span></span><span class="line"><span class="cl">      <span class="p">...</span><span class="nx">extra</span><span class="p">.</span><span class="nx">other</span>              <span class="c1">// module_name/item_name/btn_name 塞这
+</span></span></span><span class="line"><span class="cl">    <span class="p">},</span> <span class="nx">eventType</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">goToBack</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">other</span><span class="o">:</span> <span class="p">{</span> <span class="nx">module_name</span><span class="o">:</span> <span class="s1">&#39;导航栏&#39;</span><span class="p">,</span> <span class="nx">item_name</span><span class="o">:</span> <span class="s1">&#39;返回按钮&#39;</span><span class="p">,</span> <span class="nx">btn_name</span><span class="o">:</span> <span class="s1">&#39;返回&#39;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>特征</strong>：<code>this.track({ other: {...}, key1Data: {...} }, 'click')</code>，把字段拆成&quot;固定的&quot;和&quot;变化的&quot;两层。</p>
+<p><strong>适用</strong>：单页面埋点 ≥ 5 处，字段重复多。知识卡列表页、知识卡详情页都用这种。</p>
+<hr>
+<h2 id="c--双系统并行-commlog">C · 双系统并行 <code>commLog</code>
+</h2><p><strong>问题</strong>：同一个行为，业务方要求<strong>同时</strong>进神策/自研（老口径）和火山（新口径）两套后台。
+<strong>解法</strong>：封一个方法，里面同时调 <code>LogTrack.track</code> 和 <code>$tracker</code>。</p>
+<p>阅读信件报告页：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">commLog</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// ① 发火山（新口径，事件名 sndd_hs_xxx）
+</span></span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">$tracker</span><span class="p">(</span><span class="s1">&#39;sndd_hs_&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">getTrackerBaseData</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">trackerData</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// ② 发神策+自研（老口径，事件类型 page/show/click）
+</span></span></span><span class="line"><span class="cl">  <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({},</span> <span class="k">this</span><span class="p">.</span><span class="nx">getLogTrackBaseData</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">logData</span><span class="p">),</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">key1</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}),</span> <span class="nx">event</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>特征</strong>：一个方法里两行上报，<code>$tracker</code> + <code>LogTrack.track</code>。</p>
+<p><strong>注意</strong>：两套口径字段名可能不同（详见 <a class="link" href="/p/tracking-fields/" >字段口径</a>），比如时长在 <code>$tracker</code> 里叫 <code>duration_ms</code>，在 <code>LogTrack</code> 里叫 <code>duration</code>。</p>
+<p><strong>代表文件</strong>：阅读信件报告页、阅读诊断报告页、阶段测评报告页。这三个是本项目埋点最复杂的页面。</p>
+<hr>
+<h2 id="d--v-log-指令声明式埋点">D · <code>v-log</code> 指令声明式埋点
+</h2><p><strong>问题</strong>：按钮太多，每个 <code>@click</code> 里写 <code>LogTrack.track</code> 太烦，还容易和业务逻辑混在一起。
+<strong>解法</strong>：用 <code>v-log</code> 指令，写在模板上，点一下自动埋点。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- 点这个按钮自动上报 click --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">button</span> <span class="na">v-fastclick</span><span class="o">=</span><span class="s">&#34;sendCode&#34;</span> <span class="na">v-log:click</span><span class="o">=</span><span class="s">&#34;{ ...log, name: &#39;获取验证码&#39; }&#34;</span><span class="p">&gt;</span>获取验证码<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>带 <code>ev__</code> 修饰符可指定事件名：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">v-log:click</span><span class="err">.</span><span class="na">ev__course_detail_play</span><span class="o">=</span><span class="s">&#34;evLogTrack&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="它怎么工作的">它怎么工作的
+</h3><p><code>v-log</code> 由基础组件库的 <code>vueExtends/log.js</code> 注册。原理：</p>
+<pre class="mermaid">flowchart LR
+    A[&#34;v-log:click={...} 写在模板&#34;] --&gt; B[&#34;指令把数据存到 dom.dataset.igc_log&#34;]
+    B --&gt; C[&#34;document.body 监听 click 冒泡&#34;]
+    C --&gt; D[&#34;点击时找到带 igc_log 的元素&#34;]
+    D --&gt; E[&#34;内部调 LogTrack.track()&#34;]
+    style E fill:#2d4a6b,color:#fff,stroke:#4a90d9</pre>
+
+<p>即：<strong>v-log 最终也是调 LogTrack</strong>，只是把埋点从 JS 搬到了模板上。</p>
+<p><strong>代表文件</strong>：验证码输入组件、留言项组件、课程按钮组件、音频组件、课程详情页、注册组件、领礼物按钮组件。</p>
+<p><strong>适用</strong>：纯点击埋点、不想污染业务方法。注意它依赖 <code>v-fastclick</code>，且 <code>&lt;a&gt;/&lt;input&gt;/&lt;button&gt;</code> 标签会被自动识别。</p>
+<hr>
+<h2 id="e--eventcomponent-配置驱动埋点">E · EventComponent 配置驱动埋点
+</h2><p><strong>问题</strong>：运营活动页的组件是<strong>后台配置出来的</strong>（按钮文案、跳转、事件都由接口返回），写死埋点不现实。
+<strong>解法</strong>：用一个通用 <code>EventComponent</code>，根据配置里的 <code>eventType</code> 自动埋点。</p>
+<p>活动页事件组件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">trackEvent</span><span class="p">(</span><span class="nx">eventType</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">trackObj</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">page_name</span><span class="o">:</span> <span class="s1">&#39;专题详情页&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">page_type</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">page_title</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">$parent</span><span class="p">.</span><span class="nx">activityName</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">item_index</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">$parent</span><span class="p">.</span><span class="nx">index</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">main_item_type</span><span class="o">:</span> <span class="s1">&#39;活动&#39;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">componentType</span> <span class="o">===</span> <span class="s1">&#39;button&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">trackObj</span><span class="p">.</span><span class="nx">btn_name</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$parent</span><span class="p">.</span><span class="nx">btnTxt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">(</span><span class="nx">trackObj</span><span class="p">);</span>   <span class="c1">// ← 配置驱动，自动上报
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>特征</strong>：埋点字段从 <code>this.$parent</code>（父组件 = 后台配置）取，不写死。</p>
+<p><strong>适用</strong>：运营活动体系，组件由配置渲染的场景。</p>
+<hr>
+<h2 id="f--autotrack-路由自动曝光">F · <code>autoTrack</code> 路由自动曝光
+</h2><p><strong>问题</strong>：每个页面进都手动写一次 <code>page</code> 曝光太容易漏。
+<strong>解法</strong>：App 启动时一次性把所有路由注册进自动曝光。</p>
+<p>App 根组件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">created</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">routes</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">routes</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">({},</span> <span class="s1">&#39;autoTrack&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">routes</span><span class="p">);</span>   <span class="c1">// ← 全路由自动 page 曝光
+</span></span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">$timeTrack</span><span class="p">(</span><span class="s1">&#39;appCreated&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>特征</strong>：<code>LogTrack.track({}, 'autoTrack', true, routes)</code>，第 3、4 个参数是 autoTrack 专用。</p>
+<p><strong>背后</strong>：神策全埋点，事件 <code>sndd_sensor_autoTrack</code>，切路由自动发页面访问日志，还带 <code>refer_page_name</code>（来源页）链路。</p>
+<p><strong>注意</strong>：<strong>只在 App 根组件调一次</strong>，业务页面不要重复调。</p>
+<hr>
+<h2 id="g--停留时长心跳">G · 停留时长心跳
+</h2><p><strong>问题</strong>：想知道用户在页面待了多久，但用户可能切后台、可能直接关页面，单一时机抓不准。
+<strong>解法</strong>：定时心跳 + 可见性监听 + 离开兜底。</p>
+<p>阅读信件报告页是参考实现，核心三个方法：</p>
+<pre class="mermaid">flowchart TB
+    M[&#34;mounted → initStayTrack()&#34;] --&gt; H[&#34;启动 3 秒心跳定时器&#34;]
+    H --&gt; F[&#34;flushStayTrack() 每 3 秒上报一次 duration 并重置&#34;]
+    V[&#34;visibilitychange&#34;] --&gt; Hid{&#34;页面隐藏?&#34;}
+    Hid -- 是 --&gt; P[&#34;暂停计时 &#43; 立即上报一轮&#34;]
+    Hid -- 否 --&gt; R[&#34;恢复计时 &#43; 重启心跳&#34;]
+    D[&#34;beforeDestroy&#34;] --&gt; F2[&#34;最后一次 flushStayTrack 上报&#34;]
+    style F fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style P fill:#5a3a3a,color:#fff,stroke:#d9534f
+    style F2 fill:#3a5a3a,color:#fff,stroke:#5cb85c</pre>
+
+<p>关键代码骨架：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">pageStayDuration</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>          <span class="c1">// 累计停留毫秒
+</span></span></span><span class="line"><span class="cl">    <span class="nx">pageVisibleStartTime</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>      <span class="c1">// 本轮可见开始时间
+</span></span></span><span class="line"><span class="cl">    <span class="nx">stayTrackHeartbeatTimer</span><span class="o">:</span> <span class="kc">null</span> <span class="c1">// 心跳定时器
+</span></span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="k">this</span><span class="p">.</span><span class="nx">$nextTick</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">initStayTrack</span><span class="p">());</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="nx">beforeDestroy</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">flushStayTrack</span><span class="p">();</span> <span class="cm">/* 最后一次上报 */</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">initStayTrack</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">restartStayTrack</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;visibilitychange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleTrackVisibilityChange</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">startStayTrackHeartbeat</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">stayTrackHeartbeatTimer</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">flushStayTrack</span><span class="p">({</span> <span class="nx">resetAfterFlush</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">continueHeartbeat</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span> <span class="mi">3000</span><span class="p">);</span>                     <span class="c1">// ← 每 3 秒
+</span></span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">flushStayTrack</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">pausePageDuration</span><span class="p">();</span>     <span class="c1">// 把当前可见段累加进 pageStayDuration
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pageStayDuration</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// 双系统上报时长
+</span></span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">$tracker</span><span class="p">(</span><span class="s1">&#39;sndd_hs_page&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="cm">/* ..., duration_ms */</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span> <span class="cm">/* ..., key1: {duration} */</span> <span class="p">},</span> <span class="s1">&#39;page&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">resetAfterFlush</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">resetStayTrackState</span><span class="p">();</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">continueHeartbeat</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">startStayTrackHeartbeat</span><span class="p">();</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">handleTrackVisibilityChange</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">hidden</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">stopStayTrackHeartbeat</span><span class="p">();</span> <span class="k">this</span><span class="p">.</span><span class="nx">flushStayTrack</span><span class="p">({</span><span class="nx">resetAfterFlush</span><span class="o">:</span><span class="kc">true</span><span class="p">});</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">resumePageDuration</span><span class="p">();</span> <span class="k">this</span><span class="p">.</span><span class="nx">startStayTrackHeartbeat</span><span class="p">();</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>特征</strong>：<code>pageStayDuration</code> + <code>pageVisibleStartTime</code> 两个变量管计时，<code>visibilitychange</code> 管切后台，<code>beforeDestroy</code> 兜底。</p>
+<p><strong>代表文件</strong>：阅读信件报告页、阅读诊断报告页、阶段测评报告页。后两个还多了<strong>模块曝光时长</strong>（每个模块进视口开始计时、离开累加）。</p>
+<p><strong>适用</strong>：需要统计&quot;用户看了多久&quot;的报告页 / 内容页。</p>
+<hr>
+<h2 id="速查我该用哪种">速查：我该用哪种？
+</h2><pre class="mermaid">flowchart TD
+    Q[&#34;要埋点&#34;] --&gt; Q1{&#34;纯点击按钮?&#34;}
+    Q1 -- 是 --&gt; D[&#34;D · v-log 指令&#34;]
+    Q1 -- 否 --&gt; Q2{&#34;运营活动配置页?&#34;}
+    Q2 -- 是 --&gt; E[&#34;E · EventComponent&#34;]
+    Q2 -- 否 --&gt; Q3{&#34;要统计停留时长?&#34;}
+    Q3 -- 是 --&gt; G[&#34;G · 心跳&#34;]
+    Q3 -- 否 --&gt; Q4{&#34;需求点名要 sndd_hs_xxx?&#34;}
+    Q4 -- 是 --&gt; Q5{&#34;同时要老口径?&#34;}
+    Q5 -- 是 --&gt; C[&#34;C · commLog 双发&#34;]
+    Q5 -- 否 --&gt; T2[&#34;② $tracker&#34;]
+    Q4 -- 否 --&gt; Q6{&#34;页面埋点 ≥5 处?&#34;}
+    Q6 -- 是 --&gt; B[&#34;B · this.track 封装&#34;]
+    Q6 -- 否 --&gt; A[&#34;A · 直接 LogTrack.track&#34;]
+    style A fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style B fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style D fill:#2d4a6b,color:#fff,stroke:#4a90d9</pre>
+
+<hr>
+<p>下一篇 → <a class="link" href="/p/tracking-points-map/" >埋点点位地图</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/">前端工程</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/tracking-production/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">生产环境推荐实践</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-fields/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">字段口径与 key1 规约</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-points-map/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">埋点点位地图</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-systems/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">三大埋点系统详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-intro/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">埋点入门：先搞懂埋点是什么</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
+</style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>

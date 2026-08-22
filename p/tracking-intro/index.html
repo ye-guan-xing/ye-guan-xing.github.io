@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="埋点入门：先搞懂&quot;埋点&quot;是什么 目标：读完这篇，你能用自己的话讲清楚&quot;埋点在干嘛&quot;，并知道一套典型前端项目用了哪几套埋点系统。\n用一句话理解埋点 埋点 = 在代码里&quot;埋&quot;下记号，把用户做过的事，变成一条条数据，发给后台统计。\n">
+<title>埋点入门：先搞懂埋点是什么</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/tracking-intro/'>
+
+<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="埋点入门：先搞懂埋点是什么">
+<meta property='og:description' content="埋点入门：先搞懂&quot;埋点&quot;是什么 目标：读完这篇，你能用自己的话讲清楚&quot;埋点在干嘛&quot;，并知道一套典型前端项目用了哪几套埋点系统。\n用一句话理解埋点 埋点 = 在代码里&quot;埋&quot;下记号，把用户做过的事，变成一条条数据，发给后台统计。\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/tracking-intro/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='前端工程' /><meta property='article:published_time' content='2026-08-22T10:00:00&#43;00:00'/><meta property='article:modified_time' content='2026-08-22T10:00:00&#43;00:00'/>
+<meta name="twitter:title" content="埋点入门：先搞懂埋点是什么">
+<meta name="twitter:description" content="埋点入门：先搞懂&quot;埋点&quot;是什么 目标：读完这篇，你能用自己的话讲清楚&quot;埋点在干嘛&quot;，并知道一套典型前端项目用了哪几套埋点系统。\n用一句话理解埋点 埋点 = 在代码里&quot;埋&quot;下记号，把用户做过的事，变成一条条数据，发给后台统计。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#用一句话理解埋点">用一句话理解埋点</a></li>
+    <li><a href="#埋点的本质事件--参数">埋点的本质：事件 + 参数</a></li>
+    <li><a href="#什么时候需要埋点">什么时候需要埋点</a></li>
+    <li><a href="#埋点的几个重要性质">埋点的几个重要性质</a>
+      <ol>
+        <li><a href="#不阻断业务">不阻断业务</a></li>
+        <li><a href="#离开页要保住">离开页要保住</a></li>
+        <li><a href="#口径一致">口径一致</a></li>
+        <li><a href="#环境开关">环境开关</a></li>
+        <li><a href="#可追溯">可追溯</a></li>
+        <li><a href="#不重不漏">不重不漏</a></li>
+      </ol>
+    </li>
+    <li><a href="#一套典型项目用了哪几套埋点系统">一套典型项目用了哪几套埋点系统</a></li>
+    <li><a href="#埋点代码长什么样先看个直观例子">埋点代码长什么样（先看个直观例子）</a></li>
+    <li><a href="#配套-demo亲手玩一遍">配套 Demo：亲手玩一遍</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96-%E5%9F%8B%E7%82%B9/"
+      
+    >
+      前端工程化-埋点
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/tracking-intro/">埋点入门：先搞懂埋点是什么</a>
+    </h2>
+
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-08-22 10:00</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview">
+        <span class="waline-pageview-count" data-path="/p/tracking-intro/"
+          >0</span
+        >
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment">
+        <span class="waline-comment-count" data-path="/p/tracking-intro/"
+          >0</span
+        >
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="埋点入门先搞懂埋点是什么">埋点入门：先搞懂&quot;埋点&quot;是什么
+</h1><blockquote>
+<p>目标：读完这篇，你能用自己的话讲清楚&quot;埋点在干嘛&quot;，并知道一套典型前端项目用了哪几套埋点系统。</p>
+</blockquote>
+<h2 id="用一句话理解埋点">用一句话理解埋点
+</h2><p><strong>埋点 = 在代码里&quot;埋&quot;下记号，把用户做过的事，变成一条条数据，发给后台统计。</strong></p>
+<p>打个比方：你开了一家超市，想知道&quot;顾客进门了吗&quot;&ldquo;拿了哪瓶水&quot;&ldquo;走到收银台了吗&rdquo;。你就在门口、货架、收银台各安排一个保安，每发生一件事就记一笔。代码里的&quot;保安&quot;就是埋点代码。</p>
+<h2 id="埋点的本质事件--参数">埋点的本质：事件 + 参数
+</h2><p>每一条埋点数据，本质就两部分：</p>
+<pre class="mermaid">flowchart LR
+    A[&#34;事件 event&lt;br/&gt;发生了什么事&#34;] --- B[&#34;参数 params&lt;br/&gt;这件事的细节&#34;]
+    style A fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style B fill:#3a5a3a,color:#fff,stroke:#5cb85c</pre>
+
+<p>举个例子（真实写法）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">事件：click               ← 用户点了&#34;立即订阅&#34;按钮
+</span></span><span class="line"><span class="cl">参数：
+</span></span><span class="line"><span class="cl">  page_name   = 少年闻天下   ← 在哪个页面
+</span></span><span class="line"><span class="cl">  module_name = 底部购买栏   ← 页面哪个模块
+</span></span><span class="line"><span class="cl">  btn_name    = 立即订阅     ← 具体哪个按钮
+</span></span><span class="line"><span class="cl">  key1        = {&#34;user_status&#34;:&#34;member&#34;,&#34;price&#34;:99}  ← 其它细节，打包成 JSON
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>后台拿到这条数据，就能回答：&ldquo;有多少人点了立即订阅？会员和非会员各点多少？&rdquo;</p>
+<h2 id="什么时候需要埋点">什么时候需要埋点
+</h2><div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>场景</th>
+					<th>例子</th>
+					<th>事件类型</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>用户打开一个页面</td>
+					<td>进了&quot;少年闻天下&quot;页</td>
+					<td><code>page</code> 页面曝光</td>
+			</tr>
+			<tr>
+					<td>页面上某个东西展示出来了</td>
+					<td>课程列表加载出来了</td>
+					<td><code>show</code> 元素展示</td>
+			</tr>
+			<tr>
+					<td>用户点了一下</td>
+					<td>点了返回、点了课程项</td>
+					<td><code>click</code> 点击</td>
+			</tr>
+			<tr>
+					<td>用户停在这个页面多久</td>
+					<td>看了 30 秒新闻</td>
+					<td><code>page</code> + duration 时长</td>
+			</tr>
+			<tr>
+					<td>页面性能</td>
+					<td>App 启动到可交互花多久</td>
+					<td>计时点</td>
+			</tr>
+	</tbody>
+</table></div>
+<h2 id="埋点的几个重要性质">埋点的几个重要性质
+</h2><p>埋点不是随便写一行上报就完事。它有几个性质，决定了&quot;埋得好不好&rdquo;。新手先记住这六条：</p>
+<pre class="mermaid">flowchart TB
+    P1[&#34;1 不阻断业务&lt;br/&gt;埋点挂了，用户操作照常&#34;]
+    P2[&#34;2 离开页要保住&lt;br/&gt;关页面/切后台时数据别丢&#34;]
+    P3[&#34;3 口径一致&lt;br/&gt;字段名、单位、事件类型全局统一&#34;]
+    P4[&#34;4 环境开关&lt;br/&gt;不同环境行为不同&#34;]
+    P5[&#34;5 可追溯&lt;br/&gt;带来源页链路，能还原路径&#34;]
+    P6[&#34;6 不重不漏&lt;br/&gt;该报的报，别重复报&#34;]
+
+    style P1 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style P2 fill:#3a5a3a,color:#fff,stroke:#5cb85c
+    style P3 fill:#5a4a6b,color:#fff,stroke:#9a7acc
+    style P4 fill:#6b3a2d,color:#fff,stroke:#d9774a
+    style P5 fill:#2d5a4a,color:#fff,stroke:#4ab89a
+    style P6 fill:#5a3a3a,color:#fff,stroke:#d9534f</pre>
+
+<h3 id="不阻断业务">不阻断业务
+</h3><p>埋点是&quot;附加动作&quot;，永远排在业务动作之前调用，且不能让它的异常影响用户。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">goToBack</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span> <span class="p">...</span> <span class="p">});</span>          <span class="c1">// 先埋点
+</span></span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">back</span><span class="p">();</span>          <span class="c1">// 再做业务；埋点报错不该影响返回
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="离开页要保住">离开页要保住
+</h3><p>用户关页面、切后台的瞬间，请求可能还没发出去就断了。所以停留时长类埋点要用<strong>心跳定时上报</strong> + <code>visibilitychange</code> 兜底，而不是只等离开那一下才报。（详见 <a class="link" href="/p/tracking-patterns/" >写法 G 心跳</a>）</p>
+<h3 id="口径一致">口径一致
+</h3><p>同一个概念，全项目字段名、单位必须统一。比如停留时长：<code>LogTrack</code> 里叫 <code>duration</code>、<code>$tracker</code> 里叫 <code>duration_ms</code>，单位都是毫秒——填反或单位错，后台就对不上。（详见 <a class="link" href="/p/tracking-fields/" >字段口径</a>）</p>
+<h3 id="环境开关">环境开关
+</h3><p>埋点在不同环境表现不同：生产关 debug、测试开 debug；火山 <code>$tracker</code> 仅 App 内生效、纯浏览器静默不报。改环境要记得核对开关。</p>
+<h3 id="可追溯">可追溯
+</h3><p>一条埋点最好能回答&quot;用户从哪来&quot;。<code>autoTrack</code> 自动带 <code>refer_page_name</code>（来源页），能还原用户的浏览路径，不只是孤立的事件。</p>
+<h3 id="不重不漏">不重不漏
+</h3><p>该报的场景一个不能少（进页、展示、点击、时长），不该重复的别多报。比如 <code>hidden</code> 和 <code>pagehide</code> 都监听时，同一次离开可能报两遍——这是已知风险，要有去重意识。</p>
+<blockquote>
+<p>这六条会在后续每篇里反复出现，带着它们读代码就能看出&quot;为什么这么写&quot;。</p>
+</blockquote>
+<hr>
+<h2 id="一套典型项目用了哪几套埋点系统">一套典型项目用了哪几套埋点系统
+</h2><p>这是最关键的一张图。一个 App 内的 H5 项目常常<strong>同时跑着三套独立的埋点系统</strong>，新手最容易在这里绕晕：</p>
+<pre class="mermaid">flowchart TB
+    subgraph 项目[&#34;H5 项目&#34;]
+        T1[&#34;① LogTrack&lt;br/&gt;神策 &#43; 自研日志&lt;br/&gt;主埋点系统&#34;]
+        T2[&#34;② $tracker&lt;br/&gt;火山引擎 Rangers&lt;br/&gt;App 内自定义事件&#34;]
+        T3[&#34;③ $timeTrack&lt;br/&gt;性能计时点&#34;]
+    end
+    T1 --&gt; B1[&#34;神策 Sensors&#34;]
+    T1 --&gt; B2[&#34;自研日志 logserver&#34;]
+    T2 --&gt; B3[&#34;火山 DataFinder&lt;br/&gt;gator.volces.com&#34;]
+    T3 --&gt; B4[&#34;性能监控后台&#34;]
+
+    style T1 fill:#2d4a6b,color:#fff,stroke:#4a90d9
+    style T2 fill:#6b3a2d,color:#fff,stroke:#d9774a
+    style T3 fill:#5a4a6b,color:#fff,stroke:#9a7acc
+    style 项目 fill:#1e2a3a,color:#fff,stroke:#4a90d9</pre>
+
+<div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>系统</th>
+					<th>调用样子</th>
+					<th>发给谁</th>
+					<th>一句话定位</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>① LogTrack</td>
+					<td><code>LogTrack.track({...}, 'click')</code></td>
+					<td>神策 + 自研日志</td>
+					<td><strong>主系统</strong>，绝大多数埋点用它</td>
+			</tr>
+			<tr>
+					<td>② $tracker</td>
+					<td><code>this.$tracker('sndd_hs_xxx', {...})</code></td>
+					<td>火山引擎 Rangers</td>
+					<td>仅 App 内生效，自定义事件名</td>
+			</tr>
+			<tr>
+					<td>③ $timeTrack</td>
+					<td><code>this.$timeTrack('appCreated')</code></td>
+					<td>性能后台</td>
+					<td>测启动 / 加载耗时，不是业务埋点</td>
+			</tr>
+	</tbody>
+</table></div>
+<blockquote>
+<p>新手记住：<strong>90% 的业务埋点用的是 ① LogTrack</strong>。② ③ 是特殊场景才用。下一篇详细讲这三套。</p>
+</blockquote>
+<h2 id="埋点代码长什么样先看个直观例子">埋点代码长什么样（先看个直观例子）
+</h2><p>知识卡页面组件里点&quot;返回按钮&quot;的埋点：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">goToBack</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span>                              <span class="c1">// 调埋点
+</span></span></span><span class="line"><span class="cl">    <span class="nx">other</span><span class="o">:</span> <span class="p">{</span> <span class="nx">module_name</span><span class="o">:</span> <span class="s1">&#39;导航栏&#39;</span><span class="p">,</span> <span class="nx">item_name</span><span class="o">:</span> <span class="s1">&#39;返回按钮&#39;</span><span class="p">,</span> <span class="nx">btn_name</span><span class="o">:</span> <span class="s1">&#39;返回&#39;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">isApp</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">JS2Native</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;closeWindow&#39;</span> <span class="p">});</span>     <span class="c1">// 真正的业务动作：关 webview
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">back</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意一个<strong>新手最容易踩的坑</strong>：埋点代码和业务动作是分开的两步。先埋点、再做业务，互不干扰。埋点出错不该影响用户操作。</p>
+<hr>
+<h2 id="配套-demo亲手玩一遍">配套 Demo：亲手玩一遍
+</h2><p>光看代码不够直观，我做了个纯本地的 Demo 把这套机制跑给你看——<strong>不接任何真实 SDK、不用装依赖</strong>，打开就能玩。</p>
+<p>👉 <a class="link" href="/tracking-demo/" >打开 Demo</a></p>
+<p>Demo 长这样：左边是一个迷你业务页（列表 / 详情），右边是「埋点事件流」面板，你每做一个动作，面板里就实时冒出对应的上报记录，和后端真正收到的数据一模一样。</p>
+<p><strong>怎么玩：</strong></p>
+<ol>
+<li>打开页面，右侧已经有 <code>appCreated</code>、<code>autoTrack</code>、列表 <code>show</code> 三条——对应进页自动曝光。</li>
+<li>点列表里任意课程项 → 看 <code>click</code> 事件，自动跳进详情页。</li>
+<li>在列表页停留 3 秒 → 心跳触发，多一条带 <code>duration</code> 的 <code>page</code>（这就是写法 G）。</li>
+<li>点底部「双发演示」按钮 → 同一次点击同时冒出火山和神策+自研两条（写法 C 双系统并行）。</li>
+<li>顶部勾选「App 内」→ 火山从「静默」变成真上报；不勾就是纯浏览器静默 no-op。</li>
+<li>关掉「神策」或「自研日志」开关 → 对应后端的事件流立刻消失，直观看到环境开关的作用。</li>
+</ol>
+<p>把 Demo 和上面讲的六条性质对着看：不阻断业务、离开页保住、环境开关、不重不漏，都能在面板里直接观察到。</p>
+<hr>
+<p>下一篇 → <a class="link" href="/p/tracking-systems/" >三大埋点系统详解</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/">前端工程</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/tracking-production/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">生产环境推荐实践</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-fields/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">字段口径与 key1 规约</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-points-map/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">埋点点位地图</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-patterns/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">埋点的七种写法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/tracking-systems/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">三大埋点系统详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
+</style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>
