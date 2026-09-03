@@ -424,10 +424,8 @@
   <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
 </svg>
 
-      <time class="article-pageview">
-        <span class="waline-pageview-count" data-path="/p/lifestyle-platform-development/"
-          >0</span
-        >
+      <time class="article-pageview" style="display:none">
+        <span class="waline-pageview-count" data-path="/p/lifestyle-platform-development/"></span>
         visits
       </time>
     </div>
@@ -438,10 +436,8 @@
   <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
 </svg>
 
-      <time class="article-comment">
-        <span class="waline-comment-count" data-path="/p/lifestyle-platform-development/"
-          >0</span
-        >
+      <time class="article-comment" style="display:none">
+        <span class="waline-comment-count" data-path="/p/lifestyle-platform-development/"></span>
         comments
       </time>
     </div>
@@ -6235,6 +6231,45 @@
             
                 
 <article class="">
+    <a href="/p/hugo-cicd-and-views-sort/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Hugo静态博客CICD与按浏览量排序</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/frontend-online-nginx-proxy/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端线上Nginx代理配置详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/frontend-local-proxy/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端本地代理配置详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
     <a href="/p/hugo-mermaid-client-side/">
         
         
@@ -6254,45 +6289,6 @@
 
         <div class="article-details">
             <h2 class="article-title">CSS小案例，讲布局（Flex&#43;Grid）</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/p/vue-cli-to-vite-migration/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">如何将vue cli 写的前端文件转换为vite（详细板）</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/p/campus-oj-layout/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">校园OJ开发之布局逻辑</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/p/campus-oj-login/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">校园OJ项目的详细开发(登录界面)</h2>
         </div>
     </a>
 </article>
@@ -6377,7 +6373,8 @@
 </script>
 
 <div
-  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+  id="site-stats"
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center; display: none"
 >
   <span id="busuanzi_container_site_uv"
     >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
@@ -6462,6 +6459,32 @@
         indexCountEle.innerText = cached || "0";
       }
     }
+
+    function revealOnFill(target, parent) {
+      if (!target || !parent) return;
+      var show = function () {
+        if (target.textContent.trim()) parent.style.display = "";
+      };
+      show();
+      new MutationObserver(show).observe(target, {
+        childList: true,
+        characterData: true,
+        subtree: true,
+      });
+    }
+    document
+      .querySelectorAll(".waline-pageview-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-pageview"));
+      });
+    document
+      .querySelectorAll(".waline-comment-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-comment"));
+      });
+    var statsWrap = document.getElementById("site-stats");
+    revealOnFill(document.getElementById("busuanzi_value_site_uv"), statsWrap);
+    revealOnFill(document.getElementById("busuanzi_value_site_pv"), statsWrap);
   })();
 </script>
 

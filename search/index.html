@@ -306,7 +306,8 @@
 </script>
 
 <div
-  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+  id="site-stats"
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center; display: none"
 >
   <span id="busuanzi_container_site_uv"
     >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
@@ -391,6 +392,32 @@
         indexCountEle.innerText = cached || "0";
       }
     }
+
+    function revealOnFill(target, parent) {
+      if (!target || !parent) return;
+      var show = function () {
+        if (target.textContent.trim()) parent.style.display = "";
+      };
+      show();
+      new MutationObserver(show).observe(target, {
+        childList: true,
+        characterData: true,
+        subtree: true,
+      });
+    }
+    document
+      .querySelectorAll(".waline-pageview-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-pageview"));
+      });
+    document
+      .querySelectorAll(".waline-comment-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-comment"));
+      });
+    var statsWrap = document.getElementById("site-stats");
+    revealOnFill(document.getElementById("busuanzi_value_site_uv"), statsWrap);
+    revealOnFill(document.getElementById("busuanzi_value_site_pv"), statsWrap);
   })();
 </script>
 

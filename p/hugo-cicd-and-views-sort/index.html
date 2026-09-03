@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Hugo 纯静态站怎么用 GitHub Actions 做 CI/CD，又怎么在没运行时后端的情况下实现按浏览量排序——和常规后端游标/快照分页的对比。">
+<title>Hugo静态博客CICD与按浏览量排序</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/hugo-cicd-and-views-sort/'>
+
+<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="Hugo静态博客CICD与按浏览量排序">
+<meta property='og:description' content="Hugo 纯静态站怎么用 GitHub Actions 做 CI/CD，又怎么在没运行时后端的情况下实现按浏览量排序——和常规后端游标/快照分页的对比。">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/hugo-cicd-and-views-sort/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Hugo' /><meta property='article:tag' content='GitHub Actions' /><meta property='article:published_time' content='2026-09-03T10:30:00&#43;00:00'/><meta property='article:modified_time' content='2026-09-03T10:30:00&#43;00:00'/>
+<meta name="twitter:title" content="Hugo静态博客CICD与按浏览量排序">
+<meta name="twitter:description" content="Hugo 纯静态站怎么用 GitHub Actions 做 CI/CD，又怎么在没运行时后端的情况下实现按浏览量排序——和常规后端游标/快照分页的对比。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_86eef58e0c91235.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#part-1hugo--github-actions-cicd-原理">Part 1：Hugo + GitHub Actions CI/CD 原理</a>
+      <ol>
+        <li><a href="#整体链路">整体链路</a></li>
+        <li><a href="#workflow-逐段">workflow 逐段</a></li>
+        <li><a href="#定时构建的意义">定时构建的意义</a></li>
+      </ol>
+    </li>
+    <li><a href="#part-2按浏览量排序hugo-静态方案-vs-常规后端方案">Part 2：按浏览量排序——Hugo 静态方案 vs 常规后端方案</a>
+      <ol>
+        <li><a href="#核心难点浏览量是实时变化的">核心难点：浏览量是实时变化的</a></li>
+        <li><a href="#常规后端的三种方案">常规后端的三种方案</a>
+          <ol>
+            <li><a href="#普通-offset-分页">普通 offset 分页</a></li>
+            <li><a href="#游标分页">游标分页</a></li>
+            <li><a href="#快照分页">快照分页</a></li>
+          </ol>
+        </li>
+        <li><a href="#hugo-静态站的做法--快照方案的静态版">Hugo 静态站的做法 = 快照方案的静态版</a>
+          <ol>
+            <li><a href="#第一步ci-构建时拉浏览量">第一步：CI 构建时拉浏览量</a></li>
+            <li><a href="#第二步hugo-模板按浏览量排序分页">第二步：Hugo 模板按浏览量排序分页</a></li>
+            <li><a href="#天然规避数据漂移">天然规避数据漂移</a></li>
+            <li><a href="#天然支持跳页">天然支持跳页</a></li>
+            <li><a href="#tie-breaker浏览量相同怎么办">tie-breaker：浏览量相同怎么办</a></li>
+          </ol>
+        </li>
+        <li><a href="#对比表">对比表</a></li>
+        <li><a href="#选型建议">选型建议</a></li>
+      </ol>
+    </li>
+    <li><a href="#小结">小结</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/web%E5%BC%80%E5%8F%91/"
+      style="background-color: ZgotmplZ; color: #ffffff;"
+      
+    >
+      web开发
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/hugo-cicd-and-views-sort/">Hugo静态博客CICD与按浏览量排序</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">Hugo 纯静态站怎么用 GitHub Actions 做 CI/CD，又怎么在没运行时后端的情况下实现按浏览量排序——和常规后端游标/快照分页的对比。</h3>
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-09-03 10:30</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview" style="display:none">
+        <span class="waline-pageview-count" data-path="/p/hugo-cicd-and-views-sort/"></span>
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment" style="display:none">
+        <span class="waline-comment-count" data-path="/p/hugo-cicd-and-views-sort/"></span>
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="前言">前言
+</h2><p>Hugo 是纯静态站点生成器：写 Markdown，构建时生成 HTML，部署就是把这些 HTML 放到 web 服务器上，<strong>没有运行时后端</strong>。这带来两个常见疑问：</p>
+<ol>
+<li>没有后端，CI/CD 怎么做？</li>
+<li>我想按「浏览量」给文章排序，浏览量是实时数据，静态站没有数据库、没有运行时查询，怎么做分页？翻页会不会像动态接口那样出现数据重复/遗漏？</li>
+</ol>
+<p>本文一次讲清这两件事，并把 Hugo 的静态方案和常规后端动态分页（offset / 游标 / 快照）摆在一起对比。</p>
+<h2 id="part-1hugo--github-actions-cicd-原理">Part 1：Hugo + GitHub Actions CI/CD 原理
+</h2><h3 id="整体链路">整体链路
+</h3><pre class="mermaid">flowchart LR
+    Trigger[&#34;触发器&lt;br/&gt;push 到 main / 定时 schedule&#34;] --&gt; Checkout[&#34;checkout 代码&#34;]
+    Checkout --&gt; SetupHugo[&#34;装 Hugo extended&#34;]
+    SetupHugo --&gt; Fetch[&#34;Node 跑 fetch 脚本&lt;br/&gt;拉 Waline 浏览量&#34;]
+    Fetch --&gt; Build[&#34;hugo -D 构建&#34;]
+    Build --&gt; Deploy[&#34;推 public/ 到 Pages 仓库&#34;]
+    Deploy --&gt; Pages[&#34;GitHub Pages 提供访问&#34;]</pre>
+
+<p>核心思路：<strong>构建在 CI 里完成，部署就是把产物推到 GitHub Pages 仓库</strong>。下面逐段拆 workflow。</p>
+<h3 id="workflow-逐段">workflow 逐段
+</h3><p><strong>触发器</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">on</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">main</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">schedule</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;17 3 */3 * *&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>push</code>：写完文章 push 到 main，立即构建部署。</li>
+<li><code>schedule</code>：约每 3 天定时跑一次，用来<strong>刷新浏览量排序</strong>（浏览量是实时变化的，静态站要重新构建才能反映新数据）。<code>17 3 */3 * *</code> = 每月 1/4/7&hellip; 号 03:17 UTC。</li>
+</ul>
+<p><strong>步骤</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">jobs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">deploy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l">ubuntu-latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Checkout</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">actions/checkout@v4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Setup Hugo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-hugo@v3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">hugo-version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;latest&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">extended</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Setup Node</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">actions/setup-node@v4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">node-version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;20&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Fetch pageviews</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">node scripts/fetch-pageviews.js</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Build Web</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l">hugo -D</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Deploy Web</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l">peaceiris/actions-gh-pages@v4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">PERSONAL_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l">${{ secrets.TOKEN }}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">EXTERNAL_REPOSITORY</span><span class="p">:</span><span class="w"> </span><span class="l">yourname/yourname.github.io</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">PUBLISH_BRANCH</span><span class="p">:</span><span class="w"> </span><span class="l">main</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">PUBLISH_DIR</span><span class="p">:</span><span class="w"> </span><span class="l">./public</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">commit_message</span><span class="p">:</span><span class="w"> </span><span class="l">auto deploy</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>几点说明：</p>
+<ul>
+<li><code>fetch-depth: 0</code>：Hugo 构建某些功能（如 lastmod 从 git log 取）需要完整历史。</li>
+<li><code>peaceiris/actions-hugo</code>：装 Hugo extended 版（Stack 主题的图片处理需要 extended）。</li>
+<li><code>Setup Node</code> + <code>Fetch pageviews</code>：装 Node 20 跑 <code>scripts/fetch-pageviews.js</code>，调 Waline API 拉每篇文章浏览量，写进 <code>data/pageviews.json</code>。这是按浏览量排序的数据来源，下面 Part 2 详讲。</li>
+<li><code>hugo -D</code>：<code>-D</code> 包含 draft 文章（按需）。</li>
+<li><code>peaceiris/actions-gh-pages</code>：把 <code>public/</code> 推到<strong>另一个仓库</strong> <code>yourname/yourname.github.io</code> 的 <code>main</code> 分支，GitHub Pages 从这个仓库出站。源码仓和 Pages 仓分离，构建产物不污染源码仓历史。</li>
+</ul>
+<blockquote>
+<p>用 <code>PERSONAL_TOKEN</code> 而不是默认 <code>GITHUB_TOKEN</code>，是因为推到<strong>外部仓库</strong>需要跨仓权限，默认 token 只能推当前仓。</p>
+</blockquote>
+<h3 id="定时构建的意义">定时构建的意义
+</h3><p>静态站的死穴是「数据不实时」。浏览量每分每秒在变，但静态页一旦生成就固定了。解决办法不是让静态站变动态，而是<strong>定时重新构建</strong>：</p>
+<ul>
+<li>push 触发：内容更新时立即重建。</li>
+<li>schedule 触发：内容没变但浏览量变了，定时拉新数据重建。</li>
+</ul>
+<p>频率越高越实时，但 GitHub Actions 免费额度有限。每 3 天一次是「够用又不浪费」的折中。</p>
+<h2 id="part-2按浏览量排序hugo-静态方案-vs-常规后端方案">Part 2：按浏览量排序——Hugo 静态方案 vs 常规后端方案
+</h2><h3 id="核心难点浏览量是实时变化的">核心难点：浏览量是实时变化的
+</h3><p>按浏览量排序的分页列表，难的不是排序，是<strong>翻页时的数据漂移</strong>。</p>
+<p>假设按 <code>views DESC</code> 排序，每页 20 条。用户看第 1 页时，第 20 条浏览量 100。等用户翻到第 2 页时，第 1 页某篇文章被看了一次，浏览量从 101 涨到 102，排到第 18 条去了——于是第 2 页的列表和第 1 页<strong>出现重复或遗漏</strong>。</p>
+<p>这是所有按「会变化的字段」排序的分页都要面对的问题。下面先看常规后端怎么解，再看 Hugo 静态站怎么解。</p>
+<h3 id="常规后端的三种方案">常规后端的三种方案
+</h3><h4 id="普通-offset-分页">普通 offset 分页
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">GET /api/list?page=2&amp;pageSize=20&amp;sort=views&amp;order=desc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>后端 <code>ORDER BY views DESC, id DESC LIMIT 20 OFFSET 20</code>。</p>
+<ul>
+<li>简单，支持跳页。</li>
+<li><strong>会漂移</strong>：翻页过程中浏览量变化 → 重复/遗漏。</li>
+<li>适用：浏览量更新慢、容忍度高的场景。</li>
+</ul>
+<h4 id="游标分页">游标分页
+</h4><p>不用页码，用上一页最后一条的排序值做游标：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">GET /api/list?cursor=15230&amp;lastId=88&amp;pageSize=20&amp;sort=views&amp;order=desc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">articles</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">views</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">15230</span><span class="p">)</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="p">(</span><span class="n">views</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15230</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">88</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">views</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">DESC</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>关键点</strong>：排序字段必须加<strong>唯一字段（id）做 tie-breaker</strong>，否则浏览量相同的多条无法确定游标位置。</li>
+<li>不漂移，深分页性能好（避免大 offset）。</li>
+<li><strong>不支持跳页</strong>，只能上一页/下一页，适合无限滚动。</li>
+</ul>
+<h4 id="快照分页">快照分页
+</h4><p>需要页码跳转时，首次查询生成一个排序快照：</p>
+<ol>
+<li>首次请求，后端把当前排序后的 id 列表缓存到 Redis（带过期，如 5 分钟），返回 <code>snapshot_id</code>。</li>
+<li>翻页带 <code>snapshot_id</code>，后端从缓存取对应区间 id 再批量查详情。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">GET /api/list?page=3&amp;pageSize=20&amp;snapshot_id=abc123
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>翻页过程数据完全稳定，支持任意跳页。</li>
+<li>有缓存成本，快照过期需重新生成，浏览量变化不实时反映。</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A[&#34;常规快照方案&#34;] --&gt; A1[&#34;首次请求&lt;br/&gt;排序结果存 Redis&lt;br/&gt;返回 snapshot_id&#34;]
+    A1 --&gt; A2[&#34;翻页带 snapshot_id&lt;br/&gt;从缓存取区间 id&#34;]
+    A2 --&gt; A3[&#34;过期后重新生成&#34;]
+    B[&#34;Hugo 静态快照&#34;] --&gt; B1[&#34;CI 构建时&lt;br/&gt;拉全站浏览量写 data JSON&#34;]
+    B1 --&gt; B2[&#34;hugo sort &#43; Paginate&lt;br/&gt;生成分页静态页&#34;]
+    B2 --&gt; B3[&#34;下次构建前固定不变&#34;]</pre>
+
+<h3 id="hugo-静态站的做法--快照方案的静态版">Hugo 静态站的做法 = 快照方案的静态版
+</h3><p>Hugo 没有运行时后端，但「快照」这个思路天然契合静态站：<strong>构建时拉一次数据，生成静态页，内容固定到下次构建</strong>。</p>
+<h4 id="第一步ci-构建时拉浏览量">第一步：CI 构建时拉浏览量
+</h4><p><code>scripts/fetch-pageviews.js</code> 在构建前跑：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">SERVER_URL</span> <span class="o">=</span> <span class="s1">&#39;https://your-waline.example.com&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">fetchCount</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`</span><span class="si">${</span><span class="nx">SERVER_URL</span><span class="si">}</span><span class="sb">/api/article?path=</span><span class="si">${</span><span class="nb">encodeURIComponent</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span><span class="si">}</span><span class="sb">&amp;type=time&amp;lang=zh-cn`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">json</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">errno</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">json</span><span class="p">.</span><span class="nx">data</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">row</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="o">?</span> <span class="nx">json</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">:</span> <span class="nx">json</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">typeof</span> <span class="nx">row</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span> <span class="o">?</span> <span class="nx">row</span> <span class="o">:</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">row</span> <span class="o">&amp;&amp;</span> <span class="nx">row</span><span class="p">.</span><span class="nx">time</span><span class="p">)</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 遍历 content/post/*，对每篇的 RelPermalink 拉 count
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 汇总写 data/pageviews.json：{ &#34;/p/xxx/&#34;: 99, ... }
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>产物 <code>data/pageviews.json</code> 是一份 <code>{文章路径: 浏览量}</code> 的快照。Hugo 构建时通过 <code>.Site.Data.pageviews</code> 读它。</p>
+<h4 id="第二步hugo-模板按浏览量排序分页">第二步：Hugo 模板按浏览量排序分页
+</h4><p><code>layouts/hot/list.html</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{{ $pv := .Site.Data.pageviews }}
+</span></span><span class="line"><span class="cl">{{ $pages := where .Site.RegularPages &#34;Type&#34; &#34;in&#34; .Site.Params.mainSections }}
+</span></span><span class="line"><span class="cl">{{ $notHidden := where .Site.RegularPages &#34;Params.hidden&#34; &#34;!=&#34; true }}
+</span></span><span class="line"><span class="cl">{{ $filtered := ($pages | intersect $notHidden) }}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">{{ $items := slice }}
+</span></span><span class="line"><span class="cl">{{ range $filtered }}
+</span></span><span class="line"><span class="cl">    {{ $c := index $pv .RelPermalink | default 0 }}
+</span></span><span class="line"><span class="cl">    {{ $items = $items | append (dict &#34;count&#34; $c &#34;page&#34; .) }}
+</span></span><span class="line"><span class="cl">{{ end }}
+</span></span><span class="line"><span class="cl">{{ $sorted := sort $items &#34;count&#34; &#34;desc&#34; }}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">{{ $pagesSorted := slice }}
+</span></span><span class="line"><span class="cl">{{ range $sorted }}
+</span></span><span class="line"><span class="cl">    {{ $pagesSorted = $pagesSorted | append .page }}
+</span></span><span class="line"><span class="cl">{{ end }}
+</span></span><span class="line"><span class="cl">{{ $pag := .Paginate $pagesSorted }}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">{{ range $pag.Pages }}
+</span></span><span class="line"><span class="cl">    {{ partial &#34;article-list/default&#34; . }}
+</span></span><span class="line"><span class="cl">{{ end }}
+</span></span><span class="line"><span class="cl">{{ partial &#34;pagination.html&#34; . }}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>逻辑拆解：</p>
+<ol>
+<li>读 <code>data/pageviews.json</code>（<code>.Site.Data.pageviews</code>）。</li>
+<li>取所有 post 类型、非隐藏的页面。</li>
+<li>给每篇绑上 count（浏览量不存在则 0），组成 <code>slice of dict</code>。</li>
+<li><code>sort ... &quot;count&quot; &quot;desc&quot;</code> 按浏览量降序。</li>
+<li>提取出排好序的 Page slice，<code>.Paginate</code> 生成分页。</li>
+</ol>
+<h4 id="天然规避数据漂移">天然规避数据漂移
+</h4><p>这是关键对比。常规后端快照方案要专门设计（Redis 缓存 + snapshot_id + 过期管理）才能解决漂移；Hugo 静态方案<strong>天然不漂移</strong>，因为：</p>
+<ul>
+<li>静态页生成后内容固定，用户翻第 2 页看到的就是构建时定好的列表，不会因为别人浏览了某篇文章而变化。</li>
+<li>「过期」就是下次构建——重新拉数据、重新排序、重新生成，不需要 Redis、不需要 snapshot_id。</li>
+</ul>
+<h4 id="天然支持跳页">天然支持跳页
+</h4><p>Hugo <code>.Paginate</code> 自动生成 <code>/hot/</code>、<code>/hot/2/</code>、<code>/hot/3/</code> 多个静态页，带页码导航。用户能直接跳第 3 页，不会有游标分页「只能上下页」的局限。因为每个页码都是构建时生成好的独立静态文件。</p>
+<h4 id="tie-breaker浏览量相同怎么办">tie-breaker：浏览量相同怎么办
+</h4><p><code>sort</code> 按 <code>count</code> 降序后，浏览量相同的文章顺序由 <code>sort</code> 内部决定。要让顺序稳定，可加 Date 兜底——Hugo 的 <code>sort</code> 是单字段的，若要双字段排序，可先按 Date 排序再按 count 排序（稳定排序前提下），或者接受单字段排序在相同浏览量时的任意顺序。博客文章场景下浏览量相同的概率低，单字段排序够用。</p>
+<h3 id="对比表">对比表
+</h3><div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>维度</th>
+					<th>普通 offset</th>
+					<th>游标分页</th>
+					<th>后端快照</th>
+					<th>Hugo 静态快照</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>漂移</td>
+					<td>会</td>
+					<td>不漂移</td>
+					<td>不漂移</td>
+					<td>不漂移</td>
+			</tr>
+			<tr>
+					<td>跳页</td>
+					<td>支持</td>
+					<td>不支持</td>
+					<td>支持</td>
+					<td>支持</td>
+			</tr>
+			<tr>
+					<td>运行时成本</td>
+					<td>低</td>
+					<td>低</td>
+					<td>中（Redis）</td>
+					<td>零</td>
+			</tr>
+			<tr>
+					<td>实时性</td>
+					<td>实时</td>
+					<td>实时</td>
+					<td>快照期内固定</td>
+					<td>延迟到下次构建</td>
+			</tr>
+			<tr>
+					<td>实现复杂度</td>
+					<td>低</td>
+					<td>中</td>
+					<td>高</td>
+					<td>低</td>
+			</tr>
+			<tr>
+					<td>适用</td>
+					<td>更新慢</td>
+					<td>无限滚动</td>
+					<td>后台带页码</td>
+					<td>静态站</td>
+			</tr>
+	</tbody>
+</table></div>
+<h3 id="选型建议">选型建议
+</h3><ul>
+<li><strong>静态博客 / 内容更新频率低</strong> → Hugo 静态快照。零成本、无漂移、支持跳页，唯一代价是实时性，用 <code>schedule</code> 定时构建兜底。</li>
+<li><strong>信息流 / 无限滚动</strong> → 后端游标分页，最稳。</li>
+<li><strong>后台管理 / 必须实时 + 页码</strong> → 后端快照方案。</li>
+<li><strong>浏览量几乎不变</strong>（按历史总浏览量且更新极慢） → 普通 offset 就够。</li>
+</ul>
+<h2 id="小结">小结
+</h2><p>一句话串起两件事：<strong>Hugo 静态站的 CI/CD 就是「GitHub Actions 里构建 + 推 Pages 仓库」，按浏览量排序就是「构建时拉数据快照 + Hugo sort 生成静态分页」</strong>。后者本质是常规快照分页方案的静态版，但省掉了 Redis、snapshot_id、过期管理这些运行时设施——代价是实时性延迟到下次构建，对博客这种低频更新场景是合算的交换。</p>
+<blockquote>
+<p>想更实时就调高 <code>schedule</code> 频率（如每天），想省额度就拉长间隔。静态站的「实时性」是用构建频率换的，没有银弹。</p>
+</blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/hugo/">Hugo</a>
+        
+            <a href="/tags/github-actions/">GitHub Actions</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/frontend-online-nginx-proxy/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端线上Nginx代理配置详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/frontend-local-proxy/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端本地代理配置详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/hugo-mermaid-client-side/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Hugo 博客集成 Mermaid 流程图（客户端渲染方案)</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/css-layout-flex-grid/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CSS小案例，讲布局（Flex&#43;Grid）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/vue-cli-to-vite-migration/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">如何将vue cli 写的前端文件转换为vite（详细板）</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  id="site-stats"
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center; display: none"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+
+    function revealOnFill(target, parent) {
+      if (!target || !parent) return;
+      var show = function () {
+        if (target.textContent.trim()) parent.style.display = "";
+      };
+      show();
+      new MutationObserver(show).observe(target, {
+        childList: true,
+        characterData: true,
+        subtree: true,
+      });
+    }
+    document
+      .querySelectorAll(".waline-pageview-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-pageview"));
+      });
+    document
+      .querySelectorAll(".waline-comment-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-comment"));
+      });
+    var statsWrap = document.getElementById("site-stats");
+    revealOnFill(document.getElementById("busuanzi_value_site_uv"), statsWrap);
+    revealOnFill(document.getElementById("busuanzi_value_site_pv"), statsWrap);
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
+</style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>

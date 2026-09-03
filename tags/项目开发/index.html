@@ -10,7 +10,7 @@
 <meta property='og:description' content="欢迎来到我的博客QWQ">
 <meta property='og:url' content='https://ye-guan-xing.github.io/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-08-22T15:00:00&#43;00:00 '/>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-09-03T10:30:00&#43;00:00 '/>
 <meta name="twitter:title" content="Tag: 项目开发 - acye's blog">
 <meta name="twitter:description" content="欢迎来到我的博客QWQ"><link rel="alternate" type="application/rss&#43;xml" href="https://ye-guan-xing.github.io/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/index.xml">
     </head>
@@ -286,7 +286,7 @@
                     <a href="/archives/#2026">
                         
                             <span class="year">2026</span>
-                            <span class="count">32</span>
+                            <span class="count">35</span>
                         
                     </a> 
                 </div>
@@ -295,14 +295,6 @@
                         
                             <span class="year">2025</span>
                             <span class="count">10</span>
-                        
-                    </a> 
-                </div>
-            <div class="archives-year">
-                    <a href="/archives/#0001">
-                        
-                            <span class="year">0001</span>
-                            <span class="count">1</span>
                         
                     </a> 
                 </div>
@@ -329,7 +321,7 @@
 
     <div class="tagCloud-tags">
         
-            <a href="/categories/web%E5%BC%80%E5%8F%91/" class="font_size_9">
+            <a href="/categories/web%E5%BC%80%E5%8F%91/" class="font_size_12">
                 web开发
             </a>
         
@@ -387,7 +379,7 @@
 
         <div class="section-card">
             <div class="section-details">
-                <h3 class="section-count">3 个页面</h3>
+                <h3 class="section-count">5 个页面</h3>
                 <h1 class="section-term">项目开发</h1>
                 
             </div>
@@ -395,6 +387,28 @@
     </header>
     
     <section class="article-list--compact">
+        
+            <article>
+    <a href="/p/frontend-online-nginx-proxy/">
+        <div class="article-details">
+            <h2 class="article-title">前端线上Nginx代理配置详解</h2>
+            <footer class="article-time">
+                <time datetime='2026-09-03T10:10:00Z'>2026-09-03 10:10</time>
+            </footer>
+        </div>
+    </a>
+</article>
+        
+            <article>
+    <a href="/p/frontend-local-proxy/">
+        <div class="article-details">
+            <h2 class="article-title">前端本地代理配置详解</h2>
+            <footer class="article-time">
+                <time datetime='2026-09-03T10:00:00Z'>2026-09-03 10:00</time>
+            </footer>
+        </div>
+    </a>
+</article>
         
             <article>
     <a href="/p/css-layout-flex-grid/">
@@ -467,7 +481,8 @@
 </script>
 
 <div
-  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+  id="site-stats"
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center; display: none"
 >
   <span id="busuanzi_container_site_uv"
     >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
@@ -552,6 +567,32 @@
         indexCountEle.innerText = cached || "0";
       }
     }
+
+    function revealOnFill(target, parent) {
+      if (!target || !parent) return;
+      var show = function () {
+        if (target.textContent.trim()) parent.style.display = "";
+      };
+      show();
+      new MutationObserver(show).observe(target, {
+        childList: true,
+        characterData: true,
+        subtree: true,
+      });
+    }
+    document
+      .querySelectorAll(".waline-pageview-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-pageview"));
+      });
+    document
+      .querySelectorAll(".waline-comment-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-comment"));
+      });
+    var statsWrap = document.getElementById("site-stats");
+    revealOnFill(document.getElementById("busuanzi_value_site_uv"), statsWrap);
+    revealOnFill(document.getElementById("busuanzi_value_site_pv"), statsWrap);
   })();
 </script>
 

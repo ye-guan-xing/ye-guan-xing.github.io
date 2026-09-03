@@ -338,10 +338,8 @@
   <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
 </svg>
 
-      <time class="article-pageview">
-        <span class="waline-pageview-count" data-path="/p/git-branch-sync/"
-          >0</span
-        >
+      <time class="article-pageview" style="display:none">
+        <span class="waline-pageview-count" data-path="/p/git-branch-sync/"></span>
         visits
       </time>
     </div>
@@ -352,10 +350,8 @@
   <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
 </svg>
 
-      <time class="article-comment">
-        <span class="waline-comment-count" data-path="/p/git-branch-sync/"
-          >0</span
-        >
+      <time class="article-comment" style="display:none">
+        <span class="waline-comment-count" data-path="/p/git-branch-sync/"></span>
         comments
       </time>
     </div>
@@ -635,7 +631,8 @@
 </script>
 
 <div
-  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center"
+  id="site-stats"
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center; display: none"
 >
   <span id="busuanzi_container_site_uv"
     >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
@@ -720,6 +717,32 @@
         indexCountEle.innerText = cached || "0";
       }
     }
+
+    function revealOnFill(target, parent) {
+      if (!target || !parent) return;
+      var show = function () {
+        if (target.textContent.trim()) parent.style.display = "";
+      };
+      show();
+      new MutationObserver(show).observe(target, {
+        childList: true,
+        characterData: true,
+        subtree: true,
+      });
+    }
+    document
+      .querySelectorAll(".waline-pageview-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-pageview"));
+      });
+    document
+      .querySelectorAll(".waline-comment-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-comment"));
+      });
+    var statsWrap = document.getElementById("site-stats");
+    revealOnFill(document.getElementById("busuanzi_value_site_uv"), statsWrap);
+    revealOnFill(document.getElementById("busuanzi_value_site_pv"), statsWrap);
   })();
 </script>
 
