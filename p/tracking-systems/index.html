@@ -6,7 +6,7 @@
 
 <link rel='canonical' href='https://ye-guan-xing.github.io/p/tracking-systems/'>
 
-<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="三大埋点系统详解">
+<link rel="stylesheet" href="/scss/style.min.9c5a9f4543b29b46fdab34b507be2b4019f08e74ad9bbed7500c7cc6af8772bc.css"><meta property='og:title' content="三大埋点系统详解">
 <meta property='og:description' content="三大埋点系统详解 目标：搞清每套系统的来源、初始化位置、调用 API、在什么环境生效、什么时候该用。\n全景图 flowchart LR subgraph 初始化[&#34;初始化位置&#34;] C1[&#34;公共导入模块&lt;br/&gt;LogTrack.config().init()&lt;br/&gt;$timeTrack = logTimeTrack&#34;] C2[&#34;入口 main.js&lt;br/&gt;logTrackFactory() → $tracker&#34;] end subgraph SDK[&#34;三套系统&#34;] S1[&#34;① LogTrack&lt;br/&gt;基础组件库&#34;] S2[&#34;② log-track 实例&lt;br/&gt;log-track-sdk → $tracker&#34;] S3[&#34;③ logTimeTrack&lt;br/&gt;基础组件库 → $timeTrack&#34;] end C1 --&gt; S1 C1 --&gt; S3 C2 --&gt; S2 S1 --&gt; R1[&#34;神策 Sensors &#43; 自研日志&#34;] S2 --&gt; R2[&#34;火山引擎 Rangers DataFinder&#34;] S3 --&gt; R3[&#34;性能计时&#34;] style S1 fill:#2d4a6b,color:#fff,stroke:#4a90d9 style S2 fill:#6b3a2d,color:#fff,stroke:#d9774a style S3 fill:#5a4a3a,color:#fff,stroke:#c9a04a LogTrack —— 主埋点系统 来源 来自基础组件库，在工具模块里 re-export，业务页面 import { LogTrack } from '@/utils'。\n">
 <meta property='og:url' content='https://ye-guan-xing.github.io/p/tracking-systems/'>
 <meta property='og:site_name' content='acye&#39;s blog'>

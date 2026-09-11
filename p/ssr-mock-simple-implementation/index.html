@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="这篇把 SSR 和 Mock 两个场景动手做掉。它们同样是&quot;一个 Node 服务&quot;就能讲清楚的事。\n一、SSR:服务端渲染 SSR 是什么 SSR(Server-Side Rendering)指页面 HTML 由服务端生成,而不是浏览器里用 JS 现拼。\n">
+<title>SSR 与 Mock 的简单实现</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/ssr-mock-simple-implementation/'>
+
+<link rel="stylesheet" href="/scss/style.min.9c5a9f4543b29b46fdab34b507be2b4019f08e74ad9bbed7500c7cc6af8772bc.css"><meta property='og:title' content="SSR 与 Mock 的简单实现">
+<meta property='og:description' content="这篇把 SSR 和 Mock 两个场景动手做掉。它们同样是&quot;一个 Node 服务&quot;就能讲清楚的事。\n一、SSR:服务端渲染 SSR 是什么 SSR(Server-Side Rendering)指页面 HTML 由服务端生成,而不是浏览器里用 JS 现拼。\n">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/ssr-mock-simple-implementation/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Node.js' /><meta property='article:tag' content='工程化' /><meta property='article:tag' content='SSR' /><meta property='article:tag' content='Mock' /><meta property='article:tag' content='Express' /><meta property='article:published_time' content='2026-09-11T10:00:00&#43;08:00'/><meta property='article:modified_time' content='2026-09-11T10:00:00&#43;08:00'/>
+<meta name="twitter:title" content="SSR 与 Mock 的简单实现">
+<meta name="twitter:description" content="这篇把 SSR 和 Mock 两个场景动手做掉。它们同样是&quot;一个 Node 服务&quot;就能讲清楚的事。\n一、SSR:服务端渲染 SSR 是什么 SSR(Server-Side Rendering)指页面 HTML 由服务端生成,而不是浏览器里用 JS 现拼。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_dc3c198eca0bb681.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一ssr服务端渲染">一、SSR:服务端渲染</a>
+      <ol>
+        <li><a href="#ssr-是什么">SSR 是什么</a></li>
+        <li><a href="#手写一个最简-ssr">手写一个最简 SSR</a>
+          <ol>
+            <li><a href="#装一下环境">装一下环境</a></li>
+            <li><a href="#代码">代码</a></li>
+          </ol>
+        </li>
+        <li><a href="#从手写-ssr-到-nextjs--nuxt">从手写 SSR 到 Next.js / Nuxt</a></li>
+      </ol>
+    </li>
+    <li><a href="#二mock接口模拟">二、Mock:接口模拟</a>
+      <ol>
+        <li><a href="#mock-是什么">Mock 是什么</a></li>
+        <li><a href="#手写一个最简-mock-服务">手写一个最简 Mock 服务</a></li>
+        <li><a href="#mock-的进阶玩法">Mock 的进阶玩法</a></li>
+      </ol>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/node.js/"
+      
+    >
+      Node.js
+    </a>
+    
+    <a
+      href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"
+      
+    >
+      工程化
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/ssr-mock-simple-implementation/">SSR 与 Mock 的简单实现</a>
+    </h2>
+
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-09-11 10:00</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview" style="display:none">
+        <span class="waline-pageview-count" data-path="/p/ssr-mock-simple-implementation/"></span>
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment" style="display:none">
+        <span class="waline-comment-count" data-path="/p/ssr-mock-simple-implementation/"></span>
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>这篇把 SSR 和 Mock 两个场景动手做掉。它们同样是&quot;一个 Node 服务&quot;就能讲清楚的事。</p>
+<h2 id="一ssr服务端渲染">一、SSR:服务端渲染
+</h2><h3 id="ssr-是什么">SSR 是什么
+</h3><p>SSR(Server-Side Rendering)指<strong>页面 HTML 由服务端生成</strong>,而不是浏览器里用 JS 现拼。</p>
+<div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th></th>
+					<th>CSR(客户端渲染)</th>
+					<th>SSR(服务端渲染)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>HTML 来源</td>
+					<td>浏览器执行 JS 后生成</td>
+					<td>服务端直接返回完整 HTML</td>
+			</tr>
+			<tr>
+					<td>SEO</td>
+					<td>爬虫拿到空壳,不友好</td>
+					<td>爬虫直接看到内容</td>
+			</tr>
+			<tr>
+					<td>首屏速度</td>
+					<td>先下 JS 再渲染,慢</td>
+					<td>HTML 直达,首屏快</td>
+			</tr>
+			<tr>
+					<td>交互</td>
+					<td>天然支持</td>
+					<td>需要&quot;水合(hydration)&ldquo;再接管</td>
+			</tr>
+	</tbody>
+</table></div>
+<p>典型场景:<strong>内容型网站(博客、文档、电商详情页)必须 SSR</strong>,因为 SEO 和首屏是命根子。</p>
+<h3 id="手写一个最简-ssr">手写一个最简 SSR
+</h3><p>思路很简单:服务端把数据塞进模板,渲染成 HTML 字符串,返回给浏览器。</p>
+<h4 id="装一下环境">装一下环境
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">npm install express
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="代码">代码
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// server.js
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 模拟从数据库取文章
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">posts</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Node 与开发&#39;</span><span class="p">,</span> <span class="nx">views</span><span class="o">:</span> <span class="mi">1024</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Node 基础&#39;</span><span class="p">,</span> <span class="nx">views</span><span class="o">:</span> <span class="mi">2048</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 模板函数:把数据渲染成 HTML(生产中用模板引擎或组件渲染)
+</span></span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">renderPost</span><span class="p">(</span><span class="nx">post</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;!DOCTYPE html&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;html&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;head&gt;&lt;title&gt;</span><span class="si">${</span><span class="nx">post</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span><span class="sb">&lt;/title&gt;&lt;/head&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;body&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;h1&gt;</span><span class="si">${</span><span class="nx">post</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span><span class="sb">&lt;/h1&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">  &lt;p&gt;阅读量:</span><span class="si">${</span><span class="nx">post</span><span class="p">.</span><span class="nx">views</span><span class="si">}</span><span class="sb">&lt;/p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;/body&gt;
+</span></span></span><span class="line"><span class="cl"><span class="sb">&lt;/html&gt;`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/post/:id&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">post</span> <span class="o">=</span> <span class="nx">posts</span><span class="p">.</span><span class="nx">find</span><span class="p">((</span><span class="nx">p</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">post</span><span class="p">)</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">404</span><span class="p">).</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Not Found&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">renderPost</span><span class="p">(</span><span class="nx">post</span><span class="p">));</span> <span class="c1">// 返回完整 HTML
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;SSR on http://localhost:3000&#39;</span><span class="p">));</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>浏览器打开 <code>http://localhost:3000/post/1</code>,<strong>右键查看源代码</strong>,能看到完整的 <code>&lt;h1&gt;Node 与开发&lt;/h1&gt;</code>——这就是 SSR 和 CSR 最直观的区别。</p>
+<h3 id="从手写-ssr-到-nextjs--nuxt">从手写 SSR 到 Next.js / Nuxt
+</h3><p>上面手写版返回的是<strong>死 HTML</strong>:能看、能被爬虫抓,但按钮点了没反应,跳转会整页刷新。服务端只吐了字符串,浏览器里没有 React / Vue 去绑事件。</p>
+<p>Next.js / Nuxt 做的是另一件事:<strong>首屏仍走 SSR,JS 下载完后再&quot;水合(hydration)&ldquo;接管</strong>。</p>
+<p>水合就是:浏览器先立刻画出服务端 HTML(首屏快、SEO 不丢),再把事件和状态挂到<strong>已经存在的 DOM</strong> 上,页面从&quot;能看&quot;变成&quot;能点&rdquo;。这就是开头表格里那句「需要水合再接管」。</p>
+<pre class="mermaid">flowchart LR
+  req[请求页面] --&gt; ssr[服务端渲染HTML]
+  ssr --&gt; show[浏览器立刻能看]
+  show --&gt; js[下载JS]
+  js --&gt; hydrate[水合接管]
+  hydrate --&gt; spa[可点击可跳转]</pre>
+
+<div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th></th>
+					<th>纯 SSR(手写模板)</th>
+					<th>Next.js / Nuxt</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>HTML</td>
+					<td>服务端生成</td>
+					<td>服务端生成</td>
+			</tr>
+			<tr>
+					<td>交互</td>
+					<td>没有,或自己写原生 JS</td>
+					<td>水合后变成可交互页面</td>
+			</tr>
+			<tr>
+					<td>跳转</td>
+					<td>每次整页刷新</td>
+					<td>水合后走客户端路由,不再整页刷</td>
+			</tr>
+			<tr>
+					<td>组件</td>
+					<td>字符串拼接</td>
+					<td>组件化,可复用</td>
+			</tr>
+			<tr>
+					<td>数据</td>
+					<td>自己塞进模板</td>
+					<td>框架在服务端取好再注入</td>
+			</tr>
+	</tbody>
+</table></div>
+<p>生产里几乎不会手写模板,而是用框架:</p>
+<ul>
+<li><strong>Next.js</strong>(React):Pages Router 用 <code>getServerSideProps</code>,每次请求都在服务端取数再渲染;App Router 用 Server Components,数据默认在服务端取,客户端只收到必要的 JS</li>
+<li><strong>Nuxt</strong>(Vue):<code>useAsyncData</code> / <code>useFetch</code>,服务端执行一次,水合时把结果复用给客户端,<strong>不会再打一遍接口</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="c1">// Next.js Pages Router:数据在服务端取好,组件直接渲染
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">Post</span><span class="p">({</span> <span class="nx">post</span> <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;{</span><span class="nx">post</span><span class="p">.</span><span class="nx">title</span><span class="p">}&lt;/</span><span class="nt">h1</span><span class="p">&gt;;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">async</span> <span class="kd">function</span> <span class="nx">getServerSideProps</span><span class="p">({</span> <span class="nx">params</span> <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">post</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">db</span><span class="p">.</span><span class="nx">getPost</span><span class="p">(</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">{</span> <span class="nx">props</span><span class="o">:</span> <span class="p">{</span> <span class="nx">post</span> <span class="p">}</span> <span class="p">};</span> <span class="c1">// 服务端渲染时注入
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-vue" data-lang="vue"><span class="line"><span class="cl"><span class="c">&lt;!--</span> <span class="nx">Nuxt</span><span class="o">:</span><span class="nx">useFetch</span> <span class="nx">在服务端跑</span><span class="p">,</span><span class="nx">水合时直接复用</span><span class="p">,</span><span class="nx">客户端不重复请求</span> <span class="o">--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">setup</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">useRoute</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">data</span><span class="o">:</span> <span class="nx">post</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">useFetch</span><span class="p">(</span><span class="sb">`/api/posts/</span><span class="si">${</span><span class="nx">route</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;{{</span> <span class="nx">post</span><span class="p">.</span><span class="nx">title</span> <span class="p">}}&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">template</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>理解手写版再上框架,你就明白框架帮你解决了什么:模板引擎、水合、路由、数据注入、缓存。</p>
+<h2 id="二mock接口模拟">二、Mock:接口模拟
+</h2><h3 id="mock-是什么">Mock 是什么
+</h3><p>Mock 是<strong>在后端接口没写好(或没部署)时,用 Node 起一个假接口服务</strong>,返回模拟数据。前端开发、联调、测试全靠它。</p>
+<p>典型场景:</p>
+<ul>
+<li>后端排期晚于前端,前端要<strong>先行开发</strong></li>
+<li>接口字段还没定稿,先用 Mock 定结构</li>
+<li>自动化测试不想依赖真实服务</li>
+</ul>
+<h3 id="手写一个最简-mock-服务">手写一个最简 Mock 服务
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// mock-server.js
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 内存数据源:模拟数据库
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">db</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">users</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;acye&#39;</span><span class="p">,</span> <span class="nx">avatar</span><span class="o">:</span> <span class="s1">&#39;https://example.com/a.png&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;nobody&#39;</span><span class="p">,</span> <span class="nx">avatar</span><span class="o">:</span> <span class="s1">&#39;https://example.com/b.png&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">articles</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;SSR 与 Mock&#39;</span><span class="p">,</span> <span class="nx">authorId</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">content</span><span class="o">:</span> <span class="s1">&#39;...&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 接口路径、返回结构尽量与真实后端保持一致
+</span></span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/users/:id&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">find</span><span class="p">((</span><span class="nx">u</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">u</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">404</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">code</span><span class="o">:</span> <span class="mi">404</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;user not found&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">code</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="nx">user</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/articles&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">articles</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">a</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">({</span> <span class="p">...</span><span class="nx">a</span><span class="p">,</span> <span class="nx">author</span><span class="o">:</span> <span class="nx">db</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">find</span><span class="p">((</span><span class="nx">u</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">u</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">a</span><span class="p">.</span><span class="nx">authorId</span><span class="p">)</span> <span class="p">}));</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">code</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="nx">list</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 模拟网络延迟,更贴近真实
+</span></span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">next</span><span class="p">,</span> <span class="mi">200</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3001</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Mock on http://localhost:3001&#39;</span><span class="p">));</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>前端联调时,把接口地址指到 <code>http://localhost:3001</code>,等真实后端就绪后<strong>只改一行 baseURL</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// api.js
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">BASE</span> <span class="o">=</span> <span class="kr">import</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DEV</span> <span class="o">?</span> <span class="s1">&#39;http://localhost:3001&#39;</span> <span class="o">:</span> <span class="s1">&#39;/api&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">const</span> <span class="nx">getUser</span> <span class="o">=</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">fetch</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">BASE</span><span class="si">}</span><span class="sb">/users/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">).</span><span class="nx">then</span><span class="p">((</span><span class="nx">r</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="mock-的进阶玩法">Mock 的进阶玩法
+</h3><div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>方案</th>
+					<th>适用场景</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>手写 Express 返回假数据</td>
+					<td>简单项目、学习(上面这个)</td>
+			</tr>
+			<tr>
+					<td>JSON Server(一个 JSON 文件生成 REST API)</td>
+					<td>原型验证、快速出假数据</td>
+			</tr>
+			<tr>
+					<td>MSW(Mock Service Worker)</td>
+					<td>前端测试里拦截真实请求</td>
+			</tr>
+			<tr>
+					<td>中间件式 Mock(按环境开关)</td>
+					<td>大项目,随构建环境切换</td>
+			</tr>
+	</tbody>
+</table></div>
+<p>大项目常用&quot;中间件式&rdquo;:同一个服务,<code>NODE_ENV=development</code> 时走 Mock 数据,生产环境直接转发真实后端:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/api&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">USE_MOCK</span> <span class="o">===</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">mockHandler</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">);</span> <span class="c1">// 返回假数据
+</span></span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 否则代理到真实后端
+</span></span></span><span class="line"><span class="cl">  <span class="nx">proxy</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span> <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;http://api.internal&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="总结">总结
+</h2><ul>
+<li><strong>SSR</strong>:服务端生成 HTML,解决 SEO 和首屏。手写版 = 数据 + 模板 → 完整 HTML;生产用 Next.js / Nuxt</li>
+<li><strong>Mock</strong>:用 Node 起假接口,让前端先行开发。核心是<strong>接口结构对齐真实后端 + 环境可切换</strong></li>
+<li>两者都是&quot;一个 Node 服务&quot;,是 BFF 之外,前端最常用的两个自建服务场景</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/node.js/">Node.js</a>
+        
+            <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/">工程化</a>
+        
+            <a href="/tags/ssr/">SSR</a>
+        
+            <a href="/tags/mock/">Mock</a>
+        
+            <a href="/tags/express/">Express</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/bff-simple-implementation/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BFF 的简单实现:用 Node 给前端做一个中间层</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/frontend-production-practices/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端投产的使用与优化:Node 工程化实战</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/node-and-frontend/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Node 与开发:前端为什么要学 Node.js</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/node-basics-and-design/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Node 基础与它的天才设计</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/frontend-online-nginx-proxy/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端线上Nginx代理配置详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  id="site-stats"
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center; display: none"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+
+    function revealOnFill(target, parent) {
+      if (!target || !parent) return;
+      var show = function () {
+        if (target.textContent.trim()) parent.style.display = "";
+      };
+      show();
+      new MutationObserver(show).observe(target, {
+        childList: true,
+        characterData: true,
+        subtree: true,
+      });
+    }
+    document
+      .querySelectorAll(".waline-pageview-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-pageview"));
+      });
+    document
+      .querySelectorAll(".waline-comment-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-comment"));
+      });
+    var statsWrap = document.getElementById("site-stats");
+    revealOnFill(document.getElementById("busuanzi_value_site_uv"), statsWrap);
+    revealOnFill(document.getElementById("busuanzi_value_site_pv"), statsWrap);
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
+</style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>

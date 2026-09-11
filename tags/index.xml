@@ -7,7 +7,119 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <copyright>acye</copyright>
-        <lastBuildDate>Thu, 03 Sep 2026 10:30:00 +0000</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 11 Sep 2026 10:20:00 +0800</lastBuildDate><atom:link href="https://ye-guan-xing.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Node.js</title>
+        <link>https://ye-guan-xing.github.io/tags/node.js/</link>
+        <pubDate>Fri, 11 Sep 2026 10:20:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/node.js/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Vite</title>
+        <link>https://ye-guan-xing.github.io/tags/vite/</link>
+        <pubDate>Fri, 11 Sep 2026 10:20:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/vite/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>部署</title>
+        <link>https://ye-guan-xing.github.io/tags/%E9%83%A8%E7%BD%B2/</link>
+        <pubDate>Fri, 11 Sep 2026 10:20:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/%E9%83%A8%E7%BD%B2/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>测试</title>
+        <link>https://ye-guan-xing.github.io/tags/%E6%B5%8B%E8%AF%95/</link>
+        <pubDate>Fri, 11 Sep 2026 10:20:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/%E6%B5%8B%E8%AF%95/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>工程化</title>
+        <link>https://ye-guan-xing.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/</link>
+        <pubDate>Fri, 11 Sep 2026 10:20:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Express</title>
+        <link>https://ye-guan-xing.github.io/tags/express/</link>
+        <pubDate>Fri, 11 Sep 2026 10:00:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/express/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Mock</title>
+        <link>https://ye-guan-xing.github.io/tags/mock/</link>
+        <pubDate>Fri, 11 Sep 2026 10:00:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/mock/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>SSR</title>
+        <link>https://ye-guan-xing.github.io/tags/ssr/</link>
+        <pubDate>Fri, 11 Sep 2026 10:00:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/ssr/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>BFF</title>
+        <link>https://ye-guan-xing.github.io/tags/bff/</link>
+        <pubDate>Fri, 11 Sep 2026 09:40:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/bff/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>全栈</title>
+        <link>https://ye-guan-xing.github.io/tags/%E5%85%A8%E6%A0%88/</link>
+        <pubDate>Fri, 11 Sep 2026 09:40:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/%E5%85%A8%E6%A0%88/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>模块系统</title>
+        <link>https://ye-guan-xing.github.io/tags/%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F/</link>
+        <pubDate>Fri, 11 Sep 2026 09:20:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>事件循环</title>
+        <link>https://ye-guan-xing.github.io/tags/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/</link>
+        <pubDate>Fri, 11 Sep 2026 09:20:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>异步</title>
+        <link>https://ye-guan-xing.github.io/tags/%E5%BC%82%E6%AD%A5/</link>
+        <pubDate>Fri, 11 Sep 2026 09:20:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/%E5%BC%82%E6%AD%A5/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>前端</title>
+        <link>https://ye-guan-xing.github.io/tags/%E5%89%8D%E7%AB%AF/</link>
+        <pubDate>Fri, 11 Sep 2026 09:00:00 +0800</pubDate>
+        
+        <guid>https://ye-guan-xing.github.io/tags/%E5%89%8D%E7%AB%AF/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>GitHub Actions</title>
         <link>https://ye-guan-xing.github.io/tags/github-actions/</link>
         <pubDate>Thu, 03 Sep 2026 10:30:00 +0000</pubDate>
