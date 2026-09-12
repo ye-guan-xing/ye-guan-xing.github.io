@@ -409,7 +409,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// 点击返回
 </span></span></span><span class="line"><span class="cl"><span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">  <span class="nx">page_name</span><span class="o">:</span> <span class="s1">&#39;少年闻天下&#39;</span><span class="p">,</span> <span class="nx">page_type</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">page_title</span><span class="o">:</span> <span class="s1">&#39;少年闻天下&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">page_name</span><span class="o">:</span> <span class="s1">&#39;每日资讯&#39;</span><span class="p">,</span> <span class="nx">page_type</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">page_title</span><span class="o">:</span> <span class="s1">&#39;每日资讯&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">url</span><span class="o">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">module_name</span><span class="o">:</span> <span class="s1">&#39;导航栏&#39;</span><span class="p">,</span> <span class="nx">item_name</span><span class="o">:</span> <span class="s1">&#39;返回按钮&#39;</span><span class="p">,</span> <span class="nx">btn_name</span><span class="o">:</span> <span class="s1">&#39;返回&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">key1</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span> <span class="nx">user_status</span><span class="o">:</span> <span class="s1">&#39;member&#39;</span> <span class="p">})</span>
@@ -417,13 +417,13 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>特征</strong>：每次埋点手写完整字段，调 <code>LogTrack.track(obj, eventType)</code>。</p>
-<p><strong>代表文件</strong>：少年闻天下订阅页（一个文件 23 处）、兑换课程页（12 处）、每日问答页（12 处）。</p>
+<p><strong>代表文件</strong>：每日资讯订阅页（一个文件 23 处）、兑换课程页（12 处）、每日问答页（12 处）。</p>
 <p><strong>适用</strong>：埋点不多的页面，直接写最清楚。</p>
 <hr>
 <h2 id="b--组件内封一层-thistrack">B · 组件内封一层 <code>this.track</code>
 </h2><p><strong>问题</strong>：一个页面有十几个埋点，每次都写 <code>page_name/page_type/page_title/url</code> 太啰嗦，改一处要改十几处。
 <strong>解法</strong>：在组件里封一个 <code>track</code> 方法，把公共字段固定下来，只传变化的部分。</p>
-<p>知识卡页面组件：</p>
+<p>内容卡页面组件：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -455,9 +455,9 @@
 </span></span><span class="line"><span class="cl">  <span class="c1">// 通用埋点：公共字段写死，扩展数据合并进 key1
 </span></span></span><span class="line"><span class="cl">  <span class="nx">track</span><span class="p">(</span><span class="nx">extra</span> <span class="o">=</span> <span class="p">{},</span> <span class="nx">eventType</span> <span class="o">=</span> <span class="s1">&#39;click&#39;</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">page_name</span><span class="o">:</span> <span class="s1">&#39;知识卡&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">page_name</span><span class="o">:</span> <span class="s1">&#39;内容卡&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">page_type</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">page_title</span><span class="o">:</span> <span class="s1">&#39;知识卡&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">page_title</span><span class="o">:</span> <span class="s1">&#39;内容卡&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">main_item_id</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">key1</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
@@ -477,7 +477,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>特征</strong>：<code>this.track({ other: {...}, key1Data: {...} }, 'click')</code>，把字段拆成&quot;固定的&quot;和&quot;变化的&quot;两层。</p>
-<p><strong>适用</strong>：单页面埋点 ≥ 5 处，字段重复多。知识卡列表页、知识卡详情页都用这种。</p>
+<p><strong>适用</strong>：单页面埋点 ≥ 5 处，字段重复多。内容卡列表页、内容卡详情页都用这种。</p>
 <hr>
 <h2 id="c--双系统并行-commlog">C · 双系统并行 <code>commLog</code>
 </h2><p><strong>问题</strong>：同一个行为，业务方要求<strong>同时</strong>进神策/自研（老口径）和火山（新口径）两套后台。
@@ -498,8 +498,8 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">commLog</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">options</span> <span class="o">||</span> <span class="p">{};</span>
-</span></span><span class="line"><span class="cl">  <span class="c1">// ① 发火山（新口径，事件名 sndd_hs_xxx）
-</span></span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">$tracker</span><span class="p">(</span><span class="s1">&#39;sndd_hs_&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">getTrackerBaseData</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">trackerData</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// ① 发火山（新口径，事件名 biz_hs_xxx）
+</span></span></span><span class="line"><span class="cl">  <span class="k">this</span><span class="p">.</span><span class="nx">$tracker</span><span class="p">(</span><span class="s1">&#39;biz_hs_&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">getTrackerBaseData</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">trackerData</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// ② 发神策+自研（老口径，事件类型 page/show/click）
 </span></span></span><span class="line"><span class="cl">  <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({},</span> <span class="k">this</span><span class="p">.</span><span class="nx">getLogTrackBaseData</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">logData</span><span class="p">),</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">key1</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span> <span class="cm">/* ... */</span> <span class="p">})</span>
@@ -536,9 +536,9 @@
 </div><h3 id="它怎么工作的">它怎么工作的
 </h3><p><code>v-log</code> 由基础组件库的 <code>vueExtends/log.js</code> 注册。原理：</p>
 <pre class="mermaid">flowchart LR
-    A[&#34;v-log:click={...} 写在模板&#34;] --&gt; B[&#34;指令把数据存到 dom.dataset.igc_log&#34;]
+    A[&#34;v-log:click={...} 写在模板&#34;] --&gt; B[&#34;指令把数据存到 dom.dataset.app_log&#34;]
     B --&gt; C[&#34;document.body 监听 click 冒泡&#34;]
-    C --&gt; D[&#34;点击时找到带 igc_log 的元素&#34;]
+    C --&gt; D[&#34;点击时找到带 app_log 的元素&#34;]
     D --&gt; E[&#34;内部调 LogTrack.track()&#34;]
     style E fill:#2d4a6b,color:#fff,stroke:#4a90d9</pre>
 
@@ -606,7 +606,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>特征</strong>：<code>LogTrack.track({}, 'autoTrack', true, routes)</code>，第 3、4 个参数是 autoTrack 专用。</p>
-<p><strong>背后</strong>：神策全埋点，事件 <code>sndd_sensor_autoTrack</code>，切路由自动发页面访问日志，还带 <code>refer_page_name</code>（来源页）链路。</p>
+<p><strong>背后</strong>：神策全埋点，事件 <code>biz_sensor_autoTrack</code>，切路由自动发页面访问日志，还带 <code>refer_page_name</code>（来源页）链路。</p>
 <p><strong>注意</strong>：<strong>只在 App 根组件调一次</strong>，业务页面不要重复调。</p>
 <hr>
 <h2 id="g--停留时长心跳">G · 停留时长心跳
@@ -688,7 +688,7 @@
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">pausePageDuration</span><span class="p">();</span>     <span class="c1">// 把当前可见段累加进 pageStayDuration
 </span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pageStayDuration</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="c1">// 双系统上报时长
-</span></span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">$tracker</span><span class="p">(</span><span class="s1">&#39;sndd_hs_page&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="cm">/* ..., duration_ms */</span> <span class="p">});</span>
+</span></span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="nx">$tracker</span><span class="p">(</span><span class="s1">&#39;biz_hs_page&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="cm">/* ..., duration_ms */</span> <span class="p">});</span>
 </span></span><span class="line"><span class="cl">      <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">track</span><span class="p">({</span> <span class="cm">/* ..., key1: {duration} */</span> <span class="p">},</span> <span class="s1">&#39;page&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">resetAfterFlush</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">resetStayTrackState</span><span class="p">();</span> <span class="p">}</span>
@@ -713,7 +713,7 @@
     Q2 -- 是 --&gt; E[&#34;E · EventComponent&#34;]
     Q2 -- 否 --&gt; Q3{&#34;要统计停留时长?&#34;}
     Q3 -- 是 --&gt; G[&#34;G · 心跳&#34;]
-    Q3 -- 否 --&gt; Q4{&#34;需求点名要 sndd_hs_xxx?&#34;}
+    Q3 -- 否 --&gt; Q4{&#34;需求点名要 biz_hs_xxx?&#34;}
     Q4 -- 是 --&gt; Q5{&#34;同时要老口径?&#34;}
     Q5 -- 是 --&gt; C[&#34;C · commLog 双发&#34;]
     Q5 -- 否 --&gt; T2[&#34;② $tracker&#34;]

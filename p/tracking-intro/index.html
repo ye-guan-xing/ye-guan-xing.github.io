@@ -394,10 +394,10 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">事件：click               ← 用户点了&#34;立即订阅&#34;按钮
 </span></span><span class="line"><span class="cl">参数：
-</span></span><span class="line"><span class="cl">  page_name   = 少年闻天下   ← 在哪个页面
+</span></span><span class="line"><span class="cl">  page_name   = 每日资讯   ← 在哪个页面
 </span></span><span class="line"><span class="cl">  module_name = 底部购买栏   ← 页面哪个模块
 </span></span><span class="line"><span class="cl">  btn_name    = 立即订阅     ← 具体哪个按钮
-</span></span><span class="line"><span class="cl">  key1        = {&#34;user_status&#34;:&#34;member&#34;,&#34;price&#34;:99}  ← 其它细节，打包成 JSON
+</span></span><span class="line"><span class="cl">  key1        = {&#34;user_status&#34;:&#34;member&#34;,&#34;price&#34;:1}  ← 其它细节，打包成 JSON
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>后台拿到这条数据，就能回答：&ldquo;有多少人点了立即订阅？会员和非会员各点多少？&rdquo;</p>
@@ -413,7 +413,7 @@
 	<tbody>
 			<tr>
 					<td>用户打开一个页面</td>
-					<td>进了&quot;少年闻天下&quot;页</td>
+					<td>进了&quot;每日资讯&quot;页</td>
 					<td><code>page</code> 页面曝光</td>
 			</tr>
 			<tr>
@@ -521,7 +521,7 @@
 			</tr>
 			<tr>
 					<td>② $tracker</td>
-					<td><code>this.$tracker('sndd_hs_xxx', {...})</code></td>
+					<td><code>this.$tracker('biz_hs_xxx', {...})</code></td>
 					<td>火山引擎 Rangers</td>
 					<td>仅 App 内生效，自定义事件名</td>
 			</tr>
@@ -537,7 +537,7 @@
 <p>新手记住：<strong>90% 的业务埋点用的是 ① LogTrack</strong>。② ③ 是特殊场景才用。下一篇详细讲这三套。</p>
 </blockquote>
 <h2 id="埋点代码长什么样先看个直观例子">埋点代码长什么样（先看个直观例子）
-</h2><p>知识卡页面组件里点&quot;返回按钮&quot;的埋点：</p>
+</h2><p>内容卡页面组件里点&quot;返回按钮&quot;的埋点：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -557,7 +557,7 @@
 </span></span></span><span class="line"><span class="cl">    <span class="nx">other</span><span class="o">:</span> <span class="p">{</span> <span class="nx">module_name</span><span class="o">:</span> <span class="s1">&#39;导航栏&#39;</span><span class="p">,</span> <span class="nx">item_name</span><span class="o">:</span> <span class="s1">&#39;返回按钮&#39;</span><span class="p">,</span> <span class="nx">btn_name</span><span class="o">:</span> <span class="s1">&#39;返回&#39;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">env</span><span class="p">.</span><span class="nx">isApp</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">JS2Native</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;closeWindow&#39;</span> <span class="p">});</span>     <span class="c1">// 真正的业务动作：关 webview
+</span></span><span class="line"><span class="cl">    <span class="nx">callNative</span><span class="p">({</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;closeWindow&#39;</span> <span class="p">});</span>     <span class="c1">// 真正的业务动作：关 webview
 </span></span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="nx">$router</span><span class="p">.</span><span class="nx">back</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>

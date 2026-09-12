@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="一个域名下塞了十几个子应用，靠 nginx 网关 + 路由前缀 + 内部 npm 包把巨石 H5 拆开。本文拆解机制、要点和踩过的坑">
+<title>巨石H5拆包：同域多子应用的工程化拆解</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/large-h5-same-domain-split/'>
+
+<link rel="stylesheet" href="/scss/style.min.9c5a9f4543b29b46fdab34b507be2b4019f08e74ad9bbed7500c7cc6af8772bc.css"><meta property='og:title' content="巨石H5拆包：同域多子应用的工程化拆解">
+<meta property='og:description' content="一个域名下塞了十几个子应用，靠 nginx 网关 + 路由前缀 + 内部 npm 包把巨石 H5 拆开。本文拆解机制、要点和踩过的坑">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/large-h5-same-domain-split/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='工程化' /><meta property='article:tag' content='Nginx' /><meta property='article:tag' content='Docker' /><meta property='article:tag' content='Vue' /><meta property='article:tag' content='微前端' /><meta property='article:published_time' content='2026-09-13T00:30:00&#43;08:00'/><meta property='article:modified_time' content='2026-09-13T00:30:00&#43;08:00'/>
+<meta name="twitter:title" content="巨石H5拆包：同域多子应用的工程化拆解">
+<meta name="twitter:description" content="一个域名下塞了十几个子应用，靠 nginx 网关 + 路由前缀 + 内部 npm 包把巨石 H5 拆开。本文拆解机制、要点和踩过的坑">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_dc3c198eca0bb681.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#拆之前一个单体包打天下">拆之前：一个单体包打天下</a></li>
+    <li><a href="#拆的目标形态同域--网关">拆的目标形态：同域 + 网关</a></li>
+    <li><a href="#要点一路由前缀约定构建期注入">要点一：路由前缀约定，构建期注入</a></li>
+    <li><a href="#要点二nginx-网关反向代理">要点二：nginx 网关反向代理</a></li>
+    <li><a href="#要点三共享代码走内部-npm-包不走共享仓库">要点三：共享代码走内部 npm 包，不走共享仓库</a></li>
+    <li><a href="#要点四构建插件化按子应用选配">要点四：构建插件化，按子应用选配</a></li>
+    <li><a href="#要点五独立容器--独立环境配置">要点五：独立容器 + 独立环境配置</a></li>
+    <li><a href="#难点拆包真正痛在哪">难点：拆包真正痛在哪</a>
+      <ol>
+        <li><a href="#1-路由边界划不清">1. 路由边界划不清</a></li>
+        <li><a href="#2-共享包版本碎片化">2. 共享包版本碎片化</a></li>
+        <li><a href="#3-登录态跨子应用">3. 登录态跨子应用</a></li>
+        <li><a href="#4-埋点要统一但各自初始化">4. 埋点要统一但各自初始化</a></li>
+        <li><a href="#5-网关层耦合">5. 网关层耦合</a></li>
+        <li><a href="#6-本地开发体验">6. 本地开发体验</a></li>
+        <li><a href="#7-历史遗留不敢动">7. 历史遗留不敢动</a></li>
+        <li><a href="#8-跨应用跳转硬编码">8. 跨应用跳转硬编码</a></li>
+      </ol>
+    </li>
+    <li><a href="#新技术栈子应用如何融入">新技术栈子应用如何融入</a></li>
+    <li><a href="#代价与收益">代价与收益</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/web%E5%BC%80%E5%8F%91/"
+      style="background-color: ZgotmplZ; color: #ffffff;"
+      
+    >
+      web开发
+    </a>
+    
+    <a
+      href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"
+      
+    >
+      工程化
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/large-h5-same-domain-split/">巨石H5拆包：同域多子应用的工程化拆解</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">一个域名下塞了十几个子应用，靠 nginx 网关 &#43; 路由前缀 &#43; 内部 npm 包把巨石 H5 拆开。本文拆解机制、要点和踩过的坑</h3>
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-09-13 00:30</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview" style="display:none">
+        <span class="waline-pageview-count" data-path="/p/large-h5-same-domain-split/"></span>
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment" style="display:none">
+        <span class="waline-comment-count" data-path="/p/large-h5-same-domain-split/"></span>
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="前言">前言
+</h2><p>业务跑了两三年，H5 仓库从&quot;几个活动页&quot;长成了一个怪物：App 内 webview 页、App 外浏览器页、协议页、商城、直播、活动、AI 学伴……全挤在一个 Vue2 单体里，一次 <code>yarn build</code> 全员停摆，发布相互阻塞，新业务想换技术栈动不了。</p>
+<p>本文记录这次拆包：<strong>不拆域名、不上微前端框架，靠 nginx 网关 + 路由前缀约定 + 内部 npm 包，把一个巨石拆成同域十几个独立子应用</strong>。素材来自实际项目，已脱敏。</p>
+<h2 id="拆之前一个单体包打天下">拆之前：一个单体包打天下
+</h2><pre class="mermaid">flowchart LR
+    subgraph Mono[&#34;单个 H5 仓库 / 单次构建&#34;]
+        AppIn[&#34;App 内页&lt;br/&gt;webview&#34;]
+        AppOut[&#34;App 外页&lt;br/&gt;浏览器&#34;]
+        Market[&#34;商城&#34;]
+        Live[&#34;直播&#34;]
+        Act[&#34;活动&#34;]
+    end
+    Build[&#34;一次 vue-cli build&#34;] --&gt; Mono
+    Mono --&gt; CDN[&#34;cdn.example.com/h5/&#34;]</pre>
+
+<p>痛点很直接：</p>
+<ul>
+<li><strong>构建串行</strong>：一次 build 越来越慢，谁发版谁锁全仓。</li>
+<li><strong>发布耦合</strong>：活动页改个文案，整个 App 内主站一起上线。</li>
+<li><strong>技术栈锁死</strong>：新业务想上 Taro/React 跨端，老壳是 Vue2，塞不进去。</li>
+<li><strong>本地起不动</strong>：全量跑起来依赖太多，新人体感差。</li>
+</ul>
+<h2 id="拆的目标形态同域--网关">拆的目标形态：同域 + 网关
+</h2><p>不拆域名、不动用户侧 URL，靠<strong>主体项目当网关</strong>，把不同路径反向代理到不同子应用容器：</p>
+<pre class="mermaid">flowchart LR
+    Browser[&#34;浏览器&lt;br/&gt;同一域名&#34;] --&gt; Main[&#34;主体项目 Nginx&lt;br/&gt;网关&#34;]
+    Main -- &#34;location /&#34; --&gt; MainApp[&#34;主站子应用&lt;br/&gt;App 内页&#34;]
+    Main -- &#34;location ^~ /webapp&#34; --&gt; Webapp[&#34;webapp 容器&lt;br/&gt;:815x&#34;]
+    Main -- &#34;location ^~ /live&#34; --&gt; Live[&#34;直播容器&lt;br/&gt;:82xx&#34;]
+    Main -- &#34;location ^~ /mall&#34; --&gt; Mall[&#34;商城容器&lt;br/&gt;:83xx&#34;]
+    Main -- &#34;location ^~ /planet&#34; --&gt; Planet[&#34;Taro 子应用容器&lt;br/&gt;:817x&#34;]
+    Main -- &#34;location ~ /xxx-server&#34; --&gt; Gateway[&#34;后端网关&#34;]
+    Webapp --&gt; CDN1[&#34;cdn.example.com/webapp/&#34;]
+    MainApp --&gt; CDN2[&#34;cdn.example.com/h5/&#34;]</pre>
+
+<p>关键点：<strong>主体项目拥有域名、SSL、CDN 代理、后端网关</strong>，子应用只是它 nginx 里的若干 <code>location</code>。对用户还是一个域，对内部是十几个独立容器、独立仓库、独立发版。</p>
+<h2 id="要点一路由前缀约定构建期注入">要点一：路由前缀约定，构建期注入
+</h2><p>每个子应用必须&quot;知道自己挂在哪个路径下&quot;。约定：一份 <code>cli.config.json</code> 声明 <code>routeBase</code>，构建期同时决定 <strong>publicPath（CDN 资源路径）</strong> 和 <strong>router base（路由基）</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="c1">// cli.config.json（webapp 子应用）
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span> <span class="nt">&#34;routeBase&#34;</span><span class="p">:</span> <span class="s2">&#34;webapp&#34;</span> <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// vue.config.js —— 同一个值喂给 publicPath 和 DefinePlugin
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">cfg</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;cli.config.json&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">publicPath</span> <span class="o">=</span> <span class="sb">`/</span><span class="si">${</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">routeBase</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_ENVIRONMENT</span> <span class="o">===</span> <span class="s1">&#39;PRODUCTION&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">publicPath</span> <span class="o">=</span> <span class="s1">&#39;//cdn.example.com&#39;</span> <span class="o">+</span> <span class="nx">publicPath</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_ENVIRONMENT</span> <span class="o">===</span> <span class="s1">&#39;STAGING&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">publicPath</span> <span class="o">=</span> <span class="s1">&#39;//qa-cdn.example.com&#39;</span> <span class="o">+</span> <span class="nx">publicPath</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">publicPath</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">chainWebpack</span><span class="o">:</span> <span class="nx">config</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">config</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;define&#39;</span><span class="p">).</span><span class="nx">tap</span><span class="p">(</span><span class="nx">args</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">AppCfg</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">routeBase</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">routeBase</span><span class="p">)</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="nx">args</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// router/index.js —— 路由基与 publicPath 同源，深链刷新才不会 404
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">base</span> <span class="o">=</span> <span class="sb">`/</span><span class="si">${</span><span class="nx">AppCfg</span><span class="p">.</span><span class="nx">routeBase</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Router</span><span class="p">({</span> <span class="nx">mode</span><span class="o">:</span> <span class="s1">&#39;history&#39;</span><span class="p">,</span> <span class="nx">base</span><span class="p">,</span> <span class="nx">routes</span><span class="o">:</span> <span class="p">[...]</span> <span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>为什么 publicPath 必须和 router base 同源</strong>：history 模式下，<code>/webapp/draft</code> 这种深链刷新时，nginx 把请求落到子应用容器，容器返回 <code>index.html</code>，html 引用的 JS 走 <code>//cdn.example.com/webapp/app.xxx.js</code>。只要 publicPath 和路由前缀错一位，要么资源 404，要么刷新白屏。</p>
+<h2 id="要点二nginx-网关反向代理">要点二：nginx 网关反向代理
+</h2><p>主体项目的 nginx 配置是整套拆包的&quot;目录索引&quot;——每个 <code>location</code> 就是一个子应用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">listen</span> <span class="mi">8100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">root</span> <span class="s">/app/dist</span><span class="p">;</span>            <span class="c1"># 主体项目自己的静态资源
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># 主站兜底
+</span></span></span><span class="line"><span class="cl">  <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="s">/index.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># —— 拆出去的子应用，各跑各的端口 ——
+</span></span></span><span class="line"><span class="cl">  <span class="kn">location</span> <span class="p">~</span> <span class="sr">^/webapp</span> <span class="p">{</span> <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:8150</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">location</span> <span class="p">~</span> <span class="sr">^/live/</span>   <span class="p">{</span> <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:8210</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">location</span> <span class="p">~</span> <span class="sr">^/mall</span>    <span class="p">{</span> <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:8310</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">location</span> <span class="p">~</span> <span class="sr">^/planet/</span> <span class="p">{</span> <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:8170</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># —— 后端网关，所有 *-server 走统一入口 ——
+</span></span></span><span class="line"><span class="cl">  <span class="kn">location</span> <span class="p">~</span> <span class="sr">/(.*)-server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_set_header</span> <span class="s">env</span> <span class="nv">$env_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_pass</span> <span class="s">http://gateway.internal:10012</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kn">include</span> <span class="s">/app/docker/nginx/confs/router.conf</span><span class="p">;</span>  <span class="c1"># CDN/微信头像等公共代理
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>router.conf</code> 是各子应用共享的公共反代（CDN 资源、微信头像、登录跳转、健康检查）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">location</span> <span class="s">^~</span> <span class="s">/static-cdn/</span> <span class="p">{</span> <span class="kn">proxy_pass</span> <span class="s">http://static-cdn.example.com/</span><span class="p">;</span> <span class="p">}</span>  <span class="c1"># CDN 代理
+</span></span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">^~</span> <span class="s">/wximg/</span>      <span class="p">{</span> <span class="kn">proxy_pass</span> <span class="s">https://thirdwx.qlogo.cn/</span><span class="p">;</span> <span class="p">}</span>       <span class="c1"># 微信头像代理
+</span></span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="p">~</span> <span class="sr">/weblogin</span>     <span class="p">{</span> <span class="kn">rewrite</span> <span class="s">^.*</span>$ <span class="s">/</span><span class="nv">$arg_target</span> <span class="s">permanent</span><span class="p">;</span> <span class="p">}</span>       <span class="c1"># 第三方授权跳转
+</span></span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="p">=</span> <span class="s">/ping</span>         <span class="p">{</span> <span class="kn">return</span> <span class="mi">200</span><span class="p">;</span> <span class="p">}</span>                                 <span class="c1"># 健康检查
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>子应用自己的容器只监听一个端口、吐自己的 dist：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># webapp 容器内
+</span></span></span><span class="line"><span class="cl"><span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">listen</span> <span class="mi">8150</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kn">location</span> <span class="s">^~</span> <span class="s">/webapp</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">alias</span> <span class="s">/app/dist/</span><span class="p">;</span>            <span class="c1"># 注意是 alias 不是 root，前缀要剥掉
+</span></span></span><span class="line"><span class="cl">    <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="s">/index.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>易错点</strong>：主体项目用 <code>proxy_pass</code> 透传完整路径 <code>/webapp/...</code>，子应用容器必须用 <code>alias</code> 把 <code>/webapp</code> 前缀剥掉定位文件，而不是 <code>root</code>。用错就 404。</p>
+<h2 id="要点三共享代码走内部-npm-包不走共享仓库">要点三：共享代码走内部 npm 包，不走共享仓库
+</h2><p>拆包最怕&quot;为了复用又把代码塞一起&quot;。这里把公共能力<strong>发布成内部 scoped 包</strong>，各子应用按版本独立消费：</p>
+<div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>包</th>
+					<th>作用</th>
+					<th>谁用</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>@corp/ui</code></td>
+					<td>统一移动端组件库</td>
+					<td>Vue 系子应用</td>
+			</tr>
+			<tr>
+					<td><code>@corp/base-components</code></td>
+					<td>Vue 扩展 + 埋点组件</td>
+					<td>Vue 系子应用</td>
+			</tr>
+			<tr>
+					<td><code>@corp/log-track</code></td>
+					<td>统一埋点工厂</td>
+					<td>全部子应用</td>
+			</tr>
+			<tr>
+					<td><code>@corp/user-center</code></td>
+					<td>登录态/用户信息</td>
+					<td>需鉴权的</td>
+			</tr>
+			<tr>
+					<td><code>@corp/encrypter</code></td>
+					<td>请求加密</td>
+					<td>涉密接口</td>
+			</tr>
+			<tr>
+					<td><code>@corp/lib/fetch</code></td>
+					<td>统一请求封装</td>
+					<td>全部</td>
+			</tr>
+	</tbody>
+</table></div>
+<p>每个子应用 <code>package.json</code> 里<strong>各自锁版本</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-jsonc" data-lang="jsonc"><span class="line"><span class="cl"><span class="c1">// 主站
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;@corp/ui&#34;</span><span class="err">:</span> <span class="s2">&#34;0.28.31&#34;</span><span class="err">,</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// webapp
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;@corp/ui&#34;</span><span class="err">:</span> <span class="s2">&#34;0.28.13&#34;</span><span class="err">,</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 直播
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;@corp/ui&#34;</span><span class="err">:</span> <span class="s2">&#34;0.28.27&#34;</span><span class="err">,</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这是<strong>特性不是 bug</strong>：各子应用升级节奏不同，互不阻塞。代价是版本碎片化（见下文难点）。</p>
+<p>启动期公共逻辑用一份 <code>commonImports.js</code> 约定（复制而非共享运行时）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// commonImports.js —— 每个子应用都有一份几乎一样的
+</span></span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">Vue</span> <span class="nx">from</span> <span class="s1">&#39;vue&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">CorpUI</span> <span class="nx">from</span> <span class="s1">&#39;@corp/ui&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">vueExtends</span><span class="p">,</span> <span class="nx">LogTrack</span><span class="p">,</span> <span class="nx">pageLogTrack</span><span class="p">,</span> <span class="nx">Log</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;@corp/base-components&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_APP_ENVIRONMENT</span> <span class="o">!==</span> <span class="s1">&#39;PRODUCTION&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URLSearchParams</span><span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">search</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">debugLog</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">url</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;debug_log&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span> <span class="nx">debug</span><span class="o">:</span> <span class="nx">debugLog</span> <span class="p">}).</span><span class="nx">init</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">Log</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span> <span class="nx">debug</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">LogTrack</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">$pageTrack</span> <span class="o">=</span> <span class="nx">pageLogTrack</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">CorpUI</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">vueExtends</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="要点四构建插件化按子应用选配">要点四：构建插件化，按子应用选配
+</h2><p>加载动画、监控脚本这些&quot;注入到 html 里&quot;的构建期能力，做成 webpack 插件，由 <code>cli.config.json</code> 的 <code>plugins</code> 数组决定开哪些：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-jsonc" data-lang="jsonc"><span class="line"><span class="cl"><span class="c1">// 主站：开 loading 注入 + 监控
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span> <span class="nt">&#34;plugins&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;injectLoading&#34;</span><span class="p">,</span> <span class="s2">&#34;sourcePath&#34;</span><span class="p">,</span> <span class="s2">&#34;injectTime&#34;</span><span class="p">,</span> <span class="s2">&#34;injectBl&#34;</span><span class="p">]</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// webapp：只要监控
+</span></span></span><span class="line"><span class="cl"><span class="p">{</span> <span class="nt">&#34;plugins&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;sourcePath&#34;</span><span class="p">,</span> <span class="s2">&#34;injectBl&#34;</span><span class="p">],</span> <span class="nt">&#34;routeBase&#34;</span><span class="p">:</span> <span class="s2">&#34;webapp&#34;</span> <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>插件本质是钩 <code>html-webpack-plugin</code> 用 cheerio 改 html：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">class</span> <span class="nx">injectLoading</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">apply</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;compilation&#39;</span><span class="p">,</span> <span class="nx">compilation</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">compilation</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;html-webpack-plugin-after-html-processing&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">html</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#app&#39;</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">loadingHtml</span><span class="p">).</span><span class="nx">toString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">html</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>监控注入（<code>injectBl</code>）读 <code>cli.config.json</code> 里的监控 PID，没有 PID 直接跳过，避免无监控项目被注入空探针：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">class</span> <span class="nx">injectBl</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">apply</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">pid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="s1">&#39;cli.config.json&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">pid</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;cli.config.json&#39;</span><span class="p">)).</span><span class="nx">monitorPid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">pid</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>  <span class="c1">// 未配置 PID，不注入
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;compilation&#39;</span><span class="p">,</span> <span class="nx">compilation</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">compilation</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;html-webpack-plugin-before-html-processing&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">html</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">probe</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">probeFile</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">probe</span> <span class="o">=</span> <span class="nx">probe</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;placeholder-pid&gt;/</span><span class="p">,</span> <span class="nx">pid</span><span class="p">);</span>  <span class="c1">// 替换探针里的占位 PID
+</span></span></span><span class="line"><span class="cl">        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#inject&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">probe</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">html</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>好处：子应用<strong>只引自己需要的构建期副作用</strong>，主站的 loading 样式不污染纯协议页；升级监控探针只改 CLI，全项目生效。</p>
+<h2 id="要点五独立容器--独立环境配置">要点五：独立容器 + 独立环境配置
+</h2><p>每个子应用自带 <code>docker/</code> 目录：独立 Dockerfile、独立 nginx、独立 <code>entrypoint.sh</code>。环境切换靠 <code>RUN_ENV</code> 选 nginx 配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="si">${</span><span class="nv">RUN_ENV</span><span class="si">}</span> in
+</span></span><span class="line"><span class="cl">  production<span class="o">)</span> cat docker/nginx/app.production &gt; docker/nginx/app.conf <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">  staging<span class="o">)</span>    cat docker/nginx/app.staging    &gt; docker/nginx/app.conf <span class="p">;;</span>
+</span></span><span class="line"><span class="cl"><span class="k">esac</span>
+</span></span><span class="line"><span class="cl"><span class="nb">exec</span> <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样每个子应用<strong>独立上 CI、独立打镜像、独立灰度</strong>，互不阻塞。代价是配置文件在每个子仓库都有一份，环境新增节点时要逐个改。</p>
+<h2 id="难点拆包真正痛在哪">难点：拆包真正痛在哪
+</h2><h3 id="1-路由边界划不清">1. 路由边界划不清
+</h3><p>单体里 App 内页和 App 外页混着写，哪些迁到 <code>/webapp</code>、哪些留主站，没有干净标准。迁错一条深链，App 里老版本 webview 点进去就 404。<strong>解法</strong>：按&quot;宿主&quot;切——App 内 webview 走主站，独立浏览器入口走 webapp，提前拉全量 URL 清单逐条核对。</p>
+<h3 id="2-共享包版本碎片化">2. 共享包版本碎片化
+</h3><p>同一个 <code>@corp/ui</code>，主站、webapp、直播各锁一个版本。一个组件 bug 修了，得催三个仓库分别升级，线上行为可能不一致。<strong>解法</strong>：核心包定升级节奏（双周统一推进），非核心包允许滞后；监控各子应用依赖版本差。</p>
+<h3 id="3-登录态跨子应用">3. 登录态跨子应用
+</h3><p>子应用是不同 Vue 实例、不同内存，store 不共享。但<strong>同域</strong>保住了 cookie/token。<strong>解法</strong>：鉴权收敛到 <code>@corp/user-center</code> 包，它读 cookie、暴露统一 <code>isLogin()</code>，子应用不自己管 token；跨应用跳转靠 URL 带参 + user-center 兜底。</p>
+<h3 id="4-埋点要统一但各自初始化">4. 埋点要统一但各自初始化
+</h3><p>每个子应用是独立 SPA，埋点 SDK 得各自 init，但上报口径要一致。<strong>解法</strong>：<code>@corp/log-track</code> 暴露工厂函数，各子应用入口传入自己的项目标识：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">tracker</span> <span class="o">=</span> <span class="nx">logTrackFactory</span><span class="p">(</span><span class="nx">env</span> <span class="o">===</span> <span class="s1">&#39;PRODUCTION&#39;</span> <span class="o">?</span> <span class="s1">&#39;prod&#39;</span> <span class="o">:</span> <span class="s1">&#39;qa&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">requestAutoTrackParams</span><span class="o">:</span> <span class="p">{</span> <span class="nx">classKey</span><span class="o">:</span> <span class="s1">&#39;web_auto_track&#39;</span><span class="p">,</span> <span class="nx">itemKey</span><span class="o">:</span> <span class="s1">&#39;project_webapp&#39;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="nx">tracker</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Vue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">$tracker</span> <span class="o">=</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">params</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">tracker</span><span class="p">.</span><span class="nx">logTrack</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">params</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>itemKey</code> 区分来源，上报字段对齐，埋点平台侧再聚合。</p>
+<h3 id="5-网关层耦合">5. 网关层耦合
+</h3><p>新增一个子应用 = 改主体项目的 nginx 加一条 <code>location</code> + 起新容器。主体项目成了&quot;中心节点&quot;，它的发版会动到所有子应用的路由表。<strong>解法</strong>：把 nginx 路由表抽成独立配置仓库或动态生成，主体项目尽量只发配置不发代码；子应用端口规范化分配。</p>
+<h3 id="6-本地开发体验">6. 本地开发体验
+</h3><p>拆完没法本地起全部子应用。<strong>解法</strong>：dev server 做&quot;开发网关改造&quot;——本地只起当前子应用，<code>vue.config.js</code> 里把 <code>*-server</code> 后端接口代理到公共开发网关，前端接口照写相对路径：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">proxy</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;^(\\/\\S{0,}-server|\\/imagecompress)&#39;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;http://gateway.internal:10012&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">changeOrigin</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">onProxyReq</span><span class="o">:</span> <span class="nx">proxyReq</span> <span class="p">=&gt;</span> <span class="nx">proxyReq</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">,</span> <span class="nx">getEnv</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="s1">&#39;\\.json$&#39;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;http://gateway.internal:10012&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">changeOrigin</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">onProxyReq</span><span class="o">:</span> <span class="nx">proxyReq</span> <span class="p">=&gt;</span> <span class="nx">proxyReq</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">,</span> <span class="nx">getEnv</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>部分子应用（如直播）再配 <code>mocker-api</code> 做 mock，本地零依赖后端。</p>
+<h3 id="7-历史遗留不敢动">7. 历史遗留不敢动
+</h3><p>老单体里有一套&quot;设计稿转 rem&quot;的自定义 loader，注释写着&quot;历史原因，不敢强行改动&quot;。拆包时这类遗产只能原样搬进对应子应用，<strong>不在拆包顺手重构</strong>——拆包是结构性变更，行为必须保持等价。</p>
+<h3 id="8-跨应用跳转硬编码">8. 跨应用跳转硬编码
+</h3><p><code>location.href = '/webapp/draft'</code> 散落各处，路径一改全断。<strong>解法</strong>：跨应用入口集中到一个工具模块，禁止业务代码硬编码路径：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-ts" data-lang="ts"><span class="line"><span class="cl"><span class="c1">// membership.ts —— 所有跳会员页的入口必须走这里
+</span></span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">goToMembership</span><span class="p">(</span><span class="kr">from</span><span class="o">:</span> <span class="nx">MembershipFrom</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">navigateTo</span><span class="p">(</span><span class="sb">`/packageB/membership/index?from=</span><span class="si">${</span><span class="kr">from</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 业务侧
+</span></span></span><span class="line"><span class="cl"><span class="nx">goToMembership</span><span class="p">(</span><span class="s1">&#39;course_detail&#39;</span><span class="p">);</span>  <span class="c1">// 而非硬编码 URL
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>新增入口时，先在 <code>MembershipFrom</code> type 里追加枚举值，再在调用处用函数跳转，入口一览表可追溯。</p>
+<h2 id="新技术栈子应用如何融入">新技术栈子应用如何融入
+</h2><p>拆包最大的收益显现：<strong>新业务可以换技术栈</strong>，只要遵守网关路由约定。</p>
+<p>例如某个新子应用用 Taro 4 + React 18 + TypeScript + Zustand + Vite（跨微信小程序 + H5），和老 Vue2 主站完全不同栈。它只需：</p>
+<ol>
+<li>申请新路由前缀（如 <code>/planet</code>）。</li>
+<li>构建产出 H5 dist，publicPath 指向 <code>//cdn.example.com/planet/</code>。</li>
+<li>主体项目 nginx 加一条 <code>location ^~ /planet { proxy_pass ... }</code>。</li>
+<li>复用 <code>@corp/log-track</code>、<code>@corp/user-center</code> 等 npm 包（与框架无关的部分）。</li>
+</ol>
+<pre class="mermaid">flowchart LR
+    subgraph New[&#34;Taro &#43; React &#43; TS 子应用&#34;]
+        N1[&#34;pnpm build:h5&#34;] --&gt; N2[&#34;dist&#34;]
+        N2 --&gt; N3[&#34;cdn.example.com/planet/&#34;]
+    end
+    Main[&#34;主体项目 nginx&#34;] -- &#34;加一条 location /planet&#34; --&gt; New
+    New --&gt; Reuse[&#34;@corp/log-track&lt;br/&gt;@corp/user-center&#34;]</pre>
+
+<p>老仓库一行不用动。<strong>这是同域拆包比&quot;强行统一技术栈&quot;高明的地方</strong>：网关只认路径和静态资源，不认框架。</p>
+<h2 id="代价与收益">代价与收益
+</h2><pre class="mermaid">flowchart LR
+    subgraph Gain[&#34;收益&#34;]
+        A1[&#34;独立发版&lt;br/&gt;互不阻塞&#34;]
+        A2[&#34;构建变快&lt;br/&gt;各打各的&#34;]
+        A3[&#34;技术栈自由&lt;br/&gt;新项目可上 React/Taro&#34;]
+        A4[&#34;本地可单起&lt;br/&gt;新人体感好&#34;]
+    end
+    subgraph Cost[&#34;代价&#34;]
+        B1[&#34;网关中心化&lt;br/&gt;加应用要改主站 nginx&#34;]
+        B2[&#34;共享包版本碎片&lt;br/&gt;升级要推多仓&#34;]
+        B3[&#34;配置重复&lt;br/&gt;每仓一套 docker/nginx&#34;]
+        B4[&#34;跨应用状态靠约定&lt;br/&gt;非内存共享&#34;]
+    end</pre>
+
+<p>一句话总结：<strong>用 nginx 网关把&quot;一个域&quot;切成&quot;多个独立部署单元&quot;，用内部 npm 包把&quot;共享代码&quot;切成&quot;版本化契约&quot;，用路由前缀约定把&quot;路径&quot;变成&quot;子应用边界&quot;</strong>。它不是微前端框架，却用最小成本拿到了微前端 80% 的收益——前提是接受网关层的中心化和共享包的版本治理成本。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/">工程化</a>
+        
+            <a href="/tags/nginx/">Nginx</a>
+        
+            <a href="/tags/docker/">Docker</a>
+        
+            <a href="/tags/vue/">Vue</a>
+        
+            <a href="/tags/%E5%BE%AE%E5%89%8D%E7%AB%AF/">微前端</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/frontend-online-nginx-proxy/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端线上Nginx代理配置详解</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/team-cli-features-and-pitfalls/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">团队 CLI 功能清单：每个功能的难点与简单解法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/cli-vs-normal-node-project/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CLI 不是前后端项目：它和前端/后端项目的本质差异与设计要求</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/cli-evolution-and-team-cli-value/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">从 Unix 哲学到团队工程化：CLI 的演进与自建 CLI 的价值</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/frontend-production-practices/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端投产的使用与优化:Node 工程化实战</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  id="site-stats"
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center; display: none"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+
+    function revealOnFill(target, parent) {
+      if (!target || !parent) return;
+      var show = function () {
+        if (target.textContent.trim()) parent.style.display = "";
+      };
+      show();
+      new MutationObserver(show).observe(target, {
+        childList: true,
+        characterData: true,
+        subtree: true,
+      });
+    }
+    document
+      .querySelectorAll(".waline-pageview-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-pageview"));
+      });
+    document
+      .querySelectorAll(".waline-comment-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-comment"));
+      });
+    var statsWrap = document.getElementById("site-stats");
+    revealOnFill(document.getElementById("busuanzi_value_site_uv"), statsWrap);
+    revealOnFill(document.getElementById("busuanzi_value_site_pv"), statsWrap);
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
+</style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>

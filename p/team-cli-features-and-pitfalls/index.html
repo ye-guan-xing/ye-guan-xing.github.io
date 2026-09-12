@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。代码均脱敏">
+<title>团队 CLI 功能清单：每个功能的难点与简单解法</title>
+
+<link rel='canonical' href='https://ye-guan-xing.github.io/p/team-cli-features-and-pitfalls/'>
+
+<link rel="stylesheet" href="/scss/style.min.9c5a9f4543b29b46fdab34b507be2b4019f08e74ad9bbed7500c7cc6af8772bc.css"><meta property='og:title' content="团队 CLI 功能清单：每个功能的难点与简单解法">
+<meta property='og:description' content="把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。代码均脱敏">
+<meta property='og:url' content='https://ye-guan-xing.github.io/p/team-cli-features-and-pitfalls/'>
+<meta property='og:site_name' content='acye&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Node.js' /><meta property='article:tag' content='工程化' /><meta property='article:tag' content='CLI' /><meta property='article:tag' content='webpack' /><meta property='article:tag' content='Git' /><meta property='article:published_time' content='2026-09-12T15:00:00&#43;08:00'/><meta property='article:modified_time' content='2026-09-12T15:00:00&#43;08:00'/>
+<meta name="twitter:title" content="团队 CLI 功能清单：每个功能的难点与简单解法">
+<meta name="twitter:description" content="把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。代码均脱敏">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_dc3c198eca0bb681.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">acye&#39;s blog</a></h1>
+            <h2 class="site-description">欢迎来到我的博客QWQ</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/ye-guan-xing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%88%91/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>我</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#功能全景">功能全景</a></li>
+    <li><a href="#命令注册约定优于配置">命令注册：约定优于配置</a></li>
+    <li><a href="#构建编排文本改写替代-webpack-chain">构建编排：文本改写替代 webpack-chain</a></li>
+    <li><a href="#构建期-html-注入">构建期 HTML 注入</a></li>
+    <li><a href="#git-钩子规范即拦截">git 钩子：规范即拦截</a></li>
+    <li><a href="#自更新周节制流">自更新：周节制流</a></li>
+    <li><a href="#依赖安装私有源--锁版本">依赖安装：私有源 + 锁版本</a></li>
+    <li><a href="#其余功能一句话">其余功能一句话</a></li>
+    <li><a href="#小程序构建闭环mpbuild">小程序构建闭环：mpbuild</a></li>
+    <li><a href="#跨平台posix-依赖的取舍">跨平台：POSIX 依赖的取舍</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+  
+  <header class="article-category">
+    
+    <a
+      href="/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"
+      
+    >
+      工程化
+    </a>
+    
+    <a
+      href="/categories/node.js/"
+      
+    >
+      Node.js
+    </a>
+    
+  </header>
+  
+
+  <div class="article-title-wrapper">
+    <h2 class="article-title">
+      <a href="/p/team-cli-features-and-pitfalls/">团队 CLI 功能清单：每个功能的难点与简单解法</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。代码均脱敏</h3>
+    
+  </div>
+
+     
+  <footer class="article-time">
+    
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+      <time class="article-time--published">2026-09-12 15:00</time>
+    </div>
+     
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+  <path d="M22 12c-2 -3.5 -5 -6 -10 -6s-8 2.5 -10 6c2 3.5 5 6 10 6s8 -2.5 10 -6"/>
+</svg>
+
+      <time class="article-pageview" style="display:none">
+        <span class="waline-pageview-count" data-path="/p/team-cli-features-and-pitfalls/"></span>
+        visits
+      </time>
+    </div>
+
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M3 20l1.3 -3.9a9 9 0 1 1 3.7 3.7l-3.9 1.3"/>
+</svg>
+
+      <time class="article-comment" style="display:none">
+        <span class="waline-comment-count" data-path="/p/team-cli-features-and-pitfalls/"></span>
+        comments
+      </time>
+    </div>
+  </footer>
+   
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>这篇把一个团队 CLI 该有的功能列全，每个功能一句话点出难点，再给一个简单有效的解法。代码均脱敏。</p>
+<h2 id="功能全景">功能全景
+</h2><div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th>功能</th>
+					<th>难点</th>
+					<th>解法</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>命令注册分发</td>
+					<td>命令多了硬编码不可扩展</td>
+					<td>约定式 registry：<code>command/&lt;name&gt;/index.js</code> 导出 <code>main</code></td>
+			</tr>
+			<tr>
+					<td>参数解析</td>
+					<td>别名/布尔/数组混</td>
+					<td><code>minimist</code> + 集中 <code>alias</code> 表</td>
+			</tr>
+			<tr>
+					<td>脚手架 create</td>
+					<td>模板与依赖版本耦合</td>
+					<td><code>git clone</code> 模板 + <code>npm view</code> 拉最新版本写入 deps</td>
+			</tr>
+			<tr>
+					<td>构建编排 build</td>
+					<td>统一下发配置又不改业务码</td>
+					<td>文本改写 <code>vue.config.js</code> + 环境变量重定向</td>
+			</tr>
+			<tr>
+					<td>构建期 HTML 注入</td>
+					<td>四类能力逐项目手抄</td>
+					<td><code>html-webpack-plugin</code> 钩子 + cheerio</td>
+			</tr>
+			<tr>
+					<td>lint 治理</td>
+					<td>规则统一 + 严重度切换</td>
+					<td>CLI 自带 eslintrc + env 切 mode</td>
+			</tr>
+			<tr>
+					<td>git 钩子</td>
+					<td>规范靠人</td>
+					<td>yorkie <code>gitHooks</code> 物化 + <code>pre-commit</code> 校验</td>
+			</tr>
+			<tr>
+					<td>依赖安装</td>
+					<td>私有源 + 版本漂移</td>
+					<td>私有 registry + <code>--lock</code> 剥 <code>^/~</code></td>
+			</tr>
+			<tr>
+					<td>自更新</td>
+					<td>频繁检查拖慢启动</td>
+					<td>本地 <code>checkdate</code> 周节制流 + 手写 semver</td>
+			</tr>
+			<tr>
+					<td>遥测</td>
+					<td>上报阻塞主流程</td>
+					<td><code>detached + unref + try/catch</code></td>
+			</tr>
+			<tr>
+					<td>本地配置</td>
+					<td>污染宿主项目</td>
+					<td><code>~/.team-cli/</code> 目录</td>
+			</tr>
+			<tr>
+					<td>终端体验</td>
+					<td>长任务无反馈</td>
+					<td><code>ora</code> spinner + <code>colors</code> + <code>inquirer</code></td>
+			</tr>
+			<tr>
+					<td>跨平台</td>
+					<td>POSIX 工具 Win 失败</td>
+					<td><code>shelljs</code> / 纯 Node API 替代（残留脆弱点见末尾）</td>
+			</tr>
+			<tr>
+					<td>CI 集成</td>
+					<td>仓库带 dist + 小程序闭环</td>
+					<td>dist 保留式提交 + <code>miniprogram-ci</code> + 群消息通知</td>
+			</tr>
+	</tbody>
+</table></div>
+<p>下面挑最关键的展开。</p>
+<h2 id="命令注册约定优于配置">命令注册：约定优于配置
+</h2><p><strong>难点</strong>：命令越来越多，<code>if (cmd === 'x')</code> 式分发无法扩展，加命令要改主调度。</p>
+<p><strong>解法</strong>：约定 <code>command/&lt;name&gt;/index.js</code> 导出 <code>main(options)</code> 即完成注册，启动时按目录自动发现并校验 <code>typeof main === 'function'</code>，别名集中在 <code>alias.js</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env node
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">argv</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;minimist&#39;</span><span class="p">)(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">alias</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./command/alias&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">loadModule</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">sub</span> <span class="o">=</span> <span class="nx">alias</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">||</span> <span class="nx">name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">mod</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="sb">`./command/</span><span class="si">${</span><span class="nx">sub</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">mod</span><span class="p">.</span><span class="nx">main</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">mod</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">invokeCommand</span><span class="p">(</span><span class="nx">argv</span><span class="p">.</span><span class="nx">_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">argv</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// alias.js —— 别名集中在一张表，加命令零侵入主调度
+</span></span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">h</span><span class="o">:</span> <span class="s1">&#39;help&#39;</span><span class="p">,</span> <span class="nx">dev</span><span class="o">:</span> <span class="s1">&#39;serve&#39;</span><span class="p">,</span> <span class="nx">i</span><span class="o">:</span> <span class="s1">&#39;install&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">up</span><span class="o">:</span> <span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="nx">v</span><span class="o">:</span> <span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="nx">hook</span><span class="o">:</span> <span class="s1">&#39;githook&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="构建编排文本改写替代-webpack-chain">构建编排：文本改写替代 webpack-chain
+</h2><p><strong>难点</strong>：要给所有业务项目统一下发骨架屏、监控、埋点、CDN 分片，但不能要求每个项目用同一套 <code>webpack-chain</code>，更不能改业务代码。</p>
+<p><strong>解法</strong>：对项目 <code>vue.config.js</code> 做<strong>文本级改写</strong>，生成临时 <code>build.override.config.js</code>，再用 <code>VUE_CLI_SERVICE_CONFIG_PATH</code> 环境变量让 <code>vue-cli-service</code> 加载改写后的配置而非原文件。</p>
+<pre class="mermaid">flowchart TD
+  A[&#34;读 cli.config.json &#43; 默认配置&#34;] --&gt; B[&#34;生成 requireStr/pluginStr&#34;]
+  B --&gt; C[&#34;读项目 vue.config.js 并 deleteNote 剥注释&#34;]
+  C --&gt; D{&#34;configureWebpack 形态&#34;}
+  D -- 函数 --&gt; E[&#34;split(&#39;configureWebpack&#39;) 切串&lt;br/&gt;在首个 { 注入 config.plugins.push()&#34;]
+  D -- 对象 --&gt; F[&#34;split(&#39;plugins:&#39;) 切串&lt;br/&gt;在 [ 处注入 new X(),&#34;]
+  E --&gt; G[&#34;写 build.override.config.js&#34;]
+  F --&gt; G
+  G --&gt; H[&#34;设 VUE_CLI_SERVICE_CONFIG_PATH&#34;]
+  H --&gt; I[&#34;spawn vue-cli-service build&#34;]
+  I --&gt; J[&#34;结束 删临时文件并透传退出码&#34;]</pre>
+
+<p>核心是 <code>configureWebpack</code> 有函数和对象两种形态，<strong>用字符串切分而不是 AST</strong>处理：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// 函数形态：在 configureWebpack 函数体的首个 { 后注入 plugins.push
+</span></span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">setConfigWebpackStr</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">paramsName</span> <span class="o">=</span> <span class="nx">getConfigParame</span><span class="p">(</span><span class="nx">fileConfig</span><span class="p">,</span> <span class="s1">&#39;configureWebpack&#39;</span><span class="p">);</span> <span class="c1">// 还原形参名
+</span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">newPluginStr</span> <span class="o">=</span> <span class="nx">pluginStr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/.plugins/</span><span class="p">,</span> <span class="sb">`</span><span class="si">${</span><span class="nx">paramsName</span><span class="si">}</span><span class="sb">.plugins`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;configureWebpack&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">before</span><span class="p">,</span> <span class="nx">after</span><span class="p">]</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;configureWebpack&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">inserted</span> <span class="o">=</span> <span class="nx">after</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/{/</span><span class="p">,</span> <span class="sb">`{</span><span class="si">${</span><span class="nx">newPluginStr</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>  <span class="c1">// 首个 { 注入
+</span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sb">`</span><span class="si">${</span><span class="nx">requireStr</span><span class="si">}${</span><span class="nx">before</span><span class="si">}</span><span class="sb">configureWebpack</span><span class="si">${</span><span class="nx">inserted</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 未配置 configureWebpack：在 module.exports 首个 { 注入整个钩子
+</span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">before</span><span class="p">,</span> <span class="nx">after</span><span class="p">]</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;module.exports&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">inserted</span> <span class="o">=</span> <span class="nx">after</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/{/</span><span class="p">,</span> <span class="sb">`{configureWebpack: </span><span class="si">${</span><span class="nx">paramsName</span><span class="si">}</span><span class="sb"> =&gt; {</span><span class="si">${</span><span class="nx">newPluginStr</span><span class="si">}</span><span class="sb">},`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="sb">`</span><span class="si">${</span><span class="nx">requireStr</span><span class="si">}${</span><span class="nx">before</span><span class="si">}</span><span class="sb">module.exports</span><span class="si">${</span><span class="nx">inserted</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>对象形态类似，沿 <code>plugins:</code> 切，在 <code>[</code> 处注入 <code>new X(),</code>。改写完写文件、设环境变量、起子进程：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="s1">&#39;build.override.config.js&#39;</span><span class="p">,</span> <span class="nx">rewritten</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_CLI_SERVICE_CONFIG_PATH</span> <span class="o">=</span> <span class="s1">&#39;build.override.config.js&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">command</span> <span class="o">=</span> <span class="nx">spawn</span><span class="p">(</span><span class="s1">&#39;npx&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;vue-cli-service&#39;</span><span class="p">,</span> <span class="p">...</span><span class="nx">argv</span><span class="p">.</span><span class="nx">_</span><span class="p">],</span> <span class="p">{</span> <span class="nx">stdio</span><span class="o">:</span> <span class="s1">&#39;inherit&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="nx">command</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="p">,</span> <span class="nx">code</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">deleteFile</span><span class="p">(</span><span class="s1">&#39;build.override.config.js&#39;</span><span class="p">);</span>  <span class="c1">// 清理临时文件
+</span></span></span><span class="line"><span class="cl">  <span class="nx">code</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">spinner</span><span class="p">.</span><span class="nx">succeed</span><span class="p">(</span><span class="s1">&#39;成功&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="nx">spinner</span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="sb">`失败: </span><span class="si">${</span><span class="nx">code</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="nx">code</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>脆弱点（诚实说）</strong>：字符串改写依赖标识符与花括号位置，<code>deleteNote</code> 剥注释时含 <code>//</code> 的字符串或正则可能被误伤。解法是给一个 <code>--base</code> 透传作为逃逸舱，脆弱项目直走原生构建。本地跑通多项目构建兜底。</p>
+<h2 id="构建期-html-注入">构建期 HTML 注入
+</h2><p><strong>难点</strong>：首屏白屏、前端监控、性能埋点若逐项目手抄，升级一次要改 N 个仓库。</p>
+<p><strong>解法</strong>：四个插件挂 <code>html-webpack-plugin</code> 的 <code>before-html-processing</code> / <code>after-html-processing</code> 钩子，用 cheerio 改 HTML。以页面耗时埋点为例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">class</span> <span class="nx">injectTime</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">apply</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;compilation&#39;</span><span class="p">,</span> <span class="nx">compilation</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">compilation</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;html-webpack-plugin-after-html-processing&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">html</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&lt;/title&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;/title&gt;&lt;script&gt;window.__page_start__ = Date.now();&lt;/script&gt;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&lt;/body&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;script&gt;window.__page_end__ = Date.now();&lt;/script&gt;&lt;/body&gt;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>监控注入（<code>injectBl</code>）读 <code>cli.config.json</code> 里的监控 PID，<strong>没配 PID 就直接 return 不注入</strong>，避免无监控项目被注入空探针；挂的是 <code>before-html-processing</code>，把探针文件里的占位 PID 替换成真实 PID 后塞进 <code>#inject</code> 节点：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">class</span> <span class="nx">injectBl</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">apply</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">pid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="s1">&#39;cli.config.json&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pid</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;cli.config.json&#39;</span><span class="p">)).</span><span class="nx">monitorPid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">pid</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>  <span class="c1">// 未配置 PID，跳过注入
+</span></span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;compilation&#39;</span><span class="p">,</span> <span class="nx">compilation</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">compilation</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;html-webpack-plugin-before-html-processing&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">html</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">probe</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">probeFile</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">probe</span> <span class="o">=</span> <span class="nx">probe</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;placeholder-pid&gt;/</span><span class="p">,</span> <span class="nx">pid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#inject&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">probe</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">html</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>四类能力（骨架屏/监控/埋点/CDN 分片）各自一个插件，按需在 <code>cli.config.json</code> 的 <code>plugins</code> 数组里开关。升级时只升 CLI，全项目生效。</p>
+<h2 id="git-钩子规范即拦截">git 钩子：规范即拦截
+</h2><p><strong>难点</strong>：企业邮箱、未解决冲突、master 严格 lint 靠人盯不住。</p>
+<p><strong>解法</strong>：<code>utils/git.js</code> 提供 git plumbing 只读层，<code>githook</code> 命令提供执行层；通过 yorkie 的 <code>gitHooks</code> 字段把钩子物化进 <code>.git/hooks</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">preCommit</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">branch</span> <span class="o">=</span> <span class="nx">getCurrentBranchName</span><span class="p">().</span><span class="nx">toLowerCase</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">files</span> <span class="o">=</span> <span class="nx">getGitDiff</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">eslintFiles</span> <span class="o">=</span> <span class="nx">files</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">f</span> <span class="p">=&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="s1">&#39;.js&#39;</span><span class="p">,</span> <span class="s1">&#39;.vue&#39;</span><span class="p">,</span> <span class="s1">&#39;.ts&#39;</span><span class="p">].</span><span class="nx">includes</span><span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nx">getFileFormat</span><span class="p">(</span><span class="nx">f</span><span class="p">).</span><span class="nx">extend</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">checkGitEmail</span><span class="p">();</span>              <span class="c1">// 邮箱域白名单
+</span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">conflicts</span> <span class="o">=</span> <span class="nx">checkConflicts</span><span class="p">(</span><span class="nx">files</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">conflicts</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;未解决冲突，请修复后再提交&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">eslint</span><span class="p">({</span> <span class="nx">isProd</span><span class="o">:</span> <span class="nx">branch</span> <span class="o">===</span> <span class="s1">&#39;master&#39;</span><span class="p">,</span> <span class="nx">files</span><span class="o">:</span> <span class="nx">eslintFiles</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">checkGitEmail</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">email</span> <span class="o">=</span> <span class="nx">getGitInfo</span><span class="p">(</span><span class="s1">&#39;user.email&#39;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">reg</span> <span class="o">=</span> <span class="sr">/@company\.com$/i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// ci-bot 为编译账户，允许提交
+</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">email</span> <span class="o">!==</span> <span class="s1">&#39;ci-bot&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">email</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;请用公司邮箱: git config user.email name@company.com&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>master 分支按 <code>prod</code> 严格挡 <code>console/debugger</code>，其他分支 <code>test</code> 放行——分支即严重度。<code>package.json</code> 里物化钩子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="s2">&#34;gitHooks&#34;</span><span class="err">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;pre-commit&#34;</span><span class="p">:</span> <span class="s2">&#34;team-cli githook pre-commit&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;pre-push&#34;</span><span class="p">:</span> <span class="s2">&#34;team-cli githook pre-push&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="自更新周节制流">自更新：周节制流
+</h2><p><strong>难点</strong>：每次命令都 <code>npm view</code> 查远程版本，启动慢；不查又版本散落。</p>
+<p><strong>解法</strong>：本地存一个 <code>checkdate</code> 文件做周节制流，一周查一次远程，结果缓存本地；版本比较手写 3 段 semver，零依赖。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">dayStep</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">isChecked</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">checkDateStr</span> <span class="o">=</span> <span class="nx">readLocalConfig</span><span class="p">(</span><span class="s1">&#39;checkdate&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">checkDateStr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">compareAsc</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">checkDateStr</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">// 本周已检查
+</span></span></span><span class="line"><span class="cl">    <span class="nx">saveCheckDate</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">saveCheckDate</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">compareVersion</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">pa</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span> <span class="nx">pb</span> <span class="o">=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">na</span> <span class="o">=</span> <span class="o">+</span><span class="nx">pa</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">nb</span> <span class="o">=</span> <span class="o">+</span><span class="nx">pb</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">na</span> <span class="o">&gt;</span> <span class="nx">nb</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">nb</span> <span class="o">&gt;</span> <span class="nx">na</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>已检查过的周期内读本地缓存的远程版本，省掉 <code>npm view</code> 网络请求；只有跨周才重新查远程。</p>
+<h2 id="依赖安装私有源--锁版本">依赖安装：私有源 + 锁版本
+</h2><p><strong>难点</strong>：私有源要内网/VPN，<code>^</code>/<code>~</code> 导致各机版本漂移。</p>
+<p><strong>解法</strong>：私有 registry + <code>--lock</code> 剥掉 <code>^/~</code> 锁死。装完读 <code>package.json</code>，把目标包的 <code>^</code> 前缀去掉写回：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">lockDepsVer</span><span class="p">(</span><span class="nx">depList</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">pkg</span> <span class="o">=</span> <span class="nx">readPackageJSON</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">depList</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">dep</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">[</span><span class="nx">dep</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">[</span><span class="nx">dep</span><span class="p">]</span> <span class="o">=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[\^~]/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">writePackageJSON</span><span class="p">(</span><span class="nx">pkg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="其余功能一句话">其余功能一句话
+</h2><ul>
+<li><strong>遥测</strong>：<code>spawn</code> 起 curl，<code>detached + unref</code> 脱离父进程，<code>try/catch</code> 兜底，上报失败不影响命令。</li>
+<li><strong>本地配置</strong>：<code>~/.team-cli/</code> 目录存 <code>checkdate</code>、<code>version</code>，不碰业务项目。</li>
+<li><strong>终端体验</strong>：<code>ora</code> 给 spinner，<code>colors</code> 给颜色，<code>inquirer</code> 给交互式选择。</li>
+<li><strong>CI 集成</strong>：<code>push</code> 把 <code>dist</code> 一起提交（仓库带产物）；<code>mpbuild</code> 跑 <code>miniprogram-ci</code> 上传微信后台 + 生成预览二维码 + 群消息卡片通知，只在 <code>master + prod</code> 触发真上传，防测试产物误传正式。</li>
+</ul>
+<h2 id="小程序构建闭环mpbuild">小程序构建闭环：mpbuild
+</h2><p><code>mpbuild</code> 是 CLI 里最长的命令，把&quot;构建 → 压缩 → 上传 → 通知&quot;串成一条：</p>
+<pre class="mermaid">flowchart LR
+  A[&#34;taro build --type weapp&#34;] --&gt; B[&#34;tar -zcvf 压缩 dist&#34;]
+  B --&gt; C{&#34;master &#43; prod?&#34;}
+  C -- 是 --&gt; D[&#34;miniprogram-ci.upload&lt;br/&gt;上传微信后台&#34;]
+  C -- 否 --&gt; E[&#34;仅生成预览二维码&#34;]
+  D --&gt; F[&#34;生成预览图片&#34;]
+  E --&gt; F
+  F --&gt; G[&#34;上传图片到 OSS&#34;]
+  G --&gt; H[&#34;发群消息卡片&lt;br/&gt;含二维码/下载链接/commit&#34;]</pre>
+
+<p>关键防呆：只有 <code>branch 含 master 且 env=prod</code>（或显式 <code>--isUpLoad=true</code>）才真上传微信后台，其他情况只出预览二维码，避免测试包误传正式。通知卡片里带分支、环境、构建者、commitId、压缩包下载链接。</p>
+<p><strong>脱敏提醒</strong>：这一步涉及群机器人凭证和上传密钥。源码里这些是明文 <code>app_id</code>/<code>app_secret</code>——<strong>绝不能写进文章</strong>，真实环境必须走环境变量或 CI Secret 注入，不要硬编码进仓库。</p>
+<h2 id="跨平台posix-依赖的取舍">跨平台：POSIX 依赖的取舍
+</h2><p><strong>为什么这么做</strong>：团队开发机假设全是 macOS / Linux，<code>rm -rf</code>、<code>tar -zcvf</code>、<code>which</code>、<code>ln -s</code>、<code>cp -r</code> 这些 POSIX 命令开箱即用，写起来最快，没必要引第三方库。在这个前提下，<strong>没问题</strong>。</p>
+<p><strong>前提变了才出事</strong>：一旦团队进了 Windows 机器，或 CI 跑在 Windows runner 上，这些调用直接挂。这是&quot;环境假设&quot;换来的便利的代价。</p>
+<p><strong>扩展跨平台</strong>：用 <code>shelljs</code>（<code>shell.rm('-rf', x)</code>）或纯 Node API（<code>fs.rmSync(x, {recursive:true, force:true})</code>）替代 POSIX 调用。</p>
+<div class="table-wrapper"><table>
+	<thead>
+			<tr>
+					<th></th>
+					<th>好处</th>
+					<th>坏处</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>shelljs</code></td>
+					<td>贴近 shell 写法、改动小</td>
+					<td>多一个依赖、部分命令比原生慢</td>
+			</tr>
+			<tr>
+					<td>纯 Node API</td>
+					<td>零依赖、最快、最可控</td>
+					<td>写法啰嗦、<code>tar</code> 压缩等无标准库等价物需引包</td>
+			</tr>
+	</tbody>
+</table></div>
+<p>取舍：团队环境稳定且封闭 → POSIX 可接受；团队有跨系统可能或要开源 → 一开始就用纯 Node API，<code>tar</code> 这类用 <code>archiver</code> 之类的包补齐。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/node.js/">Node.js</a>
+        
+            <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/">工程化</a>
+        
+            <a href="/tags/cli/">CLI</a>
+        
+            <a href="/tags/webpack/">Webpack</a>
+        
+            <a href="/tags/git/">Git</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+</article>
+
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/cli-vs-normal-node-project/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CLI 不是前后端项目：它和前端/后端项目的本质差异与设计要求</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/cli-evolution-and-team-cli-value/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">从 Unix 哲学到团队工程化：CLI 的演进与自建 CLI 的价值</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/frontend-production-practices/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">前端投产的使用与优化:Node 工程化实战</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/ssr-mock-simple-implementation/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SSR 与 Mock 的简单实现</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/bff-simple-implementation/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BFF 的简单实现:用 Node 给前端做一个中间层</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+<div id="waline" class="waline-container"></div>
+<style>
+  .waline-container {
+    background-color: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    padding: var(--card-padding);
+    --waline-font-size: var(--article-font-size);
+  }
+  .waline-container .wl-count {
+    color: var(--card-text-color-main);
+  }
+</style><script type="application/json" id="waline-config">"{\"comment\":true,\"dark\":\"html[data-scheme=\\\"dark\\\"]\",\"el\":\"#waline\",\"emoji\":[\"https://unpkg.com/@waline/emojis@1.2.0/tieba\",\"https://unpkg.com/@waline/emojis@1.2.0/bilibili\",\"https://unpkg.com/@waline/emojis@1.2.0/bmoji\",\"https://unpkg.com/@waline/emojis@1.2.0/weibo\"],\"highlighter\":true,\"imageUploader\":false,\"lang\":\"en\",\"locale\":{\"admin\":\"Admin\",\"placeholder\":\"Welcome to leave your valuable comments!\\nPlease provide a correct email address so that we can send you an email notification when there is a reply.\\nDo not post any content unrelated to this article.\",\"reaction0\":\"Very helpful\",\"reaction1\":\"Helpful\",\"reaction2\":\"Average\",\"reaction3\":\"Not helpful\",\"reaction4\":\"Confused\",\"reaction5\":\"Incorrect\",\"reactionTitle\":\"Was this article helpful to you?\"},\"meta\":[\"nick\",\"mail\"],\"pageview\":false,\"reaction\":[\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_heart_eyes.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_zhoumei.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_grievance.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_dizzy_face.png\",\"https://npm.elemecdn.com/@waline/emojis@1.1.0/bilibili/bb_slap.png\"],\"requiredMeta\":[\"nick\",\"mail\"],\"requiredmetanames\":[\"nick\",\"mail\"],\"serverURL\":\"https://www.acyeapp.top\"}"</script>
+<script type="module">
+  import { init } from "https://unpkg.com/@waline/client@v3/dist/waline.js";
+  const configText = document.getElementById("waline-config")?.textContent || "{}";
+  let config = {};
+  try {
+    config = JSON.parse(configText);
+    if (typeof config === "string") {
+      config = JSON.parse(config);
+    }
+  } catch (e) {
+    config = {};
+  }
+  if (!config || typeof config !== "object" || Array.isArray(config)) {
+    config = {};
+  }
+  config.serverURL = config.serverURL || config.serverurl || "https://acyeapp.top";
+  init(config);
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2025 - 
+        
+        2026 acye
+    </section>
+    
+    <section class="powerby">
+        
+        
+
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        
+    </section>
+</footer>
+
+<script>
+  function isLocalhost() {
+    const ip = window.location.hostname;
+    return (
+      ip === "localhost" ||
+      ip === "127.0.0.1" ||
+      /^192\.168\.\d+\.\d+$/.test(ip)
+    );
+  }
+
+  if (!isLocalhost()) {
+    const script = document.createElement("script");
+    script.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
+
+<div
+  id="site-stats"
+  style="margin-top: 10px; color: #666; font-size: 0.8em; text-align: center; display: none"
+>
+  <span id="busuanzi_container_site_uv"
+    >本站访客：<span id="busuanzi_value_site_uv"></span> 人</span
+  >
+  ·
+  <span id="busuanzi_container_site_pv"
+    >总访问量：<span id="busuanzi_value_site_pv"></span> 次</span
+  >
+  
+</div>
+
+<script>
+  (async () => {
+    const indexCountEle = document.querySelector(".waline-index-count");
+    const walineUrl =
+      "https:\/\/www.acyeapp.top".replace(
+        /\/$/,
+        "",
+      );
+    if (!walineUrl) return;
+
+    const pageCountEles = document.querySelectorAll(".waline-pageview-count");
+    const pagePathNames = Array.from(pageCountEles).map((item) =>
+      item.getAttribute("data-path"),
+    );
+
+    const commentCountEles = document.querySelectorAll(".waline-comment-count");
+
+    const isArticlePage = document.body.classList.contains("article-page");
+
+    if (pageCountEles.length) {
+      const { pageviewCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/pageview.js",
+      );
+      if (isArticlePage) {
+        pageviewCount({
+          serverURL: walineUrl,
+          update: true,
+          path: pagePathNames[0] || undefined,
+        });
+      } else {
+        pageviewCount({ serverURL: walineUrl, update: false });
+      }
+    }
+
+    if (commentCountEles.length && !document.querySelector("#waline")) {
+      const { commentCount } = await import(
+        "https://unpkg.com/@waline/client@v3/dist/comment.js",
+      );
+      commentCount({ serverURL: walineUrl });
+    }
+
+    if (indexCountEle) {
+      const last = Number(localStorage.getItem("lastVisitTime")) || 0;
+      const cached = localStorage.getItem("indexCount");
+      const now = Date.now();
+      if (!last || now - last >= 3600000) {
+        const lang = navigator.language || "en";
+        const apiBase = walineUrl.replace(/\/?$/, "/") + "api/";
+        const u =
+          apiBase +
+          "article?path=" +
+          encodeURIComponent("/") +
+          "&type=" +
+          encodeURIComponent("time") +
+          "&lang=" +
+          encodeURIComponent(lang);
+        let count = 0;
+        try {
+          const res = await fetch(u);
+          const json = await res.json();
+          if (json.errno === 0 && json.data != null) {
+            const row = Array.isArray(json.data) ? json.data[0] : json.data;
+            count =
+              typeof row === "number" ? row : Number(row && row.time) || 0;
+          }
+        } catch (_) {}
+        localStorage.setItem("indexCount", String(count));
+        localStorage.setItem("lastVisitTime", String(now));
+        indexCountEle.innerText = String(count);
+      } else {
+        indexCountEle.innerText = cached || "0";
+      }
+    }
+
+    function revealOnFill(target, parent) {
+      if (!target || !parent) return;
+      var show = function () {
+        if (target.textContent.trim()) parent.style.display = "";
+      };
+      show();
+      new MutationObserver(show).observe(target, {
+        childList: true,
+        characterData: true,
+        subtree: true,
+      });
+    }
+    document
+      .querySelectorAll(".waline-pageview-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-pageview"));
+      });
+    document
+      .querySelectorAll(".waline-comment-count")
+      .forEach(function (el) {
+        revealOnFill(el, el.closest(".article-comment"));
+      });
+    var statsWrap = document.getElementById("site-stats");
+    revealOnFill(document.getElementById("busuanzi_value_site_uv"), statsWrap);
+    revealOnFill(document.getElementById("busuanzi_value_site_pv"), statsWrap);
+  })();
+</script>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+
+
+
+
+
+
+<div id="particles-js"></div>
+
+
+<script src="https://ye-guan-xing.github.io/background/particles.min.js"></script>
+<script>
+    particlesJS.load('particles-js', 'https:\/\/ye-guan-xing.github.io\/background\/particlesjs-config.json', function () {
+        console.log('particles.js loaded - callback');
+    });
+</script>
+
+
+<style>
+    #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+     
+    #waifu {
+        z-index: 9999 !important;
+        position: fixed !important;
+    }
+
+    #waifu-tips {
+        z-index: 10000 !important;
+    }
+
+    pre.mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: transparent;
+        overflow-x: auto;
+    }
+</style>
+
+<script type="module">
+    const mermaidBlocks = document.querySelectorAll("pre.mermaid");
+    if (mermaidBlocks.length) {
+        const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+        const theme = () => document.documentElement.dataset.scheme === "dark" ? "dark" : "default";
+        mermaid.initialize({ startOnLoad: false, theme: theme() });
+        await mermaid.run({ nodes: mermaidBlocks });
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    const live2dCdnPath = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+
+    
+    function loadResource(url, type) {
+        return new Promise((resolve, reject) => {
+            const tag = type === "css"
+                ? Object.assign(document.createElement("link"), { rel: "stylesheet", href: url })
+                : Object.assign(document.createElement("script"), { src: url });
+
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(new Error(`资源加载失败: ${url}`));
+            document.head.appendChild(tag);
+        });
+    }
+
+    
+    if (screen.width >= 768) {
+        Promise.all([
+            loadResource("https:\/\/ye-guan-xing.github.io\/waifu\/waifu.css", "css"),
+            loadResource(live2dCdnPath + "live2d.min.js", "js"),
+            loadResource(live2dCdnPath + "waifu-tips.js", "js")
+        ]).then(() => {
+            
+            if (typeof initWidget === 'function') {
+                
+                initWidget({
+                    waifuPath: "https:\/\/ye-guan-xing.github.io\/waifu\/waifu-tips.json",
+                    cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+                    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+                });
+            } else {
+                console.error("initWidget 函数未定义");
+            }
+        }).catch(err => {
+            console.error("Live2D 加载异常:", err);
+        });
+    }
+</script>
+
+    </body>
+</html>
