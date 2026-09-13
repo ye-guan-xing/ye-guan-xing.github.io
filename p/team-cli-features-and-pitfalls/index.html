@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。代码均脱敏">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。">
 <title>团队 CLI 功能清单：每个功能的难点与简单解法</title>
 
 <link rel='canonical' href='https://ye-guan-xing.github.io/p/team-cli-features-and-pitfalls/'>
 
 <link rel="stylesheet" href="/scss/style.min.9c5a9f4543b29b46fdab34b507be2b4019f08e74ad9bbed7500c7cc6af8772bc.css"><meta property='og:title' content="团队 CLI 功能清单：每个功能的难点与简单解法">
-<meta property='og:description' content="把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。代码均脱敏">
+<meta property='og:description' content="把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。">
 <meta property='og:url' content='https://ye-guan-xing.github.io/p/team-cli-features-and-pitfalls/'>
 <meta property='og:site_name' content='acye&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Node.js' /><meta property='article:tag' content='工程化' /><meta property='article:tag' content='CLI' /><meta property='article:tag' content='webpack' /><meta property='article:tag' content='Git' /><meta property='article:published_time' content='2026-09-12T15:00:00&#43;08:00'/><meta property='article:modified_time' content='2026-09-12T15:00:00&#43;08:00'/>
 <meta name="twitter:title" content="团队 CLI 功能清单：每个功能的难点与简单解法">
-<meta name="twitter:description" content="把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。代码均脱敏">
+<meta name="twitter:description" content="把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。">
     </head>
     <body class="
     article-page
@@ -316,7 +316,7 @@
     </h2>
 
     
-    <h3 class="article-subtitle">把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。代码均脱敏</h3>
+    <h3 class="article-subtitle">把一个团队 CLI 该有的功能列全，每个一句话点出难点，再给一个简单有效的解法。</h3>
     
   </div>
 
@@ -475,14 +475,14 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env node
-</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">argv</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;minimist&#39;</span><span class="p">)(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
-</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">alias</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./command/alias&#39;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">argv</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;minimist&#34;</span><span class="p">)(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">alias</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;./command/alias&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">loadModule</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">sub</span> <span class="o">=</span> <span class="nx">alias</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">||</span> <span class="nx">name</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">mod</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="sb">`./command/</span><span class="si">${</span><span class="nx">sub</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">mod</span><span class="p">.</span><span class="nx">main</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">mod</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">mod</span><span class="p">.</span><span class="nx">main</span> <span class="o">===</span> <span class="s2">&#34;function&#34;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">mod</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -496,12 +496,20 @@
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// alias.js —— 别名集中在一张表，加命令零侵入主调度
 </span></span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nx">h</span><span class="o">:</span> <span class="s1">&#39;help&#39;</span><span class="p">,</span> <span class="nx">dev</span><span class="o">:</span> <span class="s1">&#39;serve&#39;</span><span class="p">,</span> <span class="nx">i</span><span class="o">:</span> <span class="s1">&#39;install&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="nx">up</span><span class="o">:</span> <span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="nx">v</span><span class="o">:</span> <span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="nx">hook</span><span class="o">:</span> <span class="s1">&#39;githook&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">h</span><span class="o">:</span> <span class="s2">&#34;help&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">dev</span><span class="o">:</span> <span class="s2">&#34;serve&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">i</span><span class="o">:</span> <span class="s2">&#34;install&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">up</span><span class="o">:</span> <span class="s2">&#34;update&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">v</span><span class="o">:</span> <span class="s2">&#34;version&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">hook</span><span class="o">:</span> <span class="s2">&#34;githook&#34;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl"><span class="p">};</span>
 </span></span></code></pre></td></tr></table>
 </div>
@@ -537,20 +545,26 @@
 </span><span class="lnt">12
 </span><span class="lnt">13
 </span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// 函数形态：在 configureWebpack 函数体的首个 { 后注入 plugins.push
 </span></span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">setConfigWebpackStr</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">paramsName</span> <span class="o">=</span> <span class="nx">getConfigParame</span><span class="p">(</span><span class="nx">fileConfig</span><span class="p">,</span> <span class="s1">&#39;configureWebpack&#39;</span><span class="p">);</span> <span class="c1">// 还原形参名
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">paramsName</span> <span class="o">=</span> <span class="nx">getConfigParame</span><span class="p">(</span><span class="nx">fileConfig</span><span class="p">,</span> <span class="s2">&#34;configureWebpack&#34;</span><span class="p">);</span> <span class="c1">// 还原形参名
 </span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">newPluginStr</span> <span class="o">=</span> <span class="nx">pluginStr</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/.plugins/</span><span class="p">,</span> <span class="sb">`</span><span class="si">${</span><span class="nx">paramsName</span><span class="si">}</span><span class="sb">.plugins`</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;configureWebpack&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">before</span><span class="p">,</span> <span class="nx">after</span><span class="p">]</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;configureWebpack&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">inserted</span> <span class="o">=</span> <span class="nx">after</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/{/</span><span class="p">,</span> <span class="sb">`{</span><span class="si">${</span><span class="nx">newPluginStr</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>  <span class="c1">// 首个 { 注入
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&#34;configureWebpack&#34;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="p">[</span><span class="nx">before</span><span class="p">,</span> <span class="nx">after</span><span class="p">]</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&#34;configureWebpack&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">inserted</span> <span class="o">=</span> <span class="nx">after</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/{/</span><span class="p">,</span> <span class="sb">`{</span><span class="si">${</span><span class="nx">newPluginStr</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span> <span class="c1">// 首个 { 注入
 </span></span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sb">`</span><span class="si">${</span><span class="nx">requireStr</span><span class="si">}${</span><span class="nx">before</span><span class="si">}</span><span class="sb">configureWebpack</span><span class="si">${</span><span class="nx">inserted</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// 未配置 configureWebpack：在 module.exports 首个 { 注入整个钩子
-</span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">before</span><span class="p">,</span> <span class="nx">after</span><span class="p">]</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;module.exports&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">inserted</span> <span class="o">=</span> <span class="nx">after</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/{/</span><span class="p">,</span> <span class="sb">`{configureWebpack: </span><span class="si">${</span><span class="nx">paramsName</span><span class="si">}</span><span class="sb"> =&gt; {</span><span class="si">${</span><span class="nx">newPluginStr</span><span class="si">}</span><span class="sb">},`</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">before</span><span class="p">,</span> <span class="nx">after</span><span class="p">]</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&#34;module.exports&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">inserted</span> <span class="o">=</span> <span class="nx">after</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="sr">/{/</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="sb">`{configureWebpack: </span><span class="si">${</span><span class="nx">paramsName</span><span class="si">}</span><span class="sb"> =&gt; {</span><span class="si">${</span><span class="nx">newPluginStr</span><span class="si">}</span><span class="sb">},`</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="sb">`</span><span class="si">${</span><span class="nx">requireStr</span><span class="si">}${</span><span class="nx">before</span><span class="si">}</span><span class="sb">module.exports</span><span class="si">${</span><span class="nx">inserted</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
@@ -558,22 +572,26 @@
 </div><p>对象形态类似，沿 <code>plugins:</code> 切，在 <code>[</code> 处注入 <code>new X(),</code>。改写完写文件、设环境变量、起子进程：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="s1">&#39;build.override.config.js&#39;</span><span class="p">,</span> <span class="nx">rewritten</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_CLI_SERVICE_CONFIG_PATH</span> <span class="o">=</span> <span class="s1">&#39;build.override.config.js&#39;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">command</span> <span class="o">=</span> <span class="nx">spawn</span><span class="p">(</span><span class="s1">&#39;npx&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;vue-cli-service&#39;</span><span class="p">,</span> <span class="p">...</span><span class="nx">argv</span><span class="p">.</span><span class="nx">_</span><span class="p">],</span> <span class="p">{</span> <span class="nx">stdio</span><span class="o">:</span> <span class="s1">&#39;inherit&#39;</span> <span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="nx">command</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="p">,</span> <span class="nx">code</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nx">deleteFile</span><span class="p">(</span><span class="s1">&#39;build.override.config.js&#39;</span><span class="p">);</span>  <span class="c1">// 清理临时文件
-</span></span></span><span class="line"><span class="cl">  <span class="nx">code</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">spinner</span><span class="p">.</span><span class="nx">succeed</span><span class="p">(</span><span class="s1">&#39;成功&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="nx">spinner</span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="sb">`失败: </span><span class="si">${</span><span class="nx">code</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span><span class="p">(</span><span class="s2">&#34;build.override.config.js&#34;</span><span class="p">,</span> <span class="nx">rewritten</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VUE_CLI_SERVICE_CONFIG_PATH</span> <span class="o">=</span> <span class="s2">&#34;build.override.config.js&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">command</span> <span class="o">=</span> <span class="nx">spawn</span><span class="p">(</span><span class="s2">&#34;npx&#34;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&#34;vue-cli-service&#34;</span><span class="p">,</span> <span class="p">...</span><span class="nx">argv</span><span class="p">.</span><span class="nx">_</span><span class="p">],</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">stdio</span><span class="o">:</span> <span class="s2">&#34;inherit&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="nx">command</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&#34;close&#34;</span><span class="p">,</span> <span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">deleteFile</span><span class="p">(</span><span class="s2">&#34;build.override.config.js&#34;</span><span class="p">);</span> <span class="c1">// 清理临时文件
+</span></span></span><span class="line"><span class="cl">  <span class="nx">code</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">spinner</span><span class="p">.</span><span class="nx">succeed</span><span class="p">(</span><span class="s2">&#34;成功&#34;</span><span class="p">)</span> <span class="o">:</span> <span class="nx">spinner</span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="sb">`失败: </span><span class="si">${</span><span class="nx">code</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="nx">code</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span></code></pre></td></tr></table>
@@ -597,18 +615,36 @@
 </span><span class="lnt">11
 </span><span class="lnt">12
 </span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">class</span> <span class="nx">injectTime</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">apply</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;compilation&#39;</span><span class="p">,</span> <span class="nx">compilation</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">compilation</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;html-webpack-plugin-after-html-processing&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">html</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">html</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&lt;/title&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;/title&gt;&lt;script&gt;window.__page_start__ = Date.now();&lt;/script&gt;&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&lt;/body&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;script&gt;window.__page_end__ = Date.now();&lt;/script&gt;&lt;/body&gt;&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s2">&#34;compilation&#34;</span><span class="p">,</span> <span class="p">(</span><span class="nx">compilation</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">compilation</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;html-webpack-plugin-after-html-processing&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="kd">let</span> <span class="nx">html</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;&lt;/title&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;&lt;/title&gt;&lt;script&gt;window.__page_start__ = Date.now();&lt;/script&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;&lt;/body&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;&lt;script&gt;window.__page_end__ = Date.now();&lt;/script&gt;&lt;/body&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">data</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="nx">html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -639,27 +675,41 @@
 </span><span class="lnt">20
 </span><span class="lnt">21
 </span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">class</span> <span class="nx">injectBl</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">apply</span><span class="p">(</span><span class="nx">compiler</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">pid</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="s1">&#39;cli.config.json&#39;</span><span class="p">))</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">pid</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;cli.config.json&#39;</span><span class="p">)).</span><span class="nx">monitorPid</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">pid</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>  <span class="c1">// 未配置 PID，跳过注入
-</span></span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="s2">&#34;cli.config.json&#34;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">pid</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s2">&#34;cli.config.json&#34;</span><span class="p">)).</span><span class="nx">monitorPid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">pid</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// 未配置 PID，跳过注入
+</span></span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;compilation&#39;</span><span class="p">,</span> <span class="nx">compilation</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nx">compilation</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s1">&#39;html-webpack-plugin-before-html-processing&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">html</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">probe</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">probeFile</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">probe</span> <span class="o">=</span> <span class="nx">probe</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;placeholder-pid&gt;/</span><span class="p">,</span> <span class="nx">pid</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#inject&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">probe</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">html</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">compiler</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span><span class="s2">&#34;compilation&#34;</span><span class="p">,</span> <span class="p">(</span><span class="nx">compilation</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">compilation</span><span class="p">.</span><span class="nx">plugin</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;html-webpack-plugin-before-html-processing&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="kr">const</span> <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">html</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="kd">let</span> <span class="nx">probe</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">probeFile</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">probe</span> <span class="o">=</span> <span class="nx">probe</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;placeholder-pid&gt;/</span><span class="p">,</span> <span class="nx">pid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">$</span><span class="p">(</span><span class="s2">&#34;#inject&#34;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">probe</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">data</span><span class="p">.</span><span class="nx">html</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">html</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">cb</span> <span class="o">&amp;&amp;</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -695,29 +745,31 @@
 </span><span class="lnt">22
 </span><span class="lnt">23
 </span><span class="lnt">24
+</span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">preCommit</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">branch</span> <span class="o">=</span> <span class="nx">getCurrentBranchName</span><span class="p">().</span><span class="nx">toLowerCase</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">files</span> <span class="o">=</span> <span class="nx">getGitDiff</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">eslintFiles</span> <span class="o">=</span> <span class="nx">files</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">f</span> <span class="p">=&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="s1">&#39;.js&#39;</span><span class="p">,</span> <span class="s1">&#39;.vue&#39;</span><span class="p">,</span> <span class="s1">&#39;.ts&#39;</span><span class="p">].</span><span class="nx">includes</span><span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nx">getFileFormat</span><span class="p">(</span><span class="nx">f</span><span class="p">).</span><span class="nx">extend</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">eslintFiles</span> <span class="o">=</span> <span class="nx">files</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">f</span><span class="p">)</span> <span class="p">=&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="s2">&#34;.js&#34;</span><span class="p">,</span> <span class="s2">&#34;.vue&#34;</span><span class="p">,</span> <span class="s2">&#34;.ts&#34;</span><span class="p">].</span><span class="nx">includes</span><span class="p">(</span><span class="s2">&#34;.&#34;</span> <span class="o">+</span> <span class="nx">getFileFormat</span><span class="p">(</span><span class="nx">f</span><span class="p">).</span><span class="nx">extend</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="nx">checkGitEmail</span><span class="p">();</span>              <span class="c1">// 邮箱域白名单
+</span></span><span class="line"><span class="cl">  <span class="nx">checkGitEmail</span><span class="p">();</span> <span class="c1">// 邮箱域白名单
 </span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">conflicts</span> <span class="o">=</span> <span class="nx">checkConflicts</span><span class="p">(</span><span class="nx">files</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">conflicts</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;未解决冲突，请修复后再提交&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;未解决冲突，请修复后再提交&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="nx">eslint</span><span class="p">({</span> <span class="nx">isProd</span><span class="o">:</span> <span class="nx">branch</span> <span class="o">===</span> <span class="s1">&#39;master&#39;</span><span class="p">,</span> <span class="nx">files</span><span class="o">:</span> <span class="nx">eslintFiles</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">eslint</span><span class="p">({</span> <span class="nx">isProd</span><span class="o">:</span> <span class="nx">branch</span> <span class="o">===</span> <span class="s2">&#34;master&#34;</span><span class="p">,</span> <span class="nx">files</span><span class="o">:</span> <span class="nx">eslintFiles</span> <span class="p">});</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">checkGitEmail</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">email</span> <span class="o">=</span> <span class="nx">getGitInfo</span><span class="p">(</span><span class="s1">&#39;user.email&#39;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">email</span> <span class="o">=</span> <span class="nx">getGitInfo</span><span class="p">(</span><span class="s2">&#34;user.email&#34;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">reg</span> <span class="o">=</span> <span class="sr">/@company\.com$/i</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// ci-bot 为编译账户，允许提交
-</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">email</span> <span class="o">!==</span> <span class="s1">&#39;ci-bot&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">email</span><span class="p">))</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;请用公司邮箱: git config user.email name@company.com&#39;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">email</span> <span class="o">!==</span> <span class="s2">&#34;ci-bot&#34;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">email</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;请用公司邮箱: git config user.email name@company.com&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -764,11 +816,13 @@
 </span><span class="lnt">19
 </span><span class="lnt">20
 </span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">dayStep</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">isChecked</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">checkDateStr</span> <span class="o">=</span> <span class="nx">readLocalConfig</span><span class="p">(</span><span class="s1">&#39;checkdate&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">checkDateStr</span> <span class="o">=</span> <span class="nx">readLocalConfig</span><span class="p">(</span><span class="s2">&#34;checkdate&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">checkDateStr</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">compareAsc</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">checkDateStr</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">// 本周已检查
 </span></span></span><span class="line"><span class="cl">    <span class="nx">saveCheckDate</span><span class="p">();</span>
@@ -779,9 +833,11 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">compareVersion</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">pa</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span> <span class="nx">pb</span> <span class="o">=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">pa</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&#34;.&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">pb</span> <span class="o">=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&#34;.&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">na</span> <span class="o">=</span> <span class="o">+</span><span class="nx">pa</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">nb</span> <span class="o">=</span> <span class="o">+</span><span class="nx">pb</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">na</span> <span class="o">=</span> <span class="o">+</span><span class="nx">pa</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">nb</span> <span class="o">=</span> <span class="o">+</span><span class="nx">pb</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">na</span> <span class="o">&gt;</span> <span class="nx">nb</span><span class="p">)</span> <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">nb</span> <span class="o">&gt;</span> <span class="nx">na</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
@@ -807,9 +863,9 @@
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">lockDepsVer</span><span class="p">(</span><span class="nx">depList</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">pkg</span> <span class="o">=</span> <span class="nx">readPackageJSON</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">  <span class="nx">depList</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">dep</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">depList</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">dep</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">[</span><span class="nx">dep</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">[</span><span class="nx">dep</span><span class="p">]</span> <span class="o">=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[\^~]/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="nx">pkg</span><span class="p">.</span><span class="nx">dependencies</span><span class="p">[</span><span class="nx">dep</span><span class="p">]</span> <span class="o">=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^[\^~]/</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">  <span class="p">});</span>
 </span></span><span class="line"><span class="cl">  <span class="nx">writePackageJSON</span><span class="p">(</span><span class="nx">pkg</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
